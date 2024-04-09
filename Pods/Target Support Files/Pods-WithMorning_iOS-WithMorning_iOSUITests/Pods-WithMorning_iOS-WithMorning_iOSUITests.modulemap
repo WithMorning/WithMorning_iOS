@@ -1,0 +1,6 @@
+framework module Pods_WithMorning_iOS_WithMorning_iOSUITests {
+  umbrella header "Pods-WithMorning_iOS-WithMorning_iOSUITests-umbrella.h"
+
+  export *
+  module * { export * }
+}

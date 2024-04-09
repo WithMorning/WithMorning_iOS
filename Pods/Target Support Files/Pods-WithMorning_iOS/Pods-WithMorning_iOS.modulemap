@@ -1,0 +1,6 @@
+framework module Pods_WithMorning_iOS {
+  umbrella header "Pods-WithMorning_iOS-umbrella.h"
+
+  export *
+  module * { export * }
+}
