@@ -12,7 +12,7 @@ import Alamofire
 
 class MainViewController: UIViewController {
     
-    private lazy var Label : UILabel = {
+    private lazy var mainLabel : UILabel = {
         let label = UILabel()
         label.text = "소정이 귀여움"
         return label
@@ -26,9 +26,9 @@ class MainViewController: UIViewController {
     }
     
     func SetUI(){
-        view.addSubview(Label)
+        view.addSubview(mainLabel)
         
-        Label.snp.makeConstraints{
+        mainLabel.snp.makeConstraints{
             $0.centerX.centerY.equalToSuperview()
         }
     }
