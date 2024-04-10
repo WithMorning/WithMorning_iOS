@@ -8,13 +8,14 @@ target 'WithMorning_iOS' do
   # Pods for WithMorning_iOS
 pod 'SnapKit', '~> 5.7.0'
 pod 'Then'
+pod 'Alamofire'
 
   target 'WithMorning_iOSTests' do
     inherit! :search_paths
     # Pods for testing
   end
 
-  target 'WithMorning_iOSUITests' do
+  target 'WithMorning_iOS UITests' do
     # Pods for testing
   end
 
