@@ -8,9 +8,16 @@
 
 /* Begin PBXBuildFile section */
 		05083B923D6EB143B0BA46E1 /* Pods_WithMorning_iOS.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5F7878B73D8AD66854885BC9 /* Pods_WithMorning_iOS.framework */; };
+		D10F846F2BC7E7CF00F3A172 /* UIColor_Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = D10F846E2BC7E7CF00F3A172 /* UIColor_Extension.swift */; };
+		D14A2D6C2BC8EB810087E0CB /* DesignSystem.swift in Sources */ = {isa = PBXBuildFile; fileRef = D14A2D6B2BC8EB810087E0CB /* DesignSystem.swift */; };
+		D15AE7342BC990DA00024CE3 /* Pretendard-Bold.otf in Resources */ = {isa = PBXBuildFile; fileRef = D15AE7332BC990DA00024CE3 /* Pretendard-Bold.otf */; };
+		D15AE7362BC990E200024CE3 /* Pretendard-Medium.otf in Resources */ = {isa = PBXBuildFile; fileRef = D15AE7352BC990E200024CE3 /* Pretendard-Medium.otf */; };
+		D15AE7382BC990E900024CE3 /* Pretendard-SemiBold.otf in Resources */ = {isa = PBXBuildFile; fileRef = D15AE7372BC990E900024CE3 /* Pretendard-SemiBold.otf */; };
+		D15AE73A2BC995B800024CE3 /* UIView_Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = D15AE7392BC995B800024CE3 /* UIView_Extension.swift */; };
 		D16F5FD12BC65671006640F9 /* Network.swift in Sources */ = {isa = PBXBuildFile; fileRef = D16F5FD02BC65671006640F9 /* Network.swift */; };
 		D16F5FD32BC65679006640F9 /* Constatns.swift in Sources */ = {isa = PBXBuildFile; fileRef = D16F5FD22BC65679006640F9 /* Constatns.swift */; };
 		D16F5FD52BC65680006640F9 /* Router.swift in Sources */ = {isa = PBXBuildFile; fileRef = D16F5FD42BC65680006640F9 /* Router.swift */; };
+		D1773F892BC988AB005C82FA /* UIFont_Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = D1773F882BC988AB005C82FA /* UIFont_Extension.swift */; };
 		D1E672BB2BC4FD3300A32790 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = D1E672BA2BC4FD3300A32790 /* AppDelegate.swift */; };
 		D1E672BD2BC4FD3300A32790 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = D1E672BC2BC4FD3300A32790 /* SceneDelegate.swift */; };
 		D1E672BF2BC4FD3300A32790 /* MainViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D1E672BE2BC4FD3300A32790 /* MainViewController.swift */; };
@@ -22,9 +29,16 @@
 		5F7878B73D8AD66854885BC9 /* Pods_WithMorning_iOS.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_WithMorning_iOS.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		6DCBFF9B66FC891ADD99B059 /* Pods-WithMorning_iOS.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-WithMorning_iOS.debug.xcconfig"; path = "Target Support Files/Pods-WithMorning_iOS/Pods-WithMorning_iOS.debug.xcconfig"; sourceTree = "<group>"; };
 		C11DEB06ED24EC837FF59366 /* Pods-WithMorning_iOS.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-WithMorning_iOS.release.xcconfig"; path = "Target Support Files/Pods-WithMorning_iOS/Pods-WithMorning_iOS.release.xcconfig"; sourceTree = "<group>"; };
+		D10F846E2BC7E7CF00F3A172 /* UIColor_Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIColor_Extension.swift; sourceTree = "<group>"; };
+		D14A2D6B2BC8EB810087E0CB /* DesignSystem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DesignSystem.swift; sourceTree = "<group>"; };
+		D15AE7332BC990DA00024CE3 /* Pretendard-Bold.otf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Pretendard-Bold.otf"; sourceTree = "<group>"; };
+		D15AE7352BC990E200024CE3 /* Pretendard-Medium.otf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Pretendard-Medium.otf"; sourceTree = "<group>"; };
+		D15AE7372BC990E900024CE3 /* Pretendard-SemiBold.otf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Pretendard-SemiBold.otf"; sourceTree = "<group>"; };
+		D15AE7392BC995B800024CE3 /* UIView_Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIView_Extension.swift; sourceTree = "<group>"; };
 		D16F5FD02BC65671006640F9 /* Network.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Network.swift; sourceTree = "<group>"; };
 		D16F5FD22BC65679006640F9 /* Constatns.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Constatns.swift; sourceTree = "<group>"; };
 		D16F5FD42BC65680006640F9 /* Router.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Router.swift; sourceTree = "<group>"; };
+		D1773F882BC988AB005C82FA /* UIFont_Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIFont_Extension.swift; sourceTree = "<group>"; };
 		D1E672B72BC4FD3300A32790 /* WithMorning_iOS.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = WithMorning_iOS.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		D1E672BA2BC4FD3300A32790 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		D1E672BC2BC4FD3300A32790 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -63,6 +77,34 @@
 			path = Pods;
 			sourceTree = "<group>";
 		};
+		D10F846D2BC7E72000F3A172 /* Extension */ = {
+			isa = PBXGroup;
+			children = (
+				D10F846E2BC7E7CF00F3A172 /* UIColor_Extension.swift */,
+				D1773F882BC988AB005C82FA /* UIFont_Extension.swift */,
+				D15AE7392BC995B800024CE3 /* UIView_Extension.swift */,
+			);
+			name = Extension;
+			sourceTree = "<group>";
+		};
+		D14A2D6A2BC8EB6D0087E0CB /* DesignSystem */ = {
+			isa = PBXGroup;
+			children = (
+				D14A2D6B2BC8EB810087E0CB /* DesignSystem.swift */,
+			);
+			path = DesignSystem;
+			sourceTree = "<group>";
+		};
+		D15AE72C2BC98F8900024CE3 /* Fonts */ = {
+			isa = PBXGroup;
+			children = (
+				D15AE7372BC990E900024CE3 /* Pretendard-SemiBold.otf */,
+				D15AE7332BC990DA00024CE3 /* Pretendard-Bold.otf */,
+				D15AE7352BC990E200024CE3 /* Pretendard-Medium.otf */,
+			);
+			path = Fonts;
+			sourceTree = "<group>";
+		};
 		D1652D782BC653A700F80F6F /* Scene */ = {
 			isa = PBXGroup;
 			children = (
@@ -84,6 +126,7 @@
 		D16F5FCF2BC6562A006640F9 /* Resource */ = {
 			isa = PBXGroup;
 			children = (
+				D15AE72C2BC98F8900024CE3 /* Fonts */,
 				D1E672C32BC4FD3500A32790 /* Assets.xcassets */,
 				D1E672BA2BC4FD3300A32790 /* AppDelegate.swift */,
 				D1E672BC2BC4FD3300A32790 /* SceneDelegate.swift */,
@@ -112,11 +155,13 @@
 		D1E672B92BC4FD3300A32790 /* WithMorning_iOS */ = {
 			isa = PBXGroup;
 			children = (
-				D1E672C82BC4FD3500A32790 /* Info.plist */,
+				D14A2D6A2BC8EB6D0087E0CB /* DesignSystem */,
+				D10F846D2BC7E72000F3A172 /* Extension */,
 				D16F5FCF2BC6562A006640F9 /* Resource */,
-				D1E672C52BC4FD3500A32790 /* LaunchScreen.storyboard */,
-				D1652D782BC653A700F80F6F /* Scene */,
 				D1652D792BC653AF00F80F6F /* API */,
+				D1652D782BC653A700F80F6F /* Scene */,
+				D1E672C82BC4FD3500A32790 /* Info.plist */,
+				D1E672C52BC4FD3500A32790 /* LaunchScreen.storyboard */,
 			);
 			path = WithMorning_iOS;
 			sourceTree = "<group>";
@@ -182,7 +227,10 @@
 			buildActionMask = 2147483647;
 			files = (
 				D1E672C42BC4FD3500A32790 /* Assets.xcassets in Resources */,
+				D15AE7342BC990DA00024CE3 /* Pretendard-Bold.otf in Resources */,
+				D15AE7382BC990E900024CE3 /* Pretendard-SemiBold.otf in Resources */,
 				D1E672C72BC4FD3500A32790 /* Base in Resources */,
+				D15AE7362BC990E200024CE3 /* Pretendard-Medium.otf in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -235,11 +283,15 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				D1773F892BC988AB005C82FA /* UIFont_Extension.swift in Sources */,
 				D1E672BF2BC4FD3300A32790 /* MainViewController.swift in Sources */,
 				D1E672BB2BC4FD3300A32790 /* AppDelegate.swift in Sources */,
 				D16F5FD12BC65671006640F9 /* Network.swift in Sources */,
 				D16F5FD32BC65679006640F9 /* Constatns.swift in Sources */,
+				D14A2D6C2BC8EB810087E0CB /* DesignSystem.swift in Sources */,
 				D16F5FD52BC65680006640F9 /* Router.swift in Sources */,
+				D10F846F2BC7E7CF00F3A172 /* UIColor_Extension.swift in Sources */,
+				D15AE73A2BC995B800024CE3 /* UIView_Extension.swift in Sources */,
 				D1E672BD2BC4FD3300A32790 /* SceneDelegate.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
