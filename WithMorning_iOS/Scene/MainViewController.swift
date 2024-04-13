@@ -43,10 +43,12 @@ class MainViewController: UIViewController {
         button.layer.cornerRadius = 8
         button.setImage(UIImage(systemName: "plus"), for: .normal)
         
+        button.layer.shadowColor = UIColor(red: 0, green: 0, blue: 0, alpha: 0.05).cgColor
+        button.layer.shadowOpacity = 1
+        button.layer.shadowRadius = 4
+        button.layer.shadowOffset = CGSize(width: 0, height: 4)
+        
         button.addTarget(self, action: #selector(clickedmakeAlarm), for: .touchUpInside)
-        
-
-        
         return button
     }()
     
@@ -59,25 +61,36 @@ class MainViewController: UIViewController {
         button.layer.cornerRadius = 8
         button.setImage(UIImage(named: "codebutton"), for: .normal)
         
-        button.addTarget(self, action: #selector(clickedcode), for: .touchUpInside)
+        button.layer.shadowColor = UIColor(red: 0, green: 0, blue: 0, alpha: 0.05).cgColor
+        button.layer.shadowOpacity = 1
+        button.layer.shadowRadius = 4
+        button.layer.shadowOffset = CGSize(width: 0, height: 4)
         
+        button.addTarget(self, action: #selector(clickedcode), for: .touchUpInside)
         return button
     }()
     
-
+    private lazy var AlarmTableView : UITableView = {
+        let tableView = UITableView()
+        tableView.layer.cornerRadius = 8
+        return tableView
+    }()
+    
+    var alarmCount : Int = 3
 
 //MARK: - LifeCycle
 
     override func viewDidLoad() {
         super.viewDidLoad()
         view.backgroundColor = DesignSystemColor.backgroundColor.value
+        tableSetting()
         SetUI()
 
     }
 //MARK: - UI
 
     func SetUI(){
-        view.addSubviews(nameLabel,settingButton,alarmButton,codeButton)
+        view.addSubviews(nameLabel,settingButton,alarmButton,codeButton,AlarmTableView)
         
         nameLabel.snp.makeConstraints{
             $0.top.equalTo(view.safeAreaLayoutGuide).offset(27)
@@ -99,23 +112,59 @@ class MainViewController: UIViewController {
             $0.top.equalTo(alarmButton.snp.bottom).offset(8)
             $0.height.equalTo(56)
         }
+        AlarmTableView.snp.makeConstraints{
+            $0.top.equalTo(codeButton.snp.bottom).offset(8)
+            $0.leading.trailing.equalToSuperview().inset(16)
+            $0.bottom.equalTo(view.safeAreaLayoutGuide)
+        }
     }
+//MARK: - tableSetting
+    func tableSetting(){
+        
+        AlarmTableView.dataSource = self
+        AlarmTableView.delegate = self
+        AlarmTableView.register(AlarmTableViewCell.self, forCellReuseIdentifier: "AlarmTableViewCell")
+        AlarmTableView.backgroundColor = DesignSystemColor.mainColor.value
+    }
+
 
 //MARK: - objc func
     
-    @objc func clickedSetting(){
+    @objc func clickedSetting(){ //설정버튼
         print("세팅버튼 : 아왜요 시2ㅏ발")
     }
-    @objc func clickedmakeAlarm(){
+    @objc func clickedmakeAlarm(){ //새 알람설정
         print("알람생성버튼 : 아왜불러")
+        alarmCount = alarmCount + 1
+        print(alarmCount)
+        AlarmTableView.reloadData()
     }
-    @objc func clickedcode(){
+    @objc func clickedcode(){ //참여코드입력
         print("참여코드버튼 : 아왜요")
     }
 
 }
 
-
+extension MainViewController : UITableViewDelegate, UITableViewDataSource{
+    
+    
+    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        return alarmCount
+    }
+    
+    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        
+        let cell = AlarmTableViewCell()
+        
+        return cell
+    }
+    
+    func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
+        return 108
+    }
+    
+    
+}
 
 #if DEBUG
 import SwiftUI

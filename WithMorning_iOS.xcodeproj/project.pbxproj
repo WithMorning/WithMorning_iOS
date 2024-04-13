@@ -14,6 +14,7 @@
 		D15AE7362BC990E200024CE3 /* Pretendard-Medium.otf in Resources */ = {isa = PBXBuildFile; fileRef = D15AE7352BC990E200024CE3 /* Pretendard-Medium.otf */; };
 		D15AE7382BC990E900024CE3 /* Pretendard-SemiBold.otf in Resources */ = {isa = PBXBuildFile; fileRef = D15AE7372BC990E900024CE3 /* Pretendard-SemiBold.otf */; };
 		D15AE73A2BC995B800024CE3 /* UIView_Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = D15AE7392BC995B800024CE3 /* UIView_Extension.swift */; };
+		D15D60C72BCA8BC3009C0874 /* AlarmTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = D15D60C62BCA8BC3009C0874 /* AlarmTableViewCell.swift */; };
 		D16F5FD12BC65671006640F9 /* Network.swift in Sources */ = {isa = PBXBuildFile; fileRef = D16F5FD02BC65671006640F9 /* Network.swift */; };
 		D16F5FD32BC65679006640F9 /* Constatns.swift in Sources */ = {isa = PBXBuildFile; fileRef = D16F5FD22BC65679006640F9 /* Constatns.swift */; };
 		D16F5FD52BC65680006640F9 /* Router.swift in Sources */ = {isa = PBXBuildFile; fileRef = D16F5FD42BC65680006640F9 /* Router.swift */; };
@@ -35,6 +36,7 @@
 		D15AE7352BC990E200024CE3 /* Pretendard-Medium.otf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Pretendard-Medium.otf"; sourceTree = "<group>"; };
 		D15AE7372BC990E900024CE3 /* Pretendard-SemiBold.otf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Pretendard-SemiBold.otf"; sourceTree = "<group>"; };
 		D15AE7392BC995B800024CE3 /* UIView_Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIView_Extension.swift; sourceTree = "<group>"; };
+		D15D60C62BCA8BC3009C0874 /* AlarmTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AlarmTableViewCell.swift; sourceTree = "<group>"; };
 		D16F5FD02BC65671006640F9 /* Network.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Network.swift; sourceTree = "<group>"; };
 		D16F5FD22BC65679006640F9 /* Constatns.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Constatns.swift; sourceTree = "<group>"; };
 		D16F5FD42BC65680006640F9 /* Router.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Router.swift; sourceTree = "<group>"; };
@@ -109,6 +111,7 @@
 			isa = PBXGroup;
 			children = (
 				D1E672BE2BC4FD3300A32790 /* MainViewController.swift */,
+				D15D60C62BCA8BC3009C0874 /* AlarmTableViewCell.swift */,
 			);
 			path = Scene;
 			sourceTree = "<group>";
@@ -290,6 +293,7 @@
 				D16F5FD32BC65679006640F9 /* Constatns.swift in Sources */,
 				D14A2D6C2BC8EB810087E0CB /* DesignSystem.swift in Sources */,
 				D16F5FD52BC65680006640F9 /* Router.swift in Sources */,
+				D15D60C72BCA8BC3009C0874 /* AlarmTableViewCell.swift in Sources */,
 				D10F846F2BC7E7CF00F3A172 /* UIColor_Extension.swift in Sources */,
 				D15AE73A2BC995B800024CE3 /* UIView_Extension.swift in Sources */,
 				D1E672BD2BC4FD3300A32790 /* SceneDelegate.swift in Sources */,
