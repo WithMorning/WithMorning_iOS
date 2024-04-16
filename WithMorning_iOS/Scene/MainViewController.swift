@@ -33,6 +33,19 @@ class MainViewController: UIViewController {
         return button
     }()
     
+    private lazy var headerView : UIView = {
+       let view = UIView()
+        return view
+    }()
+
+    private lazy var headerStackView: UIStackView = {
+        let stackView = UIStackView()
+        stackView.axis = .vertical
+        stackView.distribution = .equalSpacing
+        stackView.spacing = 8
+        return stackView
+    }()
+    
     private lazy var alarmButton : UIButton = {
         let button = UIButton()
         button.backgroundColor = DesignSystemColor.mainColor.value
@@ -76,7 +89,8 @@ class MainViewController: UIViewController {
         return tableView
     }()
     
-    var alarmCount : Int = 3
+    var alarmCount : Int = 4 //셀 개수
+    var alarmLabel  = [1,2,3,4]
 
 //MARK: - LifeCycle
 
@@ -85,46 +99,73 @@ class MainViewController: UIViewController {
         view.backgroundColor = DesignSystemColor.backgroundColor.value
         tableSetting()
         SetUI()
-
     }
+    
 //MARK: - UI
 
     func SetUI(){
-        view.addSubviews(nameLabel,settingButton,alarmButton,codeButton,AlarmTableView)
+        view.addSubviews(nameLabel,settingButton,AlarmTableView)
+        headerView.addSubview(headerStackView)
+        headerStackView.addSubviews(alarmButton,codeButton)
         
         nameLabel.snp.makeConstraints{
             $0.top.equalTo(view.safeAreaLayoutGuide).offset(27)
             $0.leading.equalToSuperview().inset(16)
         }
+        
         settingButton.snp.makeConstraints{
             $0.top.equalTo(view.safeAreaLayoutGuide).offset(27)
             $0.trailing.equalToSuperview().inset(16)
             $0.width.equalTo(45)
             $0.height.equalTo(30)
         }
+        
+        headerStackView.snp.makeConstraints{
+            $0.leading.trailing.equalToSuperview()
+            //$0.height.equalTo(alarmButton.snp.height*2)
+        }
+        
         alarmButton.snp.makeConstraints{
-            $0.leading.trailing.equalToSuperview().inset(16)
-            $0.top.equalTo(nameLabel.snp.bottom).offset(27)
+            $0.top.equalToSuperview()
+            $0.leading.trailing.equalToSuperview()
             $0.height.equalTo(56)
         }
         codeButton.snp.makeConstraints{
-            $0.leading.trailing.equalToSuperview().inset(16)
+            $0.leading.trailing.equalToSuperview()
+            $0.bottom.equalToSuperview()
             $0.top.equalTo(alarmButton.snp.bottom).offset(8)
             $0.height.equalTo(56)
         }
+        
         AlarmTableView.snp.makeConstraints{
-            $0.top.equalTo(codeButton.snp.bottom).offset(8)
+            $0.top.equalTo(nameLabel.snp.bottom).offset(27)
             $0.leading.trailing.equalToSuperview().inset(16)
             $0.bottom.equalTo(view.safeAreaLayoutGuide)
         }
     }
 //MARK: - tableSetting
     func tableSetting(){
-        
         AlarmTableView.dataSource = self
         AlarmTableView.delegate = self
         AlarmTableView.register(AlarmTableViewCell.self, forCellReuseIdentifier: "AlarmTableViewCell")
-        AlarmTableView.backgroundColor = DesignSystemColor.mainColor.value
+        //AlarmTableView.headerView(forSection: 1)
+        AlarmTableView.translatesAutoresizingMaskIntoConstraints = false
+        AlarmTableView.tableHeaderView = headerView
+        AlarmTableView.backgroundColor = DesignSystemColor.backgroundColor.value
+        AlarmTableView.separatorStyle = .none
+        headerView.layoutIfNeeded()
+        
+        let alarmButtonHeight: CGFloat = 56
+            let codeButtonHeight: CGFloat = 56
+            let spacing: CGFloat = 8
+            let headerStackViewHeight = alarmButtonHeight + codeButtonHeight + spacing
+            
+            // HeaderView의 크기 설정
+            headerView.frame = CGRect(x: 0, y: 0, width: UIScreen.main.bounds.width, height: headerStackViewHeight)
+            
+            // HeaderStackView의 크기 설정
+            headerStackView.frame = CGRect(x: 0, y: 0, width: UIScreen.main.bounds.width, height: headerStackViewHeight)
+        
     }
 
 
@@ -133,12 +174,15 @@ class MainViewController: UIViewController {
     @objc func clickedSetting(){ //설정버튼
         print("세팅버튼 : 아왜요 시2ㅏ발")
     }
+    
     @objc func clickedmakeAlarm(){ //새 알람설정
         print("알람생성버튼 : 아왜불러")
         alarmCount = alarmCount + 1
+        alarmLabel.append(alarmCount)
         print(alarmCount)
         AlarmTableView.reloadData()
     }
+    
     @objc func clickedcode(){ //참여코드입력
         print("참여코드버튼 : 아왜요")
     }
@@ -153,9 +197,11 @@ extension MainViewController : UITableViewDelegate, UITableViewDataSource{
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        guard let cell = AlarmTableView.dequeueReusableCell(withIdentifier: "AlarmTableViewCell", for: indexPath) as? AlarmTableViewCell else {return UITableViewCell()}
         
-        let cell = AlarmTableViewCell()
-        
+
+        cell.selectionStyle = .none
+        cell.cellLabel.text = String(alarmLabel[indexPath.row])
         return cell
     }
     
