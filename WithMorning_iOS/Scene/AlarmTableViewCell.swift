@@ -12,10 +12,23 @@ import Alamofire
 
 class AlarmTableViewCell : UITableViewCell {
     
-    //MARK: - properties
+//MARK: - closure
+    var toggleclicked : ( () -> Void ) = {}
     
-    let cellLabel : UILabel = {
+    
+//MARK: - properties
+    
+    lazy var topView : UIView = {
+        let view = UIView()
+        view.addSubviews(topViewLabel,toggleButton,settingButton,timeLabel,noonLabel)
+        return view
+    }()
+    
+    let topViewLabel : UILabel = {
         let label = UILabel()
+        label.font = DesignSystemFont.Pretendard_SemiBold12.value
+        label.textColor = DesignSystemColor.fontBlack.value
+        label.text = "우리 같이 조깅하고 출근하쟈 🏃‍♀"
         return label
     }()
     
@@ -27,10 +40,72 @@ class AlarmTableViewCell : UITableViewCell {
         return toggle
     }()
     
+    lazy var settingButton : UIButton = {
+        let button = UIButton()
+        button.setImage(UIImage(systemName: "ellipsis"), for: .normal)
+        button.tintColor = UIColor(.black)
+        button.addTarget(self, action: #selector(clickSetting), for: .touchUpInside)
+        return button
+    }()
+    
+    private lazy var timeLabel : UILabel = {
+        let label = UILabel()
+        label.text = "07:30"
+        label.font = DesignSystemFont.Pretendard_Bold30.value
+        return label
+    }()
+    
+    private lazy var noonLabel : UILabel = {
+        let label = UILabel()
+        label.text = "AM"
+        label.font = DesignSystemFont.Pretendard_Bold18.value
+        return label
+    }()
+    
+    lazy var AlarmStackView : UIStackView = {
+        let view = UIStackView()
+        view.addSubviews(topView,bottomView)
+        view.axis = .vertical
+        return view
+    }()
+    
+    lazy var bottomView : UIView = {
+        let view = UIView()
+        view.addSubviews(borderLine,bottomViewLabel,memoView)
+        view.isHidden = true
+        return view
+    }()
+    
+    private lazy var borderLine : UIView = {
+        let view = UIView()
+        view.backgroundColor = DesignSystemColor.settingGray.value
+        return view
+    }()
+    
+    lazy var bottomViewLabel : UILabel = {
+        let label = UILabel()
+        label.font = DesignSystemFont.Pretendard_Medium12.value
+        label.textColor = DesignSystemColor.fontGray.value
+        label.text = "프로필을 누르면 친구를 깨울 수 있어요!"
+        return label
+    }()
+    
+    private lazy var memoView : UIView = {
+        let view = UIView()
+        view.backgroundColor = DesignSystemColor.memoGray.value
+        view.layer.cornerRadius = 4
+        return view
+    }()
+
+    
+    
+    
+    
     //MARK: - LifeCycle
     
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
+        
     }
     
     override func layoutSubviews() {
@@ -42,9 +117,9 @@ class AlarmTableViewCell : UITableViewCell {
         fatalError("init(coder:) has not been implemented")
     }
     
-    //MARK: - SetUI
+//MARK: - SetUI
     func SetCell(){
-        contentView.addSubviews(cellLabel,toggleButton)
+        contentView.addSubview(AlarmStackView)
         
         contentView.layer.cornerRadius = 8
         contentView.frame = contentView.frame.inset(by: UIEdgeInsets(top: 0, left: 0, bottom: 8, right: 0))
@@ -53,28 +128,67 @@ class AlarmTableViewCell : UITableViewCell {
         contentView.layer.shadowOpacity = 1
         contentView.layer.shadowRadius = 4
         contentView.layer.shadowOffset = CGSize(width: 0, height: 4)
-        
-        
-        cellLabel.snp.makeConstraints{
-            $0.centerX.centerY.equalToSuperview()
+        //stackview
+        AlarmStackView.snp.makeConstraints{
+            $0.edges.equalToSuperview()
         }
         
+        //윗부분 시작
+        topView.snp.makeConstraints{
+            $0.top.leading.trailing.equalToSuperview()
+            $0.height.equalTo(113)
+        }
+        topViewLabel.snp.makeConstraints{
+            $0.leading.equalToSuperview().inset(16)
+            $0.centerY.equalTo(settingButton)
+        }
         toggleButton.snp.makeConstraints{
+            $0.top.equalToSuperview().inset(57.5)
             $0.trailing.equalToSuperview().inset(16)
-            $0.centerY.equalToSuperview()
         }
+        settingButton.snp.makeConstraints{
+            $0.height.width.equalTo(24)
+            $0.top.trailing.equalToSuperview().inset(16)
+        }
+        timeLabel.snp.makeConstraints{
+            $0.leading.equalToSuperview().offset(16)
+            $0.top.equalTo(topViewLabel.snp.bottom).offset(8)
+        }
+        noonLabel.snp.makeConstraints{
+            $0.centerY.equalTo(timeLabel)
+            $0.leading.equalTo(timeLabel.snp.trailing).offset(4)
+        }
+        
+        //아랫부분 시작
+        bottomView.snp.makeConstraints{
+            $0.top.equalTo(topView.snp.bottom)
+            $0.leading.trailing.bottom.equalToSuperview()
+            
+        }
+        borderLine.snp.makeConstraints{
+            $0.leading.trailing.equalToSuperview().inset(16)
+            $0.top.equalToSuperview()
+            $0.height.equalTo(1)
+        }
+        bottomViewLabel.snp.makeConstraints{
+            $0.top.equalTo(borderLine.snp.bottom).offset(20)
+            $0.centerX.equalToSuperview()
+        }
+        memoView.snp.makeConstraints{
+//            $0.top.equalTo(borderLine.snp.bottom).offset(141)
+            $0.height.equalTo(63)
+            $0.leading.trailing.bottom.equalToSuperview().inset(16)
+        }
+        
     }
     
     //MARK: - objc func
     @objc func clicktoggle(sender : UISwitch){
-
-        if toggleButton.isOn {
-            print("senderOn")
-        } else {
-            print("senderOFF")
-        }
-    
+        toggleclicked()
+        
     }
-    
+    @objc func clickSetting(){
+        print("나는야 셀의 메뉴버튼 ! ")
+    }
     
 }

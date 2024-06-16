@@ -9,6 +9,7 @@
 /* Begin PBXBuildFile section */
 		05083B923D6EB143B0BA46E1 /* Pods_WithMorning_iOS.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5F7878B73D8AD66854885BC9 /* Pods_WithMorning_iOS.framework */; };
 		D10F846F2BC7E7CF00F3A172 /* UIColor_Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = D10F846E2BC7E7CF00F3A172 /* UIColor_Extension.swift */; };
+		D146706B2BEA8FF9007B7132 /* profileViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D146706A2BEA8FF9007B7132 /* profileViewController.swift */; };
 		D14A2D6C2BC8EB810087E0CB /* DesignSystem.swift in Sources */ = {isa = PBXBuildFile; fileRef = D14A2D6B2BC8EB810087E0CB /* DesignSystem.swift */; };
 		D15AE7342BC990DA00024CE3 /* Pretendard-Bold.otf in Resources */ = {isa = PBXBuildFile; fileRef = D15AE7332BC990DA00024CE3 /* Pretendard-Bold.otf */; };
 		D15AE7362BC990E200024CE3 /* Pretendard-Medium.otf in Resources */ = {isa = PBXBuildFile; fileRef = D15AE7352BC990E200024CE3 /* Pretendard-Medium.otf */; };
@@ -16,9 +17,15 @@
 		D15AE73A2BC995B800024CE3 /* UIView_Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = D15AE7392BC995B800024CE3 /* UIView_Extension.swift */; };
 		D15D60C72BCA8BC3009C0874 /* AlarmTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = D15D60C62BCA8BC3009C0874 /* AlarmTableViewCell.swift */; };
 		D16F5FD12BC65671006640F9 /* Network.swift in Sources */ = {isa = PBXBuildFile; fileRef = D16F5FD02BC65671006640F9 /* Network.swift */; };
-		D16F5FD32BC65679006640F9 /* Constatns.swift in Sources */ = {isa = PBXBuildFile; fileRef = D16F5FD22BC65679006640F9 /* Constatns.swift */; };
+		D16F5FD32BC65679006640F9 /* Constants.swift in Sources */ = {isa = PBXBuildFile; fileRef = D16F5FD22BC65679006640F9 /* Constants.swift */; };
 		D16F5FD52BC65680006640F9 /* Router.swift in Sources */ = {isa = PBXBuildFile; fileRef = D16F5FD42BC65680006640F9 /* Router.swift */; };
 		D1773F892BC988AB005C82FA /* UIFont_Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = D1773F882BC988AB005C82FA /* UIFont_Extension.swift */; };
+		D1DECB212BE54B37009AC667 /* Pretendard-Regular.otf in Resources */ = {isa = PBXBuildFile; fileRef = D1DECB1B2BE54B37009AC667 /* Pretendard-Regular.otf */; };
+		D1DECB222BE54B37009AC667 /* Pretendard-Black.otf in Resources */ = {isa = PBXBuildFile; fileRef = D1DECB1C2BE54B37009AC667 /* Pretendard-Black.otf */; };
+		D1DECB232BE54B37009AC667 /* Pretendard-ExtraBold.otf in Resources */ = {isa = PBXBuildFile; fileRef = D1DECB1D2BE54B37009AC667 /* Pretendard-ExtraBold.otf */; };
+		D1DECB242BE54B37009AC667 /* Pretendard-Thin.otf in Resources */ = {isa = PBXBuildFile; fileRef = D1DECB1E2BE54B37009AC667 /* Pretendard-Thin.otf */; };
+		D1DECB252BE54B37009AC667 /* Pretendard-ExtraLight.otf in Resources */ = {isa = PBXBuildFile; fileRef = D1DECB1F2BE54B37009AC667 /* Pretendard-ExtraLight.otf */; };
+		D1DECB262BE54B37009AC667 /* Pretendard-Light.otf in Resources */ = {isa = PBXBuildFile; fileRef = D1DECB202BE54B37009AC667 /* Pretendard-Light.otf */; };
 		D1E672BB2BC4FD3300A32790 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = D1E672BA2BC4FD3300A32790 /* AppDelegate.swift */; };
 		D1E672BD2BC4FD3300A32790 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = D1E672BC2BC4FD3300A32790 /* SceneDelegate.swift */; };
 		D1E672BF2BC4FD3300A32790 /* MainViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D1E672BE2BC4FD3300A32790 /* MainViewController.swift */; };
@@ -31,6 +38,7 @@
 		6DCBFF9B66FC891ADD99B059 /* Pods-WithMorning_iOS.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-WithMorning_iOS.debug.xcconfig"; path = "Target Support Files/Pods-WithMorning_iOS/Pods-WithMorning_iOS.debug.xcconfig"; sourceTree = "<group>"; };
 		C11DEB06ED24EC837FF59366 /* Pods-WithMorning_iOS.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-WithMorning_iOS.release.xcconfig"; path = "Target Support Files/Pods-WithMorning_iOS/Pods-WithMorning_iOS.release.xcconfig"; sourceTree = "<group>"; };
 		D10F846E2BC7E7CF00F3A172 /* UIColor_Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIColor_Extension.swift; sourceTree = "<group>"; };
+		D146706A2BEA8FF9007B7132 /* profileViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = profileViewController.swift; sourceTree = "<group>"; };
 		D14A2D6B2BC8EB810087E0CB /* DesignSystem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DesignSystem.swift; sourceTree = "<group>"; };
 		D15AE7332BC990DA00024CE3 /* Pretendard-Bold.otf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Pretendard-Bold.otf"; sourceTree = "<group>"; };
 		D15AE7352BC990E200024CE3 /* Pretendard-Medium.otf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Pretendard-Medium.otf"; sourceTree = "<group>"; };
@@ -38,9 +46,15 @@
 		D15AE7392BC995B800024CE3 /* UIView_Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIView_Extension.swift; sourceTree = "<group>"; };
 		D15D60C62BCA8BC3009C0874 /* AlarmTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AlarmTableViewCell.swift; sourceTree = "<group>"; };
 		D16F5FD02BC65671006640F9 /* Network.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Network.swift; sourceTree = "<group>"; };
-		D16F5FD22BC65679006640F9 /* Constatns.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Constatns.swift; sourceTree = "<group>"; };
+		D16F5FD22BC65679006640F9 /* Constants.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Constants.swift; sourceTree = "<group>"; };
 		D16F5FD42BC65680006640F9 /* Router.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Router.swift; sourceTree = "<group>"; };
 		D1773F882BC988AB005C82FA /* UIFont_Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIFont_Extension.swift; sourceTree = "<group>"; };
+		D1DECB1B2BE54B37009AC667 /* Pretendard-Regular.otf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Pretendard-Regular.otf"; sourceTree = "<group>"; };
+		D1DECB1C2BE54B37009AC667 /* Pretendard-Black.otf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Pretendard-Black.otf"; sourceTree = "<group>"; };
+		D1DECB1D2BE54B37009AC667 /* Pretendard-ExtraBold.otf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Pretendard-ExtraBold.otf"; sourceTree = "<group>"; };
+		D1DECB1E2BE54B37009AC667 /* Pretendard-Thin.otf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Pretendard-Thin.otf"; sourceTree = "<group>"; };
+		D1DECB1F2BE54B37009AC667 /* Pretendard-ExtraLight.otf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Pretendard-ExtraLight.otf"; sourceTree = "<group>"; };
+		D1DECB202BE54B37009AC667 /* Pretendard-Light.otf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Pretendard-Light.otf"; sourceTree = "<group>"; };
 		D1E672B72BC4FD3300A32790 /* WithMorning_iOS.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = WithMorning_iOS.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		D1E672BA2BC4FD3300A32790 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		D1E672BC2BC4FD3300A32790 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -100,6 +114,12 @@
 		D15AE72C2BC98F8900024CE3 /* Fonts */ = {
 			isa = PBXGroup;
 			children = (
+				D1DECB1C2BE54B37009AC667 /* Pretendard-Black.otf */,
+				D1DECB1D2BE54B37009AC667 /* Pretendard-ExtraBold.otf */,
+				D1DECB1F2BE54B37009AC667 /* Pretendard-ExtraLight.otf */,
+				D1DECB202BE54B37009AC667 /* Pretendard-Light.otf */,
+				D1DECB1B2BE54B37009AC667 /* Pretendard-Regular.otf */,
+				D1DECB1E2BE54B37009AC667 /* Pretendard-Thin.otf */,
 				D15AE7372BC990E900024CE3 /* Pretendard-SemiBold.otf */,
 				D15AE7332BC990DA00024CE3 /* Pretendard-Bold.otf */,
 				D15AE7352BC990E200024CE3 /* Pretendard-Medium.otf */,
@@ -112,6 +132,7 @@
 			children = (
 				D1E672BE2BC4FD3300A32790 /* MainViewController.swift */,
 				D15D60C62BCA8BC3009C0874 /* AlarmTableViewCell.swift */,
+				D146706A2BEA8FF9007B7132 /* profileViewController.swift */,
 			);
 			path = Scene;
 			sourceTree = "<group>";
@@ -120,7 +141,7 @@
 			isa = PBXGroup;
 			children = (
 				D16F5FD02BC65671006640F9 /* Network.swift */,
-				D16F5FD22BC65679006640F9 /* Constatns.swift */,
+				D16F5FD22BC65679006640F9 /* Constants.swift */,
 				D16F5FD42BC65680006640F9 /* Router.swift */,
 			);
 			path = API;
@@ -230,9 +251,15 @@
 			buildActionMask = 2147483647;
 			files = (
 				D1E672C42BC4FD3500A32790 /* Assets.xcassets in Resources */,
+				D1DECB212BE54B37009AC667 /* Pretendard-Regular.otf in Resources */,
+				D1DECB252BE54B37009AC667 /* Pretendard-ExtraLight.otf in Resources */,
+				D1DECB232BE54B37009AC667 /* Pretendard-ExtraBold.otf in Resources */,
+				D1DECB242BE54B37009AC667 /* Pretendard-Thin.otf in Resources */,
+				D1DECB262BE54B37009AC667 /* Pretendard-Light.otf in Resources */,
 				D15AE7342BC990DA00024CE3 /* Pretendard-Bold.otf in Resources */,
 				D15AE7382BC990E900024CE3 /* Pretendard-SemiBold.otf in Resources */,
 				D1E672C72BC4FD3500A32790 /* Base in Resources */,
+				D1DECB222BE54B37009AC667 /* Pretendard-Black.otf in Resources */,
 				D15AE7362BC990E200024CE3 /* Pretendard-Medium.otf in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -290,11 +317,12 @@
 				D1E672BF2BC4FD3300A32790 /* MainViewController.swift in Sources */,
 				D1E672BB2BC4FD3300A32790 /* AppDelegate.swift in Sources */,
 				D16F5FD12BC65671006640F9 /* Network.swift in Sources */,
-				D16F5FD32BC65679006640F9 /* Constatns.swift in Sources */,
+				D16F5FD32BC65679006640F9 /* Constants.swift in Sources */,
 				D14A2D6C2BC8EB810087E0CB /* DesignSystem.swift in Sources */,
 				D16F5FD52BC65680006640F9 /* Router.swift in Sources */,
 				D15D60C72BCA8BC3009C0874 /* AlarmTableViewCell.swift in Sources */,
 				D10F846F2BC7E7CF00F3A172 /* UIColor_Extension.swift in Sources */,
+				D146706B2BEA8FF9007B7132 /* profileViewController.swift in Sources */,
 				D15AE73A2BC995B800024CE3 /* UIView_Extension.swift in Sources */,
 				D1E672BD2BC4FD3300A32790 /* SceneDelegate.swift in Sources */,
 			);
