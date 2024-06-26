@@ -230,6 +230,7 @@ extension AlarmTableViewCell : UICollectionViewDelegate, UICollectionViewDataSou
         
         guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "WeekCollectionViewCell", for: indexPath) as? WeekCollectionViewCell else {return UICollectionViewCell()}
         
+        cell.weekLabel.text = weeks[indexPath.row]
         
         return cell
     }

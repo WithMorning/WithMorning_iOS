@@ -17,8 +17,8 @@ class WeekCollectionViewCell : UICollectionViewCell {
     let weekLabel: UILabel = {
         let label = UILabel()
         label.font = DesignSystemFont.Pretendard_SemiBold10.value
-        label.textColor = DesignSystemColor.White.value
         label.backgroundColor = DesignSystemColor.Orange500.value
+        label.textColor = .white
         label.clipsToBounds = true
         label.textAlignment = .center
         label.layer.cornerRadius = 10
