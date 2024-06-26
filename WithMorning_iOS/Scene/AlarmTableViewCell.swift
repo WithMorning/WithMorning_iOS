@@ -27,7 +27,7 @@ class AlarmTableViewCell : UITableViewCell {
     let topViewLabel : UILabel = {
         let label = UILabel()
         label.font = DesignSystemFont.Pretendard_SemiBold12.value
-        label.textColor = DesignSystemColor.fontBlack.value
+        label.textColor = DesignSystemColor.Black.value
         label.text = "우리 같이 조깅하고 출근하쟈 🏃‍♀"
         return label
     }()
@@ -35,7 +35,7 @@ class AlarmTableViewCell : UITableViewCell {
     let toggleButton : UISwitch = {
         let toggle = UISwitch()
         toggle.isOn = false
-        toggle.onTintColor = DesignSystemColor.mainColor.value
+        toggle.onTintColor = DesignSystemColor.Orange500.value
         toggle.addTarget(self, action: #selector(clicktoggle(sender:)), for: .touchUpInside)
         return toggle
     }()
@@ -78,21 +78,21 @@ class AlarmTableViewCell : UITableViewCell {
     
     private lazy var borderLine : UIView = {
         let view = UIView()
-        view.backgroundColor = DesignSystemColor.settingGray.value
+        view.backgroundColor = DesignSystemColor.Gray200.value
         return view
     }()
     
     lazy var bottomViewLabel : UILabel = {
         let label = UILabel()
         label.font = DesignSystemFont.Pretendard_Medium12.value
-        label.textColor = DesignSystemColor.fontGray.value
+        label.textColor = DesignSystemColor.Gray500.value
         label.text = "프로필을 누르면 친구를 깨울 수 있어요!"
         return label
     }()
     
     private lazy var memoView : UIView = {
         let view = UIView()
-        view.backgroundColor = DesignSystemColor.memoGray.value
+        view.backgroundColor = DesignSystemColor.Gray100.value
         view.layer.cornerRadius = 4
         return view
     }()
@@ -122,12 +122,14 @@ class AlarmTableViewCell : UITableViewCell {
         contentView.addSubview(AlarmStackView)
         
         contentView.layer.cornerRadius = 8
-        contentView.frame = contentView.frame.inset(by: UIEdgeInsets(top: 0, left: 0, bottom: 8, right: 0))
+        contentView.frame = contentView.frame.inset(by: UIEdgeInsets(top: 4, left: 0, bottom: 4, right: 0))
         contentView.backgroundColor = .white
-        contentView.layer.shadowColor = UIColor(red: 0, green: 0, blue: 0, alpha: 0.05).cgColor
+        contentView.layer.shadowColor = UIColor(red: 0, green: 0, blue: 0, alpha: 0.01).cgColor
         contentView.layer.shadowOpacity = 1
         contentView.layer.shadowRadius = 4
-        contentView.layer.shadowOffset = CGSize(width: 0, height: 4)
+        contentView.layer.masksToBounds = true
+        contentView.layer.shadowOffset = CGSize(width: 0, height: 1)
+        
         //stackview
         AlarmStackView.snp.makeConstraints{
             $0.edges.equalToSuperview()

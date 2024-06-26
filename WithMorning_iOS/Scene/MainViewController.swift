@@ -12,22 +12,22 @@ import Alamofire
 
 class MainViewController: UIViewController {
     
-    //MARK: - properties
+//MARK: - properties
     
     private lazy var nameLabel : UILabel = {
         let label = UILabel()
         label.text = "HI, WithMorning"
         label.font = DesignSystemFont.Pretendard_Bold20.value
-        label.textColor = DesignSystemColor.fontBlack.value
+        label.textColor = DesignSystemColor.Black.value
         return label
     }()
     
     private lazy var profileButton : UIButton = {
         let button = UIButton()
-        button.backgroundColor = DesignSystemColor.settingGray.value
-        button.titleLabel?.font =  DesignSystemFont.Pretendard_Bold12.value
-        button.setTitleColor(DesignSystemColor.fontBlack.value, for: .normal)
+        button.setImage(UIImage(systemName: "person.fill"), for: .normal)
         button.layer.cornerRadius = 18
+        button.tintColor = .white
+        button.backgroundColor = .gray
         button.addTarget(self, action: #selector(clickedprofile), for: .touchUpInside)
         return button
     }()
@@ -47,7 +47,7 @@ class MainViewController: UIViewController {
     
     private lazy var alarmButton : UIButton = {
         let button = UIButton()
-        button.backgroundColor = DesignSystemColor.mainColor.value
+        button.backgroundColor = DesignSystemColor.Orange500.value
         button.titleLabel?.font = DesignSystemFont.Pretendard_Bold14.value
         button.setTitle("  새로운 알람설정", for: .normal)
         button.setTitleColor(.white, for: .normal)
@@ -55,7 +55,7 @@ class MainViewController: UIViewController {
         button.layer.cornerRadius = 8
         button.setImage(UIImage(systemName: "plus"), for: .normal)
         
-        button.layer.shadowColor = UIColor(red: 0, green: 0, blue: 0, alpha: 0.05).cgColor
+        button.layer.shadowColor = UIColor(red: 0, green: 0, blue: 0, alpha: 0.01).cgColor
         button.layer.shadowOpacity = 1
         button.layer.shadowRadius = 4
         button.layer.shadowOffset = CGSize(width: 0, height: 4)
@@ -69,7 +69,7 @@ class MainViewController: UIViewController {
         button.backgroundColor = .white
         button.setTitle("   참여 코드 입력", for: .normal)
         button.titleLabel?.font = DesignSystemFont.Pretendard_Bold14.value
-        button.setTitleColor(DesignSystemColor.fontBlack.value, for: .normal)
+        button.setTitleColor(DesignSystemColor.Black.value, for: .normal)
         button.layer.cornerRadius = 8
         button.setImage(UIImage(named: "codebutton"), for: .normal)
         button.layer.shadowColor = UIColor(red: 0, green: 0, blue: 0, alpha: 0.05).cgColor
@@ -83,7 +83,7 @@ class MainViewController: UIViewController {
     private lazy var floatingButton : UIButton = {
         let button = UIButton()
         button.setImage(UIImage(systemName: "chevron.up"), for: .normal)
-        button.tintColor = DesignSystemColor.fontBlack.value
+        button.tintColor = DesignSystemColor.Black.value
 //        button.addTarget(self, action: #selector(floatingClick), for: .touchUpInside)
         button.layer.cornerRadius = 25
         button.backgroundColor = .white
@@ -114,18 +114,19 @@ class MainViewController: UIViewController {
     //MARK: - LifeCycle
     override func viewDidLoad() {
         super.viewDidLoad()
-        view.backgroundColor = DesignSystemColor.backgroundColor.value
+        self.view.backgroundColor = DesignSystemColor.Gray150.value
         tableSetting()
         SetUI()
     }
     
-//    override func viewWillAppear(_ animated: Bool) {
-//        self.navigationController?.navigationBar.isHidden = true
-//    }
+    override func viewWillAppear(_ animated: Bool) {
+        self.navigationController?.navigationBar.isHidden = true
+    }
     
     //MARK: - UI
     func SetUI(){
         view.addSubviews(nameLabel,profileButton,AlarmTableView)
+        
         headerView.addSubview(headerStackView)
         
         headerStackView.addSubviews(alarmButton,codeButton) //테이블뷰 헤더
@@ -177,10 +178,9 @@ class MainViewController: UIViewController {
         AlarmTableView.dataSource = self
         AlarmTableView.delegate = self
         AlarmTableView.register(AlarmTableViewCell.self, forCellReuseIdentifier: "AlarmTableViewCell")
-        //AlarmTableView.headerView(forSection: 1)
         AlarmTableView.translatesAutoresizingMaskIntoConstraints = false
         AlarmTableView.tableHeaderView = headerView
-        AlarmTableView.backgroundColor = DesignSystemColor.backgroundColor.value
+        AlarmTableView.backgroundColor = DesignSystemColor.Gray150.value
         AlarmTableView.separatorStyle = .none
         
         AlarmTableView.rowHeight = 108 //cell높이
@@ -206,16 +206,17 @@ class MainViewController: UIViewController {
     
     //MARK: - objc func
     @objc func clickedprofile(){ //설정버튼
-        let vc = profileViewController()
-        let navigationController = UINavigationController(rootViewController: vc)
-        self.navigationController?.pushViewController(navigationController, animated: true)
-            
+        let vc = MyPageViewController()
+        self.navigationController?.pushViewController(vc, animated: true)
+        print("프로핇버튼")
     }
     
     
     @objc func clickedmakeAlarm(){ //새 알람설정
         print("알람생성버튼 : 아왜불러")
-        alarmData.append(AlarmModel(isTurn: false))
+//        alarmData.append(AlarmModel(isTurn: false))
+        let vc = MakeAlarmViewController()
+        self.navigationController?.pushViewController(vc, animated: true)
         AlarmTableView.reloadData()
     }
     
@@ -243,8 +244,9 @@ extension MainViewController : UITableViewDelegate, UITableViewDataSource{
         guard let cell = AlarmTableView.dequeueReusableCell(withIdentifier: "AlarmTableViewCell", for: indexPath) as? AlarmTableViewCell else {return UITableViewCell()}
         
         let alarm = alarmData[indexPath.row]
-        cell.selectionStyle = .none
         
+        cell.selectionStyle = .none
+        cell.backgroundColor = .clear
         // 토글의 상태를 데이터 모델로부터 가져와 설정
         cell.toggleButton.isOn = alarm.isTurn
         cell.bottomView.isHidden = !alarm.isTurn
@@ -273,7 +275,6 @@ extension MainViewController : UITableViewDelegate, UITableViewDataSource{
     }
     //cell의 높이
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-        let cell = AlarmTableViewCell()
     
         let baseHeight: CGFloat = 120 // 기본 셀 높이
         let extraHeight: CGFloat = 236 // 토글 켜진 경우 추가될 높이
@@ -288,30 +289,32 @@ extension MainViewController : UITableViewDelegate, UITableViewDataSource{
     
 }
 
-import SwiftUI
-
+//Preview code
 #if DEBUG
-extension UIViewController {
-    private struct Preview: UIViewControllerRepresentable {
-        let viewController: UIViewController
-        
-        func makeUIViewController(context: Context) -> UIViewController {
-            return viewController
-        }
-        
-        func updateUIViewController(_ uiViewController: UIViewController, context: Context) {
-        }
-    }
+import SwiftUI
+struct MainViewControllerRepresentable: UIViewControllerRepresentable {
     
-    func toPreview() -> some View {
-        Preview(viewController: self)
+    func updateUIViewController(_ uiView: UIViewController,context: Context) {
+        // leave this empty
+    }
+    @available(iOS 13.0.0, *)
+    func makeUIViewController(context: Context) -> UIViewController{
+        MainViewController()
     }
 }
-#endif
-
-struct PreView: PreviewProvider {
+@available(iOS 13.0, *)
+struct cabBarViewControllerRepresentable_PreviewProvider: PreviewProvider {
     static var previews: some View {
-        // Preview를 보고자 하는 ViewController를 넣으면 됩니다.
-        MainViewController().toPreview()
+        Group {
+            if #available(iOS 14.0, *) {
+                MainViewControllerRepresentable()
+                    .ignoresSafeArea()
+                    .previewDisplayName(/*@START_MENU_TOKEN@*/"Preview"/*@END_MENU_TOKEN@*/)
+                    .previewDevice(PreviewDevice(rawValue: "iPhone se3"))
+            } else {
+                // Fallback on earlier versions
+            }
+        }
+        
     }
-}
+} #endif
