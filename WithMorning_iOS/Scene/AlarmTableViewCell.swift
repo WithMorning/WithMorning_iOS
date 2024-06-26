@@ -16,8 +16,10 @@ class AlarmTableViewCell : UITableViewCell{
     var toggleclicked : ( () -> Void ) = {}
     
     //MARK: - 임시 데이터 모델
-
     var alarmData  : [AlarmModel] = [AlarmModel(isTurn: false)]
+    
+    //MARK: - toggle 상태를 추적하는 속성
+    var isToggleOn: Bool = false
     
     lazy var AlarmStackView : UIStackView = {
         let view = UIStackView()
@@ -227,6 +229,8 @@ class AlarmTableViewCell : UITableViewCell{
     //MARK: - objc func
     
     @objc func clicktoggle(sender : UISwitch){
+        isToggleOn = sender.isOn
+        WeekCollectionView.reloadData()
         toggleclicked()
         
     }
@@ -251,6 +255,24 @@ extension AlarmTableViewCell : UICollectionViewDelegate, UICollectionViewDataSou
         
         cell.weekLabel.text = weeks[indexPath.row]
         
+        if isToggleOn == true{
+            cell.weekLabel.backgroundColor = DesignSystemColor.Orange500.value
+            cell.weekLabel.textColor = DesignSystemColor.White.value
+            print("토글켜짐")
+        }else{
+            cell.weekLabel.backgroundColor = DesignSystemColor.Gray100.value
+            cell.weekLabel.textColor = DesignSystemColor.Gray300.value
+            print("토글꺼짐")
+        }
+        
+//        print("\(indexPath.section), \(indexPath.row)")
+//        0, 0 월
+//        0, 1 화
+//        0, 2 수
+//        0, 3 목
+//        0, 4 금
+//        0, 5 토
+//        0, 6 일
         return cell
     }
     
@@ -261,6 +283,7 @@ extension AlarmTableViewCell : UICollectionViewDelegate, UICollectionViewDataSou
     }
     
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumInteritemSpacingForSectionAt section: Int) -> CGFloat {
+        
         return 4
     }
     

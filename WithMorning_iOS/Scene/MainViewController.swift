@@ -147,7 +147,6 @@ class MainViewController: UIViewController {
         
         headerStackView.snp.makeConstraints{
             $0.leading.trailing.equalToSuperview()
-            
         }
         
         alarmButton.snp.makeConstraints{
@@ -255,35 +254,43 @@ extension MainViewController : UITableViewDelegate, UITableViewDataSource{
         
         // 토글의 상태를 데이터 모델로부터 가져와 설정
         cell.toggleButton.isOn = alarm.isTurn
+        cell.isToggleOn = alarm.isTurn
         cell.bottomView.isHidden = !alarm.isTurn
         cell.bottomView.subviews.forEach { $0.isHidden = !alarm.isTurn }
         
         // togglebutton on,off closure
+//        cell.toggleclicked = {
+//            
+//            self.AlarmTableView.reloadData()
+//            
+//            if cell.toggleButton.isOn == true{
+//                self.alarmData[indexPath.row].isTurn = true
+//                print(self.alarmData[indexPath.row])
+//                print("\(indexPath.row)번째 toggle is on")
+//                cell.isToggleOn = true
+//                cell.bottomView.isHidden = false
+//                
+//            }else{
+//                self.alarmData[indexPath.row].isTurn = false
+//                print(self.alarmData[indexPath.row])
+//                print("\(indexPath.row)번째 toogle is off")
+//                cell.isToggleOn = false
+//                cell.bottomView.isHidden = true
+//                
+//            }
+//        }
         cell.toggleclicked = {
-            
-            self.AlarmTableView.reloadData()
-            
-            if cell.toggleButton.isOn == true{
-                self.alarmData[indexPath.row].isTurn = true
-                print(self.alarmData[indexPath.row])
-                print("\(indexPath.row)번째 toggle is on")
-                cell.bottomView.isHidden = false
-                
-            }else{
-                self.alarmData[indexPath.row].isTurn = false
-                print(self.alarmData[indexPath.row])
-                print("\(indexPath.row)번째 toogle is off")
-                cell.bottomView.isHidden = true
-                
-            }
-        }
+                   self.alarmData[indexPath.row].isTurn.toggle()
+                   let indexPath = IndexPath(row: indexPath.row, section: 0)
+            tableView.reloadRows(at: [indexPath], with: .automatic)
+               }
         return cell
     }
     //cell의 높이
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
     
-        let baseHeight: CGFloat = 132 // 기본 셀 높이
-        let extraHeight: CGFloat = 217 // 토글 켜진 경우 추가될 높이
+        let baseHeight: CGFloat = 132
+        let extraHeight: CGFloat = 217
         
         if alarmData[indexPath.row].isTurn {
             return baseHeight + extraHeight
