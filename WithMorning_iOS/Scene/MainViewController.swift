@@ -31,7 +31,8 @@ class MainViewController: UIViewController {
         button.addTarget(self, action: #selector(clickedprofile), for: .touchUpInside)
         return button
     }()
-    
+//MARK: - tableView
+
     private lazy var headerView : UIView = {
         let view = UIView()
         return view
@@ -84,7 +85,6 @@ class MainViewController: UIViewController {
         let button = UIButton()
         button.setImage(UIImage(systemName: "chevron.up"), for: .normal)
         button.tintColor = DesignSystemColor.Black.value
-//        button.addTarget(self, action: #selector(floatingClick), for: .touchUpInside)
         button.layer.cornerRadius = 25
         button.backgroundColor = .white
         button.layer.shadowColor = UIColor(red: 0, green: 0, blue: 0, alpha: 0.05).cgColor
@@ -100,6 +100,7 @@ class MainViewController: UIViewController {
         tableView.layer.cornerRadius = 8
         return tableView
     }()
+    
     //리프레쉬컨트롤
     private lazy var tableViewRefresh : UIRefreshControl = {
         let refresh = UIRefreshControl()
@@ -109,6 +110,7 @@ class MainViewController: UIViewController {
     }()
     
     //MARK: - Data Array
+    
     var alarmData  : [AlarmModel] = [AlarmModel(isTurn: false)]
     
     //MARK: - LifeCycle
@@ -145,7 +147,7 @@ class MainViewController: UIViewController {
         
         headerStackView.snp.makeConstraints{
             $0.leading.trailing.equalToSuperview()
-            //$0.height.equalTo(alarmButton.snp.height*2)
+            
         }
         
         alarmButton.snp.makeConstraints{
@@ -153,6 +155,7 @@ class MainViewController: UIViewController {
             $0.leading.trailing.equalToSuperview()
             $0.height.equalTo(56)
         }
+        
         codeButton.snp.makeConstraints{
             $0.leading.trailing.equalToSuperview()
             $0.bottom.equalToSuperview()
@@ -177,7 +180,9 @@ class MainViewController: UIViewController {
     func tableSetting(){
         AlarmTableView.dataSource = self
         AlarmTableView.delegate = self
+        
         AlarmTableView.register(AlarmTableViewCell.self, forCellReuseIdentifier: "AlarmTableViewCell")
+        
         AlarmTableView.translatesAutoresizingMaskIntoConstraints = false
         AlarmTableView.tableHeaderView = headerView
         AlarmTableView.backgroundColor = DesignSystemColor.Gray150.value
@@ -214,9 +219,9 @@ class MainViewController: UIViewController {
     
     @objc func clickedmakeAlarm(){ //새 알람설정
         print("알람생성버튼 : 아왜불러")
-//        alarmData.append(AlarmModel(isTurn: false))
-        let vc = MakeAlarmViewController()
-        self.navigationController?.pushViewController(vc, animated: true)
+        alarmData.append(AlarmModel(isTurn: false))
+//        let vc = MakeAlarmViewController()
+//        self.navigationController?.pushViewController(vc, animated: true)
         AlarmTableView.reloadData()
     }
     
@@ -247,6 +252,7 @@ extension MainViewController : UITableViewDelegate, UITableViewDataSource{
         
         cell.selectionStyle = .none
         cell.backgroundColor = .clear
+        
         // 토글의 상태를 데이터 모델로부터 가져와 설정
         cell.toggleButton.isOn = alarm.isTurn
         cell.bottomView.isHidden = !alarm.isTurn
@@ -276,8 +282,9 @@ extension MainViewController : UITableViewDelegate, UITableViewDataSource{
     //cell의 높이
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
     
-        let baseHeight: CGFloat = 120 // 기본 셀 높이
-        let extraHeight: CGFloat = 236 // 토글 켜진 경우 추가될 높이
+        let baseHeight: CGFloat = 129 // 기본 셀 높이
+        let extraHeight: CGFloat = 217 // 토글 켜진 경우 추가될 높이
+        
         if alarmData[indexPath.row].isTurn {
             return baseHeight + extraHeight
         } else {

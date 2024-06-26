@@ -9,6 +9,7 @@
 /* Begin PBXBuildFile section */
 		05083B923D6EB143B0BA46E1 /* Pods_WithMorning_iOS.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5F7878B73D8AD66854885BC9 /* Pods_WithMorning_iOS.framework */; };
 		D10F846F2BC7E7CF00F3A172 /* UIColor_Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = D10F846E2BC7E7CF00F3A172 /* UIColor_Extension.swift */; };
+		D1227E582C2BF7BE009EB1BB /* WeekCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = D1227E572C2BF7BE009EB1BB /* WeekCollectionViewCell.swift */; };
 		D146706B2BEA8FF9007B7132 /* MyPageViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D146706A2BEA8FF9007B7132 /* MyPageViewController.swift */; };
 		D14A2D6C2BC8EB810087E0CB /* DesignSystem.swift in Sources */ = {isa = PBXBuildFile; fileRef = D14A2D6B2BC8EB810087E0CB /* DesignSystem.swift */; };
 		D15AE7342BC990DA00024CE3 /* Pretendard-Bold.otf in Resources */ = {isa = PBXBuildFile; fileRef = D15AE7332BC990DA00024CE3 /* Pretendard-Bold.otf */; };
@@ -39,6 +40,7 @@
 		6DCBFF9B66FC891ADD99B059 /* Pods-WithMorning_iOS.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-WithMorning_iOS.debug.xcconfig"; path = "Target Support Files/Pods-WithMorning_iOS/Pods-WithMorning_iOS.debug.xcconfig"; sourceTree = "<group>"; };
 		C11DEB06ED24EC837FF59366 /* Pods-WithMorning_iOS.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-WithMorning_iOS.release.xcconfig"; path = "Target Support Files/Pods-WithMorning_iOS/Pods-WithMorning_iOS.release.xcconfig"; sourceTree = "<group>"; };
 		D10F846E2BC7E7CF00F3A172 /* UIColor_Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIColor_Extension.swift; sourceTree = "<group>"; };
+		D1227E572C2BF7BE009EB1BB /* WeekCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WeekCollectionViewCell.swift; sourceTree = "<group>"; };
 		D146706A2BEA8FF9007B7132 /* MyPageViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyPageViewController.swift; sourceTree = "<group>"; };
 		D14A2D6B2BC8EB810087E0CB /* DesignSystem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DesignSystem.swift; sourceTree = "<group>"; };
 		D15AE7332BC990DA00024CE3 /* Pretendard-Bold.otf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Pretendard-Bold.otf"; sourceTree = "<group>"; };
@@ -151,6 +153,7 @@
 				D1E672BE2BC4FD3300A32790 /* MainViewController.swift */,
 				D15D60C62BCA8BC3009C0874 /* AlarmTableViewCell.swift */,
 				D19A9CB12C26901100748CE8 /* MakeAlarmViewController.swift */,
+				D1227E572C2BF7BE009EB1BB /* WeekCollectionViewCell.swift */,
 			);
 			path = Scene;
 			sourceTree = "<group>";
@@ -333,6 +336,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				D1773F892BC988AB005C82FA /* UIFont_Extension.swift in Sources */,
+				D1227E582C2BF7BE009EB1BB /* WeekCollectionViewCell.swift in Sources */,
 				D1E672BF2BC4FD3300A32790 /* MainViewController.swift in Sources */,
 				D1E672BB2BC4FD3300A32790 /* AppDelegate.swift in Sources */,
 				D16F5FD12BC65671006640F9 /* Network.swift in Sources */,
