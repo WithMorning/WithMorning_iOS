@@ -282,7 +282,7 @@ extension MainViewController : UITableViewDelegate, UITableViewDataSource{
     //cell의 높이
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
     
-        let baseHeight: CGFloat = 129 // 기본 셀 높이
+        let baseHeight: CGFloat = 132 // 기본 셀 높이
         let extraHeight: CGFloat = 217 // 토글 켜진 경우 추가될 높이
         
         if alarmData[indexPath.row].isTurn {

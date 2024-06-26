@@ -190,7 +190,7 @@ class AlarmTableViewCell : UITableViewCell{
         
         WeekCollectionView.snp.makeConstraints {
             $0.leading.equalTo(timeLabel.snp.leading)
-            $0.top.equalTo(timeLabel.snp.bottom).offset(5)
+            $0.top.equalTo(timeLabel.snp.bottom).offset(7)
             $0.height.equalTo(20)
             $0.width.equalTo(164)
         }
