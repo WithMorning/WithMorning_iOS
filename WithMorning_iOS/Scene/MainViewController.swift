@@ -111,7 +111,7 @@ class MainViewController: UIViewController {
     
     //MARK: - Data Array
     
-    var alarmData  : [AlarmModel] = [AlarmModel(isTurn: false)]
+    var alarmData  : [AlarmModel] = [AlarmModel(isTurn: true)]
     
     //MARK: - LifeCycle
     override func viewDidLoad() {

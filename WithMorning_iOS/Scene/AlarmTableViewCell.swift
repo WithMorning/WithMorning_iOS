@@ -15,12 +15,17 @@ class AlarmTableViewCell : UITableViewCell{
     //MARK: - closure
     var toggleclicked : ( () -> Void ) = {}
     
+    //MARK: - 임시 데이터 모델
+
+    var alarmData  : [AlarmModel] = [AlarmModel(isTurn: false)]
+    
     lazy var AlarmStackView : UIStackView = {
         let view = UIStackView()
         view.addSubviews(topView,bottomView)
         view.axis = .vertical
         return view
     }()
+    
     //MARK: - 윗부분
     
     lazy var topView : UIView = {
@@ -31,7 +36,7 @@ class AlarmTableViewCell : UITableViewCell{
     
     let topViewLabel : UILabel = {
         let label = UILabel()
-        label.font = DesignSystemFont.Pretendard_SemiBold12.value
+        label.font = DesignSystemFont.Pretendard_SemiBold14.value
         label.textColor = DesignSystemColor.Black.value
         label.text = "우리 같이 조깅하고 출근하쟈 🏃‍♀"
         return label
@@ -67,7 +72,7 @@ class AlarmTableViewCell : UITableViewCell{
         return label
     }()
     
-//MARK: - 날짜 StackView
+    //MARK: - 날짜 StackView
     let weeks = ["월","화","수","목","금","토","일"]
     
     private lazy var WeekCollectionView: UICollectionView = {
@@ -85,7 +90,7 @@ class AlarmTableViewCell : UITableViewCell{
     
     lazy var bottomView : UIView = {
         let view = UIView()
-        view.addSubviews(borderLine,bottomViewLabel,memoView)
+        view.addSubviews(borderLine,bottomViewLabel,memoView,memoLabel)
         view.isHidden = true
         return view
     }()
@@ -110,6 +115,16 @@ class AlarmTableViewCell : UITableViewCell{
         view.layer.cornerRadius = 4
         return view
     }()
+    
+    private lazy var memoLabel : UILabel = {
+        let label = UILabel()
+        label.text = "아침에 하고 싶은 말 또는 패널티를 정해주세요."
+        label.textColor = DesignSystemColor.Gray400.value
+        label.font = DesignSystemFont.Pretendard_Medium12.value
+        label.textAlignment = .center
+        return label
+    }()
+
     
     
     
@@ -175,7 +190,7 @@ class AlarmTableViewCell : UITableViewCell{
         
         WeekCollectionView.snp.makeConstraints {
             $0.leading.equalTo(timeLabel.snp.leading)
-            $0.top.equalTo(timeLabel.snp.bottom).offset(9)
+            $0.top.equalTo(timeLabel.snp.bottom).offset(5)
             $0.height.equalTo(20)
             $0.width.equalTo(164)
         }
@@ -202,6 +217,9 @@ class AlarmTableViewCell : UITableViewCell{
             $0.height.equalTo(63)
             $0.leading.trailing.bottom.equalToSuperview().inset(16)
         }
+        memoLabel.snp.makeConstraints{
+            $0.centerY.centerX.equalTo(memoView)
+        }
         
     }
     
@@ -212,6 +230,7 @@ class AlarmTableViewCell : UITableViewCell{
         toggleclicked()
         
     }
+    
     @objc func clickSetting(){
         print("나는야 셀의 메뉴버튼 ! ")
     }
@@ -242,7 +261,8 @@ extension AlarmTableViewCell : UICollectionViewDelegate, UICollectionViewDataSou
     }
     
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumInteritemSpacingForSectionAt section: Int) -> CGFloat {
-            return 4 
-        }
-
+        return 4
+    }
+    
+    
 }
