@@ -12,7 +12,7 @@ import Alamofire
 
 class MainViewController: UIViewController {
     
-//MARK: - properties
+    //MARK: - properties
     
     private lazy var nameLabel : UILabel = {
         let label = UILabel()
@@ -31,8 +31,8 @@ class MainViewController: UIViewController {
         button.addTarget(self, action: #selector(clickedprofile), for: .touchUpInside)
         return button
     }()
-//MARK: - tableView
-
+    //MARK: - tableView
+    
     private lazy var headerView : UIView = {
         let view = UIView()
         return view
@@ -111,7 +111,7 @@ class MainViewController: UIViewController {
     
     //MARK: - Data Array
     
-    var alarmData  : [AlarmModel] = [AlarmModel(isTurn: true)]
+    var alarmData  : [AlarmModel] = [AlarmModel(isTurn: false,alarmTitle: "1번째 알람의 타이틀",Memo: "1번재 알람의 메모"),AlarmModel(isTurn: true, alarmTitle: "2번째 알람의 타이틀", Memo: "2번째 알람의 메모")]
     
     //MARK: - LifeCycle
     override func viewDidLoad() {
@@ -218,9 +218,9 @@ class MainViewController: UIViewController {
     
     @objc func clickedmakeAlarm(){ //새 알람설정
         print("알람생성버튼 : 아왜불러")
-        alarmData.append(AlarmModel(isTurn: false))
-//        let vc = MakeAlarmViewController()
-//        self.navigationController?.pushViewController(vc, animated: true)
+        alarmData.append(AlarmModel(isTurn: false, alarmTitle: "asd", Memo: "asd"))
+        //        let vc = MakeAlarmViewController()
+        //        self.navigationController?.pushViewController(vc, animated: true)
         AlarmTableView.reloadData()
     }
     
@@ -251,44 +251,41 @@ extension MainViewController : UITableViewDelegate, UITableViewDataSource{
         
         cell.selectionStyle = .none
         cell.backgroundColor = .clear
+        cell.topViewLabel.text = alarm.alarmTitle
+        cell.memoLabel.text = alarm.Memo
+        
         
         // 토글의 상태를 데이터 모델로부터 가져와 설정
         cell.toggleButton.isOn = alarm.isTurn
-        cell.isToggleOn = alarm.isTurn
         cell.bottomView.isHidden = !alarm.isTurn
         cell.bottomView.subviews.forEach { $0.isHidden = !alarm.isTurn }
         
-        // togglebutton on,off closure
-//        cell.toggleclicked = {
-//            
-//            self.AlarmTableView.reloadData()
-//            
-//            if cell.toggleButton.isOn == true{
-//                self.alarmData[indexPath.row].isTurn = true
-//                print(self.alarmData[indexPath.row])
-//                print("\(indexPath.row)번째 toggle is on")
-//                cell.isToggleOn = true
-//                cell.bottomView.isHidden = false
-//                
-//            }else{
-//                self.alarmData[indexPath.row].isTurn = false
-//                print(self.alarmData[indexPath.row])
-//                print("\(indexPath.row)번째 toogle is off")
-//                cell.isToggleOn = false
-//                cell.bottomView.isHidden = true
-//                
-//            }
-//        }
-        cell.toggleclicked = {
-                   self.alarmData[indexPath.row].isTurn.toggle()
-                   let indexPath = IndexPath(row: indexPath.row, section: 0)
-            tableView.reloadRows(at: [indexPath], with: .automatic)
-               }
+//         togglebutton on,off closure
+                cell.toggleclicked = {
+        
+                    self.AlarmTableView.reloadData()
+        
+                    if cell.toggleButton.isOn == true{
+                        self.alarmData[indexPath.row].isTurn = true
+                        print(self.alarmData[indexPath.row])
+                        print("\(indexPath.row)번째 toggle is on")
+                        cell.bottomView.isHidden = false
+        
+                    }else{
+                        self.alarmData[indexPath.row].isTurn = false
+                        print(self.alarmData[indexPath.row])
+                        print("\(indexPath.row)번째 toogle is off")
+                        cell.bottomView.isHidden = true
+        
+                    }
+                }
+        
+        
         return cell
     }
     //cell의 높이
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-    
+        
         let baseHeight: CGFloat = 132
         let extraHeight: CGFloat = 217
         

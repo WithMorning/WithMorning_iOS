@@ -14,4 +14,6 @@ import Alamofire
 struct AlarmModel{
    //var cellText : Int
     var isTurn : Bool
+    var alarmTitle : String
+    var Memo : String
 }

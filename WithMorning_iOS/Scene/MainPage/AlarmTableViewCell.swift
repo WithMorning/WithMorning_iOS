@@ -10,16 +10,13 @@ import SnapKit
 import Then
 import Alamofire
 
-class AlarmTableViewCell : UITableViewCell{
+class AlarmTableViewCell : UITableViewCell, UISheetPresentationControllerDelegate{
     
     //MARK: - closure
     var toggleclicked : ( () -> Void ) = {}
     
-    //MARK: - 임시 데이터 모델
-    var alarmData  : [AlarmModel] = [AlarmModel(isTurn: false)]
     
     //MARK: - toggle 상태를 추적하는 속성
-    var isToggleOn: Bool = false
     
     lazy var AlarmStackView : UIStackView = {
         let view = UIStackView()
@@ -36,11 +33,11 @@ class AlarmTableViewCell : UITableViewCell{
         return view
     }()
     
-    let topViewLabel : UILabel = {
+    lazy var topViewLabel : UILabel = {
         let label = UILabel()
         label.font = DesignSystemFont.Pretendard_SemiBold14.value
         label.textColor = DesignSystemColor.Black.value
-        label.text = "우리 같이 조깅하고 출근하쟈 🏃‍♀"
+        //        label.text = "우리 같이 조깅하고 출근하쟈 🏃‍♀"
         return label
     }()
     
@@ -118,15 +115,15 @@ class AlarmTableViewCell : UITableViewCell{
         return view
     }()
     
-    private lazy var memoLabel : UILabel = {
+    lazy var memoLabel : UILabel = {
         let label = UILabel()
-        label.text = "아침에 하고 싶은 말 또는 패널티를 정해주세요."
+        //        label.text = "아침에 하고 싶은 말 또는 패널티를 정해주세요."
         label.textColor = DesignSystemColor.Gray400.value
         label.font = DesignSystemFont.Pretendard_Medium12.value
         label.textAlignment = .center
         return label
     }()
-
+    
     
     
     
@@ -229,63 +226,88 @@ class AlarmTableViewCell : UITableViewCell{
     //MARK: - objc func
     
     @objc func clicktoggle(sender : UISwitch){
-        isToggleOn = sender.isOn
         WeekCollectionView.reloadData()
         toggleclicked()
         
     }
     
     @objc func clickSetting(){
-        print("나는야 셀의 메뉴버튼 ! ")
-    }
-    
-    
-}
-extension AlarmTableViewCell : UICollectionViewDelegate, UICollectionViewDataSource, UICollectionViewDelegateFlowLayout{
-    
-    //셀 개수
-    func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        return weeks.count
-    }
-    
-    //셀 재사용
-    func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        
-        guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "WeekCollectionViewCell", for: indexPath) as? WeekCollectionViewCell else {return UICollectionViewCell()}
-        
-        cell.weekLabel.text = weeks[indexPath.row]
-        
-        if isToggleOn == true{
-            cell.weekLabel.backgroundColor = DesignSystemColor.Orange500.value
-            cell.weekLabel.textColor = DesignSystemColor.White.value
-            print("토글켜짐")
-        }else{
-            cell.weekLabel.backgroundColor = DesignSystemColor.Gray100.value
-            cell.weekLabel.textColor = DesignSystemColor.Gray300.value
-            print("토글꺼짐")
+        guard let parentViewController = self.parentVC else {
+            return
         }
         
-//        print("\(indexPath.section), \(indexPath.row)")
-//        0, 0 월
-//        0, 1 화
-//        0, 2 수
-//        0, 3 목
-//        0, 4 금
-//        0, 5 토
-//        0, 6 일
-        return cell
-    }
-    
-    //셀 크기
-    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
+        let vc = CellMenuViewController()
+        vc.modalPresentationStyle = .formSheet
+        parentViewController.present(vc, animated: true)
         
-        return CGSize(width: 20, height: 20)
-    }
-    
-    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumInteritemSpacingForSectionAt section: Int) -> CGFloat {
+        if let vc = vc.sheetPresentationController{
+            if #available(iOS 16.0, *) {
+                vc.detents = [.custom { context in
+                    return 302
+                }]
+                
+                vc.delegate = self
+                vc.prefersGrabberVisible = true
+            }
+            
+        }
         
-        return 4
     }
-    
-    
+        
 }
+    extension AlarmTableViewCell : UICollectionViewDelegate, UICollectionViewDataSource, UICollectionViewDelegateFlowLayout{
+        
+        //셀 개수
+        func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
+            return weeks.count
+        }
+        
+        //셀 재사용
+        func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
+            
+            guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "WeekCollectionViewCell", for: indexPath) as? WeekCollectionViewCell else {return UICollectionViewCell()}
+            
+            cell.weekLabel.text = weeks[indexPath.row]
+            
+            //        let alarm = alarmData[indexPath.row]
+            //        toggleButton.isOn = alarm.isTurn
+            
+            //        print("\(indexPath.section), \(indexPath.row)")
+            //        0, 0 월
+            //        0, 1 화
+            //        0, 2 수
+            //        0, 3 목
+            //        0, 4 금
+            //        0, 5 토
+            //        0, 6 일
+            
+            return cell
+        }
+        
+        //셀 크기
+        func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
+            
+            return CGSize(width: 20, height: 20)
+        }
+        
+        //셀 간격
+        func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumInteritemSpacingForSectionAt section: Int) -> CGFloat {
+            
+            return 4
+        }
+        
+        
+    }
+    
+    extension UITableViewCell {
+        var parentVC: UIViewController? {
+            var responder: UIResponder? = self
+            while let nextResponder = responder?.next {
+                if let viewController = nextResponder as? UIViewController {
+                    return viewController
+                }
+                responder = nextResponder
+            }
+            return nil
+        }
+    }
