@@ -219,9 +219,9 @@ class MainViewController: UIViewController {
     @objc func clickedmakeAlarm(){ //새 알람설정
         print("알람생성버튼 : 아왜불러")
         alarmData.append(AlarmModel(isTurn: false, alarmTitle: "asd", Memo: "asd"))
-        //        let vc = MakeAlarmViewController()
-        //        self.navigationController?.pushViewController(vc, animated: true)
-        AlarmTableView.reloadData()
+                let vc = MakeAlarmViewController()
+                self.navigationController?.pushViewController(vc, animated: true)
+//        AlarmTableView.reloadData()
     }
     
     @objc func clickedcode(){ //참여코드입력
