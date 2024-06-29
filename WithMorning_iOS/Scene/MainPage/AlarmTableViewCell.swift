@@ -269,7 +269,6 @@ class AlarmTableViewCell : UITableViewCell, UISheetPresentationControllerDelegat
             guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "WeekCollectionViewCell", for: indexPath) as? WeekCollectionViewCell else {return UICollectionViewCell()}
             
             cell.weekLabel.text = weeks[indexPath.row]
-            
             //        let alarm = alarmData[indexPath.row]
             //        toggleButton.isOn = alarm.isTurn
             
@@ -299,7 +298,8 @@ class AlarmTableViewCell : UITableViewCell, UISheetPresentationControllerDelegat
         
         
     }
-    
+//MARK: - VC가 아닌 cell의 property에서 click이벤트를 위해 VC를 위에 깔아줌ㅇㅇ
+
     extension UITableViewCell {
         var parentVC: UIViewController? {
             var responder: UIResponder? = self
