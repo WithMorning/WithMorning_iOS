@@ -12,7 +12,7 @@ import Alamofire
 
 class codeBtnViewController: UIViewController {
     
-//MARK: - properties
+    //MARK: - properties
     private lazy var codeLabel : UILabel = {
         let label = UILabel()
         label.text = "참여 코드 입력"
@@ -21,7 +21,7 @@ class codeBtnViewController: UIViewController {
         label.font = DesignSystemFont.Pretendard_Bold16.value
         return label
     }()
-
+    
     private lazy var codeTextfield : UITextField = {
         let textfield = UITextField()
         textfield.translatesAutoresizingMaskIntoConstraints = false
@@ -33,10 +33,52 @@ class codeBtnViewController: UIViewController {
         textfield.textAlignment = .center
         return textfield
     }()
-
+    
+    private lazy var numberLabel : UILabel = {
+        let label = UILabel()
+        label.text = "전화번호 비공개"
+        label.textAlignment = .left
+        label.font = DesignSystemFont.Pretendard_Medium14.value
+        label.textColor = .black
+        return label
+    }()
+    
+    private lazy var Button : UIButton = {
+        let button = UIButton()
+        return button
+    }()
+    
+    private lazy var notiLabel : UILabel = {
+        let label = UILabel()
+        label.text = "전화번호 비공개 시 전화 대신 푸시 알림을 받게 됩니다."
+        label.font = DesignSystemFont.Pretendard_Medium12.value
+        label.textColor = DesignSystemColor.Gray500.value
+        return label
+    }()
+    
+    private lazy var DoneButton : UIButton = {
+        var configuration = UIButton.Configuration.filled()
+        configuration.baseBackgroundColor = .black
+        configuration.baseForegroundColor = .white
+        configuration.titleAlignment = .center
+        configuration.contentInsets = NSDirectionalEdgeInsets(top: -230, leading: 0, bottom: 10, trailing: 0) // 텍스트 위치 조정
+        
+        let titleTextAttributes = AttributeContainer([
+            NSAttributedString.Key.font: DesignSystemFont.Pretendard_Bold16.value
+        ])
+        configuration.attributedTitle = AttributedString("메이트 함께하기", attributes: titleTextAttributes)
+        
+        let button = UIButton(configuration: configuration)
+        
+        return button
+    }()
     
     
-//MARK: - LifeCycle
+    
+    
+    
+    
+    //MARK: - LifeCycle
     override func viewDidLoad() {
         super.viewDidLoad()
         self.view.backgroundColor = .white
@@ -45,7 +87,7 @@ class codeBtnViewController: UIViewController {
     }
     
     func SetUI(){
-        view.addSubviews(codeLabel,codeTextfield)
+        view.addSubviews(codeLabel,codeTextfield,numberLabel,notiLabel,DoneButton)
         
         codeLabel.snp.makeConstraints{
             $0.top.equalToSuperview().offset(24)
@@ -56,6 +98,21 @@ class codeBtnViewController: UIViewController {
             $0.leading.trailing.equalToSuperview().inset(20)
             $0.top.equalTo(codeLabel.snp.bottom).offset(10)
             $0.height.equalTo(52)
+        }
+        
+        numberLabel.snp.makeConstraints{
+            $0.top.equalTo(codeTextfield.snp.bottom).offset(24)
+            $0.centerX.equalToSuperview()
+        }
+        notiLabel.snp.makeConstraints{
+            $0.top.equalTo(numberLabel.snp.bottom).offset(10)
+            $0.centerX.equalToSuperview()
+        }
+        DoneButton.snp.makeConstraints{
+            $0.top.equalTo(notiLabel.snp.bottom).offset(24)
+            $0.leading.trailing.equalToSuperview()
+            $0.height.equalTo(300)
+            
         }
     }
     
