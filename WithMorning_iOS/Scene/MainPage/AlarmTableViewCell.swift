@@ -247,7 +247,8 @@ class AlarmTableViewCell : UITableViewCell, UISheetPresentationControllerDelegat
                 }]
                 
                 vc.delegate = self
-                vc.prefersGrabberVisible = true
+                vc.prefersGrabberVisible = false
+                vc.preferredCornerRadius = 16
             }
             
         }

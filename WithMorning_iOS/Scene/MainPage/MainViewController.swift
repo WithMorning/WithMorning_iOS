@@ -10,7 +10,7 @@ import SnapKit
 import Then
 import Alamofire
 
-class MainViewController: UIViewController {
+class MainViewController: UIViewController, UISheetPresentationControllerDelegate {
     
     //MARK: - properties
     
@@ -31,8 +31,8 @@ class MainViewController: UIViewController {
         button.addTarget(self, action: #selector(clickedprofile), for: .touchUpInside)
         return button
     }()
-    //MARK: - tableView
     
+    //MARK: - tableView
     private lazy var headerView : UIView = {
         let view = UIView()
         return view
@@ -94,7 +94,6 @@ class MainViewController: UIViewController {
         return button
     }()
     
-    
     private lazy var AlarmTableView : UITableView = {
         let tableView = UITableView()
         tableView.layer.cornerRadius = 8
@@ -110,8 +109,7 @@ class MainViewController: UIViewController {
     }()
     
     //MARK: - Data Array
-    
-    var alarmData  : [AlarmModel] = [AlarmModel(isTurn: false,alarmTitle: "1번째 알람의 타이틀",Memo: "1번재 알람의 메모"),AlarmModel(isTurn: true, alarmTitle: "2번째 알람의 타이틀", Memo: "2번째 알람의 메모")]
+    var alarmData  : [AlarmModel] = [AlarmModel(isTurn: false,alarmTitle: "1번째 알람의 타이틀",Memo: "1번재 알람의 메모"),AlarmModel(isTurn: false,alarmTitle: "2번째 알람의 타이틀",Memo: "2번째 알람의 메모")]
     
     //MARK: - LifeCycle
     override func viewDidLoad() {
@@ -209,23 +207,37 @@ class MainViewController: UIViewController {
     
     
     //MARK: - objc func
-    @objc func clickedprofile(){ //설정버튼
+    @objc func clickedprofile(){ //프로필버튼
         let vc = MyPageViewController()
         self.navigationController?.pushViewController(vc, animated: true)
-        print("프로핇버튼")
+        print("프로필버튼")
     }
     
     
     @objc func clickedmakeAlarm(){ //새 알람설정
         print("알람생성버튼 : 아왜불러")
         alarmData.append(AlarmModel(isTurn: false, alarmTitle: "asd", Memo: "asd"))
-                let vc = MakeAlarmViewController()
-                self.navigationController?.pushViewController(vc, animated: true)
-//        AlarmTableView.reloadData()
+        let vc = MakeAlarmViewController()
+        self.navigationController?.pushViewController(vc, animated: true)
+        //        AlarmTableView.reloadData()
     }
     
-    @objc func clickedcode(){ //참여코드입력
-        print("참여코드버튼 : 아왜요")
+    @objc func clickedcode() { // 참여코드입력
+        let vc = codeBtnViewController()
+        vc.modalPresentationStyle = .formSheet
+        self.present(vc, animated: true)
+        
+        if let sheet = vc.sheetPresentationController {
+            if #available(iOS 16.0, *) {
+                sheet.detents = [.custom { context in
+                    return 297
+                }]
+                
+                sheet.delegate = self
+                sheet.prefersGrabberVisible = false
+                sheet.preferredCornerRadius = 16
+            }
+        }
     }
     
     @objc func refreshControl(){
@@ -260,25 +272,25 @@ extension MainViewController : UITableViewDelegate, UITableViewDataSource{
         cell.bottomView.isHidden = !alarm.isTurn
         cell.bottomView.subviews.forEach { $0.isHidden = !alarm.isTurn }
         
-//         togglebutton on,off closure
-                cell.toggleclicked = {
-        
-                    self.AlarmTableView.reloadData()
-        
-                    if cell.toggleButton.isOn == true{
-                        self.alarmData[indexPath.row].isTurn = true
-                        print(self.alarmData[indexPath.row])
-                        print("\(indexPath.row)번째 toggle is on")
-                        cell.bottomView.isHidden = false
-        
-                    }else{
-                        self.alarmData[indexPath.row].isTurn = false
-                        print(self.alarmData[indexPath.row])
-                        print("\(indexPath.row)번째 toogle is off")
-                        cell.bottomView.isHidden = true
-        
-                    }
-                }
+        // togglebutton on,off closure
+        cell.toggleclicked = {
+            
+            self.AlarmTableView.reloadData()
+            
+            if cell.toggleButton.isOn == true{
+                self.alarmData[indexPath.row].isTurn = true
+                print(self.alarmData[indexPath.row])
+                print("\(indexPath.row)번째 toggle is on")
+                cell.bottomView.isHidden = false
+                
+            }else{
+                self.alarmData[indexPath.row].isTurn = false
+                print(self.alarmData[indexPath.row])
+                print("\(indexPath.row)번째 toogle is off")
+                cell.bottomView.isHidden = true
+                
+            }
+        }
         
         
         return cell
