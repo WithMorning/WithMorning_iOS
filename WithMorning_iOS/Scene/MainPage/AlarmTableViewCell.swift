@@ -29,7 +29,7 @@ class AlarmTableViewCell : UITableViewCell, UISheetPresentationControllerDelegat
     
     lazy var topView : UIView = {
         let view = UIView()
-        view.addSubviews(topViewLabel,toggleButton,settingButton,timeLabel,noonLabel,WeekCollectionView)
+        view.addSubviews(topViewLabel,toggleButton,settingButton,timeLabel,noonLabel,WeekStackView)
         return view
     }()
     
@@ -71,17 +71,100 @@ class AlarmTableViewCell : UITableViewCell, UISheetPresentationControllerDelegat
         return label
     }()
     
-    //MARK: - 날짜 StackView
-    let weeks = ["월","화","수","목","금","토","일"]
+    //MARK: - 날짜
+    private lazy var WeekStackView: UIStackView = {
+        let stackView = UIStackView()
+        stackView.translatesAutoresizingMaskIntoConstraints = false
+        stackView.axis = .horizontal
+        stackView.alignment = .fill
+        stackView.distribution = .equalSpacing
+        stackView.spacing = 4
+        stackView.addSubviews(MonLabel,TueLabel,WedLabel,ThuLabel,FriLabel,SatLabel,SunLabel)
+        return stackView
+    }()
+
+     lazy var MonLabel : UILabel = {
+        let label = UILabel()
+        label.text = "월"
+        label.font = DesignSystemFont.Pretendard_SemiBold10.value
+        label.backgroundColor = DesignSystemColor.Orange500.value
+        label.textColor = .white
+        label.clipsToBounds = true
+        label.layer.cornerRadius = 10
+        label.textAlignment = .center
+        return label
+    }()
     
-    private lazy var WeekCollectionView: UICollectionView = {
-        let layout = UICollectionViewFlowLayout()
-        let view = UICollectionView(frame: .zero, collectionViewLayout: layout)
-        view.delegate = self
-        view.dataSource = self
-        view.register(WeekCollectionViewCell.self, forCellWithReuseIdentifier: "WeekCollectionViewCell")
-        view.translatesAutoresizingMaskIntoConstraints = false
-        return view
+     lazy var TueLabel : UILabel = {
+        let label = UILabel()
+        label.text = "화"
+        label.font = DesignSystemFont.Pretendard_SemiBold10.value
+        label.backgroundColor = DesignSystemColor.Orange500.value
+        label.textColor = .white
+        label.clipsToBounds = true
+        label.layer.cornerRadius = 10
+        label.textAlignment = .center
+        return label
+    }()
+    
+     lazy var WedLabel : UILabel = {
+        let label = UILabel()
+        label.text = "수"
+        label.font = DesignSystemFont.Pretendard_SemiBold10.value
+        label.backgroundColor = DesignSystemColor.Orange500.value
+        label.textColor = .white
+        label.clipsToBounds = true
+        label.layer.cornerRadius = 10
+        label.textAlignment = .center
+        return label
+    }()
+    
+     lazy var ThuLabel : UILabel = {
+        let label = UILabel()
+        label.text = "목"
+        label.font = DesignSystemFont.Pretendard_SemiBold10.value
+        label.backgroundColor = DesignSystemColor.Orange500.value
+        label.textColor = .white
+        label.clipsToBounds = true
+        label.layer.cornerRadius = 10
+        label.textAlignment = .center
+        return label
+    }()
+    
+     lazy var FriLabel : UILabel = {
+        let label = UILabel()
+        label.text = "금"
+        label.font = DesignSystemFont.Pretendard_SemiBold10.value
+        label.backgroundColor = DesignSystemColor.Orange500.value
+        label.textColor = .white
+        label.clipsToBounds = true
+        label.layer.cornerRadius = 10
+        label.textAlignment = .center
+        return label
+    }()
+    
+     lazy var SatLabel : UILabel = {
+        let label = UILabel()
+        label.text = "토"
+        label.font = DesignSystemFont.Pretendard_SemiBold10.value
+        label.backgroundColor = DesignSystemColor.Orange500.value
+        label.textColor = .white
+        label.clipsToBounds = true
+        label.layer.cornerRadius = 10
+        label.textAlignment = .center
+        return label
+    }()
+    
+     lazy var SunLabel : UILabel = {
+        let label = UILabel()
+        label.text = "일"
+        label.font = DesignSystemFont.Pretendard_SemiBold10.value
+        label.backgroundColor = DesignSystemColor.Orange500.value
+        label.textColor = .white
+        label.clipsToBounds = true
+        label.layer.cornerRadius = 10
+        label.textAlignment = .center
+        return label
     }()
     
     
@@ -187,11 +270,38 @@ class AlarmTableViewCell : UITableViewCell, UISheetPresentationControllerDelegat
             $0.leading.equalTo(timeLabel.snp.trailing).offset(4)
         }
         
-        WeekCollectionView.snp.makeConstraints {
-            $0.leading.equalTo(timeLabel.snp.leading)
-            $0.top.equalTo(timeLabel.snp.bottom).offset(7)
-            $0.height.equalTo(20)
+        //날짜스택뷰
+        WeekStackView.snp.makeConstraints{
+            $0.top.equalTo(timeLabel.snp.bottom).offset(12)
+            $0.leading.equalToSuperview().offset(20)
             $0.width.equalTo(164)
+        }
+        MonLabel.snp.makeConstraints{
+            $0.height.width.equalTo(20)
+        }
+        TueLabel.snp.makeConstraints{
+            $0.height.width.equalTo(20)
+            $0.leading.equalTo(MonLabel.snp.trailing).offset(4)
+        }
+        WedLabel.snp.makeConstraints{
+            $0.height.width.equalTo(20)
+            $0.leading.equalTo(TueLabel.snp.trailing).offset(4)
+        }
+        ThuLabel.snp.makeConstraints{
+            $0.height.width.equalTo(20)
+            $0.leading.equalTo(WedLabel.snp.trailing).offset(4)
+        }
+        FriLabel.snp.makeConstraints{
+            $0.height.width.equalTo(20)
+            $0.leading.equalTo(ThuLabel.snp.trailing).offset(4)
+        }
+        SatLabel.snp.makeConstraints{
+            $0.height.width.equalTo(20)
+            $0.leading.equalTo(FriLabel.snp.trailing).offset(4)
+        }
+        SunLabel.snp.makeConstraints{
+            $0.height.width.equalTo(20)
+            $0.leading.equalTo(SatLabel.snp.trailing).offset(4)
         }
         
         
@@ -226,7 +336,6 @@ class AlarmTableViewCell : UITableViewCell, UISheetPresentationControllerDelegat
     //MARK: - objc func
     
     @objc func clicktoggle(sender : UISwitch){
-        WeekCollectionView.reloadData()
         toggleclicked()
         
     }
@@ -254,61 +363,20 @@ class AlarmTableViewCell : UITableViewCell, UISheetPresentationControllerDelegat
         }
         
     }
-        
+    
 }
-    extension AlarmTableViewCell : UICollectionViewDelegate, UICollectionViewDataSource, UICollectionViewDelegateFlowLayout{
-        
-        //셀 개수
-        func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-            return weeks.count
-        }
-        
-        //셀 재사용
-        func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-            
-            guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "WeekCollectionViewCell", for: indexPath) as? WeekCollectionViewCell else {return UICollectionViewCell()}
-            
-            cell.weekLabel.text = weeks[indexPath.row]
-            //        let alarm = alarmData[indexPath.row]
-            //        toggleButton.isOn = alarm.isTurn
-            
-            //        print("\(indexPath.section), \(indexPath.row)")
-            //        0, 0 월
-            //        0, 1 화
-            //        0, 2 수
-            //        0, 3 목
-            //        0, 4 금
-            //        0, 5 토
-            //        0, 6 일
-            
-            return cell
-        }
-        
-        //셀 크기
-        func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
-            
-            return CGSize(width: 20, height: 20)
-        }
-        
-        //셀 간격
-        func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumInteritemSpacingForSectionAt section: Int) -> CGFloat {
-            
-            return 4
-        }
-        
-        
-    }
+
 //MARK: - VC가 아닌 cell의 property에서 click이벤트를 위해 VC를 위에 깔아줌ㅇㅇ
 
-    extension UITableViewCell {
-        var parentVC: UIViewController? {
-            var responder: UIResponder? = self
-            while let nextResponder = responder?.next {
-                if let viewController = nextResponder as? UIViewController {
-                    return viewController
-                }
-                responder = nextResponder
+extension UITableViewCell {
+    var parentVC: UIViewController? {
+        var responder: UIResponder? = self
+        while let nextResponder = responder?.next {
+            if let viewController = nextResponder as? UIViewController {
+                return viewController
             }
-            return nil
+            responder = nextResponder
         }
+        return nil
     }
+}

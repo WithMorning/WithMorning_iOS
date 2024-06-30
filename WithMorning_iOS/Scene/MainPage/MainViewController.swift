@@ -217,9 +217,9 @@ class MainViewController: UIViewController, UISheetPresentationControllerDelegat
     @objc func clickedmakeAlarm(){ //새 알람설정
         print("알람생성버튼 : 아왜불러")
         alarmData.append(AlarmModel(isTurn: false, alarmTitle: "asd", Memo: "asd"))
-        let vc = MakeAlarmViewController()
-        self.navigationController?.pushViewController(vc, animated: true)
-        //        AlarmTableView.reloadData()
+//        let vc = MakeAlarmViewController()
+//        self.navigationController?.pushViewController(vc, animated: true)
+                AlarmTableView.reloadData()
     }
     
     @objc func clickedcode() { // 참여코드입력
@@ -272,6 +272,61 @@ extension MainViewController : UITableViewDelegate, UITableViewDataSource{
         cell.bottomView.isHidden = !alarm.isTurn
         cell.bottomView.subviews.forEach { $0.isHidden = !alarm.isTurn }
         
+        if cell.toggleButton.isOn == true{
+            self.alarmData[indexPath.row].isTurn = true
+            print(self.alarmData[indexPath.row])
+            cell.bottomView.isHidden = false
+            //월
+            cell.MonLabel.backgroundColor = DesignSystemColor.Orange500.value
+            cell.MonLabel.textColor = .white
+            //화
+            cell.TueLabel.backgroundColor = DesignSystemColor.Orange500.value
+            cell.TueLabel.textColor = .white
+            //수
+            cell.WedLabel.backgroundColor = DesignSystemColor.Orange500.value
+            cell.WedLabel.textColor = .white
+            //목
+            cell.ThuLabel.backgroundColor = DesignSystemColor.Orange500.value
+            cell.ThuLabel.textColor = .white
+            //금
+            cell.FriLabel.backgroundColor = DesignSystemColor.Orange500.value
+            cell.FriLabel.textColor = .white
+            //토
+            cell.SatLabel.backgroundColor = DesignSystemColor.Orange500.value
+            cell.SatLabel.textColor = .white
+            //일
+            cell.SunLabel.backgroundColor = DesignSystemColor.Orange500.value
+            cell.SunLabel.textColor = .white
+            
+        }else{
+            self.alarmData[indexPath.row].isTurn = false
+            print(self.alarmData[indexPath.row])
+            cell.bottomView.isHidden = true
+            
+            
+            cell.MonLabel.backgroundColor = DesignSystemColor.Gray100.value
+            cell.MonLabel.textColor = DesignSystemColor.Gray300.value
+            
+            cell.TueLabel.backgroundColor = DesignSystemColor.Gray100.value
+            cell.TueLabel.textColor = DesignSystemColor.Gray300.value
+            
+            cell.WedLabel.backgroundColor = DesignSystemColor.Gray100.value
+            cell.WedLabel.textColor = DesignSystemColor.Gray300.value
+            
+            cell.ThuLabel.backgroundColor = DesignSystemColor.Gray100.value
+            cell.ThuLabel.textColor = DesignSystemColor.Gray300.value
+            
+            cell.FriLabel.backgroundColor = DesignSystemColor.Gray100.value
+            cell.FriLabel.textColor = DesignSystemColor.Gray300.value
+            
+            cell.SatLabel.backgroundColor = DesignSystemColor.Gray100.value
+            cell.SatLabel.textColor = DesignSystemColor.Gray300.value
+            
+            cell.SunLabel.backgroundColor = DesignSystemColor.Gray100.value
+            cell.SunLabel.textColor = DesignSystemColor.Gray300.value
+            
+        }
+        
         // togglebutton on,off closure
         cell.toggleclicked = {
             
@@ -280,13 +335,11 @@ extension MainViewController : UITableViewDelegate, UITableViewDataSource{
             if cell.toggleButton.isOn == true{
                 self.alarmData[indexPath.row].isTurn = true
                 print(self.alarmData[indexPath.row])
-                print("\(indexPath.row)번째 toggle is on")
                 cell.bottomView.isHidden = false
                 
             }else{
                 self.alarmData[indexPath.row].isTurn = false
                 print(self.alarmData[indexPath.row])
-                print("\(indexPath.row)번째 toogle is off")
                 cell.bottomView.isHidden = true
                 
             }
