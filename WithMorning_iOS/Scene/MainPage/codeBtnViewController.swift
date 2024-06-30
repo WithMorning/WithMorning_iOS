@@ -70,6 +70,7 @@ class codeBtnViewController: UIViewController {
         
         let button = UIButton(configuration: configuration)
         
+        button.addTarget(self, action: #selector(buttonclicked), for: .touchUpInside)
         return button
     }()
     
@@ -85,7 +86,8 @@ class codeBtnViewController: UIViewController {
         SetUI()
         
     }
-    
+    //MARK: - SetUI
+
     func SetUI(){
         view.addSubviews(codeLabel,codeTextfield,numberLabel,notiLabel,DoneButton)
         
@@ -93,13 +95,11 @@ class codeBtnViewController: UIViewController {
             $0.top.equalToSuperview().offset(24)
             $0.centerX.equalToSuperview()
         }
-        
         codeTextfield.snp.makeConstraints{
             $0.leading.trailing.equalToSuperview().inset(20)
             $0.top.equalTo(codeLabel.snp.bottom).offset(10)
             $0.height.equalTo(52)
         }
-        
         numberLabel.snp.makeConstraints{
             $0.top.equalTo(codeTextfield.snp.bottom).offset(24)
             $0.centerX.equalToSuperview()
@@ -115,6 +115,12 @@ class codeBtnViewController: UIViewController {
             
         }
     }
+//MARK: - @objc func
+    @objc func buttonclicked(){
+        self.dismiss(animated: true, completion: nil)
+    }
+    
+
     
 }
 

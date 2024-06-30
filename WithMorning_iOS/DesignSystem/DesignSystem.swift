@@ -106,6 +106,7 @@ enum DesignSystemFont {
     case Pretendard_SemiBold10
     case Pretendard_SemiBold12
     case Pretendard_SemiBold14
+    case Pretendard_SemiBold16
     case Pretendard_Medium12
     case Pretendard_Medium14
     case Pretendard_Bold30
@@ -125,6 +126,8 @@ extension DesignSystemFont {
             return UIFont.pretendard(.semiBold, size: 10)
         case .Pretendard_SemiBold12:
             return UIFont.pretendard(.semiBold, size: 12)
+        case . Pretendard_SemiBold16:
+            return UIFont.pretendard(.semiBold, size: 16)
         case .Pretendard_Medium12:
             return UIFont.pretendard(.medium, size: 12)
         case .Pretendard_Medium14:
@@ -164,22 +167,24 @@ extension DesignSystemFont {
             return 1.17
         case .Pretendard_Medium14:
             return 1.17
+        case .Pretendard_SemiBold16:
+            return 1.17
         }
     }
 }
 
 // MARK: - 아이콘
-enum DesignSystemIcon {
-    case codbutton
-    
-}
-
-extension DesignSystemIcon {
-    var imageName: String {
-        switch self {
-
-        case .codbutton:
-            return "codebutton"
-        }
-    }
-}
+//enum DesignSystemIcon {
+//    case codbutton
+//    
+//}
+//
+//extension DesignSystemIcon {
+//    var imageName: String {
+//        switch self {
+//
+//        case .codbutton:
+//            return "codebutton"
+//        }
+//    }
+//}
