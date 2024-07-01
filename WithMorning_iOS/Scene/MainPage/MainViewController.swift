@@ -216,7 +216,7 @@ class MainViewController: UIViewController, UISheetPresentationControllerDelegat
     
     @objc func clickedmakeAlarm(){ //새 알람설정
         print("알람생성버튼 : 아왜불러")
-        alarmData.append(AlarmModel(isTurn: false, alarmTitle: "asd", Memo: "asd"))
+        alarmData.append(AlarmModel(isTurn: true, alarmTitle: "asd", Memo: "asd"))
 //        let vc = MakeAlarmViewController()
 //        self.navigationController?.pushViewController(vc, animated: true)
                 AlarmTableView.reloadData()
