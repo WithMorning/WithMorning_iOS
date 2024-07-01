@@ -31,6 +31,11 @@ class codeBtnViewController: UIViewController {
         textfield.textColor = DesignSystemColor.Gray400.value
         textfield.layer.cornerRadius = 8
         textfield.textAlignment = .center
+        
+        //텍스트 필드 교정 메서드
+        textfield.autocorrectionType = .no
+        textfield.spellCheckingType = .no
+        textfield.autocapitalizationType = .none
         return textfield
     }()
     
@@ -84,11 +89,16 @@ class codeBtnViewController: UIViewController {
         super.viewDidLoad()
         self.view.backgroundColor = .white
         SetUI()
+        hideKeyboardWhenTappedAround()
+        
         
     }
     //MARK: - SetUI
-
+    
     func SetUI(){
+        
+        codeTextfield.delegate = self
+        
         view.addSubviews(codeLabel,codeTextfield,numberLabel,notiLabel,DoneButton)
         
         codeLabel.snp.makeConstraints{
@@ -115,13 +125,35 @@ class codeBtnViewController: UIViewController {
             
         }
     }
-//MARK: - @objc func
+    //MARK: - @objc func
     @objc func buttonclicked(){
         self.dismiss(animated: true, completion: nil)
     }
-    
+}
 
+//MARK: - 키보드 내리기
+extension codeBtnViewController : UITextFieldDelegate {
+    func hideKeyboardWhenTappedAround() {
+        let tap = UITapGestureRecognizer(target: self, action: #selector(codeBtnViewController.dismissKeyboard))
+        tap.cancelsTouchesInView = false
+        view.addGestureRecognizer(tap)
+    }
     
+    @objc func dismissKeyboard() {
+        view.endEditing(true)
+    }
+    
+    //MARK: - textField Delegate
+    func textFieldDidBeginEditing(_ textField: UITextField) {
+        textField.layer.borderWidth = 1
+        textField.layer.borderColor = DesignSystemColor.Orange500.value.cgColor
+        
+    }
+    
+    func textFieldDidEndEditing(_ textField: UITextField) {
+        textField.layer.borderWidth = 0
+        
+    }
 }
 
 
