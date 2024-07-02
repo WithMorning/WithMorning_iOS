@@ -10,7 +10,7 @@ import SnapKit
 import Then
 import Alamofire
 
-class CellMenuViewController: UIViewController {
+class CellMenuViewController: UIViewController,AlterDelegate {
     
     private lazy var copyButton : UIButton = {
         let button = UIButton()
@@ -59,7 +59,7 @@ class CellMenuViewController: UIViewController {
         configuration.baseBackgroundColor = .black
         configuration.baseForegroundColor = .white
         configuration.titleAlignment = .center
-        configuration.contentInsets = NSDirectionalEdgeInsets(top: -230, leading: 0, bottom: 10, trailing: 0) // 텍스트 위치 조정
+        configuration.contentInsets = NSDirectionalEdgeInsets(top:0, leading: 0, bottom: 40, trailing: 0) // 텍스트 위치 조정
         
         let titleTextAttributes = AttributeContainer([
             NSAttributedString.Key.font: DesignSystemFont.Pretendard_Bold16.value
@@ -80,7 +80,6 @@ class CellMenuViewController: UIViewController {
         super.viewDidLoad()
         self.view.backgroundColor = .white
         SetUI()
-        
     }
     
     //MARK: - SetUI
@@ -118,7 +117,7 @@ class CellMenuViewController: UIViewController {
         closeButton.snp.makeConstraints{
             $0.top.equalTo(deleteButton.snp.bottom)
             $0.leading.trailing.equalToSuperview()
-            $0.height.equalTo(300)
+            $0.height.equalTo(100)
             
         }
     }
@@ -132,10 +131,21 @@ class CellMenuViewController: UIViewController {
     }
     @objc func deleteClicked(){
         print("삭제하기 버튼")
+        show(alertType : .deleteAlarm )
     }
     @objc func closeClicked(){
         dismiss(animated: true)
         print("닫기버튼")
+    }
+    
+    func confirm() {
+        self.dismiss(animated: true){
+            //알람 삭제 api
+        }
+    }
+    
+    func cancel() {
+        print("cancel")
     }
     
     

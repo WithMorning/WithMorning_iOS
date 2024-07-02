@@ -28,7 +28,7 @@ class codeBtnViewController: UIViewController {
         textfield.placeholder = "코드를 입력해 주세요"
         textfield.backgroundColor = DesignSystemColor.Gray150.value
         textfield.font = DesignSystemFont.Pretendard_Medium14.value
-        textfield.textColor = DesignSystemColor.Gray400.value
+        textfield.textColor = .black
         textfield.layer.cornerRadius = 8
         textfield.textAlignment = .center
         
@@ -76,7 +76,7 @@ class codeBtnViewController: UIViewController {
         configuration.baseBackgroundColor = .black
         configuration.baseForegroundColor = .white
         configuration.titleAlignment = .center
-        configuration.contentInsets = NSDirectionalEdgeInsets(top: -230, leading: 0, bottom: 10, trailing: 0) // 텍스트 위치 조정
+        configuration.contentInsets = NSDirectionalEdgeInsets(top:0, leading: 0, bottom: 40, trailing: 0) // 텍스트 위치 조정
         
         let titleTextAttributes = AttributeContainer([
             NSAttributedString.Key.font: DesignSystemFont.Pretendard_Bold16.value
@@ -140,7 +140,7 @@ class codeBtnViewController: UIViewController {
         DoneButton.snp.makeConstraints{
             $0.top.equalTo(notiLabel.snp.bottom).offset(24)
             $0.leading.trailing.equalToSuperview()
-            $0.height.equalTo(300)
+            $0.height.equalTo(100)
             
         }
     }

@@ -230,7 +230,7 @@ class MainViewController: UIViewController, UISheetPresentationControllerDelegat
         if let sheet = vc.sheetPresentationController {
             if #available(iOS 16.0, *) {
                 sheet.detents = [.custom { context in
-                    return 297
+                    return 245 //고정
                 }]
                 
                 sheet.delegate = self

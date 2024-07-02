@@ -187,7 +187,14 @@ class AlarmTableViewCell : UITableViewCell, UISheetPresentationControllerDelegat
         let label = UILabel()
         label.font = DesignSystemFont.Pretendard_Medium12.value
         label.textColor = DesignSystemColor.Gray500.value
-        label.text = "프로필을 누르면 친구를 깨울 수 있어요!"
+        
+        let attributeLabel = NSMutableAttributedString(string: "프로필을 누르면 친구를 깨울 수 있어요!")
+        let attachImage = NSTextAttachment()
+        attachImage.image = UIImage(named: "Check")
+        attachImage.bounds = CGRect(x: 0, y: -3, width: 15, height: 15)
+        let imageString = NSAttributedString(attachment: attachImage)
+        attributeLabel.insert(imageString, at: 0)
+        label.attributedText = attributeLabel
         return label
     }()
     
@@ -352,7 +359,7 @@ class AlarmTableViewCell : UITableViewCell, UISheetPresentationControllerDelegat
         if let vc = vc.sheetPresentationController{
             if #available(iOS 16.0, *) {
                 vc.detents = [.custom { context in
-                    return 302
+                    return 245
                 }]
                 
                 vc.delegate = self
