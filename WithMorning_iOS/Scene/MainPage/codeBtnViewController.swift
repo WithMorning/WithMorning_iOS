@@ -45,11 +45,21 @@ class codeBtnViewController: UIViewController {
         label.textAlignment = .left
         label.font = DesignSystemFont.Pretendard_Medium14.value
         label.textColor = .black
+        label.isUserInteractionEnabled = true
+        
+        let tapGestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(numberclicked))
+        label.addGestureRecognizer(tapGestureRecognizer)
+        
         return label
     }()
     
-    private lazy var Button : UIButton = {
+    private lazy var openButton : UIButton = {
         let button = UIButton()
+        button.setImage(UIImage(systemName: "checkmark.square.fill"), for: .normal)
+        button.backgroundColor = .white
+        button.tintColor = DesignSystemColor.Gray200.value
+        button.layer.cornerRadius = 5
+        button.addTarget(self, action: #selector(numberclicked), for: .touchUpInside)
         return button
     }()
     
@@ -99,21 +109,30 @@ class codeBtnViewController: UIViewController {
         
         codeTextfield.delegate = self
         
-        view.addSubviews(codeLabel,codeTextfield,numberLabel,notiLabel,DoneButton)
+        view.addSubviews(codeLabel,codeTextfield,numberLabel,openButton,notiLabel,DoneButton)
         
         codeLabel.snp.makeConstraints{
             $0.top.equalToSuperview().offset(24)
             $0.centerX.equalToSuperview()
         }
+        
         codeTextfield.snp.makeConstraints{
             $0.leading.trailing.equalToSuperview().inset(20)
             $0.top.equalTo(codeLabel.snp.bottom).offset(10)
             $0.height.equalTo(52)
         }
+        
         numberLabel.snp.makeConstraints{
             $0.top.equalTo(codeTextfield.snp.bottom).offset(24)
-            $0.centerX.equalToSuperview()
+            $0.centerX.equalToSuperview().offset(-13)
         }
+        
+        openButton.snp.makeConstraints{
+            $0.width.height.equalTo(25)
+            $0.centerY.equalTo(numberLabel)
+            $0.leading.equalTo(numberLabel.snp.trailing).offset(5)
+        }
+        
         notiLabel.snp.makeConstraints{
             $0.top.equalTo(numberLabel.snp.bottom).offset(10)
             $0.centerX.equalToSuperview()
@@ -128,6 +147,14 @@ class codeBtnViewController: UIViewController {
     //MARK: - @objc func
     @objc func buttonclicked(){
         self.dismiss(animated: true, completion: nil)
+    }
+    
+    @objc func numberclicked(){
+        if openButton.tintColor == DesignSystemColor.Gray200.value{
+            openButton.tintColor = DesignSystemColor.Orange500.value
+        }else{
+            openButton.tintColor = DesignSystemColor.Gray200.value
+        }
     }
 }
 
@@ -145,12 +172,15 @@ extension codeBtnViewController : UITextFieldDelegate {
     
     //MARK: - textField Delegate
     func textFieldDidBeginEditing(_ textField: UITextField) {
+        //        textField.becomeFirstResponder()
+        
         textField.layer.borderWidth = 1
         textField.layer.borderColor = DesignSystemColor.Orange500.value.cgColor
         
     }
     
     func textFieldDidEndEditing(_ textField: UITextField) {
+        //        textField.resignFirstResponder()
         textField.layer.borderWidth = 0
         
     }
