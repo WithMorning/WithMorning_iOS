@@ -1,5 +1,5 @@
 //
-//  codeBtnViewController.swift
+//  CodeBtnViewController.swift
 //  WithMorning_iOS
 //
 //  Created by 안세훈 on 6/29/24.
@@ -10,7 +10,7 @@ import SnapKit
 import Then
 import Alamofire
 
-class codeBtnViewController: UIViewController {
+class CodeBtnViewController: UIViewController {
     
     //MARK: - properties
     private lazy var codeLabel : UILabel = {
@@ -159,9 +159,9 @@ class codeBtnViewController: UIViewController {
 }
 
 //MARK: - 키보드 내리기
-extension codeBtnViewController : UITextFieldDelegate {
+extension CodeBtnViewController : UITextFieldDelegate {
     func hideKeyboardWhenTappedAround() {
-        let tap = UITapGestureRecognizer(target: self, action: #selector(codeBtnViewController.dismissKeyboard))
+        let tap = UITapGestureRecognizer(target: self, action: #selector(CodeBtnViewController.dismissKeyboard))
         tap.cancelsTouchesInView = false
         view.addGestureRecognizer(tap)
     }
@@ -197,7 +197,7 @@ struct codeBtnViewControllerRepresentable: UIViewControllerRepresentable {
     }
     @available(iOS 13.0.0, *)
     func makeUIViewController(context: Context) -> UIViewController{
-        codeBtnViewController()
+        CodeBtnViewController()
     }
 }
 @available(iOS 13.0, *)

@@ -216,14 +216,14 @@ class MainViewController: UIViewController, UISheetPresentationControllerDelegat
     
     @objc func clickedmakeAlarm(){ //새 알람설정
         print("알람생성버튼 : 아왜불러")
-        alarmData.append(AlarmModel(isTurn: true, alarmTitle: "asd", Memo: "asd"))
-//        let vc = MakeAlarmViewController()
-//        self.navigationController?.pushViewController(vc, animated: true)
+//        alarmData.append(AlarmModel(isTurn: true, alarmTitle: "asd", Memo: "asd"))
+        let vc = MakeAlarmViewController()
+        self.navigationController?.pushViewController(vc, animated: true)
                 AlarmTableView.reloadData()
     }
     
     @objc func clickedcode() { // 참여코드입력
-        let vc = codeBtnViewController()
+        let vc = CodeBtnViewController()
         vc.modalPresentationStyle = .formSheet
         self.present(vc, animated: true)
         
