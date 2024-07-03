@@ -12,11 +12,10 @@ import Alamofire
 
 class AlarmTableViewCell : UITableViewCell, UISheetPresentationControllerDelegate{
     
+    
     //MARK: - closure
     var toggleclicked : ( () -> Void ) = {}
     
-    
-    //MARK: - toggle 상태를 추적하는 속성
     
     lazy var AlarmStackView : UIStackView = {
         let view = UIStackView()
@@ -369,7 +368,17 @@ class AlarmTableViewCell : UITableViewCell, UISheetPresentationControllerDelegat
             
         }
         
+        vc.Menuclicked = {
+                vc.dismiss(animated: true) {
+                    let alterVC = AlterViewController(alterType: .outGroup)
+                    alterVC.modalPresentationStyle = .overFullScreen
+                    alterVC.modalTransitionStyle = .crossDissolve
+                    parentViewController.present(alterVC, animated: true, completion: nil)
+                }
+            }
+        
     }
+    
     
 }
 

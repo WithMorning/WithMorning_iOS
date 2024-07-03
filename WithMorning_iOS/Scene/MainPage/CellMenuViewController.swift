@@ -12,6 +12,9 @@ import Alamofire
 
 class CellMenuViewController: UIViewController,AlterDelegate {
     
+//MARK: - dismiss closure
+    var Menuclicked : ( () -> Void )?
+    
     private lazy var copyButton : UIButton = {
         let button = UIButton()
         button.setTitle("초대코드 복사하기", for: .normal)
@@ -122,27 +125,35 @@ class CellMenuViewController: UIViewController,AlterDelegate {
         }
     }
     
+    
     //MARK: - @objc func
     @objc func copyClicked(){
         print("초대코드 복사버튼")
     }
+    
     @objc func editClicked(){
         print("수정하기 버튼")
     }
+    
     @objc func deleteClicked(){
         print("삭제하기 버튼")
-        show(alertType : .deleteAlarm )
-    }
-    @objc func closeClicked(){
-        dismiss(animated: true)
-        print("닫기버튼")
+        self.dismiss(animated: true){
+            guard let Menuclicked = self.Menuclicked else { return }
+            Menuclicked()
+        }
+        
     }
     
-    func confirm() {
-        self.dismiss(animated: true){
-            //알람 삭제 api
-        }
+    @objc func closeClicked(){
+        dismiss(animated: true)
     }
+    
+    //MARK: - delegate Func <- 여기에 api넣어야댐
+    
+    func confirm() {
+        self.dismiss(animated: true)
+    }
+    
     
     func cancel() {
         print("cancel")

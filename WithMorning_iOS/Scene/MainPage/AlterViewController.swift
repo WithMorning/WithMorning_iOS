@@ -10,11 +10,15 @@ import SnapKit
 import Then
 import Alamofire
 
+//MARK: - 취소,확인을 위한 델리게이트
 protocol AlterDelegate {
     func confirm()
     func cancel()
 }
 
+//MARK: - 알림창의 타입을 위한 enum
+//let alterVC = AlterViewController(alterType: .outGroup)
+//let alterVC = AlterViewController(alterType: .deleteAlarm) 으로 사용
 
 enum Altertype {
     case deleteAlarm
@@ -91,7 +95,7 @@ class AlterViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        view.backgroundColor = .clear
+        view.backgroundColor = UIColor(red: 0, green: 0, blue: 0, alpha: 0.6)
         SetUI()
         types()
     }
@@ -136,11 +140,14 @@ class AlterViewController: UIViewController {
             
         case .deleteAlarm:
             MainLabel.text = "해당 알람을 삭제하시겠습니까?"
-//            SubLabel.text = "삭제시 모든 메이트의 알람이 삭제처리됩니다. \n미리 전달해 주세요."
+            
             
         case .outGroup:
             MainLabel.text = "해당 모임에서 나가시겠습니까?"
             SubLabel.isHidden = true
+            MainLabel.snp.makeConstraints{
+                $0.centerX.equalToSuperview().offset(-12)
+            }
         }
     }
     
@@ -157,15 +164,4 @@ class AlterViewController: UIViewController {
         }
     }
 }
-extension AlterDelegate where Self: UIViewController {
-    
-    func show(alertType: Altertype) {
-        let viewController = AlterViewController(alterType: alertType)
-        viewController.delegate = self
-        
-        viewController.modalPresentationStyle = .overFullScreen
-        viewController.modalTransitionStyle = .crossDissolve
-        
-        self.present(viewController, animated: true, completion: nil)
-    }
-}
+
