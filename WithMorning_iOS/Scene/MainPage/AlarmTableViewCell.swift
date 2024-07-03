@@ -370,7 +370,7 @@ class AlarmTableViewCell : UITableViewCell, UISheetPresentationControllerDelegat
         
         vc.Menuclicked = {
                 vc.dismiss(animated: true) {
-                    let alterVC = AlterViewController(alterType: .outGroup)
+                    let alterVC = AlterViewController(alterType: .deleteAlarm)
                     alterVC.modalPresentationStyle = .overFullScreen
                     alterVC.modalTransitionStyle = .crossDissolve
                     parentViewController.present(alterVC, animated: true, completion: nil)

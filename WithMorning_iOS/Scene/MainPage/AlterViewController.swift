@@ -109,11 +109,6 @@ class AlterViewController: UIViewController {
             $0.width.equalTo(343)
         }
         
-        MainLabel.snp.makeConstraints{
-            $0.top.equalToSuperview().offset(20)
-            $0.centerX.equalToSuperview()
-        }
-        
         SubLabel.snp.makeConstraints{
             $0.top.equalTo(MainLabel.snp.bottom).offset(12)
             $0.centerX.equalToSuperview()
@@ -141,12 +136,18 @@ class AlterViewController: UIViewController {
         case .deleteAlarm:
             MainLabel.text = "해당 알람을 삭제하시겠습니까?"
             
+            MainLabel.snp.makeConstraints{
+                $0.top.equalToSuperview().offset(20)
+                $0.centerX.equalToSuperview()
+            }
             
         case .outGroup:
             MainLabel.text = "해당 모임에서 나가시겠습니까?"
             SubLabel.isHidden = true
             MainLabel.snp.makeConstraints{
-                $0.centerX.equalToSuperview().offset(-12)
+                $0.top.equalToSuperview().offset(44)
+                $0.centerX.equalToSuperview()
+                
             }
         }
     }
