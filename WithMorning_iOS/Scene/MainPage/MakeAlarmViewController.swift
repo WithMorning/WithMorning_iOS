@@ -10,10 +10,9 @@ import SnapKit
 import Then
 import Alamofire
 
-class MakeAlarmViewController : UIViewController {
-
-//MARK: - 네비게이션 바
+class MakeAlarmViewController : UIViewController, UIScrollViewDelegate {
     
+    //MARK: - 네비게이션 바
     private lazy var MainLabel : UILabel = {
         let label = UILabel()
         label.text = "알람 생성"
@@ -21,7 +20,7 @@ class MakeAlarmViewController : UIViewController {
         label.font = DesignSystemFont.Pretendard_Bold16.value
         return label
     }()
-
+    
     private lazy var popButton : UIButton = {
         let button = UIButton()
         button.setImage(UIImage(systemName: "chevron.backward"), for: .normal)
@@ -29,12 +28,22 @@ class MakeAlarmViewController : UIViewController {
         button.addTarget(self, action: #selector(popclicked), for: .touchUpInside)
         return button
     }()
-//MARK: - 알람 설정 뷰
+    //MARK: - 스크롤 뷰
+    private lazy var alarmScrollVeiw : UIScrollView = {
+        let scrollview = UIScrollView()
+        scrollview.addSubviews(timerView,soundView,groupView,memoView)
+        scrollview.isScrollEnabled = true
+        scrollview.backgroundColor = .gray
+        scrollview.delegate = self
+        return scrollview
+    }()
+    
+    //MARK: - 알람 설정 뷰
     private lazy var timerView : UIView = {
         let view = UIView()
         view.backgroundColor = .white
         view.layer.cornerRadius = 8
-        view.addSubviews(bar1,timePicker)
+        view.addSubviews(timePicker,bar1,alarmStackView)
         return view
     }()
     
@@ -48,13 +57,46 @@ class MakeAlarmViewController : UIViewController {
         let picker = UIDatePicker()
         picker.datePickerMode = .time
         picker.preferredDatePickerStyle = .wheels
-        
-        picker.backgroundColor = .gray
+        picker.backgroundColor = .clear
         return picker
     }()
     
-//MARK: - 저장 버튼
-
+    private lazy var alarmStackView: UIStackView = {
+        let stackView = UIStackView()
+        stackView.axis = .horizontal
+        stackView.alignment = .fill
+        stackView.distribution = .equalSpacing
+        stackView.spacing = 8
+        return stackView
+    }()
+    
+    //MARK: - 알림음
+    private lazy var soundView : UIView = {
+        let view = UIView()
+        view.backgroundColor = .white
+        view.layer.cornerRadius = 8
+        //        view.addSubviews()
+        return view
+    }()
+    //MARK: - 모임명
+    private lazy var groupView : UIView = {
+        let view = UIView()
+        view.backgroundColor = .white
+        view.layer.cornerRadius = 8
+        //        view.addSubviews()
+        return view
+    }()
+    //MARK: - 메모
+    private lazy var memoView : UIView = {
+        let view = UIView()
+        view.backgroundColor = .white
+        view.layer.cornerRadius = 8
+        //        view.addSubviews()
+        return view
+    }()
+    
+    //MARK: - 저장 버튼
+    
     private lazy var saveButton : UIButton = {
         var configuration = UIButton.Configuration.filled()
         configuration.baseBackgroundColor = DesignSystemColor.Orange500.value
@@ -71,17 +113,18 @@ class MakeAlarmViewController : UIViewController {
         
         return button
     }()
-
+    
     
     
     override func viewDidLoad() {
         super.viewDidLoad()
         self.view.backgroundColor = DesignSystemColor.Gray150.value
         SetUI()
+        saveButton.isHidden = true
     }
     
     func SetUI(){
-        view.addSubviews(MainLabel,popButton,timerView,saveButton)
+        view.addSubviews(MainLabel,popButton,alarmScrollVeiw,saveButton)
         
         MainLabel.snp.makeConstraints{
             $0.centerX.equalToSuperview()
@@ -92,23 +135,50 @@ class MakeAlarmViewController : UIViewController {
             $0.leading.equalToSuperview().offset(16)
             $0.height.width.equalTo(24)
         }
+        alarmScrollVeiw.snp.makeConstraints{
+            $0.top.equalTo(MainLabel.snp.bottom).offset(21)
+            $0.leading.trailing.equalToSuperview().inset(16)
+            $0.bottom.equalTo(saveButton.snp.top)
+            
+        }
         
         
         timerView.snp.makeConstraints{
-            $0.top.equalTo(MainLabel.snp.bottom).offset(21)
-            $0.leading.trailing.equalToSuperview().inset(16)
+            $0.top.equalToSuperview()
+            $0.leading.trailing.equalToSuperview()
             $0.height.equalTo(208)
+            $0.width.equalTo(alarmScrollVeiw.frameLayoutGuide)
         }
         timePicker.snp.makeConstraints{
-            $0.edges.equalToSuperview()
+            $0.leading.trailing.equalToSuperview().inset(83)
+            $0.height.equalTo(100)
         }
-        
         bar1.snp.makeConstraints{
             $0.center.equalToSuperview()
             $0.height.equalTo(1)
             $0.leading.trailing.equalToSuperview().inset(16)
         }
         
+        soundView.snp.makeConstraints{
+            $0.top.equalTo(timerView.snp.bottom).offset(8)
+            $0.leading.trailing.equalToSuperview()
+            $0.height.equalTo(112)
+            $0.width.equalTo(alarmScrollVeiw.frameLayoutGuide)
+        }
+        
+        groupView.snp.makeConstraints{
+            $0.top.equalTo(soundView.snp.bottom).offset(8)
+            $0.leading.trailing.equalToSuperview()
+            $0.height.equalTo(112)
+            $0.width.equalTo(alarmScrollVeiw.frameLayoutGuide)
+        }
+        
+        memoView.snp.makeConstraints{
+            $0.top.equalTo(groupView.snp.bottom).offset(8)
+            $0.leading.trailing.equalToSuperview()
+            $0.height.equalTo(112)
+            $0.width.equalTo(alarmScrollVeiw.frameLayoutGuide)
+        }
         
         saveButton.snp.makeConstraints{
             $0.leading.trailing.bottom.equalToSuperview()
@@ -116,13 +186,13 @@ class MakeAlarmViewController : UIViewController {
         }
         
     }
-    
+    //MARK: - @objc func
     @objc func popclicked(){
-//        let vc = MainViewController()
         self.navigationController?.popViewController(animated: true)
-        print("pop")
     }
+    
 }
+
 //Preview code
 #if DEBUG
 import SwiftUI

@@ -174,17 +174,17 @@ extension DesignSystemFont {
 }
 
 // MARK: - 아이콘
-//enum DesignSystemIcon {
-//    case codbutton
-//    
-//}
-//
-//extension DesignSystemIcon {
-//    var imageName: String {
-//        switch self {
-//
-//        case .codbutton:
-//            return "codebutton"
-//        }
-//    }
-//}
+enum DesignSystemIcon {
+    case codbutton
+    
+}
+
+extension DesignSystemIcon {
+    var imageName: String {
+        switch self {
+
+        case .codbutton:
+            return "codebutton"
+        }
+    }
+}
