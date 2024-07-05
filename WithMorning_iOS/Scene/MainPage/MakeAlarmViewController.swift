@@ -31,11 +31,19 @@ class MakeAlarmViewController : UIViewController, UIScrollViewDelegate {
     //MARK: - 스크롤 뷰
     private lazy var alarmScrollVeiw : UIScrollView = {
         let scrollview = UIScrollView()
-        scrollview.addSubviews(timerView,soundView,groupView,memoView)
+        scrollview.addSubview(contentView)
         scrollview.isScrollEnabled = true
-        scrollview.backgroundColor = .gray
+        
         scrollview.delegate = self
+        
+        scrollview.showsVerticalScrollIndicator = false
         return scrollview
+    }()
+    
+    private lazy var contentView : UIView = {
+        let view = UIView()
+        view.addSubviews(timerView,soundView,groupView,memoView)
+        return view
     }()
     
     //MARK: - 알람 설정 뷰
@@ -120,7 +128,6 @@ class MakeAlarmViewController : UIViewController, UIScrollViewDelegate {
         super.viewDidLoad()
         self.view.backgroundColor = DesignSystemColor.Gray150.value
         SetUI()
-        saveButton.isHidden = true
     }
     
     func SetUI(){
@@ -135,11 +142,15 @@ class MakeAlarmViewController : UIViewController, UIScrollViewDelegate {
             $0.leading.equalToSuperview().offset(16)
             $0.height.width.equalTo(24)
         }
+        
+        contentView.snp.makeConstraints{
+            $0.edges.equalToSuperview()
+        }
+        
         alarmScrollVeiw.snp.makeConstraints{
             $0.top.equalTo(MainLabel.snp.bottom).offset(21)
             $0.leading.trailing.equalToSuperview().inset(16)
             $0.bottom.equalTo(saveButton.snp.top)
-            
         }
         
         
@@ -147,8 +158,9 @@ class MakeAlarmViewController : UIViewController, UIScrollViewDelegate {
             $0.top.equalToSuperview()
             $0.leading.trailing.equalToSuperview()
             $0.height.equalTo(208)
-            $0.width.equalTo(alarmScrollVeiw.frameLayoutGuide)
+            
         }
+        
         timePicker.snp.makeConstraints{
             $0.leading.trailing.equalToSuperview().inset(83)
             $0.height.equalTo(100)
@@ -163,14 +175,14 @@ class MakeAlarmViewController : UIViewController, UIScrollViewDelegate {
             $0.top.equalTo(timerView.snp.bottom).offset(8)
             $0.leading.trailing.equalToSuperview()
             $0.height.equalTo(112)
-            $0.width.equalTo(alarmScrollVeiw.frameLayoutGuide)
+            
         }
         
         groupView.snp.makeConstraints{
             $0.top.equalTo(soundView.snp.bottom).offset(8)
             $0.leading.trailing.equalToSuperview()
             $0.height.equalTo(112)
-            $0.width.equalTo(alarmScrollVeiw.frameLayoutGuide)
+            
         }
         
         memoView.snp.makeConstraints{
@@ -178,6 +190,7 @@ class MakeAlarmViewController : UIViewController, UIScrollViewDelegate {
             $0.leading.trailing.equalToSuperview()
             $0.height.equalTo(112)
             $0.width.equalTo(alarmScrollVeiw.frameLayoutGuide)
+            $0.bottom.equalToSuperview()
         }
         
         saveButton.snp.makeConstraints{
