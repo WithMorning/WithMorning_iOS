@@ -72,7 +72,7 @@ class MakeAlarmViewController : UIViewController, UIScrollViewDelegate {
         stackView.axis = .horizontal
         stackView.alignment = .fill
         stackView.addSubviews(repeatLabel,repeatDayLabel)
-        
+        stackView.isUserInteractionEnabled = true
         let tapGestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(repeatDay))
         stackView.addGestureRecognizer(tapGestureRecognizer)
         return stackView
@@ -125,7 +125,6 @@ class MakeAlarmViewController : UIViewController, UIScrollViewDelegate {
         stackView.alignment = .fill
         stackView.distribution = .equalSpacing
         stackView.spacing = 8
-        stackView.backgroundColor = .gray
         stackView.addSubviews(alarmsoundLabel,alarmsoundLabel2)
         let tapGestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(soundsetting))
         stackView.addGestureRecognizer(tapGestureRecognizer)
@@ -261,6 +260,7 @@ class MakeAlarmViewController : UIViewController, UIScrollViewDelegate {
         SoundViewStackView.snp.makeConstraints{
             $0.center.equalToSuperview().multipliedBy(0.5)
             $0.leading.trailing.equalToSuperview().inset(16)
+            $0.height.equalTo(40)
         }
         bar2.snp.makeConstraints{
             $0.center.equalToSuperview()
@@ -306,7 +306,7 @@ class MakeAlarmViewController : UIViewController, UIScrollViewDelegate {
     }
     
     @objc func soundsetting(){
-        print("요일설정")
+        print("알림설정")
     }
 }
 
