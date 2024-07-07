@@ -172,15 +172,13 @@ extension CodeBtnViewController : UITextFieldDelegate {
     
     //MARK: - textField Delegate
     func textFieldDidBeginEditing(_ textField: UITextField) {
-        //        textField.becomeFirstResponder()
-        
         textField.layer.borderWidth = 1
         textField.layer.borderColor = DesignSystemColor.Orange500.value.cgColor
         
     }
     
     func textFieldDidEndEditing(_ textField: UITextField) {
-        //        textField.resignFirstResponder()
+
         textField.layer.borderWidth = 0
         
     }

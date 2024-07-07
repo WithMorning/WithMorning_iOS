@@ -10,7 +10,7 @@ import SnapKit
 import Then
 import Alamofire
 
-class MakeAlarmViewController : UIViewController, UIScrollViewDelegate {
+class MakeAlarmViewController : UIViewController, UIScrollViewDelegate, UISheetPresentationControllerDelegate {
     
     //MARK: - 네비게이션 바
     private lazy var MainLabel : UILabel = {
@@ -66,6 +66,7 @@ class MakeAlarmViewController : UIViewController, UIScrollViewDelegate {
         picker.backgroundColor = .clear
         return picker
     }()
+    
     //MARK: - 반복 요일 스택뷰
     private lazy var alarmViewStackView: UIStackView = {
         let stackView = UIStackView()
@@ -118,7 +119,7 @@ class MakeAlarmViewController : UIViewController, UIScrollViewDelegate {
         return view
     }()
     
-//MARK: - 알림음 스택뷰
+    //MARK: - 알림음 스택뷰
     private lazy var SoundViewStackView: UIStackView = {
         let stackView = UIStackView()
         stackView.axis = .horizontal
@@ -155,24 +156,77 @@ class MakeAlarmViewController : UIViewController, UIScrollViewDelegate {
         label.font = DesignSystemFont.Pretendard_Medium14.value
         return label
     }()
-
+    
     
     //MARK: - 모임명
     private lazy var groupView : UIView = {
         let view = UIView()
         view.backgroundColor = .white
         view.layer.cornerRadius = 8
-        //        view.addSubviews()
+        view.addSubviews(groupLabel,groupTextfield)
         return view
     }()
+    
+    private lazy var groupLabel : UILabel = {
+        let label = UILabel()
+        label.text = "모임명"
+        label.textColor = .black
+        label.font = DesignSystemFont.Pretendard_Bold14.value
+        return label
+    }()
+    
+    private lazy var groupTextfield : UITextField = {
+        let textfield = UITextField()
+        textfield.translatesAutoresizingMaskIntoConstraints = false
+        textfield.placeholder = "윗모닝 모임명을 적어주세요."
+        textfield.backgroundColor = DesignSystemColor.Gray150.value
+        textfield.font = DesignSystemFont.Pretendard_Medium14.value
+        textfield.textColor = .black
+        textfield.layer.cornerRadius = 8
+        textfield.textAlignment = .center
+        
+        //텍스트 필드 교정 메서드
+        textfield.autocorrectionType = .no
+        textfield.spellCheckingType = .no
+        textfield.autocapitalizationType = .none
+        return textfield
+    }()
+    
+    
     //MARK: - 메모
     private lazy var memoView : UIView = {
         let view = UIView()
         view.backgroundColor = .white
         view.layer.cornerRadius = 8
-        //        view.addSubviews()
+        view.addSubviews(memoLabel,memoTextfield)
         return view
     }()
+    
+    private lazy var memoLabel : UILabel = {
+        let label = UILabel()
+        label.text = "메모"
+        label.textColor = .black
+        label.font = DesignSystemFont.Pretendard_Bold14.value
+        return label
+    }()
+    
+    private lazy var memoTextfield : UITextField = {
+        let textfield = UITextField()
+        textfield.translatesAutoresizingMaskIntoConstraints = false
+        textfield.placeholder = "아침에 하고 싶은 말 또는 패널티를 정해주세요."
+        textfield.backgroundColor = DesignSystemColor.Gray150.value
+        textfield.font = DesignSystemFont.Pretendard_Medium14.value
+        textfield.textColor = .black
+        textfield.layer.cornerRadius = 8
+        textfield.textAlignment = .center
+        
+        //텍스트 필드 교정 메서드
+        textfield.autocorrectionType = .no
+        textfield.spellCheckingType = .no
+        textfield.autocapitalizationType = .none
+        return textfield
+    }()
+    
     
     //MARK: - 저장 버튼
     
@@ -199,9 +253,13 @@ class MakeAlarmViewController : UIViewController, UIScrollViewDelegate {
         super.viewDidLoad()
         self.view.backgroundColor = DesignSystemColor.Gray150.value
         SetUI()
+        hideKeyboardWhenTappedAround()
     }
     
     func SetUI(){
+        groupTextfield.delegate = self
+        memoTextfield.delegate = self
+        
         view.addSubviews(MainLabel,popButton,alarmScrollVeiw,saveButton)
         
         MainLabel.snp.makeConstraints{
@@ -279,7 +337,14 @@ class MakeAlarmViewController : UIViewController, UIScrollViewDelegate {
             $0.top.equalTo(soundView.snp.bottom).offset(8)
             $0.leading.trailing.equalToSuperview()
             $0.height.equalTo(112)
-            
+        }
+        groupLabel.snp.makeConstraints{
+            $0.leading.top.equalToSuperview().offset(16)
+        }
+        groupTextfield.snp.makeConstraints{
+            $0.trailing.bottom.equalToSuperview().offset(-16)
+            $0.leading.equalToSuperview().offset(16)
+            $0.height.equalTo(52)
         }
         
         memoView.snp.makeConstraints{
@@ -288,6 +353,14 @@ class MakeAlarmViewController : UIViewController, UIScrollViewDelegate {
             $0.height.equalTo(112)
             $0.width.equalTo(alarmScrollVeiw.frameLayoutGuide)
             $0.bottom.equalToSuperview().inset(30)
+        }
+        memoLabel.snp.makeConstraints{
+            $0.leading.top.equalToSuperview().offset(16)
+        }
+        memoTextfield.snp.makeConstraints{
+            $0.trailing.bottom.equalToSuperview().offset(-16)
+            $0.leading.equalToSuperview().offset(16)
+            $0.height.equalTo(52)
         }
         
         saveButton.snp.makeConstraints{
@@ -302,11 +375,47 @@ class MakeAlarmViewController : UIViewController, UIScrollViewDelegate {
     }
     
     @objc func repeatDay(){
-        print("요일설정")
+        let vc = WeekChoiceViewController()
+        self.present(vc, animated: true)
+        
+        if let sheet = vc.sheetPresentationController {
+            if #available(iOS 16.0, *) {
+                sheet.detents = [.custom { context in
+                    return 472 //고정
+                }]
+                
+                sheet.delegate = self
+                sheet.prefersGrabberVisible = false
+                sheet.preferredCornerRadius = 16
+            }
+        }
     }
     
     @objc func soundsetting(){
         print("알림설정")
+    }
+    
+}
+extension MakeAlarmViewController : UITextFieldDelegate {
+    func hideKeyboardWhenTappedAround() {
+        let tap = UITapGestureRecognizer(target: self, action: #selector(MakeAlarmViewController.dismissKeyboard))
+        tap.cancelsTouchesInView = false
+        view.addGestureRecognizer(tap)
+    }
+    
+    @objc func dismissKeyboard() {
+        view.endEditing(true)
+    }
+    
+    func textFieldDidBeginEditing(_ textField: UITextField) {
+        textField.layer.borderWidth = 1
+        textField.layer.borderColor = DesignSystemColor.Orange500.value.cgColor
+        
+    }
+    
+    func textFieldDidEndEditing(_ textField: UITextField) {
+        textField.layer.borderWidth = 0
+        
     }
 }
 
