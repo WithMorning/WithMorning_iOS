@@ -12,7 +12,7 @@ import Alamofire
 
 class MakeAlarmViewController : UIViewController, UIScrollViewDelegate, UISheetPresentationControllerDelegate {
     
-    //MARK: - 네비게이션 바
+//MARK: - 네비게이션 바
     private lazy var MainLabel : UILabel = {
         let label = UILabel()
         label.text = "알람 생성"
@@ -28,13 +28,15 @@ class MakeAlarmViewController : UIViewController, UIScrollViewDelegate, UISheetP
         button.addTarget(self, action: #selector(popclicked), for: .touchUpInside)
         return button
     }()
-    //MARK: - 스크롤 뷰
+    
+//MARK: - 스크롤 뷰
     private lazy var alarmScrollVeiw : UIScrollView = {
         let scrollview = UIScrollView()
         scrollview.addSubview(contentView)
         scrollview.isScrollEnabled = true
         scrollview.delegate = self
         scrollview.showsVerticalScrollIndicator = false
+
         return scrollview
     }()
     
@@ -44,7 +46,7 @@ class MakeAlarmViewController : UIViewController, UIScrollViewDelegate, UISheetP
         return view
     }()
     
-    //MARK: - 알람 설정 뷰
+//MARK: - 알람 설정 뷰
     private lazy var timerView : UIView = {
         let view = UIView()
         view.backgroundColor = .white
@@ -67,7 +69,7 @@ class MakeAlarmViewController : UIViewController, UIScrollViewDelegate, UISheetP
         return picker
     }()
     
-    //MARK: - 반복 요일 스택뷰
+//MARK: - 반복 요일 스택뷰
     private lazy var alarmViewStackView: UIStackView = {
         let stackView = UIStackView()
         stackView.axis = .horizontal
@@ -104,7 +106,7 @@ class MakeAlarmViewController : UIViewController, UIScrollViewDelegate, UISheetP
         return label
     }()
     
-    //MARK: - 알림음
+//MARK: - 알림음
     private lazy var soundView : UIView = {
         let view = UIView()
         view.backgroundColor = .white
@@ -119,7 +121,7 @@ class MakeAlarmViewController : UIViewController, UIScrollViewDelegate, UISheetP
         return view
     }()
     
-    //MARK: - 알림음 스택뷰
+//MARK: - 알림음 스택뷰
     private lazy var SoundViewStackView: UIStackView = {
         let stackView = UIStackView()
         stackView.axis = .horizontal
@@ -274,7 +276,7 @@ class MakeAlarmViewController : UIViewController, UIScrollViewDelegate, UISheetP
         }
         
         contentView.snp.makeConstraints{
-            $0.edges.equalToSuperview()
+            $0.edges.equalTo(alarmScrollVeiw.contentLayoutGuide)
         }
         
         alarmScrollVeiw.snp.makeConstraints{
