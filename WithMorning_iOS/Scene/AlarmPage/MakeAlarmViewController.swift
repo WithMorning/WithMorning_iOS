@@ -12,7 +12,7 @@ import Alamofire
 
 class MakeAlarmViewController : UIViewController, UIScrollViewDelegate, UISheetPresentationControllerDelegate {
     
-//MARK: - 네비게이션 바
+    //MARK: - 네비게이션 바
     private lazy var MainLabel : UILabel = {
         let label = UILabel()
         label.text = "알람 생성"
@@ -29,14 +29,14 @@ class MakeAlarmViewController : UIViewController, UIScrollViewDelegate, UISheetP
         return button
     }()
     
-//MARK: - 스크롤 뷰
+    //MARK: - 스크롤 뷰
     private lazy var alarmScrollVeiw : UIScrollView = {
         let scrollview = UIScrollView()
         scrollview.addSubview(contentView)
         scrollview.isScrollEnabled = true
         scrollview.delegate = self
         scrollview.showsVerticalScrollIndicator = false
-
+        
         return scrollview
     }()
     
@@ -46,7 +46,7 @@ class MakeAlarmViewController : UIViewController, UIScrollViewDelegate, UISheetP
         return view
     }()
     
-//MARK: - 알람 설정 뷰
+    //MARK: - 알람 설정 뷰
     private lazy var timerView : UIView = {
         let view = UIView()
         view.backgroundColor = .white
@@ -69,7 +69,7 @@ class MakeAlarmViewController : UIViewController, UIScrollViewDelegate, UISheetP
         return picker
     }()
     
-//MARK: - 반복 요일 스택뷰
+    //MARK: - 반복 요일 스택뷰
     private lazy var alarmViewStackView: UIStackView = {
         let stackView = UIStackView()
         stackView.axis = .horizontal
@@ -106,12 +106,12 @@ class MakeAlarmViewController : UIViewController, UIScrollViewDelegate, UISheetP
         return label
     }()
     
-//MARK: - 알림음
+    //MARK: - 알림음
     private lazy var soundView : UIView = {
         let view = UIView()
         view.backgroundColor = .white
         view.layer.cornerRadius = 8
-        view.addSubviews(SoundViewStackView,bar2)
+        view.addSubviews(SoundViewStackView,bar2,volumeSlider)
         return view
     }()
     
@@ -121,7 +121,8 @@ class MakeAlarmViewController : UIViewController, UIScrollViewDelegate, UISheetP
         return view
     }()
     
-//MARK: - 알림음 스택뷰
+    
+    //MARK: - 알림음 스택뷰
     private lazy var SoundViewStackView: UIStackView = {
         let stackView = UIStackView()
         stackView.axis = .horizontal
@@ -159,6 +160,15 @@ class MakeAlarmViewController : UIViewController, UIScrollViewDelegate, UISheetP
         return label
     }()
     
+    private lazy var volumeSlider : customSlider = {
+        let slider = customSlider()
+        slider.minimumValue = 0
+        slider.maximumValue = 100
+//        slider.minimumValueImage = UIImage(systemName: "volume.slash.fill")
+        slider.tintColor = DesignSystemColor.Orange500.value
+        slider.thumbTintColor = .clear
+        return slider
+    }()
     
     //MARK: - 모임명
     private lazy var groupView : UIView = {
@@ -259,6 +269,7 @@ class MakeAlarmViewController : UIViewController, UIScrollViewDelegate, UISheetP
         setUpKeyboard()
     }
     
+    
     func SetUI(){
         groupTextfield.delegate = self
         memoTextfield.delegate = self
@@ -334,6 +345,10 @@ class MakeAlarmViewController : UIViewController, UIScrollViewDelegate, UISheetP
         alarmsoundLabel2.snp.makeConstraints {
             $0.trailing.centerY.equalToSuperview()
         }
+        volumeSlider.snp.makeConstraints{
+            $0.center.equalToSuperview().multipliedBy(1.5)
+            $0.leading.equalToSuperview().inset(40)
+        }
         
         
         groupView.snp.makeConstraints{
@@ -399,6 +414,7 @@ class MakeAlarmViewController : UIViewController, UIScrollViewDelegate, UISheetP
     }
     
 }
+//MARK: - 키보드 조절
 extension MakeAlarmViewController : UITextFieldDelegate {
     func hideKeyboardWhenTappedAround() {
         let tap = UITapGestureRecognizer(target: self, action: #selector(MakeAlarmViewController.dismissKeyboard))
@@ -439,7 +455,7 @@ extension MakeAlarmViewController : UITextFieldDelegate {
             }
         }
     }
-
+    
     @objc func keyboardWillHide(notification: NSNotification) {
         if self.view.frame.origin.y != 0 {
             self.view.frame.origin.y = 0
@@ -447,8 +463,21 @@ extension MakeAlarmViewController : UITextFieldDelegate {
     }
 }
 
+//MARK: - 슬라이더 두께 조절
 
-
+class customSlider: UISlider {
+    override func trackRect(forBounds bounds: CGRect) -> CGRect {
+        // 원하는 두께로 조절하세요. 여기서는 10으로 설정했습니다.
+        let customTrackRect = CGRect(
+            x: bounds.origin.x,
+            y: bounds.origin.y + bounds.size.height/2 - 5,
+            width: 160,
+            height: 6
+        )
+        super.trackRect(forBounds: customTrackRect)
+        return customTrackRect
+    }
+}
 
 
 
