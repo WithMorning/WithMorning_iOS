@@ -111,7 +111,7 @@ class MakeAlarmViewController : UIViewController, UIScrollViewDelegate, UISheetP
         let view = UIView()
         view.backgroundColor = .white
         view.layer.cornerRadius = 8
-        view.addSubviews(SoundViewStackView,bar2,volumeSlider,vibrateLabel)
+        view.addSubviews(SoundViewStackView,bar2,sliderImage,volumeSlider,sliderLabel,vibrateLabel,vibrateImage)
         return view
     }()
     
@@ -161,26 +161,39 @@ class MakeAlarmViewController : UIViewController, UIScrollViewDelegate, UISheetP
     }()
     
     //MARK: - 알림음 슬라이더
-    private lazy var volumeSlider : customSlider = {
-        let slider = customSlider()
+    private lazy var sliderImage : UIImageView = {
+        let img = UIImageView()
+        img.tintColor = .black
+        img.image = UIImage(named: "Volumeon")
+        return img
+    }()
+    
+    private lazy var volumeSlider : CustomSlider = {
+        let slider = CustomSlider()
         slider.minimumValue = 0
         slider.maximumValue = 100
-//        slider.minimumValueImage = UIImage(systemName: "volume.slash.fill")
         slider.tintColor = DesignSystemColor.Orange500.value
-        slider.thumbTintColor = .clear
+        slider.isUserInteractionEnabled = true
+        slider.thumbTintColor = .white
+        slider.value = 50
+        slider.addTarget(self, action: #selector(sliderValueChanged), for: .valueChanged)
         return slider
     }()
+    
+    private lazy var sliderLabel : UILabel = {
+        let label = UILabel()
+        label.text = "50%"
+        label.textColor = .black
+        label.textAlignment = .center
+        label.font = DesignSystemFont.Pretendard_Medium14.value
+        return label
+    }()
+    
+    
     //MARK: - 진동 버튼
     private lazy var vibrateLabel : UILabel = {
-        let attributedString1 = NSMutableAttributedString(string: "진동 ")
-        let imageAttachment1 = NSTextAttachment()
-        imageAttachment1.image = UIImage(systemName: "checkmark.square.fill")?.withTintColor(DesignSystemColor.Gray200.value)
-        imageAttachment1.bounds = CGRect(x: 0, y: -4.5, width: 22, height: 20)
-        
-        attributedString1.append(NSAttributedString(attachment: imageAttachment1))
-        
         let label = UILabel()
-        label.attributedText = attributedString1
+        label.text = "진동"
         label.textAlignment = .right
         label.textColor = .black
         label.font = DesignSystemFont.Pretendard_Medium14.value
@@ -189,6 +202,15 @@ class MakeAlarmViewController : UIViewController, UIScrollViewDelegate, UISheetP
         let tapGestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(vibratesetting))
         label.addGestureRecognizer(tapGestureRecognizer)
         return label
+    }()
+    
+    private lazy var vibrateImage : UIButton = {
+        let button = UIButton()
+        button.setImage(UIImage(systemName: "checkmark.square.fill"), for: .normal)
+        button.tintColor = DesignSystemColor.Gray200.value
+        
+        button.addTarget(self, action: #selector(vibratesetting), for: .touchUpInside)
+        return button
     }()
     
     //MARK: - 모임명
@@ -366,15 +388,29 @@ class MakeAlarmViewController : UIViewController, UIScrollViewDelegate, UISheetP
         alarmsoundLabel2.snp.makeConstraints {
             $0.trailing.centerY.equalToSuperview()
         }
+        sliderImage.snp.makeConstraints{
+            $0.width.height.equalTo(24)
+            $0.leading.equalToSuperview().offset(16)
+            $0.centerY.equalTo(vibrateImage)
+        }
         volumeSlider.snp.makeConstraints{
-            $0.center.equalToSuperview().multipliedBy(1.5)
-            $0.leading.equalToSuperview().inset(40)
+            $0.bottom.equalToSuperview().inset(10)
+            $0.leading.equalTo(sliderImage.snp.trailing).offset(4)
+            $0.width.equalTo(160)
+        }
+        sliderLabel.snp.makeConstraints{
+            $0.centerY.equalTo(sliderImage)
+            $0.leading.equalTo(volumeSlider.snp.trailing).offset(8)
         }
         vibrateLabel.snp.makeConstraints{
-            $0.trailing.equalToSuperview().inset(16)
-            $0.centerY.equalTo(volumeSlider)
+            $0.trailing.equalTo(vibrateImage.snp.leading).offset(-4)
+            $0.bottom.equalToSuperview().inset(18)
         }
-        
+        vibrateImage.snp.makeConstraints{
+            $0.width.height.equalTo(20)
+            $0.centerY.equalTo(vibrateLabel)
+            $0.trailing.equalToSuperview().inset(16)
+        }
         
         groupView.snp.makeConstraints{
             $0.top.equalTo(soundView.snp.bottom).offset(8)
@@ -437,8 +473,25 @@ class MakeAlarmViewController : UIViewController, UIScrollViewDelegate, UISheetP
     @objc func soundsetting(){
         print("알림설정")
     }
+    
     @objc func vibratesetting(){
-        print("진동버튼 클릭")
+        if vibrateImage.tintColor == DesignSystemColor.Gray200.value{
+            vibrateImage.tintColor = DesignSystemColor.Orange500.value
+        }else{
+            vibrateImage.tintColor = DesignSystemColor.Gray200.value
+        }
+    }
+    @objc func sliderValueChanged(_ sender: CustomSlider){
+        var value : Int = Int(sender.value)
+        if value == 0 {
+            sliderImage.image = UIImage(named: "Volumeoff")
+            
+        }else{
+            sliderImage.image = UIImage(named: "Volumeon")
+        }
+        sliderLabel.text = "\(value)" + "%"
+        
+        print(value)
     }
     
 }
@@ -493,13 +546,14 @@ extension MakeAlarmViewController : UITextFieldDelegate {
 
 //MARK: - 슬라이더 두께 조절
 
-class customSlider: UISlider {
+class CustomSlider: UISlider {
+    
     override func trackRect(forBounds bounds: CGRect) -> CGRect {
         // 원하는 두께로 조절하세요. 여기서는 10으로 설정했습니다.
         let customTrackRect = CGRect(
-            x: bounds.origin.x,
-            y: bounds.origin.y + bounds.size.height/2 - 5,
-            width: 160,
+            x: 0,
+            y: bounds.origin.y + bounds.size.height/2 - 3,
+            width: bounds.width,
             height: 6
         )
         super.trackRect(forBounds: customTrackRect)
