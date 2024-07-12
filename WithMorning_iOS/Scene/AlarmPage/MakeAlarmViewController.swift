@@ -111,7 +111,7 @@ class MakeAlarmViewController : UIViewController, UIScrollViewDelegate, UISheetP
         let view = UIView()
         view.backgroundColor = .white
         view.layer.cornerRadius = 8
-        view.addSubviews(SoundViewStackView,bar2,volumeSlider)
+        view.addSubviews(SoundViewStackView,bar2,volumeSlider,vibrateLabel)
         return view
     }()
     
@@ -160,6 +160,7 @@ class MakeAlarmViewController : UIViewController, UIScrollViewDelegate, UISheetP
         return label
     }()
     
+    //MARK: - 알림음 슬라이더
     private lazy var volumeSlider : customSlider = {
         let slider = customSlider()
         slider.minimumValue = 0
@@ -168,6 +169,26 @@ class MakeAlarmViewController : UIViewController, UIScrollViewDelegate, UISheetP
         slider.tintColor = DesignSystemColor.Orange500.value
         slider.thumbTintColor = .clear
         return slider
+    }()
+    //MARK: - 진동 버튼
+    private lazy var vibrateLabel : UILabel = {
+        let attributedString1 = NSMutableAttributedString(string: "진동 ")
+        let imageAttachment1 = NSTextAttachment()
+        imageAttachment1.image = UIImage(systemName: "checkmark.square.fill")?.withTintColor(DesignSystemColor.Gray200.value)
+        imageAttachment1.bounds = CGRect(x: 0, y: -4.5, width: 22, height: 20)
+        
+        attributedString1.append(NSAttributedString(attachment: imageAttachment1))
+        
+        let label = UILabel()
+        label.attributedText = attributedString1
+        label.textAlignment = .right
+        label.textColor = .black
+        label.font = DesignSystemFont.Pretendard_Medium14.value
+        label.isUserInteractionEnabled = true
+        
+        let tapGestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(vibratesetting))
+        label.addGestureRecognizer(tapGestureRecognizer)
+        return label
     }()
     
     //MARK: - 모임명
@@ -349,6 +370,10 @@ class MakeAlarmViewController : UIViewController, UIScrollViewDelegate, UISheetP
             $0.center.equalToSuperview().multipliedBy(1.5)
             $0.leading.equalToSuperview().inset(40)
         }
+        vibrateLabel.snp.makeConstraints{
+            $0.trailing.equalToSuperview().inset(16)
+            $0.centerY.equalTo(volumeSlider)
+        }
         
         
         groupView.snp.makeConstraints{
@@ -411,6 +436,9 @@ class MakeAlarmViewController : UIViewController, UIScrollViewDelegate, UISheetP
     
     @objc func soundsetting(){
         print("알림설정")
+    }
+    @objc func vibratesetting(){
+        print("진동버튼 클릭")
     }
     
 }
