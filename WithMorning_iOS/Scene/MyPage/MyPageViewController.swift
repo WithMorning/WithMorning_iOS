@@ -65,24 +65,19 @@ class MyPageViewController : UIViewController {
         button.layer.cornerRadius = 4
         return button
     }()
-
-    //MARK: - StackView
     
-    //
-//    private lazy var pushView: UIStackView = UIStackView()
-//        
-//        private let pushLabel = UILabel().then {
-//            $0.text = "푸시 알림 설정"
-//            $0.font = UIFont.pretendard(.medium, size: 16)
-//            $0.textColor = UIColor(hex: "24252E")
-//        }
-//        
-//        private lazy var pushLeftArrow = UIImageView().then {
-//            $0.image = UIImage(systemName: "chevron.right")
-//            $0.contentMode = .scaleAspectFit
-//            $0.image = $0.image?.withRenderingMode(.alwaysTemplate)
-//            $0.tintColor = UIColor(hex: "24252E")
-//        }
+    //MARK: - topView
+    private lazy var topView : UIView = {
+        let view = UIView()
+        view.backgroundColor = .white
+        view.layer.cornerRadius = 8
+//        view.addSubviews(timePicker,bar1,alarmViewStackView)
+        return view
+    }()
+    //MARK: - middleView
+    //MARK: - bottomView
+
+
 
 
     
@@ -99,7 +94,6 @@ class MyPageViewController : UIViewController {
             $0.centerX.equalToSuperview()
             $0.top.equalTo(view.safeAreaLayoutGuide).offset(20)
         }
-        
         popButton.snp.makeConstraints{
             $0.centerY.equalTo(myPageLabel)
             $0.leading.equalToSuperview().offset(16)

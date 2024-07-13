@@ -482,7 +482,7 @@ class MakeAlarmViewController : UIViewController, UIScrollViewDelegate, UISheetP
         }
     }
     @objc func sliderValueChanged(_ sender: CustomSlider){
-        var value : Int = Int(sender.value)
+        let value : Int = Int(sender.value)
         if value == 0 {
             sliderImage.image = UIImage(named: "Volumeoff")
             
@@ -491,7 +491,6 @@ class MakeAlarmViewController : UIViewController, UIScrollViewDelegate, UISheetP
         }
         sliderLabel.text = "\(value)" + "%"
         
-        print(value)
     }
     
 }
