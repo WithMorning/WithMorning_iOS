@@ -545,7 +545,6 @@ extension MakeAlarmViewController : UITextFieldDelegate {
 }
 
 //MARK: - 슬라이더 두께 조절
-
 class CustomSlider: UISlider {
     
     override func trackRect(forBounds bounds: CGRect) -> CGRect {
