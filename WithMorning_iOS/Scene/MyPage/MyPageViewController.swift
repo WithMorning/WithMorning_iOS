@@ -34,6 +34,7 @@ class MyPageViewController : UIViewController {
     private lazy var profileImage : UIImageView = {
         let image = UIImageView()
         image.backgroundColor = .gray
+        image.layer.cornerRadius = 50
         return image
     }()
     
@@ -71,16 +72,276 @@ class MyPageViewController : UIViewController {
         let view = UIView()
         view.backgroundColor = .white
         view.layer.cornerRadius = 8
-//        view.addSubviews(timePicker,bar1,alarmViewStackView)
+        view.addSubviews(sleeptimeStackView,pushnotiStackView)
         return view
     }()
-    //MARK: - middleView
-    //MARK: - bottomView
+    //MARK: - 취침 시간 알림
 
-
-
+    private lazy var sleeptimeStackView: UIStackView = {
+        let stackView = UIStackView()
+        stackView.axis = .horizontal
+        stackView.alignment = .fill
+        stackView.addSubviews(sleeptimeLabel,sleeptimeLabel2)
+        stackView.isUserInteractionEnabled = true
+//        let tapGestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(repeatDay))
+//        stackView.addGestureRecognizer(tapGestureRecognizer)
+        return stackView
+    }()
+    
+    private lazy var sleeptimeLabel : UILabel = {
+        let label = UILabel()
+        label.text = "취침 시간 알림"
+        label.font = DesignSystemFont.Pretendard_Bold14.value
+        label.textColor = .black
+        label.textAlignment = .left
+        return label
+    }()
+    
+    private lazy var sleeptimeLabel2 : UILabel = {
+        let attributedString1 = NSMutableAttributedString(string: "6:00 AM 평일     ")
+        let imageAttachment1 = NSTextAttachment()
+        imageAttachment1.image = UIImage(systemName: "greaterthan")
+        imageAttachment1.bounds = CGRect(x: 0, y: -3, width: 10, height: 16)
+        attributedString1.append(NSAttributedString(attachment: imageAttachment1))
+        
+        let label = UILabel()
+        label.attributedText = attributedString1
+        label.textAlignment = .right
+        label.textColor = DesignSystemColor.Gray400.value
+        label.font = DesignSystemFont.Pretendard_Medium14.value
+        return label
+    }()
+    
+    //MARK: - 푸시 알림 설정
+    private lazy var pushnotiStackView: UIStackView = {
+        let stackView = UIStackView()
+        stackView.axis = .horizontal
+        stackView.alignment = .fill
+        stackView.addSubviews(pushnotiLabel,pushnotiLabel2)
+        stackView.isUserInteractionEnabled = true
+//        let tapGestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(repeatDay))
+//        stackView.addGestureRecognizer(tapGestureRecognizer)
+        return stackView
+    }()
+    
+    private lazy var pushnotiLabel : UILabel = {
+        let label = UILabel()
+        label.text = "푸시 알림 설정"
+        label.font = DesignSystemFont.Pretendard_Bold14.value
+        label.textColor = .black
+        label.textAlignment = .left
+        return label
+    }()
+    
+    private lazy var pushnotiLabel2 : UILabel = {
+        let attributedString1 = NSMutableAttributedString(string: "")
+        let imageAttachment1 = NSTextAttachment()
+        imageAttachment1.image = UIImage(systemName: "greaterthan")
+        imageAttachment1.bounds = CGRect(x: 0, y: -3, width: 10, height: 16)
+        attributedString1.append(NSAttributedString(attachment: imageAttachment1))
+        
+        let label = UILabel()
+        label.attributedText = attributedString1
+        label.textAlignment = .right
+        label.textColor = DesignSystemColor.Gray400.value
+        label.font = DesignSystemFont.Pretendard_Medium14.value
+        return label
+    }()
 
     
+    
+    //MARK: - middleView
+    private lazy var middleView : UIView = {
+        let view = UIView()
+        view.backgroundColor = .white
+        view.layer.cornerRadius = 8
+        view.addSubviews(noticeStackView,serviceStackView,privacyStackView)
+        return view
+    }()
+    
+    //MARK: - 공지사항
+    private lazy var noticeStackView: UIStackView = {
+        let stackView = UIStackView()
+        stackView.axis = .horizontal
+        stackView.alignment = .fill
+        stackView.addSubviews(noticeLabel,noticeLabel2)
+        stackView.isUserInteractionEnabled = true
+//        let tapGestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(repeatDay))
+//        stackView.addGestureRecognizer(tapGestureRecognizer)
+        return stackView
+    }()
+    
+    private lazy var noticeLabel : UILabel = {
+        let label = UILabel()
+        label.text = "공지사항"
+        label.font = DesignSystemFont.Pretendard_Bold14.value
+        label.textColor = .black
+        label.textAlignment = .left
+        return label
+    }()
+    
+    private lazy var noticeLabel2 : UILabel = {
+        let attributedString1 = NSMutableAttributedString(string: "")
+        let imageAttachment1 = NSTextAttachment()
+        imageAttachment1.image = UIImage(systemName: "greaterthan")
+        imageAttachment1.bounds = CGRect(x: 0, y: -3, width: 10, height: 16)
+        attributedString1.append(NSAttributedString(attachment: imageAttachment1))
+        
+        let label = UILabel()
+        label.attributedText = attributedString1
+        label.textAlignment = .right
+        label.textColor = DesignSystemColor.Gray400.value
+        label.font = DesignSystemFont.Pretendard_Medium14.value
+        return label
+    }()
+    //MARK: - 이용약관
+    private lazy var serviceStackView: UIStackView = {
+        let stackView = UIStackView()
+        stackView.axis = .horizontal
+        stackView.alignment = .fill
+        stackView.addSubviews(serviceLabel,serviceLabel2)
+        stackView.isUserInteractionEnabled = true
+//        let tapGestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(repeatDay))
+//        stackView.addGestureRecognizer(tapGestureRecognizer)
+        return stackView
+    }()
+    
+    private lazy var serviceLabel : UILabel = {
+        let label = UILabel()
+        label.text = "이용약관"
+        label.font = DesignSystemFont.Pretendard_Bold14.value
+        label.textColor = .black
+        label.textAlignment = .left
+        return label
+    }()
+    
+    private lazy var serviceLabel2 : UILabel = {
+        let attributedString1 = NSMutableAttributedString(string: "")
+        let imageAttachment1 = NSTextAttachment()
+        imageAttachment1.image = UIImage(systemName: "greaterthan")
+        imageAttachment1.bounds = CGRect(x: 0, y: -3, width: 10, height: 16)
+        attributedString1.append(NSAttributedString(attachment: imageAttachment1))
+        
+        let label = UILabel()
+        label.attributedText = attributedString1
+        label.textAlignment = .right
+        label.textColor = DesignSystemColor.Gray400.value
+        label.font = DesignSystemFont.Pretendard_Medium14.value
+        return label
+    }()
+    //MARK: - 개인정보 처리방침
+    private lazy var privacyStackView: UIStackView = {
+        let stackView = UIStackView()
+        stackView.axis = .horizontal
+        stackView.alignment = .fill
+        stackView.addSubviews(privacyLabel,privacyLabel2)
+        stackView.isUserInteractionEnabled = true
+//        let tapGestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(repeatDay))
+//        stackView.addGestureRecognizer(tapGestureRecognizer)
+        return stackView
+    }()
+    
+    private lazy var privacyLabel : UILabel = {
+        let label = UILabel()
+        label.text = "개인정보 처리방침"
+        label.font = DesignSystemFont.Pretendard_Bold14.value
+        label.textColor = .black
+        label.textAlignment = .left
+        return label
+    }()
+    
+    private lazy var privacyLabel2 : UILabel = {
+        let attributedString1 = NSMutableAttributedString(string: "")
+        let imageAttachment1 = NSTextAttachment()
+        imageAttachment1.image = UIImage(systemName: "greaterthan")
+        imageAttachment1.bounds = CGRect(x: 0, y: -3, width: 10, height: 16)
+        attributedString1.append(NSAttributedString(attachment: imageAttachment1))
+        
+        let label = UILabel()
+        label.attributedText = attributedString1
+        label.textAlignment = .right
+        label.textColor = DesignSystemColor.Gray400.value
+        label.font = DesignSystemFont.Pretendard_Medium14.value
+        return label
+    }()
+    
+    //MARK: - bottomView
+    private lazy var bottomView : UIView = {
+        let view = UIView()
+        view.backgroundColor = .white
+        view.layer.cornerRadius = 8
+        view.addSubviews(inquiryStackView,versionStackView)
+        return view
+    }()
+
+    //MARK: - 문의하기
+    private lazy var inquiryStackView: UIStackView = {
+        let stackView = UIStackView()
+        stackView.axis = .horizontal
+        stackView.alignment = .fill
+        stackView.addSubviews(inquiryLabel,inquiryLabel2)
+        stackView.isUserInteractionEnabled = true
+//        let tapGestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(repeatDay))
+//        stackView.addGestureRecognizer(tapGestureRecognizer)
+        return stackView
+    }()
+    
+    private lazy var inquiryLabel : UILabel = {
+        let label = UILabel()
+        label.text = "문의하기"
+        label.font = DesignSystemFont.Pretendard_Bold14.value
+        label.textColor = .black
+        label.textAlignment = .left
+        return label
+    }()
+    
+    private lazy var inquiryLabel2 : UILabel = {
+        let attributedString1 = NSMutableAttributedString(string: "")
+        let imageAttachment1 = NSTextAttachment()
+        imageAttachment1.image = UIImage(systemName: "greaterthan")
+        imageAttachment1.bounds = CGRect(x: 0, y: -3, width: 10, height: 16)
+        attributedString1.append(NSAttributedString(attachment: imageAttachment1))
+        
+        let label = UILabel()
+        label.attributedText = attributedString1
+        label.textAlignment = .right
+        label.textColor = DesignSystemColor.Gray400.value
+        label.font = DesignSystemFont.Pretendard_Medium14.value
+        return label
+    }()
+    //MARK: - 버전 정보
+    private lazy var versionStackView: UIStackView = {
+        let stackView = UIStackView()
+        stackView.axis = .horizontal
+        stackView.alignment = .fill
+        stackView.addSubviews(versionLabel,versionLabel2)
+        stackView.isUserInteractionEnabled = true
+//        let tapGestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(repeatDay))
+//        stackView.addGestureRecognizer(tapGestureRecognizer)
+        return stackView
+    }()
+    
+    private lazy var versionLabel : UILabel = {
+        let label = UILabel()
+        label.text = "버전 정보"
+        label.font = DesignSystemFont.Pretendard_Bold14.value
+        label.textColor = .black
+        label.textAlignment = .left
+        return label
+    }()
+    
+    private lazy var versionLabel2 : UILabel = {
+        let label = UILabel()
+        label.text = "1.00"
+        label.textAlignment = .right
+        label.textColor = DesignSystemColor.Gray400.value
+        label.font = DesignSystemFont.Pretendard_Medium14.value
+        return label
+    }()
+
+
+    //MARK: - Life Cycle
+
     override func viewDidLoad() {
         super.viewDidLoad()
         self.view.backgroundColor = DesignSystemColor.Gray150.value
@@ -88,7 +349,7 @@ class MyPageViewController : UIViewController {
     }
     
     func SetUI(){
-        view.addSubviews(myPageLabel,popButton,nickNameLabel,editProfileButton,ContectButton)
+        view.addSubviews(myPageLabel,popButton,profileImage,nickNameLabel,editProfileButton,ContectButton,topView,middleView,bottomView)
         
         myPageLabel.snp.makeConstraints{
             $0.centerX.equalToSuperview()
@@ -99,27 +360,129 @@ class MyPageViewController : UIViewController {
             $0.leading.equalToSuperview().offset(16)
             $0.height.width.equalTo(24)
         }
-        
+        profileImage.snp.makeConstraints{
+            $0.bottom.equalTo(topView.snp.top).offset(-24)
+            $0.width.height.equalTo(100)
+            $0.leading.equalToSuperview().inset(32)
+        }
         nickNameLabel.snp.makeConstraints{
             $0.top.equalTo(view.safeAreaLayoutGuide).offset(109.5)
             $0.trailing.equalTo(ContectButton)
             $0.leading.equalTo(editProfileButton.snp.leading)
             $0.trailing.equalTo(ContectButton.snp.trailing)
         }
-        
         editProfileButton.snp.makeConstraints{
             $0.trailing.equalTo(ContectButton.snp.leading).offset(-6)
             $0.top.equalTo(nickNameLabel.snp.bottom).offset(16)
             $0.height.equalTo(44)
             $0.width.equalTo(97)
         }
-        
         ContectButton.snp.makeConstraints{
             $0.trailing.equalToSuperview().offset(-32)
             $0.top.equalTo(nickNameLabel.snp.bottom).offset(16)
             $0.height.equalTo(44)
             $0.width.equalTo(97)
         }
+        
+        
+        topView.snp.makeConstraints{
+            $0.top.equalTo(editProfileButton.snp.bottom).offset(37.5)
+            $0.leading.trailing.equalToSuperview().inset(16)
+            $0.height.equalTo(108)
+        }
+        sleeptimeStackView.snp.makeConstraints{
+            $0.leading.trailing.equalToSuperview().inset(16)
+            $0.top.equalToSuperview().inset(20)
+            $0.height.equalTo(24)
+        }
+        sleeptimeLabel.snp.makeConstraints{
+            $0.leading.equalToSuperview()
+        }
+        sleeptimeLabel2.snp.makeConstraints{
+            $0.trailing.equalToSuperview()
+        }
+        pushnotiStackView.snp.makeConstraints{
+            $0.leading.trailing.equalToSuperview().inset(16)
+            $0.top.equalTo(sleeptimeStackView.snp.bottom).offset(20)
+            $0.height.equalTo(24)
+        }
+        pushnotiLabel.snp.makeConstraints{
+            $0.leading.equalToSuperview()
+        }
+        pushnotiLabel2.snp.makeConstraints{
+            $0.trailing.equalToSuperview()
+        }
+        
+        
+        middleView.snp.makeConstraints{
+            $0.top.equalTo(topView.snp.bottom).offset(8)
+            $0.leading.trailing.equalToSuperview().inset(16)
+            $0.height.equalTo(152)
+        }
+        noticeStackView.snp.makeConstraints{
+            $0.leading.trailing.equalToSuperview().inset(16)
+            $0.top.equalToSuperview().inset(20)
+            $0.height.equalTo(24)
+        }
+        noticeLabel.snp.makeConstraints{
+            $0.leading.equalToSuperview()
+        }
+        noticeLabel2.snp.makeConstraints{
+            $0.trailing.equalToSuperview()
+        }
+        serviceStackView.snp.makeConstraints{
+            $0.leading.trailing.equalToSuperview().inset(16)
+            $0.top.equalTo(noticeStackView.snp.bottom).offset(20)
+            $0.height.equalTo(24)
+        }
+        serviceLabel.snp.makeConstraints{
+            $0.leading.equalToSuperview()
+        }
+        serviceLabel2.snp.makeConstraints{
+            $0.trailing.equalToSuperview()
+        }
+        privacyStackView.snp.makeConstraints{
+            $0.leading.trailing.equalToSuperview().inset(16)
+            $0.top.equalTo(serviceStackView.snp.bottom).offset(20)
+            $0.height.equalTo(24)
+        }
+        privacyLabel.snp.makeConstraints{
+            $0.leading.equalToSuperview()
+        }
+        privacyLabel2.snp.makeConstraints{
+            $0.trailing.equalToSuperview()
+        }
+        
+        
+        bottomView.snp.makeConstraints{
+            $0.top.equalTo(middleView.snp.bottom).offset(8)
+            $0.leading.trailing.equalToSuperview().inset(16)
+            $0.height.equalTo(108)
+        }
+        inquiryStackView.snp.makeConstraints{
+            $0.leading.trailing.equalToSuperview().inset(16)
+            $0.top.equalToSuperview().offset(20)
+            $0.height.equalTo(24)
+        }
+        inquiryLabel.snp.makeConstraints{
+            $0.leading.equalToSuperview()
+        }
+        inquiryLabel2.snp.makeConstraints{
+            $0.trailing.equalToSuperview()
+        }
+        versionStackView.snp.makeConstraints{
+            $0.leading.trailing.equalToSuperview().inset(16)
+            $0.top.equalTo(inquiryStackView.snp.bottom).offset(20)
+            $0.height.equalTo(24)
+        }
+        versionLabel.snp.makeConstraints{
+            $0.leading.equalToSuperview()
+        }
+        versionLabel2.snp.makeConstraints{
+            $0.trailing.equalToSuperview()
+        }
+        
+        
         
     }
     
