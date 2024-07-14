@@ -64,3 +64,32 @@ class SleepTimeViewController : UIViewController {
     
 }
 
+//Preview code
+#if DEBUG
+import SwiftUI
+struct SleepTimeViewControllerRepresentable: UIViewControllerRepresentable {
+    
+    func updateUIViewController(_ uiView: UIViewController,context: Context) {
+        // leave this empty
+    }
+    @available(iOS 13.0.0, *)
+    func makeUIViewController(context: Context) -> UIViewController{
+        SleepTimeViewController()
+    }
+}
+@available(iOS 13.0, *)
+struct SleepTimeViewControllerRepresentable_PreviewProvider: PreviewProvider {
+    static var previews: some View {
+        Group {
+            if #available(iOS 14.0, *) {
+                SleepTimeViewControllerRepresentable()
+                    .ignoresSafeArea()
+                    .previewDisplayName(/*@START_MENU_TOKEN@*/"Preview"/*@END_MENU_TOKEN@*/)
+                    .previewDevice(PreviewDevice(rawValue: "iPhone se3"))
+            } else {
+                // Fallback on earlier versions
+            }
+        }
+        
+    }
+} #endif
