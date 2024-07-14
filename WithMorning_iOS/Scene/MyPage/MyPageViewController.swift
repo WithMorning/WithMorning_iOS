@@ -83,8 +83,8 @@ class MyPageViewController : UIViewController {
         stackView.alignment = .fill
         stackView.addSubviews(sleeptimeLabel,sleeptimeLabel2)
         stackView.isUserInteractionEnabled = true
-//        let tapGestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(repeatDay))
-//        stackView.addGestureRecognizer(tapGestureRecognizer)
+        let tapGestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(sleeptime))
+        stackView.addGestureRecognizer(tapGestureRecognizer)
         return stackView
     }()
     
@@ -487,9 +487,13 @@ class MyPageViewController : UIViewController {
     }
     
     @objc func popclicked(){
-//        let vc = MainViewController()
         self.navigationController?.popViewController(animated: true)
         print("pop")
+    }
+    
+    @objc func sleeptime(){
+        let vc = SleepTimeViewController()
+        self.navigationController?.pushViewController(vc, animated: true)
     }
 }
 //Preview code
