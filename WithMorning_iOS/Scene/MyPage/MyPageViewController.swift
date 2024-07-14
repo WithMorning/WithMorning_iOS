@@ -35,6 +35,8 @@ class MyPageViewController : UIViewController {
         let image = UIImageView()
         image.backgroundColor = .gray
         image.layer.cornerRadius = 50
+        image.image = UIImage(systemName: "person.circle")
+        image.tintColor = .white
         return image
     }()
     
@@ -75,8 +77,8 @@ class MyPageViewController : UIViewController {
         view.addSubviews(sleeptimeStackView,pushnotiStackView)
         return view
     }()
+    
     //MARK: - 취침 시간 알림
-
     private lazy var sleeptimeStackView: UIStackView = {
         let stackView = UIStackView()
         stackView.axis = .horizontal

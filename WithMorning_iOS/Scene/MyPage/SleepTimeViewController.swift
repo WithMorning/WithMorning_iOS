@@ -14,7 +14,7 @@ class SleepTimeViewController : UIViewController {
     
     //MARK: - properties
     
-    private lazy var timeLabel : UILabel = {
+    private lazy var mainLabel : UILabel = {
         let label = UILabel()
         label.text = "취침 시간 알림"
         label.tintColor = DesignSystemColor.Black.value
@@ -30,6 +30,77 @@ class SleepTimeViewController : UIViewController {
         return button
     }()
     
+    //MARK: - baseView
+    private lazy var baseView : UIView = {
+        let view = UIView()
+        view.backgroundColor = .white
+        view.layer.cornerRadius = 8
+        view.addSubviews(timePicker,bar1,alarmViewStackView)
+        return view
+    }()
+    
+    private lazy var timePicker : UIDatePicker = {
+        let picker = UIDatePicker()
+        picker.datePickerMode = .time
+        picker.preferredDatePickerStyle = .wheels
+        picker.backgroundColor = .clear
+        return picker
+    }()
+    
+    private lazy var bar1 : UIView = {
+        let view = UIView()
+        view.backgroundColor = DesignSystemColor.Gray200.value
+        return view
+    }()
+    
+    //MARK: - 반복 요일 스택뷰
+    private lazy var alarmViewStackView: UIStackView = {
+        let stackView = UIStackView()
+        stackView.axis = .horizontal
+        stackView.alignment = .fill
+        stackView.addSubviews(repeatLabel,repeatDayLabel)
+        stackView.isUserInteractionEnabled = true
+//        let tapGestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(repeatDay))
+//        stackView.addGestureRecognizer(tapGestureRecognizer)
+        return stackView
+    }()
+    
+    
+    private lazy var repeatLabel : UILabel = {
+        let label = UILabel()
+        label.text = "반복 요일"
+        label.font = DesignSystemFont.Pretendard_Bold14.value
+        label.textColor = .black
+        label.textAlignment = .left
+        return label
+    }()
+    
+    private lazy var repeatDayLabel : UILabel = {
+        let attributedString1 = NSMutableAttributedString(string: "평일   ")
+        let imageAttachment1 = NSTextAttachment()
+        imageAttachment1.image = UIImage(systemName: "greaterthan")
+        imageAttachment1.bounds = CGRect(x: 0, y: -3, width: 10, height: 16)
+        attributedString1.append(NSAttributedString(attachment: imageAttachment1))
+        
+        let label = UILabel()
+        label.attributedText = attributedString1
+        label.textAlignment = .right
+        label.textColor = DesignSystemColor.Gray400.value
+        label.font = DesignSystemFont.Pretendard_Medium14.value
+        return label
+    }()
+    
+    
+    //MARK: - baseView2
+    private lazy var baseView2 : UIView = {
+        let view = UIView()
+        view.backgroundColor = .white
+        view.layer.cornerRadius = 8
+        view.addSubviews()
+        return view
+    }()
+    
+    
     
     //MARK: - life cycle
     
@@ -37,22 +108,56 @@ class SleepTimeViewController : UIViewController {
         super.viewDidLoad()
         self.view.backgroundColor = DesignSystemColor.Gray150.value
         SetUI()
-        
     }
     //MARK: - setUI
     
     func SetUI(){
-        view.addSubviews(timeLabel,popButton)
+        view.addSubviews(mainLabel,popButton,baseView,baseView2)
         
-        timeLabel.snp.makeConstraints{
+        mainLabel.snp.makeConstraints{
             $0.centerX.equalToSuperview()
             $0.top.equalTo(view.safeAreaLayoutGuide).offset(20)
         }
         popButton.snp.makeConstraints{
-            $0.centerY.equalTo(timeLabel)
+            $0.centerY.equalTo(mainLabel)
             $0.leading.equalToSuperview().offset(16)
             $0.height.width.equalTo(24)
         }
+        
+        baseView.snp.makeConstraints{
+            $0.top.equalTo(mainLabel.snp.bottom).offset(21)
+            $0.leading.trailing.equalToSuperview().inset(16)
+            $0.height.equalTo(208)
+        }
+        timePicker.snp.makeConstraints{
+            $0.top.equalToSuperview().offset(16)
+            $0.centerX.equalToSuperview()
+            $0.height.equalTo(120)
+            $0.width.equalTo(177)
+        }
+        bar1.snp.makeConstraints{
+            $0.height.equalTo(1)
+            $0.top.equalTo(timePicker.snp.bottom).offset(16)
+            $0.leading.trailing.equalToSuperview().inset(16)
+        }
+        alarmViewStackView.snp.makeConstraints{
+            $0.top.equalTo(bar1.snp.bottom).offset(16)
+            $0.leading.trailing.equalToSuperview().inset(16)
+            
+        }
+        repeatLabel.snp.makeConstraints{
+            $0.leading.equalToSuperview()
+        }
+        repeatDayLabel.snp.makeConstraints{
+            $0.trailing.equalToSuperview()
+        }
+        
+        baseView2.snp.makeConstraints{
+            $0.top.equalTo(baseView.snp.bottom).offset(8)
+            $0.leading.trailing.equalToSuperview().inset(16)
+            $0.height.equalTo(56)
+        }
+        
     }
     
     //MARK: - objc func
