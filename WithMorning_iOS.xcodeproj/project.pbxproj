@@ -12,6 +12,7 @@
 		D10F846F2BC7E7CF00F3A172 /* UIColor_Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = D10F846E2BC7E7CF00F3A172 /* UIColor_Extension.swift */; };
 		D129AAF12C2D4C0800F995D2 /* CellMenuViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D129AAF02C2D4C0800F995D2 /* CellMenuViewController.swift */; };
 		D12FF2532C2FCB2F00B22DB4 /* CodeBtnViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D12FF2522C2FCB2F00B22DB4 /* CodeBtnViewController.swift */; };
+		D1303A012C451B3F0071267A /* EditprofileViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D1303A002C451B3F0071267A /* EditprofileViewController.swift */; };
 		D135377D2C3285AD004B49BB /* AlterViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D135377C2C3285AD004B49BB /* AlterViewController.swift */; };
 		D146706B2BEA8FF9007B7132 /* MyPageViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D146706A2BEA8FF9007B7132 /* MyPageViewController.swift */; };
 		D14A2D6C2BC8EB810087E0CB /* DesignSystem.swift in Sources */ = {isa = PBXBuildFile; fileRef = D14A2D6B2BC8EB810087E0CB /* DesignSystem.swift */; };
@@ -54,6 +55,7 @@
 		D10F846E2BC7E7CF00F3A172 /* UIColor_Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIColor_Extension.swift; sourceTree = "<group>"; };
 		D129AAF02C2D4C0800F995D2 /* CellMenuViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CellMenuViewController.swift; sourceTree = "<group>"; };
 		D12FF2522C2FCB2F00B22DB4 /* CodeBtnViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CodeBtnViewController.swift; sourceTree = "<group>"; };
+		D1303A002C451B3F0071267A /* EditprofileViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditprofileViewController.swift; sourceTree = "<group>"; };
 		D135377C2C3285AD004B49BB /* AlterViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AlterViewController.swift; sourceTree = "<group>"; };
 		D146706A2BEA8FF9007B7132 /* MyPageViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyPageViewController.swift; sourceTree = "<group>"; };
 		D14A2D6B2BC8EB810087E0CB /* DesignSystem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DesignSystem.swift; sourceTree = "<group>"; };
@@ -161,6 +163,7 @@
 			children = (
 				D146706A2BEA8FF9007B7132 /* MyPageViewController.swift */,
 				D109BC8B2C43B23A005E075F /* SleepTimeViewController.swift */,
+				D1303A002C451B3F0071267A /* EditprofileViewController.swift */,
 			);
 			path = MyPage;
 			sourceTree = "<group>";
@@ -408,6 +411,7 @@
 				D146706B2BEA8FF9007B7132 /* MyPageViewController.swift in Sources */,
 				D15AE73A2BC995B800024CE3 /* UIView_Extension.swift in Sources */,
 				D1E672BD2BC4FD3300A32790 /* SceneDelegate.swift in Sources */,
+				D1303A012C451B3F0071267A /* EditprofileViewController.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

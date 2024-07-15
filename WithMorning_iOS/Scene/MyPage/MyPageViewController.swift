@@ -56,6 +56,7 @@ class MyPageViewController : UIViewController {
         button.setTitleColor(DesignSystemColor.Gray600.value, for: .normal)
         button.titleLabel?.font = DesignSystemFont.Pretendard_SemiBold14.value
         button.layer.cornerRadius = 4
+        button.addTarget(self, action: #selector(editprofile), for: .touchUpInside)
         return button
     }()
     
@@ -487,10 +488,16 @@ class MyPageViewController : UIViewController {
         
         
     }
-    
+    //MARK: - objc func
+
     @objc func popclicked(){
         self.navigationController?.popViewController(animated: true)
         print("pop")
+    }
+    
+    @objc func editprofile(){
+        let vc = EditprofileViewController()
+        self.navigationController?.pushViewController(vc, animated: true)
     }
     
     @objc func sleeptime(){
