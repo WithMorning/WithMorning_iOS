@@ -38,6 +38,23 @@ class EditprofileViewController : UIViewController {
         label.textAlignment = .center
         return label
     }()
+    
+    private lazy var profileImage : UIImageView = {
+        let image = UIImageView()
+        image.image = UIImage(named: "profile")
+        return image
+    }()
+    
+    private lazy var galleryButton : UIButton = {
+        let button = UIButton()
+        let imageConfig = UIImage.SymbolConfiguration(pointSize: 18, weight: .light)
+        let image = UIImage(systemName: "camera",withConfiguration: imageConfig)
+        button.setImage(image , for: .normal)
+        button.layer.cornerRadius = 20
+        button.tintColor = .white
+        button.backgroundColor = .black
+        return button
+    }()
 
     
     override func viewDidLoad() {
@@ -47,7 +64,7 @@ class EditprofileViewController : UIViewController {
     }
     
     func setUI(){
-        view.addSubviews(mainLabel,popButton,profileLabel)
+        view.addSubviews(mainLabel,popButton,profileLabel,profileImage,galleryButton)
         
         mainLabel.snp.makeConstraints{
             $0.centerX.equalToSuperview()
@@ -63,9 +80,20 @@ class EditprofileViewController : UIViewController {
             $0.top.equalTo(mainLabel.snp.bottom).offset(28)
             $0.centerX.equalToSuperview()
         }
+        
+        profileImage.snp.makeConstraints{
+            $0.width.height.equalTo(150)
+            $0.centerX.equalToSuperview()
+            $0.top.equalTo(profileLabel.snp.bottom).offset(16)
+        }
+        galleryButton.snp.makeConstraints{
+            $0.height.width.equalTo(40)
+            $0.center.equalToSuperview()
+        }
+        
     }
     //MARK: - objc func
-
+    
     @objc func popclicked(){
         self.navigationController?.popViewController(animated: true)
         print("pop")
