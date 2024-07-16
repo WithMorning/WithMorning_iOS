@@ -88,7 +88,8 @@ class EditprofileViewController : UIViewController {
         }
         galleryButton.snp.makeConstraints{
             $0.height.width.equalTo(40)
-            $0.center.equalToSuperview()
+            $0.bottom.equalTo(profileImage)
+            $0.centerX.equalTo(profileImage).offset(55)
         }
         
     }

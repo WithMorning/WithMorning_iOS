@@ -93,7 +93,7 @@ class MyPageViewController : UIViewController {
     
     private lazy var sleeptimeLabel : UILabel = {
         let label = UILabel()
-        label.text = "취침 시간 알림"
+        label.text = "취침 시간"
         label.font = DesignSystemFont.Pretendard_Bold14.value
         label.textColor = .black
         label.textAlignment = .left
