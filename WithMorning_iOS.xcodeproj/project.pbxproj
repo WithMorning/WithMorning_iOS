@@ -14,6 +14,7 @@
 		D12FF2532C2FCB2F00B22DB4 /* CodeBtnViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D12FF2522C2FCB2F00B22DB4 /* CodeBtnViewController.swift */; };
 		D1303A012C451B3F0071267A /* EditprofileViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D1303A002C451B3F0071267A /* EditprofileViewController.swift */; };
 		D135377D2C3285AD004B49BB /* AlterViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D135377C2C3285AD004B49BB /* AlterViewController.swift */; };
+		D138F0B32C48090300233AFA /* OnBoardingFirstViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D138F0B22C48090300233AFA /* OnBoardingFirstViewController.swift */; };
 		D146706B2BEA8FF9007B7132 /* MyPageViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D146706A2BEA8FF9007B7132 /* MyPageViewController.swift */; };
 		D14A2D6C2BC8EB810087E0CB /* DesignSystem.swift in Sources */ = {isa = PBXBuildFile; fileRef = D14A2D6B2BC8EB810087E0CB /* DesignSystem.swift */; };
 		D15AE7342BC990DA00024CE3 /* Pretendard-Bold.otf in Resources */ = {isa = PBXBuildFile; fileRef = D15AE7332BC990DA00024CE3 /* Pretendard-Bold.otf */; };
@@ -57,6 +58,7 @@
 		D12FF2522C2FCB2F00B22DB4 /* CodeBtnViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CodeBtnViewController.swift; sourceTree = "<group>"; };
 		D1303A002C451B3F0071267A /* EditprofileViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditprofileViewController.swift; sourceTree = "<group>"; };
 		D135377C2C3285AD004B49BB /* AlterViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AlterViewController.swift; sourceTree = "<group>"; };
+		D138F0B22C48090300233AFA /* OnBoardingFirstViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnBoardingFirstViewController.swift; sourceTree = "<group>"; };
 		D146706A2BEA8FF9007B7132 /* MyPageViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyPageViewController.swift; sourceTree = "<group>"; };
 		D14A2D6B2BC8EB810087E0CB /* DesignSystem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DesignSystem.swift; sourceTree = "<group>"; };
 		D15AE7332BC990DA00024CE3 /* Pretendard-Bold.otf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Pretendard-Bold.otf"; sourceTree = "<group>"; };
@@ -154,6 +156,7 @@
 		D14A9DB42C2AD2BA00019B8B /* Onboarding */ = {
 			isa = PBXGroup;
 			children = (
+				D138F0B22C48090300233AFA /* OnBoardingFirstViewController.swift */,
 			);
 			path = Onboarding;
 			sourceTree = "<group>";
@@ -187,6 +190,7 @@
 		D1652D782BC653A700F80F6F /* Scene */ = {
 			isa = PBXGroup;
 			children = (
+				D14A9DB42C2AD2BA00019B8B /* Onboarding */,
 				D1E1DF802C3ACFE7001A132F /* AlarmPage */,
 				D129AAEF2C2D4BCC00F995D2 /* MainPage */,
 				D14A9DB52C2AD3B000019B8B /* MyPage */,
@@ -250,7 +254,6 @@
 				D16F5FCF2BC6562A006640F9 /* Resource */,
 				D1652D792BC653AF00F80F6F /* API */,
 				D1652D782BC653A700F80F6F /* Scene */,
-				D14A9DB42C2AD2BA00019B8B /* Onboarding */,
 				D1E672C82BC4FD3500A32790 /* Info.plist */,
 				D1AA9A432C429965001A26B4 /* GoogleService-Info.plist */,
 				D1E672C52BC4FD3500A32790 /* LaunchScreen.storyboard */,
@@ -409,6 +412,7 @@
 				D10F846F2BC7E7CF00F3A172 /* UIColor_Extension.swift in Sources */,
 				D1E1DF822C3AD04F001A132F /* WeekChoiceViewController.swift in Sources */,
 				D146706B2BEA8FF9007B7132 /* MyPageViewController.swift in Sources */,
+				D138F0B32C48090300233AFA /* OnBoardingFirstViewController.swift in Sources */,
 				D15AE73A2BC995B800024CE3 /* UIView_Extension.swift in Sources */,
 				D1E672BD2BC4FD3300A32790 /* SceneDelegate.swift in Sources */,
 				D1303A012C451B3F0071267A /* EditprofileViewController.swift in Sources */,
