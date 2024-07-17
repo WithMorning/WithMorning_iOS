@@ -55,16 +55,49 @@ class EditprofileViewController : UIViewController {
         button.backgroundColor = .black
         return button
     }()
-
     
+    private lazy var nicknameTextfield : UITextField = {
+        let textfield = UITextField()
+        textfield.translatesAutoresizingMaskIntoConstraints = false
+        textfield.placeholder = "일이삼사오육칠팔구십"
+        textfield.backgroundColor = .white
+        textfield.font = DesignSystemFont.Pretendard_Medium14.value
+        textfield.textColor = .black
+        textfield.layer.cornerRadius = 8
+        textfield.textAlignment = .center
+        
+        //텍스트 필드 교정 메서드
+        textfield.autocorrectionType = .no
+        textfield.spellCheckingType = .no
+        textfield.autocapitalizationType = .none
+        return textfield
+    }()
+    
+    private lazy var doneButton : UIButton = {
+        let button = UIButton()
+        button.setTitle("완료", for: .normal)
+        button.setTitleColor(.white, for: .normal)
+        button.backgroundColor = DesignSystemColor.Orange500.value
+        button.layer.cornerRadius = 8
+        button.titleLabel?.font = DesignSystemFont.Pretendard_Bold16.value
+        button.addTarget(self, action: #selector(doneclick), for: .touchUpInside)
+        return button
+    }()
+
+    //MARK: - Life cycle
+
     override func viewDidLoad() {
         super.viewDidLoad()
         self.view.backgroundColor = DesignSystemColor.Gray150.value
         setUI()
+        hideKeyboardWhenTappedAround()
+//        setUpKeyboard()
     }
     
     func setUI(){
-        view.addSubviews(mainLabel,popButton,profileLabel,profileImage,galleryButton)
+        nicknameTextfield.delegate = self
+        
+        view.addSubviews(mainLabel,popButton,profileLabel,profileImage,galleryButton,nicknameTextfield,doneButton)
         
         mainLabel.snp.makeConstraints{
             $0.centerX.equalToSuperview()
@@ -91,6 +124,16 @@ class EditprofileViewController : UIViewController {
             $0.bottom.equalTo(profileImage)
             $0.centerX.equalTo(profileImage).offset(55)
         }
+        nicknameTextfield.snp.makeConstraints{
+            $0.top.equalTo(profileImage.snp.bottom).offset(16)
+            $0.leading.trailing.equalToSuperview().inset(16)
+            $0.height.equalTo(65)
+        }
+        doneButton.snp.makeConstraints{
+            $0.top.equalTo(nicknameTextfield.snp.bottom).offset(16)
+            $0.leading.trailing.equalToSuperview().inset(16)
+            $0.height.equalTo(62)
+        }
         
     }
     //MARK: - objc func
@@ -99,9 +142,50 @@ class EditprofileViewController : UIViewController {
         self.navigationController?.popViewController(animated: true)
         print("pop")
     }
+    @objc func doneclick(){
+        
+    }
 }
 
 
+//MARK: - 키보드 세팅, textfield세팅
+
+extension EditprofileViewController : UITextFieldDelegate {
+    func hideKeyboardWhenTappedAround() {
+        let tap = UITapGestureRecognizer(target: self, action: #selector(EditprofileViewController.dismissKeyboard))
+        tap.cancelsTouchesInView = false
+        view.addGestureRecognizer(tap)
+    }
+    
+    @objc func dismissKeyboard() {
+        view.endEditing(true)
+    }
+    
+    func textFieldDidBeginEditing(_ textField: UITextField) {
+        textField.layer.borderWidth = 1
+        textField.layer.borderColor = DesignSystemColor.Orange500.value.cgColor
+        doneButton.backgroundColor = DesignSystemColor.Gray300.value
+        
+    }
+    
+    func textFieldDidEndEditing(_ textField: UITextField) {
+        textField.layer.borderWidth = 0
+        doneButton.backgroundColor = DesignSystemColor.Orange500.value
+    }
+    
+    func textField(_ textField: UITextField, shouldChangeCharactersIn range: NSRange, replacementString string: String) -> Bool {
+           if let char = string.cString(using: String.Encoding.utf8) {
+                  let isBackSpace = strcmp(char, "\\b")
+                  if isBackSpace == -92 {
+                      return true
+                  }
+            }
+            guard textField.text!.count < 10 else { return false } // 10 글자로 제한
+            return true
+        }
+    
+    
+}
 //Preview code
 #if DEBUG
 import SwiftUI

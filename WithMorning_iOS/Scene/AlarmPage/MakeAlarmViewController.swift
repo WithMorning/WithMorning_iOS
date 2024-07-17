@@ -303,7 +303,8 @@ class MakeAlarmViewController : UIViewController, UIScrollViewDelegate, UISheetP
     }()
     
     
-    
+    //MARK: - Life cycle
+
     override func viewDidLoad() {
         super.viewDidLoad()
         self.view.backgroundColor = DesignSystemColor.Gray150.value
@@ -494,7 +495,7 @@ class MakeAlarmViewController : UIViewController, UIScrollViewDelegate, UISheetP
     }
     
 }
-//MARK: - 키보드 조절
+//MARK: - 키보드 세팅, textfield세팅
 extension MakeAlarmViewController : UITextFieldDelegate {
     func hideKeyboardWhenTappedAround() {
         let tap = UITapGestureRecognizer(target: self, action: #selector(MakeAlarmViewController.dismissKeyboard))
