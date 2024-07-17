@@ -238,6 +238,8 @@ class WeekChoiceViewController : UIViewController, UIScrollViewDelegate {
         button.setTitleColor(DesignSystemColor.Gray500.value, for: .normal)
         button.backgroundColor = DesignSystemColor.Gray200.value
         button.layer.cornerRadius = 8
+        button.titleLabel?.font = DesignSystemFont.Pretendard_Bold14.value
+        button.addTarget(self, action: #selector(weekdatclick), for: .touchUpInside)
         return button
     }()
     
@@ -248,6 +250,8 @@ class WeekChoiceViewController : UIViewController, UIScrollViewDelegate {
         button.setTitleColor(DesignSystemColor.Gray500.value, for: .normal)
         button.backgroundColor = DesignSystemColor.Gray200.value
         button.layer.cornerRadius = 8
+        button.titleLabel?.font = DesignSystemFont.Pretendard_Bold14.value
+        button.addTarget(self, action: #selector(weekendclick), for: .touchUpInside)
         return button
     }()
 
@@ -395,14 +399,14 @@ class WeekChoiceViewController : UIViewController, UIScrollViewDelegate {
             $0.leading.equalToSuperview()
             $0.top.equalTo(SunstackView.snp.bottom).offset(16)
             $0.height.equalTo(52)
-            $0.width.equalTo(158.5)
+            $0.trailing.equalTo(view.snp.centerX).offset(-5)
         }
         //주말
         weekendButton.snp.makeConstraints{
             $0.trailing.equalToSuperview()
             $0.top.equalTo(SunstackView.snp.bottom).offset(16)
             $0.height.equalTo(52)
-            $0.width.equalTo(158.5)
+            $0.leading.equalTo(view.snp.centerX).offset(5)
         }
         DoneButton.snp.makeConstraints{
             $0.leading.trailing.bottom.equalToSuperview()
@@ -426,6 +430,8 @@ class WeekChoiceViewController : UIViewController, UIScrollViewDelegate {
             weekendButton.setTitleColor(DesignSystemColor.Gray500.value, for: .normal)
             weekendButton.backgroundColor = DesignSystemColor.Gray200.value
         }
+        
+        
     }
     
     
@@ -489,6 +495,30 @@ class WeekChoiceViewController : UIViewController, UIScrollViewDelegate {
     }
     @objc func doneclick(){
         self.dismiss(animated: true)
+    }
+    
+    @objc func weekdatclick(){
+        if weekdayButton.backgroundColor == DesignSystemColor.Gray200.value {
+            weekdayButton.backgroundColor = DesignSystemColor.Orange500.value
+            weekdayButton.setTitleColor(.white, for: .normal)
+               [MonIMG, TueIMG, WedIMG, ThrIMG, FriIMG].forEach { $0.tintColor = DesignSystemColor.Orange500.value }
+        }else{
+            weekdayButton.backgroundColor = DesignSystemColor.Gray200.value
+            weekdayButton.setTitleColor(DesignSystemColor.Gray500.value, for: .normal)
+               [MonIMG, TueIMG, WedIMG, ThrIMG, FriIMG].forEach { $0.tintColor = DesignSystemColor.Gray200.value }
+        }
+    }
+    @objc func weekendclick(){
+        if weekendButton.backgroundColor == DesignSystemColor.Gray200.value {
+            weekendButton.backgroundColor = DesignSystemColor.Orange500.value
+            weekendButton.setTitleColor(.white, for: .normal)
+               [SatIMG,SunIMG].forEach { $0.tintColor = DesignSystemColor.Orange500.value }
+        }else{
+            weekendButton.backgroundColor = DesignSystemColor.Gray200.value
+            weekendButton.setTitleColor(DesignSystemColor.Gray500.value, for: .normal)
+            [SatIMG,SunIMG].forEach { $0.tintColor = DesignSystemColor.Gray200.value }
+        }
+
     }
 }
 
