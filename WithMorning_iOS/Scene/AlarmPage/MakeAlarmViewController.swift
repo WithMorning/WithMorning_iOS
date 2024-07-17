@@ -284,7 +284,6 @@ class MakeAlarmViewController : UIViewController, UIScrollViewDelegate, UISheetP
     
     
     //MARK: - 저장 버튼
-    
     private lazy var saveButton : UIButton = {
         var configuration = UIButton.Configuration.filled()
         configuration.baseBackgroundColor = DesignSystemColor.Orange500.value
@@ -298,7 +297,7 @@ class MakeAlarmViewController : UIViewController, UIScrollViewDelegate, UISheetP
         configuration.attributedTitle = AttributedString("저장", attributes: titleTextAttributes)
         
         let button = UIButton(configuration: configuration)
-        
+        button.addTarget(self, action: #selector(saveclicked), for: .touchUpInside)
         return button
     }()
     
@@ -492,6 +491,9 @@ class MakeAlarmViewController : UIViewController, UIScrollViewDelegate, UISheetP
         }
         sliderLabel.text = "\(value)" + "%"
         
+    }
+    @objc func saveclicked(){
+        self.navigationController?.popViewController(animated: true)
     }
     
 }
