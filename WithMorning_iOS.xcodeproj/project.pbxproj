@@ -8,6 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		05083B923D6EB143B0BA46E1 /* Pods_WithMorning_iOS.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5F7878B73D8AD66854885BC9 /* Pods_WithMorning_iOS.framework */; };
+		D10978422C48E55600CBF9E3 /* FirebaseMessaging in Frameworks */ = {isa = PBXBuildFile; productRef = D10978412C48E55600CBF9E3 /* FirebaseMessaging */; };
 		D109BC8C2C43B23A005E075F /* SleepTimeViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D109BC8B2C43B23A005E075F /* SleepTimeViewController.swift */; };
 		D10F846F2BC7E7CF00F3A172 /* UIColor_Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = D10F846E2BC7E7CF00F3A172 /* UIColor_Extension.swift */; };
 		D129AAF12C2D4C0800F995D2 /* CellMenuViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D129AAF02C2D4C0800F995D2 /* CellMenuViewController.swift */; };
@@ -52,6 +53,7 @@
 		5F7878B73D8AD66854885BC9 /* Pods_WithMorning_iOS.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_WithMorning_iOS.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		6DCBFF9B66FC891ADD99B059 /* Pods-WithMorning_iOS.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-WithMorning_iOS.debug.xcconfig"; path = "Target Support Files/Pods-WithMorning_iOS/Pods-WithMorning_iOS.debug.xcconfig"; sourceTree = "<group>"; };
 		C11DEB06ED24EC837FF59366 /* Pods-WithMorning_iOS.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-WithMorning_iOS.release.xcconfig"; path = "Target Support Files/Pods-WithMorning_iOS/Pods-WithMorning_iOS.release.xcconfig"; sourceTree = "<group>"; };
+		D10978402C48E31B00CBF9E3 /* WithMorning_iOS.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = WithMorning_iOS.entitlements; sourceTree = "<group>"; };
 		D109BC8B2C43B23A005E075F /* SleepTimeViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SleepTimeViewController.swift; sourceTree = "<group>"; };
 		D10F846E2BC7E7CF00F3A172 /* UIColor_Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIColor_Extension.swift; sourceTree = "<group>"; };
 		D129AAF02C2D4C0800F995D2 /* CellMenuViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CellMenuViewController.swift; sourceTree = "<group>"; };
@@ -93,6 +95,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				D10978422C48E55600CBF9E3 /* FirebaseMessaging in Frameworks */,
 				D1D891F22C42684B00ED8092 /* FirebaseAnalyticsSwift in Frameworks */,
 				D1D891F42C42684B00ED8092 /* FirebaseAnalyticsWithoutAdIdSupport in Frameworks */,
 				D1D891F82C42684B00ED8092 /* FirebaseInAppMessagingSwift-Beta in Frameworks */,
@@ -249,6 +252,7 @@
 		D1E672B92BC4FD3300A32790 /* WithMorning_iOS */ = {
 			isa = PBXGroup;
 			children = (
+				D10978402C48E31B00CBF9E3 /* WithMorning_iOS.entitlements */,
 				D10F846D2BC7E72000F3A172 /* Extension */,
 				D14A2D6A2BC8EB6D0087E0CB /* DesignSystem */,
 				D16F5FCF2BC6562A006640F9 /* Resource */,
@@ -286,6 +290,7 @@
 				D1D891F32C42684B00ED8092 /* FirebaseAnalyticsWithoutAdIdSupport */,
 				D1D891F52C42684B00ED8092 /* FirebaseInAppMessaging-Beta */,
 				D1D891F72C42684B00ED8092 /* FirebaseInAppMessagingSwift-Beta */,
+				D10978412C48E55600CBF9E3 /* FirebaseMessaging */,
 			);
 			productName = WithMorning_iOS;
 			productReference = D1E672B72BC4FD3300A32790 /* WithMorning_iOS.app */;
@@ -558,6 +563,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_ENTITLEMENTS = WithMorning_iOS/WithMorning_iOS.entitlements;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = 5664C7G97A;
@@ -568,6 +574,7 @@
 				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				INFOPLIST_KEY_UIUserInterfaceStyle = Light;
 				IPHONEOS_DEPLOYMENT_TARGET = 17.4;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
@@ -588,6 +595,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_ENTITLEMENTS = WithMorning_iOS/WithMorning_iOS.entitlements;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = 5664C7G97A;
@@ -598,6 +606,7 @@
 				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				INFOPLIST_KEY_UIUserInterfaceStyle = Light;
 				IPHONEOS_DEPLOYMENT_TARGET = 17.4;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
@@ -647,6 +656,11 @@
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
+		D10978412C48E55600CBF9E3 /* FirebaseMessaging */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = D1D891EB2C4265F100ED8092 /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */;
+			productName = FirebaseMessaging;
+		};
 		D1D891ED2C42684B00ED8092 /* FirebaseAnalytics */ = {
 			isa = XCSwiftPackageProductDependency;
 			package = D1D891EB2C4265F100ED8092 /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */;
