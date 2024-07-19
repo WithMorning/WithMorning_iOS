@@ -134,7 +134,6 @@ class OnBoardingFirstViewController: UIViewController{
         let button = UIButton()
         button.setImage(UIImage(systemName: "checkmark.square.fill"), for: .normal)
         button.tintColor = DesignSystemColor.Gray200.value
-        
         button.addTarget(self, action: #selector(allbtn), for: .touchUpInside)
         return button
     }()
@@ -239,13 +238,21 @@ class OnBoardingFirstViewController: UIViewController{
         }
     }
     //MARK: - 모두 동의 함수
-
     func setallagree(){
         if [agecheckButton,serviceButton,infoButton,maketingButton].allSatisfy({$0.tintColor == DesignSystemColor.Orange500.value}){
             allagreeButton.tintColor = DesignSystemColor.Orange500.value
+            nextButton.configuration?.baseBackgroundColor = DesignSystemColor.Orange500.value
         }else{
             allagreeButton.tintColor = DesignSystemColor.Gray200.value
+            nextButton.configuration?.baseBackgroundColor = DesignSystemColor.Gray300.value
         }
+        
+        if [agecheckButton,serviceButton,infoButton].allSatisfy({$0.tintColor == DesignSystemColor.Orange500.value}){
+            nextButton.configuration?.baseBackgroundColor = DesignSystemColor.Orange500.value
+        }else{
+            nextButton.configuration?.baseBackgroundColor = DesignSystemColor.Gray300.value
+        }
+        
     }
     
     //MARK: - @objc func
@@ -282,17 +289,25 @@ class OnBoardingFirstViewController: UIViewController{
         }
         setallagree()
     }
+    
     @objc func allbtn(){
         if allagreeButton.tintColor == DesignSystemColor.Gray200.value{
+            [agecheckButton,serviceButton,infoButton,maketingButton].forEach({$0.tintColor = DesignSystemColor.Orange500.value})
+            nextButton.configuration?.baseBackgroundColor = DesignSystemColor.Orange500.value
             allagreeButton.tintColor = DesignSystemColor.Orange500.value
         }else{
+            [agecheckButton,serviceButton,infoButton,maketingButton].forEach({$0.tintColor = DesignSystemColor.Gray200.value})
+            nextButton.configuration?.baseBackgroundColor = DesignSystemColor.Gray300.value
             allagreeButton.tintColor = DesignSystemColor.Gray200.value
         }
-        setallagree()
     }
     
     @objc func nextbtn(){
-        
+        if nextButton.configuration?.baseBackgroundColor == DesignSystemColor.Gray300.value{
+            print("회색 버튼 클릭")
+        }else{
+            print("오렌지 버튼 클릭")
+        }
     }
     
 }

@@ -33,7 +33,7 @@ class AppDelegate:UIResponder, UIApplicationDelegate {
         
         var window: UIWindow?
         window = UIWindow()
-        window?.rootViewController = MainViewController()
+        window?.rootViewController = MainViewController() //루트뷰컨트롤러
         window?.makeKeyAndVisible()
         return true
     }
