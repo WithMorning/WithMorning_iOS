@@ -7,6 +7,7 @@
 
 import UIKit
 import Firebase
+import AuthenticationServices
 
 @main
 class AppDelegate:UIResponder, UIApplicationDelegate {
@@ -35,6 +36,7 @@ class AppDelegate:UIResponder, UIApplicationDelegate {
         window = UIWindow()
         window?.rootViewController = MainViewController() //루트뷰컨트롤러
         window?.makeKeyAndVisible()
+        
         return true
     }
     

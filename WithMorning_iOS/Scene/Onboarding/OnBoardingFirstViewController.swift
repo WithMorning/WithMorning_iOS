@@ -292,6 +292,7 @@ class OnBoardingFirstViewController: UIViewController{
     
     @objc func allbtn(){
         if allagreeButton.tintColor == DesignSystemColor.Gray200.value{
+
             [agecheckButton,serviceButton,infoButton,maketingButton].forEach({$0.tintColor = DesignSystemColor.Orange500.value})
             nextButton.configuration?.baseBackgroundColor = DesignSystemColor.Orange500.value
             allagreeButton.tintColor = DesignSystemColor.Orange500.value
@@ -304,9 +305,11 @@ class OnBoardingFirstViewController: UIViewController{
     
     @objc func nextbtn(){
         if nextButton.configuration?.baseBackgroundColor == DesignSystemColor.Gray300.value{
-            print("회색 버튼 클릭")
+           
         }else{
-            print("오렌지 버튼 클릭")
+            let vc = OnBoardingSecondViewController()
+            self.navigationController?.pushViewController(vc, animated: true)
+            
         }
     }
     

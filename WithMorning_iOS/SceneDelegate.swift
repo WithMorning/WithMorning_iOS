@@ -11,7 +11,6 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
     
     var window: UIWindow?
     
-    
     func scene(_ scene: UIScene, willConnectTo session: UISceneSession, options connectionOptions: UIScene.ConnectionOptions) {
         guard let windowScene = (scene as? UIWindowScene) else { return }
 //        window = UIWindow(frame: UIScreen.main.bounds)
@@ -19,8 +18,10 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
 //        let startView = MainViewController()
 //        window?.rootViewController = startView
 //        window?.makeKeyAndVisible()
+        
         let window = UIWindow(windowScene: windowScene)
-        window.rootViewController = UINavigationController(rootViewController: MainViewController())
+        window.rootViewController = UINavigationController(rootViewController: OnBoardingFirstViewController())
+//        window.rootViewController = UINavigationController(rootViewController: MainViewController())
         self.window = window
         self.window?.makeKeyAndVisible()
         
