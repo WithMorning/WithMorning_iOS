@@ -41,7 +41,7 @@ class OnBoardingFirstViewController: UIViewController{
         button.setImage(UIImage(systemName: "checkmark.square.fill"), for: .normal)
         button.tintColor = DesignSystemColor.Gray200.value
         
-//        button.addTarget(self, action: #selector(vibratesetting), for: .touchUpInside)
+        button.addTarget(self, action: #selector(agebtn), for: .touchUpInside)
         return button
     }()
     //MARK: - (필수) 서비스 이용 약관
@@ -58,7 +58,7 @@ class OnBoardingFirstViewController: UIViewController{
         button.setImage(UIImage(systemName: "checkmark.square.fill"), for: .normal)
         button.tintColor = DesignSystemColor.Gray200.value
         
-//        button.addTarget(self, action: #selector(vibratesetting), for: .touchUpInside)
+        button.addTarget(self, action: #selector(servicebtn), for: .touchUpInside)
         return button
     }()
     //MARK: - (필수) 개인정보 처리방침
@@ -70,12 +70,13 @@ class OnBoardingFirstViewController: UIViewController{
         label.textAlignment = .left
         return label
     }()
+    
     private lazy var infoButton : UIButton = {
         let button = UIButton()
         button.setImage(UIImage(systemName: "checkmark.square.fill"), for: .normal)
         button.tintColor = DesignSystemColor.Gray200.value
         
-//        button.addTarget(self, action: #selector(vibratesetting), for: .touchUpInside)
+        button.addTarget(self, action: #selector(infobtn), for: .touchUpInside)
         return button
     }()
     //MARK: - (선택) 마케팅 정보 수신 동의
@@ -92,22 +93,56 @@ class OnBoardingFirstViewController: UIViewController{
         button.setImage(UIImage(systemName: "checkmark.square.fill"), for: .normal)
         button.tintColor = DesignSystemColor.Gray200.value
         
-//        button.addTarget(self, action: #selector(vibratesetting), for: .touchUpInside)
+        button.addTarget(self, action: #selector(maketingbtn), for: .touchUpInside)
         return button
     }()
-    
+    //MARK: - 전체 동의
+
     private lazy var view2 : UIView = {
         let view = UIView()
         view.backgroundColor = .white
         view.layer.cornerRadius = 8
-        view.addSubviews()
+        view.addSubviews(allagreeLabel,subLabel,allagreeButton)
         return view
+    }()
+    
+    private lazy var allagreeLabel : UILabel = {
+        let label = UILabel()
+        label.font = DesignSystemFont.Pretendard_Bold14.value
+        label.textColor = .black
+        
+        let attributeLabel = NSMutableAttributedString(string: "  약관 전체 동의")
+        let attachImage = NSTextAttachment()
+        attachImage.image = UIImage(named: "Check")
+        attachImage.bounds = CGRect(x: 0, y: -3, width: 15, height: 15)
+        let imageString = NSAttributedString(attachment: attachImage)
+        attributeLabel.insert(imageString, at: 0)
+        label.attributedText = attributeLabel
+        return label
+    }()
+    
+    private lazy var subLabel : UILabel = {
+        let label = UILabel()
+        label.text = "서비스 이용을 위해 약관에 모두 동의합니다."
+        label.font = DesignSystemFont.Pretendard_Medium12.value
+        label.textColor = DesignSystemColor.Gray500.value
+        label.textAlignment = .left
+        return label
+    }()
+    
+    private lazy var allagreeButton : UIButton = {
+        let button = UIButton()
+        button.setImage(UIImage(systemName: "checkmark.square.fill"), for: .normal)
+        button.tintColor = DesignSystemColor.Gray200.value
+        
+        button.addTarget(self, action: #selector(allbtn), for: .touchUpInside)
+        return button
     }()
     
     //MARK: - 저장 버튼
     private lazy var nextButton : UIButton = {
         var configuration = UIButton.Configuration.filled()
-        configuration.baseBackgroundColor = DesignSystemColor.Orange500.value
+        configuration.baseBackgroundColor = DesignSystemColor.Gray300.value
         configuration.baseForegroundColor = .white
         configuration.titleAlignment = .center
         configuration.contentInsets = NSDirectionalEdgeInsets(top:0, leading: 0, bottom: 40, trailing: 0) // 텍스트 위치 조정
@@ -119,9 +154,13 @@ class OnBoardingFirstViewController: UIViewController{
         
         let button = UIButton(configuration: configuration)
         
+        button.addTarget(self, action: #selector(nextbtn), for: .touchUpInside)
+        
         return button
     }()
     
+    //MARK: - life cycle
+
     override func viewDidLoad() {
         super.viewDidLoad()
         view.backgroundColor = DesignSystemColor.Gray150.value
@@ -141,7 +180,7 @@ class OnBoardingFirstViewController: UIViewController{
             $0.height.equalTo(204)
         }
         ageLabel.snp.makeConstraints{
-            $0.top.leading.equalToSuperview().inset(24)
+            $0.top.leading.equalToSuperview().inset(26)
             $0.height.equalTo(20)
         }
         agecheckButton.snp.makeConstraints{
@@ -151,7 +190,7 @@ class OnBoardingFirstViewController: UIViewController{
         serviceLabel.snp.makeConstraints{
             $0.top.equalTo(ageLabel.snp.bottom).offset(20)
             $0.leading.equalToSuperview().offset(24)
-            $0.height.equalTo(20)
+            $0.height.equalTo(26)
         }
         serviceButton.snp.makeConstraints{
             $0.centerY.equalTo(serviceLabel)
@@ -160,7 +199,7 @@ class OnBoardingFirstViewController: UIViewController{
         infoLabel.snp.makeConstraints{
             $0.top.equalTo(serviceLabel.snp.bottom).offset(20)
             $0.leading.equalToSuperview().offset(24)
-            $0.height.equalTo(20)
+            $0.height.equalTo(26)
         }
         infoButton.snp.makeConstraints{
             $0.centerY.equalTo(infoLabel)
@@ -170,7 +209,7 @@ class OnBoardingFirstViewController: UIViewController{
             $0.top.equalTo(infoLabel.snp.bottom)
             .offset(20)
             $0.leading.equalToSuperview().offset(24)
-            $0.height.equalTo(20)
+            $0.height.equalTo(26)
         }
         maketingButton.snp.makeConstraints{
             $0.centerY.equalTo(maketingLabel)
@@ -182,13 +221,82 @@ class OnBoardingFirstViewController: UIViewController{
             $0.bottom.equalTo(nextButton.snp.top).inset(-16)
             $0.height.equalTo(95)
         }
+        allagreeLabel.snp.makeConstraints{
+            $0.leading.top.equalToSuperview().inset(24)
+        }
+        subLabel.snp.makeConstraints{
+            $0.bottom.equalToSuperview().inset(24)
+            $0.leading.equalToSuperview().inset(24)
+        }
+        allagreeButton.snp.makeConstraints{
+            $0.trailing.equalToSuperview().inset(24)
+            $0.centerY.equalToSuperview()
+        }
         
         nextButton.snp.makeConstraints{
             $0.leading.trailing.bottom.equalToSuperview()
             $0.height.equalTo(92)
         }
     }
+    //MARK: - 모두 동의 함수
+
+    func setallagree(){
+        if [agecheckButton,serviceButton,infoButton,maketingButton].allSatisfy({$0.tintColor == DesignSystemColor.Orange500.value}){
+            allagreeButton.tintColor = DesignSystemColor.Orange500.value
+        }else{
+            allagreeButton.tintColor = DesignSystemColor.Gray200.value
+        }
+    }
+    
+    //MARK: - @objc func
+    @objc func agebtn(){
+        if agecheckButton.tintColor == DesignSystemColor.Gray200.value{
+            agecheckButton.tintColor = DesignSystemColor.Orange500.value
+        }else{
+            agecheckButton.tintColor = DesignSystemColor.Gray200.value
+        }
+        setallagree()
+        
+    }
+    @objc func servicebtn(){
+        if serviceButton.tintColor == DesignSystemColor.Gray200.value{
+            serviceButton.tintColor = DesignSystemColor.Orange500.value
+        }else{
+            serviceButton.tintColor = DesignSystemColor.Gray200.value
+        }
+        setallagree()
+    }
+    @objc func infobtn(){
+        if infoButton.tintColor == DesignSystemColor.Gray200.value{
+            infoButton.tintColor = DesignSystemColor.Orange500.value
+        }else{
+            infoButton.tintColor = DesignSystemColor.Gray200.value
+        }
+        setallagree()
+    }
+    @objc func maketingbtn(){
+        if maketingButton.tintColor == DesignSystemColor.Gray200.value{
+            maketingButton.tintColor = DesignSystemColor.Orange500.value
+        }else{
+            maketingButton.tintColor = DesignSystemColor.Gray200.value
+        }
+        setallagree()
+    }
+    @objc func allbtn(){
+        if allagreeButton.tintColor == DesignSystemColor.Gray200.value{
+            allagreeButton.tintColor = DesignSystemColor.Orange500.value
+        }else{
+            allagreeButton.tintColor = DesignSystemColor.Gray200.value
+        }
+        setallagree()
+    }
+    
+    @objc func nextbtn(){
+        
+    }
+    
 }
+
 
 
 //Preview code
