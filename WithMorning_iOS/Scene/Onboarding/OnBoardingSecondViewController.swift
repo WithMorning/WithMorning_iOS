@@ -8,6 +8,7 @@
 import UIKit
 import Then
 import SnapKit
+import AuthenticationServices
 
 class OnBoardingSecondViewController: UIViewController{
     
@@ -20,11 +21,26 @@ class OnBoardingSecondViewController: UIViewController{
         button.addTarget(self, action: #selector(popclicked), for: .touchUpInside)
         return button
     }()
-
+    //MARK: - 애플로 로그인
+    private lazy var appleButton : UIButton = {
+        let button = UIButton()
+        button.backgroundColor = .black
+        button.setTitle("  Apple로 로그인", for: .normal)
+        button.titleLabel?.font = DesignSystemFont.Pretendard_SemiBold16.value
+        button.setTitleColor(.white, for: .normal)
+        button.tintColor = .white
+        button.layer.cornerRadius = 8
+        button.setImage(UIImage(systemName: "apple.logo"), for: .normal)
+        button.titleLabel?.textAlignment = .center
+        button.addTarget(self, action: #selector(guest), for: .touchUpInside)
+        return button
+    }()
+    
+    //MARK: - 게스트로 로그인
     private lazy var guestButton : UIButton = {
         let button = UIButton()
         button.backgroundColor = DesignSystemColor.Gray400.value
-        button.setTitle("  게스트 로그인", for: .normal)
+        button.setTitle("  게스트로 로그인", for: .normal)
         button.titleLabel?.font = DesignSystemFont.Pretendard_SemiBold16.value
         button.setTitleColor(.white, for: .normal)
         button.tintColor = .white
@@ -47,12 +63,18 @@ class OnBoardingSecondViewController: UIViewController{
     //MARK: - setUI
 
     func setUI(){
-        view.addSubviews(popButton,guestButton)
+        view.addSubviews(popButton,appleButton,guestButton)
         
         popButton.snp.makeConstraints{
             $0.top.equalTo(view.safeAreaLayoutGuide).offset(20)
             $0.leading.equalToSuperview().offset(16)
             $0.height.width.equalTo(24)
+        }
+        
+        appleButton.snp.makeConstraints{
+            $0.height.equalTo(64)
+            $0.leading.trailing.equalToSuperview().inset(16)
+            $0.bottom.equalTo(guestButton.snp.top).offset(-8)
         }
         
         guestButton.snp.makeConstraints{
