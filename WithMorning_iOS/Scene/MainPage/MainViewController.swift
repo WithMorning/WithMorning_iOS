@@ -109,7 +109,7 @@ class MainViewController: UIViewController, UISheetPresentationControllerDelegat
     }()
     
     //MARK: - Data Array
-    var alarmData  : [AlarmModel] = [AlarmModel(isTurn: false,alarmTitle: "1번째 알람의 타이틀",Memo: "1번재 알람의 메모"),AlarmModel(isTurn: false,alarmTitle: "2번째 알람의 타이틀",Memo: "2번째 알람의 메모")]
+    var alarmData  : [AlarmModel] = [AlarmModel(isTurn: false,alarmTitle: "1번째 알람의 타이틀",Memo: "1번재 알람의 메모", memberCount: 4),AlarmModel(isTurn: false,alarmTitle: "2번째 알람의 타이틀",Memo: "2번째 알람의 메모", memberCount: 1)]
     
     //MARK: - LifeCycle
     override func viewDidLoad() {

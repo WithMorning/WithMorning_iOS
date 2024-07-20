@@ -94,7 +94,8 @@ class OnBoardingSecondViewController: UIViewController, ASAuthorizationControlle
         self.navigationController?.pushViewController(vc, animated: true)
     }
     @objc func apple(){
-        applelogin()
+//        applelogin()
+        
     }
     
     //MARK: - 애플 로그인

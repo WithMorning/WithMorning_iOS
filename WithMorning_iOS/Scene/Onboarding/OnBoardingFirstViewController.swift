@@ -11,6 +11,7 @@ import SnapKit
 
 class OnBoardingFirstViewController: UIViewController{
 
+    
     private lazy var mainLabel : UILabel = {
         let label = UILabel()
         label.text = "서비스 이용 동의"
@@ -27,7 +28,7 @@ class OnBoardingFirstViewController: UIViewController{
         return view
     }()
     
-    //MARK: - (필수) 만 14세입니다.
+    //MARK: - (필수) 만 14세입니다. 텍스트 탭시 약관사이트로 이동
     private lazy var ageLabel : UILabel = {
         let label = UILabel()
         label.text = "(필수) 만 14세입니다."

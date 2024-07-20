@@ -16,4 +16,5 @@ struct AlarmModel{
     var isTurn : Bool
     var alarmTitle : String
     var Memo : String
+    var memberCount : Int
 }
