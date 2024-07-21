@@ -108,8 +108,10 @@ class MainViewController: UIViewController, UISheetPresentationControllerDelegat
         return refresh
     }()
     
+    
+    
     //MARK: - Data Array
-    var alarmData  : [AlarmModel] = [AlarmModel(isTurn: false,alarmTitle: "1번째 알람의 타이틀",Memo: "1번재 알람의 메모", memberCount: 4),AlarmModel(isTurn: false,alarmTitle: "2번째 알람의 타이틀",Memo: "2번째 알람의 메모", memberCount: 1)]
+    var alarmData  : [AlarmModel] = [AlarmModel(isTurn: false,alarmTitle: "1번째 알람의 타이틀",Memo: "1번재 알람의 메모", memberCount: 4),AlarmModel(isTurn: false,alarmTitle: "2번째 알람의 타이틀",Memo: "2번째 알람의 메모", memberCount: 3)]
     
     //MARK: - LifeCycle
     override func viewDidLoad() {
@@ -265,7 +267,7 @@ extension MainViewController : UITableViewDelegate, UITableViewDataSource{
         cell.backgroundColor = .clear
         cell.topViewLabel.text = alarm.alarmTitle
         cell.memoLabel.text = alarm.Memo
-        
+        cell.memberCount = alarm.memberCount
         
         // 토글의 상태를 데이터 모델로부터 가져와 설정
         cell.toggleButton.isOn = alarm.isTurn
@@ -274,7 +276,7 @@ extension MainViewController : UITableViewDelegate, UITableViewDataSource{
         
         if cell.toggleButton.isOn == true{
             self.alarmData[indexPath.row].isTurn = true
-            print(self.alarmData[indexPath.row])
+//            print(self.alarmData[indexPath.row])
             cell.bottomView.isHidden = false
             //월
             cell.MonLabel.backgroundColor = DesignSystemColor.Orange500.value
@@ -300,7 +302,7 @@ extension MainViewController : UITableViewDelegate, UITableViewDataSource{
             
         }else{
             self.alarmData[indexPath.row].isTurn = false
-            print(self.alarmData[indexPath.row])
+//            print(self.alarmData[indexPath.row])
             cell.bottomView.isHidden = true
             
             
@@ -334,12 +336,12 @@ extension MainViewController : UITableViewDelegate, UITableViewDataSource{
             
             if cell.toggleButton.isOn == true{
                 self.alarmData[indexPath.row].isTurn = true
-                print(self.alarmData[indexPath.row])
+//                print(self.alarmData[indexPath.row])
                 cell.bottomView.isHidden = false
                 
             }else{
                 self.alarmData[indexPath.row].isTurn = false
-                print(self.alarmData[indexPath.row])
+//                print(self.alarmData[indexPath.row])
                 cell.bottomView.isHidden = true
                 
             }

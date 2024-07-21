@@ -10,8 +10,9 @@ import SnapKit
 import Then
 import Alamofire
 
-class AlarmTableViewCell : UITableViewCell, UISheetPresentationControllerDelegate{
-    
+//MARK: - AlarmTableViewCell
+
+class AlarmTableViewCell : UITableViewCell, UISheetPresentationControllerDelegate, UICollectionViewDataSource, UICollectionViewDelegate,UICollectionViewDelegateFlowLayout{
     
     //MARK: - closure
     var toggleclicked : ( () -> Void ) = {}
@@ -81,8 +82,8 @@ class AlarmTableViewCell : UITableViewCell, UISheetPresentationControllerDelegat
         stackView.addSubviews(MonLabel,TueLabel,WedLabel,ThuLabel,FriLabel,SatLabel,SunLabel)
         return stackView
     }()
-
-     lazy var MonLabel : UILabel = {
+    
+    lazy var MonLabel : UILabel = {
         let label = UILabel()
         label.text = "월"
         label.font = DesignSystemFont.Pretendard_SemiBold10.value
@@ -94,7 +95,7 @@ class AlarmTableViewCell : UITableViewCell, UISheetPresentationControllerDelegat
         return label
     }()
     
-     lazy var TueLabel : UILabel = {
+    lazy var TueLabel : UILabel = {
         let label = UILabel()
         label.text = "화"
         label.font = DesignSystemFont.Pretendard_SemiBold10.value
@@ -106,7 +107,7 @@ class AlarmTableViewCell : UITableViewCell, UISheetPresentationControllerDelegat
         return label
     }()
     
-     lazy var WedLabel : UILabel = {
+    lazy var WedLabel : UILabel = {
         let label = UILabel()
         label.text = "수"
         label.font = DesignSystemFont.Pretendard_SemiBold10.value
@@ -118,7 +119,7 @@ class AlarmTableViewCell : UITableViewCell, UISheetPresentationControllerDelegat
         return label
     }()
     
-     lazy var ThuLabel : UILabel = {
+    lazy var ThuLabel : UILabel = {
         let label = UILabel()
         label.text = "목"
         label.font = DesignSystemFont.Pretendard_SemiBold10.value
@@ -130,7 +131,7 @@ class AlarmTableViewCell : UITableViewCell, UISheetPresentationControllerDelegat
         return label
     }()
     
-     lazy var FriLabel : UILabel = {
+    lazy var FriLabel : UILabel = {
         let label = UILabel()
         label.text = "금"
         label.font = DesignSystemFont.Pretendard_SemiBold10.value
@@ -142,7 +143,7 @@ class AlarmTableViewCell : UITableViewCell, UISheetPresentationControllerDelegat
         return label
     }()
     
-     lazy var SatLabel : UILabel = {
+    lazy var SatLabel : UILabel = {
         let label = UILabel()
         label.text = "토"
         label.font = DesignSystemFont.Pretendard_SemiBold10.value
@@ -154,7 +155,7 @@ class AlarmTableViewCell : UITableViewCell, UISheetPresentationControllerDelegat
         return label
     }()
     
-     lazy var SunLabel : UILabel = {
+    lazy var SunLabel : UILabel = {
         let label = UILabel()
         label.text = "일"
         label.font = DesignSystemFont.Pretendard_SemiBold10.value
@@ -166,19 +167,18 @@ class AlarmTableViewCell : UITableViewCell, UISheetPresentationControllerDelegat
         return label
     }()
     
+    private lazy var borderLine : UIView = {
+        let view = UIView()
+        view.backgroundColor = DesignSystemColor.Gray200.value
+        return view
+    }()
     
     //MARK: - 아랫 부분
     
     lazy var bottomView : UIView = {
         let view = UIView()
-        view.addSubviews(borderLine,bottomViewLabel,memoView,memoLabel)
+        view.addSubviews(borderLine,bottomViewLabel,memberCollectionView,memoView,memoLabel)
         view.isHidden = true
-        return view
-    }()
-    
-    private lazy var borderLine : UIView = {
-        let view = UIView()
-        view.backgroundColor = DesignSystemColor.Gray200.value
         return view
     }()
     
@@ -197,6 +197,19 @@ class AlarmTableViewCell : UITableViewCell, UISheetPresentationControllerDelegat
         return label
     }()
     
+    lazy var memberCollectionView : UICollectionView = {
+        let layout = UICollectionViewFlowLayout()
+        layout.scrollDirection = .horizontal
+        layout.itemSize = CGSize(width: 62, height: 62)
+        
+        let view = UICollectionView(frame: .zero, collectionViewLayout: layout)
+        view.dataSource = self
+        view.delegate = self
+        view.register(memberCollectioViewCell.self, forCellWithReuseIdentifier: "memberCollectioViewCell")
+        view.backgroundColor = .yellow
+        return view
+    }()
+    
     private lazy var memoView : UIView = {
         let view = UIView()
         view.backgroundColor = DesignSystemColor.Gray100.value
@@ -212,20 +225,18 @@ class AlarmTableViewCell : UITableViewCell, UISheetPresentationControllerDelegat
         label.textAlignment = .center
         return label
     }()
-    
-    
+    //MARK: - DataSET
+    var memberCount : Int = 0
     
     
     //MARK: - LifeCycle
-    
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
-        
     }
     
     override func layoutSubviews() {
         super.layoutSubviews()
-        SetCell()
+        setCell()
     }
     
     required init?(coder aDecoder: NSCoder) {
@@ -233,7 +244,7 @@ class AlarmTableViewCell : UITableViewCell, UISheetPresentationControllerDelegat
     }
     
     //MARK: - SetUI
-    func SetCell(){
+    func setCell(){
         contentView.addSubview(AlarmStackView)
         
         contentView.layer.cornerRadius = 8
@@ -328,8 +339,15 @@ class AlarmTableViewCell : UITableViewCell, UISheetPresentationControllerDelegat
             $0.centerX.equalToSuperview()
         }
         
+        memberCollectionView.snp.makeConstraints{
+            $0.top.equalTo(bottomViewLabel.snp.bottom).offset(12)
+            $0.leading.trailing.equalToSuperview().inset(20)
+            $0.height.equalTo(87)
+            $0.width.equalToSuperview().offset(-40)
+        }
+        
         memoView.snp.makeConstraints{
-            $0.height.equalTo(63)
+            $0.height.equalTo(49)
             $0.leading.trailing.bottom.equalToSuperview().inset(16)
         }
         memoLabel.snp.makeConstraints{
@@ -369,21 +387,45 @@ class AlarmTableViewCell : UITableViewCell, UISheetPresentationControllerDelegat
         }
         
         vc.Menuclicked = {
-                vc.dismiss(animated: true) {
-                    let alterVC = AlterViewController(alterType: .deleteAlarm)
-                    alterVC.modalPresentationStyle = .overFullScreen
-                    alterVC.modalTransitionStyle = .crossDissolve
-                    parentViewController.present(alterVC, animated: true, completion: nil)
-                }
+            vc.dismiss(animated: true) {
+                let alterVC = AlterViewController(alterType: .deleteAlarm)
+                alterVC.modalPresentationStyle = .overFullScreen
+                alterVC.modalTransitionStyle = .crossDissolve
+                parentViewController.present(alterVC, animated: true, completion: nil)
             }
+        }
         
     }
+    //MARK: - collectionView delegate func
+    
+    func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
+        print("멤버의 숫자",memberCount)
+        return memberCount
+    }
+    
+    func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
+        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "memberCollectioViewCell", for: indexPath) as! memberCollectioViewCell
+        
+        cell.backgroundColor = .gray
+        
+        
+        return cell
+    }
+    
+    func centerItemsInCollectionView(cellWidth: Double, numberOfItems: Double, spaceBetweenCell: Double, collectionView: UICollectionView) -> UIEdgeInsets {
+        let totalWidth = cellWidth * numberOfItems
+        let totalSpacingWidth = spaceBetweenCell * (numberOfItems - 1)
+        let leftInset = (collectionView.frame.width - CGFloat(totalWidth + totalSpacingWidth)) / 2
+        let rightInset = leftInset
+        return UIEdgeInsets(top: 0, left: leftInset, bottom: 0, right: rightInset)
+    }
+    
+    
     
     
 }
 
-//MARK: - VC가 아닌 cell의 property에서 click이벤트를 위해 VC를 위에 깔아줌ㅇㅇ
-
+//MARK: - VC가 아닌 cell의 property에서 click이벤트를 위해 VC를 위에 깔아줌
 extension UITableViewCell {
     var parentVC: UIViewController? {
         var responder: UIResponder? = self
@@ -396,3 +438,50 @@ extension UITableViewCell {
         return nil
     }
 }
+
+
+
+
+//MARK: - memberCollectionViewCell
+class memberCollectioViewCell : UICollectionViewCell{
+    
+    private lazy var memberImageView : UIImageView = {
+        let view = UIImageView()
+        view.backgroundColor = DesignSystemColor.Orange500.value
+        view.image = UIImage(systemName: "person.circle.fill")
+        view.layer.cornerRadius = 31
+        return view
+    }()
+    
+    private lazy var memberLabel : UILabel = {
+        let label = UILabel()
+        label.text = "멤버 이름"
+        label.textColor = .black
+        return label
+    }()
+    
+    
+    override init(frame: CGRect){
+        super.init(frame: frame)
+        setUI()
+    }
+    
+    required init?(coder aDecoder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
+    
+    func setUI(){
+        contentView.addSubviews(memberImageView,memberLabel)
+        
+        //        memberImageView.snp.makeConstraints{
+        //            $0.height.width.equalTo(62)
+        //
+        //        }
+        //        memberLabel.snp.makeConstraints{
+        //            $0.top.equalTo(memberImageView.snp.bottom).offset(8)
+        //            $0.center.equalTo(memberImageView)
+        //        }
+    }
+    
+}
+

@@ -9,8 +9,6 @@ import Foundation
 import Alamofire
 
 //MARK: - dummydata
-
-
 struct AlarmModel{
    //var cellText : Int
     var isTurn : Bool
