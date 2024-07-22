@@ -17,7 +17,6 @@ class AlarmTableViewCell : UITableViewCell, UISheetPresentationControllerDelegat
     //MARK: - closure
     var toggleclicked : ( () -> Void ) = {}
     
-    
     lazy var AlarmStackView : UIStackView = {
         let view = UIStackView()
         view.addSubviews(topView,bottomView)
@@ -207,6 +206,7 @@ class AlarmTableViewCell : UITableViewCell, UISheetPresentationControllerDelegat
         view.delegate = self
         view.register(memberCollectioViewCell.self, forCellWithReuseIdentifier: "memberCollectioViewCell")
         view.backgroundColor = .yellow
+        view.isScrollEnabled = false
         return view
     }()
     
@@ -227,7 +227,6 @@ class AlarmTableViewCell : UITableViewCell, UISheetPresentationControllerDelegat
     }()
     //MARK: - DataSET
     var memberCount : Int = 0
-    
     
     //MARK: - LifeCycle
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
@@ -412,16 +411,14 @@ class AlarmTableViewCell : UITableViewCell, UISheetPresentationControllerDelegat
         return cell
     }
     
-    func centerItemsInCollectionView(cellWidth: Double, numberOfItems: Double, spaceBetweenCell: Double, collectionView: UICollectionView) -> UIEdgeInsets {
-        let totalWidth = cellWidth * numberOfItems
-        let totalSpacingWidth = spaceBetweenCell * (numberOfItems - 1)
-        let leftInset = (collectionView.frame.width - CGFloat(totalWidth + totalSpacingWidth)) / 2
-        let rightInset = leftInset
-        return UIEdgeInsets(top: 0, left: leftInset, bottom: 0, right: rightInset)
-    }
-    
-    
-    
+    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, insetForSectionAt section: Int) -> UIEdgeInsets {
+            let totalCellWidth = 62 * memberCount
+            let totalSpacingWidth = 8 * (memberCount - 1)
+            let leftInset = (collectionView.frame.width - CGFloat(totalCellWidth + totalSpacingWidth)) / 2
+            let rightInset = leftInset
+        
+            return UIEdgeInsets(top: -20, left: leftInset, bottom: 0, right: rightInset)
+        }
     
 }
 
