@@ -341,10 +341,32 @@ class MyPageViewController : UIViewController {
         label.font = DesignSystemFont.Pretendard_Medium14.value
         return label
     }()
+    
+    private lazy var logoutButton : UIButton = {
+        let button = UIButton()
+        button.setTitle("로그아웃", for: .normal)
+        button.titleLabel?.font = DesignSystemFont.Pretendard_Medium14.value
+        button.setTitleColor(DesignSystemColor.Gray400.value, for: .normal)
+        return button
+    }()
+    
+    private lazy var bar1 : UIView = {
+        let view = UIView()
+        view.backgroundColor = DesignSystemColor.Gray200.value
+        return view
+    }()
+    
+    private lazy var quitButton : UIButton = {
+        let button = UIButton()
+        button.setTitle("회원탈퇴", for: .normal)
+        button.titleLabel?.font = DesignSystemFont.Pretendard_Medium14.value
+        button.setTitleColor(DesignSystemColor.Gray400.value, for: .normal)
+        return button
+    }()
+
 
 
     //MARK: - Life Cycle
-
     override func viewDidLoad() {
         super.viewDidLoad()
         self.view.backgroundColor = DesignSystemColor.Gray150.value
@@ -352,7 +374,7 @@ class MyPageViewController : UIViewController {
     }
     
     func SetUI(){
-        view.addSubviews(myPageLabel,popButton,profileImage,nickNameLabel,editProfileButton,ContectButton,topView,middleView,bottomView)
+        view.addSubviews(myPageLabel,popButton,profileImage,nickNameLabel,editProfileButton,ContectButton,topView,middleView,bottomView,logoutButton,bar1,quitButton)
         
         myPageLabel.snp.makeConstraints{
             $0.centerX.equalToSuperview()
@@ -374,6 +396,8 @@ class MyPageViewController : UIViewController {
             $0.leading.equalTo(editProfileButton.snp.leading)
             $0.trailing.equalTo(ContectButton.snp.trailing)
         }
+        //MARK: - 버튼 두개 수정 필요
+
         editProfileButton.snp.makeConstraints{
             $0.trailing.equalTo(ContectButton.snp.leading).offset(-6)
             $0.top.equalTo(nickNameLabel.snp.bottom).offset(16)
@@ -485,6 +509,20 @@ class MyPageViewController : UIViewController {
             $0.trailing.equalToSuperview()
         }
         
+        bar1.snp.makeConstraints{
+            $0.width.equalTo(1)
+            $0.height.equalTo(12)
+            $0.centerX.equalToSuperview()
+            $0.top.equalTo(bottomView.snp.bottom).offset(24)
+        }
+        logoutButton.snp.makeConstraints{
+            $0.centerY.equalTo(bar1)
+            $0.trailing.equalTo(bar1.snp.leading).offset(-16)
+        }
+        quitButton.snp.makeConstraints{
+            $0.centerY.equalTo(bar1)
+            $0.leading.equalTo(bar1.snp.trailing).offset(16)
+        }
         
         
     }
