@@ -205,7 +205,6 @@ class AlarmTableViewCell : UITableViewCell, UISheetPresentationControllerDelegat
         view.dataSource = self
         view.delegate = self
         view.register(memberCollectioViewCell.self, forCellWithReuseIdentifier: "memberCollectioViewCell")
-        view.backgroundColor = .yellow
         view.isScrollEnabled = false
         return view
     }()
@@ -397,28 +396,37 @@ class AlarmTableViewCell : UITableViewCell, UISheetPresentationControllerDelegat
     }
     //MARK: - collectionView delegate func
     
+    //멤버 숫자
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         print("멤버의 숫자",memberCount)
         return memberCount
     }
     
+    //셀 재사용
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "memberCollectioViewCell", for: indexPath) as! memberCollectioViewCell
-        
-        cell.backgroundColor = .gray
-        
         
         return cell
     }
     
+    //셀 크가 = 이미지 + 라벨
+    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
+        return CGSize(width: 62, height: 87)
+    }
+    
+    //셀 중앙정렬
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, insetForSectionAt section: Int) -> UIEdgeInsets {
-            let totalCellWidth = 62 * memberCount
-            let totalSpacingWidth = 8 * (memberCount - 1)
-            let leftInset = (collectionView.frame.width - CGFloat(totalCellWidth + totalSpacingWidth)) / 2
-            let rightInset = leftInset
+        let totalCellWidth = 62 * memberCount
+        let totalSpacingWidth = 8 * (memberCount - 1)
+        let leftInset = (collectionView.frame.width - CGFloat(totalCellWidth + totalSpacingWidth)) / 2
+        let rightInset = leftInset
         
-            return UIEdgeInsets(top: -20, left: leftInset, bottom: 0, right: rightInset)
-        }
+        return UIEdgeInsets(top: 0, left: leftInset, bottom: 0, right: rightInset)
+    }
+    
+    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+        print(indexPath.section,indexPath.row,indexPath.item)
+    }
     
 }
 
@@ -447,6 +455,7 @@ class memberCollectioViewCell : UICollectionViewCell{
         view.backgroundColor = DesignSystemColor.Orange500.value
         view.image = UIImage(systemName: "person.circle.fill")
         view.layer.cornerRadius = 31
+        view.tintColor = .white
         return view
     }()
     
@@ -454,6 +463,7 @@ class memberCollectioViewCell : UICollectionViewCell{
         let label = UILabel()
         label.text = "멤버 이름"
         label.textColor = .black
+        label.font = DesignSystemFont.Pretendard_SemiBold12.value
         return label
     }()
     
@@ -470,14 +480,14 @@ class memberCollectioViewCell : UICollectionViewCell{
     func setUI(){
         contentView.addSubviews(memberImageView,memberLabel)
         
-        //        memberImageView.snp.makeConstraints{
-        //            $0.height.width.equalTo(62)
-        //
-        //        }
-        //        memberLabel.snp.makeConstraints{
-        //            $0.top.equalTo(memberImageView.snp.bottom).offset(8)
-        //            $0.center.equalTo(memberImageView)
-        //        }
+        memberImageView.snp.makeConstraints{
+            $0.height.width.equalTo(62)
+            
+        }
+        memberLabel.snp.makeConstraints{
+            $0.bottom.equalToSuperview()
+            $0.centerX.equalTo(memberImageView)
+        }
     }
     
 }
