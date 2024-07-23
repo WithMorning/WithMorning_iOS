@@ -1,16 +1,15 @@
 //
-//  OnBoardingRegisterViewController.swift
+//  OnBoardingCertificateViewController.swift
 //  WithMorning_iOS
 //
-//  Created by 안세훈 on 7/20/24.
+//  Created by 안세훈 on 7/23/24.
 //
 
 import UIKit
 import Then
 import SnapKit
-import JSPhoneFormat
 
-class OnBoardingRegisterViewController : UIViewController{
+class OnBoardingCertificateViewController : UIViewController{
     
     //MARK: - properties
     
@@ -32,20 +31,18 @@ class OnBoardingRegisterViewController : UIViewController{
     
     private lazy var subLabel : UILabel = {
         let label = UILabel()
-        label.text = "가입할 휴대폰 번호를 입력해 주세요."
+        label.text = "인증번호를 입력해주세요."
         label.textAlignment = .center
         label.font = DesignSystemFont.Pretendard_Medium14.value
         label.textColor = DesignSystemColor.Gray500.value
         return label
     }()
     
-    //휴대폰번호 포멧
-    let phoneFormat = JSPhoneFormat.init(appenCharacter: "-")
     
     private lazy var numberTextfield : UITextField = {
         let textfield = UITextField()
         textfield.translatesAutoresizingMaskIntoConstraints = false
-        textfield.placeholder = "000 - 0000 - 0000"
+        textfield.placeholder = "000000"
         textfield.backgroundColor = .white
         textfield.font = DesignSystemFont.Pretendard_Medium18.value
         textfield.textColor = .black
@@ -58,6 +55,7 @@ class OnBoardingRegisterViewController : UIViewController{
         textfield.spellCheckingType = .no
         textfield.autocapitalizationType = .none
         textfield.keyboardType = .numberPad
+        textfield.textContentType = .oneTimeCode
         textfield.addTarget(self, action: #selector(editchange), for: .editingChanged)
         return textfield
     }()
@@ -114,25 +112,22 @@ class OnBoardingRegisterViewController : UIViewController{
     //MARK: - @objc func
     @objc func editchange(_ sender: Any){
         guard let txtfield = sender as? UITextField, let text = txtfield.text else {return}
-        
-        txtfield.text = phoneFormat.addCharacter(at: text)
-        if text.count > 13{
+
+        if text.count >= 6{
             txtfield.deleteBackward()
             nextButton.backgroundColor = DesignSystemColor.Orange500.value
         }
-        if text.count < 13{
+        if text.count < 6{
             nextButton.backgroundColor = DesignSystemColor.Gray300.value
         }
-        
-        if text.count == 13{
-            nextButton.backgroundColor = DesignSystemColor.Orange500.value
-        }
+    
     }
     
     @objc func nextclick(){
         if nextButton.backgroundColor == DesignSystemColor.Orange500.value{
-            let vc = OnBoardingCertificateViewController()
-            self.navigationController?.pushViewController(vc, animated: true)
+            print("다음버튼 활성화")
+        }else{
+            print("비활성화")
         }
     }
 
@@ -140,9 +135,9 @@ class OnBoardingRegisterViewController : UIViewController{
 
 
 //MARK: - 키보드 세팅, textfield세팅
-extension OnBoardingRegisterViewController : UITextFieldDelegate {
+extension OnBoardingCertificateViewController : UITextFieldDelegate {
     func hideKeyboardWhenTappedAround() {
-        let tap = UITapGestureRecognizer(target: self, action: #selector(OnBoardingRegisterViewController.dismissKeyboard))
+        let tap = UITapGestureRecognizer(target: self, action: #selector(OnBoardingCertificateViewController.dismissKeyboard))
         tap.cancelsTouchesInView = false
         view.addGestureRecognizer(tap)
     }
@@ -169,22 +164,22 @@ extension OnBoardingRegisterViewController : UITextFieldDelegate {
 //Preview code
 #if DEBUG
 import SwiftUI
-struct OnBoardingRegisterViewControllerRepresentable: UIViewControllerRepresentable {
+struct OnBoardingCertificateViewControllerRepresentable: UIViewControllerRepresentable {
     
     func updateUIViewController(_ uiView: UIViewController,context: Context) {
         // leave this empty
     }
     @available(iOS 13.0.0, *)
     func makeUIViewController(context: Context) -> UIViewController{
-        OnBoardingRegisterViewController()
+        OnBoardingCertificateViewController()
     }
 }
 @available(iOS 13.0, *)
-struct OnBoardingRegisterViewControllerRepresentable_PreviewProvider: PreviewProvider {
+struct OnBoardingCertificateViewControllerRepresentable_PreviewProvider: PreviewProvider {
     static var previews: some View {
         Group {
             if #available(iOS 14.0, *) {
-                OnBoardingRegisterViewControllerRepresentable()
+                OnBoardingCertificateViewControllerRepresentable()
                     .ignoresSafeArea()
                     .previewDisplayName(/*@START_MENU_TOKEN@*/"Preview"/*@END_MENU_TOKEN@*/)
                     .previewDevice(PreviewDevice(rawValue: "iPhone se3"))
@@ -195,3 +190,4 @@ struct OnBoardingRegisterViewControllerRepresentable_PreviewProvider: PreviewPro
         
     }
 } #endif
+

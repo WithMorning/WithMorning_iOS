@@ -71,22 +71,21 @@ class CodeBtnViewController: UIViewController {
         return label
     }()
     
+    //MARK: - 메이트 함께하기 버튼
     private lazy var DoneButton : UIButton = {
-        var configuration = UIButton.Configuration.filled()
-        configuration.baseBackgroundColor = .black
-        configuration.baseForegroundColor = .white
-        configuration.titleAlignment = .center
-        configuration.contentInsets = NSDirectionalEdgeInsets(top:0, leading: 0, bottom: 40, trailing: 0) // 텍스트 위치 조정
-        
-        let titleTextAttributes = AttributeContainer([
-            NSAttributedString.Key.font: DesignSystemFont.Pretendard_Bold16.value
-        ])
-        configuration.attributedTitle = AttributedString("메이트 함께하기", attributes: titleTextAttributes)
-        
-        let button = UIButton(configuration: configuration)
-        
+        let button = UIButton()
+        button.addSubview(buttonLabel)
+        button.backgroundColor = .black
         button.addTarget(self, action: #selector(buttonclicked), for: .touchUpInside)
         return button
+    }()
+    
+    private lazy var buttonLabel : UILabel = {
+        let label = UILabel()
+        label.text = "메이트 함께하기"
+        label.textColor = .white
+        label.font = DesignSystemFont.Pretendard_Bold16.value
+        return label
     }()
     
     
@@ -141,7 +140,10 @@ class CodeBtnViewController: UIViewController {
             $0.top.equalTo(notiLabel.snp.bottom).offset(24)
             $0.leading.trailing.equalToSuperview()
             $0.height.equalTo(100)
-            
+        }
+        buttonLabel.snp.makeConstraints{
+            $0.centerX.equalToSuperview()
+            $0.top.equalToSuperview().offset(20)
         }
     }
     //MARK: - @objc func

@@ -89,6 +89,7 @@ class OnBoardingFirstViewController: UIViewController{
         label.textAlignment = .left
         return label
     }()
+    
     private lazy var maketingButton : UIButton = {
         let button = UIButton()
         button.setImage(UIImage(systemName: "checkmark.square.fill"), for: .normal)
@@ -139,24 +140,21 @@ class OnBoardingFirstViewController: UIViewController{
         return button
     }()
     
-    //MARK: - 저장 버튼
+    //MARK: - 다음 버튼
     private lazy var nextButton : UIButton = {
-        var configuration = UIButton.Configuration.filled()
-        configuration.baseBackgroundColor = DesignSystemColor.Gray300.value
-        configuration.baseForegroundColor = .white
-        configuration.titleAlignment = .center
-        configuration.contentInsets = NSDirectionalEdgeInsets(top:0, leading: 0, bottom: 40, trailing: 0) // 텍스트 위치 조정
-        
-        let titleTextAttributes = AttributeContainer([
-            NSAttributedString.Key.font: DesignSystemFont.Pretendard_Bold16.value
-        ])
-        configuration.attributedTitle = AttributedString("다음", attributes: titleTextAttributes)
-        
-        let button = UIButton(configuration: configuration)
-        
+        let button = UIButton()
+        button.addSubview(buttonLabel)
+        button.backgroundColor = DesignSystemColor.Gray300.value
         button.addTarget(self, action: #selector(nextbtn), for: .touchUpInside)
-        
         return button
+    }()
+    
+    private lazy var buttonLabel : UILabel = {
+        let label = UILabel()
+        label.text = "다음"
+        label.textColor = .white
+        label.font = DesignSystemFont.Pretendard_Bold16.value
+        return label
     }()
     
     //MARK: - life cycle
@@ -172,7 +170,7 @@ class OnBoardingFirstViewController: UIViewController{
         
         mainLabel.snp.makeConstraints{
             $0.centerX.equalToSuperview()
-            $0.top.equalTo(view.safeAreaLayoutGuide).offset(20)
+            $0.top.equalTo(view.safeAreaLayoutGuide)
         }
         view1.snp.makeConstraints{
             $0.top.equalTo(mainLabel.snp.bottom).offset(21)
@@ -237,21 +235,26 @@ class OnBoardingFirstViewController: UIViewController{
             $0.leading.trailing.bottom.equalToSuperview()
             $0.height.equalTo(92)
         }
+        buttonLabel.snp.makeConstraints{
+            $0.centerX.equalToSuperview()
+            $0.top.equalToSuperview().offset(20)
+            $0.bottom.equalToSuperview().inset(50)
+        }
     }
     //MARK: - 모두 동의 함수
     func setallagree(){
         if [agecheckButton,serviceButton,infoButton,maketingButton].allSatisfy({$0.tintColor == DesignSystemColor.Orange500.value}){
             allagreeButton.tintColor = DesignSystemColor.Orange500.value
-            nextButton.configuration?.baseBackgroundColor = DesignSystemColor.Orange500.value
+            nextButton.backgroundColor = DesignSystemColor.Orange500.value
         }else{
             allagreeButton.tintColor = DesignSystemColor.Gray200.value
-            nextButton.configuration?.baseBackgroundColor = DesignSystemColor.Gray300.value
+            nextButton.backgroundColor = DesignSystemColor.Gray300.value
         }
         
         if [agecheckButton,serviceButton,infoButton].allSatisfy({$0.tintColor == DesignSystemColor.Orange500.value}){
-            nextButton.configuration?.baseBackgroundColor = DesignSystemColor.Orange500.value
+            nextButton.backgroundColor = DesignSystemColor.Orange500.value
         }else{
-            nextButton.configuration?.baseBackgroundColor = DesignSystemColor.Gray300.value
+            nextButton.backgroundColor = DesignSystemColor.Gray300.value
         }
         
     }
@@ -295,17 +298,17 @@ class OnBoardingFirstViewController: UIViewController{
         if allagreeButton.tintColor == DesignSystemColor.Gray200.value{
 
             [agecheckButton,serviceButton,infoButton,maketingButton].forEach({$0.tintColor = DesignSystemColor.Orange500.value})
-            nextButton.configuration?.baseBackgroundColor = DesignSystemColor.Orange500.value
+            nextButton.backgroundColor = DesignSystemColor.Orange500.value
             allagreeButton.tintColor = DesignSystemColor.Orange500.value
         }else{
             [agecheckButton,serviceButton,infoButton,maketingButton].forEach({$0.tintColor = DesignSystemColor.Gray200.value})
-            nextButton.configuration?.baseBackgroundColor = DesignSystemColor.Gray300.value
+            nextButton.backgroundColor = DesignSystemColor.Gray300.value
             allagreeButton.tintColor = DesignSystemColor.Gray200.value
         }
     }
     
     @objc func nextbtn(){
-        if nextButton.configuration?.baseBackgroundColor == DesignSystemColor.Gray300.value{
+        if nextButton.backgroundColor == DesignSystemColor.Gray300.value {
            
         }else{
             let vc = OnBoardingSecondViewController()

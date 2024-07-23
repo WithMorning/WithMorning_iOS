@@ -16,6 +16,7 @@
 		D1303A012C451B3F0071267A /* EditprofileViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D1303A002C451B3F0071267A /* EditprofileViewController.swift */; };
 		D135377D2C3285AD004B49BB /* AlterViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D135377C2C3285AD004B49BB /* AlterViewController.swift */; };
 		D138F0B32C48090300233AFA /* OnBoardingFirstViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D138F0B22C48090300233AFA /* OnBoardingFirstViewController.swift */; };
+		D13B6B802C4FAB2B00D963DC /* OnBoardingCertificateViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D13B6B7F2C4FAB2B00D963DC /* OnBoardingCertificateViewController.swift */; };
 		D146706B2BEA8FF9007B7132 /* MyPageViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D146706A2BEA8FF9007B7132 /* MyPageViewController.swift */; };
 		D14A2D6C2BC8EB810087E0CB /* DesignSystem.swift in Sources */ = {isa = PBXBuildFile; fileRef = D14A2D6B2BC8EB810087E0CB /* DesignSystem.swift */; };
 		D15AE7342BC990DA00024CE3 /* Pretendard-Bold.otf in Resources */ = {isa = PBXBuildFile; fileRef = D15AE7332BC990DA00024CE3 /* Pretendard-Bold.otf */; };
@@ -63,6 +64,7 @@
 		D1303A002C451B3F0071267A /* EditprofileViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditprofileViewController.swift; sourceTree = "<group>"; };
 		D135377C2C3285AD004B49BB /* AlterViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AlterViewController.swift; sourceTree = "<group>"; };
 		D138F0B22C48090300233AFA /* OnBoardingFirstViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnBoardingFirstViewController.swift; sourceTree = "<group>"; };
+		D13B6B7F2C4FAB2B00D963DC /* OnBoardingCertificateViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnBoardingCertificateViewController.swift; sourceTree = "<group>"; };
 		D146706A2BEA8FF9007B7132 /* MyPageViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyPageViewController.swift; sourceTree = "<group>"; };
 		D14A2D6B2BC8EB810087E0CB /* DesignSystem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DesignSystem.swift; sourceTree = "<group>"; };
 		D15AE7332BC990DA00024CE3 /* Pretendard-Bold.otf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Pretendard-Bold.otf"; sourceTree = "<group>"; };
@@ -166,6 +168,7 @@
 				D138F0B22C48090300233AFA /* OnBoardingFirstViewController.swift */,
 				D19E7FA92C4A47C10053ACA8 /* OnBoardingSecondViewController.swift */,
 				D1DB46E22C4BA10C00BDC3D8 /* OnboardingRegisterViewController.swift */,
+				D13B6B7F2C4FAB2B00D963DC /* OnBoardingCertificateViewController.swift */,
 			);
 			path = Onboarding;
 			sourceTree = "<group>";
@@ -417,6 +420,7 @@
 				D16F5FD32BC65679006640F9 /* Constants.swift in Sources */,
 				D14A2D6C2BC8EB810087E0CB /* DesignSystem.swift in Sources */,
 				D16F5FD52BC65680006640F9 /* Router.swift in Sources */,
+				D13B6B802C4FAB2B00D963DC /* OnBoardingCertificateViewController.swift in Sources */,
 				D15D60C72BCA8BC3009C0874 /* AlarmTableViewCell.swift in Sources */,
 				D109BC8C2C43B23A005E075F /* SleepTimeViewController.swift in Sources */,
 				D129AAF12C2D4C0800F995D2 /* CellMenuViewController.swift in Sources */,
@@ -583,7 +587,7 @@
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
 				INFOPLIST_KEY_UIUserInterfaceStyle = Light;
-				IPHONEOS_DEPLOYMENT_TARGET = 17.4;
+				IPHONEOS_DEPLOYMENT_TARGET = 16.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -615,7 +619,7 @@
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
 				INFOPLIST_KEY_UIUserInterfaceStyle = Light;
-				IPHONEOS_DEPLOYMENT_TARGET = 17.4;
+				IPHONEOS_DEPLOYMENT_TARGET = 16.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",

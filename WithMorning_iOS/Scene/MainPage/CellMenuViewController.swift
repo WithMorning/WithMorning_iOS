@@ -58,20 +58,19 @@ class CellMenuViewController: UIViewController,AlterDelegate {
     }()
     
     private lazy var closeButton : UIButton = {
-        var configuration = UIButton.Configuration.filled()
-        configuration.baseBackgroundColor = .black
-        configuration.baseForegroundColor = .white
-        configuration.titleAlignment = .center
-        configuration.contentInsets = NSDirectionalEdgeInsets(top:0, leading: 0, bottom: 40, trailing: 0) // 텍스트 위치 조정
-        
-        let titleTextAttributes = AttributeContainer([
-            NSAttributedString.Key.font: DesignSystemFont.Pretendard_Bold16.value
-        ])
-        configuration.attributedTitle = AttributedString("닫기", attributes: titleTextAttributes)
-        
-        let button = UIButton(configuration: configuration)
+        let button = UIButton()
+        button.addSubview(buttonLabel)
+        button.backgroundColor = .black
         button.addTarget(self, action: #selector(closeClicked), for: .touchUpInside)
         return button
+    }()
+    
+    private lazy var buttonLabel : UILabel = {
+        let label = UILabel()
+        label.text = "닫기"
+        label.textColor = .white
+        label.font = DesignSystemFont.Pretendard_Bold16.value
+        return label
     }()
     
     
@@ -121,7 +120,10 @@ class CellMenuViewController: UIViewController,AlterDelegate {
             $0.top.equalTo(deleteButton.snp.bottom)
             $0.leading.trailing.equalToSuperview()
             $0.height.equalTo(100)
-            
+        }
+        buttonLabel.snp.makeConstraints{
+            $0.centerX.equalToSuperview()
+            $0.top.equalToSuperview().offset(20)
         }
     }
     

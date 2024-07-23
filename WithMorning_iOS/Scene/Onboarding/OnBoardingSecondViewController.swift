@@ -95,6 +95,8 @@ class OnBoardingSecondViewController: UIViewController, ASAuthorizationControlle
     }
     @objc func apple(){
 //        applelogin()
+        let vc = OnBoardingRegisterViewController()
+        self.navigationController?.pushViewController(vc, animated: true)
         
     }
     

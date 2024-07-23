@@ -256,23 +256,20 @@ class WeekChoiceViewController : UIViewController, UIScrollViewDelegate {
     }()
 
     //MARK: - 완료버튼
-
     private lazy var DoneButton : UIButton = {
-        var configuration = UIButton.Configuration.filled()
-        configuration.baseBackgroundColor = .black
-        configuration.baseForegroundColor = .white
-        configuration.titleAlignment = .center
-        configuration.contentInsets = NSDirectionalEdgeInsets(top:0, leading: 0, bottom: 40, trailing: 0) // 텍스트 위치 조정
-        
-        let titleTextAttributes = AttributeContainer([
-            NSAttributedString.Key.font: DesignSystemFont.Pretendard_Bold16.value
-        ])
-        configuration.attributedTitle = AttributedString("완료", attributes: titleTextAttributes)
-        
-        let button = UIButton(configuration: configuration)
-        
+        let button = UIButton()
+        button.addSubview(buttonLabel)
+        button.backgroundColor = .black
         button.addTarget(self, action: #selector(doneclick), for: .touchUpInside)
         return button
+    }()
+    
+    private lazy var buttonLabel : UILabel = {
+        let label = UILabel()
+        label.text = "완료"
+        label.textColor = .white
+        label.font = DesignSystemFont.Pretendard_Bold16.value
+        return label
     }()
 
 
@@ -410,7 +407,11 @@ class WeekChoiceViewController : UIViewController, UIScrollViewDelegate {
         }
         DoneButton.snp.makeConstraints{
             $0.leading.trailing.bottom.equalToSuperview()
-            $0.height.equalTo(100)
+            $0.top.equalTo(weekdayButton.snp.bottom).offset(24)
+        }
+        buttonLabel.snp.makeConstraints{
+            $0.top.equalToSuperview().offset(20)
+            $0.centerX.equalToSuperview()
         }
     }
     //MARK: - 주중, 주말 색 변화

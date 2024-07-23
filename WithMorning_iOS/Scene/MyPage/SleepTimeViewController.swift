@@ -10,7 +10,7 @@ import SnapKit
 import Then
 import Alamofire
 
-class SleepTimeViewController : UIViewController {
+class SleepTimeViewController : UIViewController, UISheetPresentationControllerDelegate {
     
     //MARK: - properties
     
@@ -186,7 +186,20 @@ class SleepTimeViewController : UIViewController {
     }
     
     @objc func repeatDay(){
-        print("클릭")
+        let vc = WeekChoiceViewController()
+        self.present(vc, animated: true)
+        
+        if let sheet = vc.sheetPresentationController {
+            if #available(iOS 16.0, *) {
+                sheet.detents = [.custom { context in
+                    return 472 //고정
+                }]
+                
+                sheet.delegate = self
+                sheet.prefersGrabberVisible = false
+                sheet.preferredCornerRadius = 16
+            }
+        }
     }
     
     @objc func notisetting(){

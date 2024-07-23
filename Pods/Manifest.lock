@@ -1,24 +1,28 @@
 PODS:
   - Alamofire (5.9.1)
+  - JSPhoneFormat (0.0.1)
   - SnapKit (5.7.1)
   - Then (3.0.0)
 
 DEPENDENCIES:
   - Alamofire
+  - JSPhoneFormat
   - SnapKit (~> 5.7.0)
   - Then
 
 SPEC REPOS:
   trunk:
     - Alamofire
+    - JSPhoneFormat
     - SnapKit
     - Then
 
 SPEC CHECKSUMS:
   Alamofire: f36a35757af4587d8e4f4bfa223ad10be2422b8c
+  JSPhoneFormat: a809ac14c7a9301690f0f0077890ebda0f775f67
   SnapKit: d612e99e678a2d3b95bf60b0705ed0a35c03484a
   Then: 844265ae87834bbe1147d91d5d41a404da2ec27d
 
-PODFILE CHECKSUM: f0192d6b2bd4ca77b06a395f5a3bae5ecf50f789
+PODFILE CHECKSUM: 7b3221590e2ddb542e1c898e487fe7a02f565ab2
 
 COCOAPODS: 1.15.2

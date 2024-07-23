@@ -177,6 +177,7 @@ class MakeAlarmViewController : UIViewController, UIScrollViewDelegate, UISheetP
         slider.thumbTintColor = .white
         slider.value = 50
         slider.addTarget(self, action: #selector(sliderValueChanged), for: .valueChanged)
+        
         return slider
     }()
     
@@ -268,12 +269,12 @@ class MakeAlarmViewController : UIViewController, UIScrollViewDelegate, UISheetP
     private lazy var memoTextfield : UITextField = {
         let textfield = UITextField()
         textfield.translatesAutoresizingMaskIntoConstraints = false
-        textfield.placeholder = "아침에 하고 싶은 말 또는 패널티를 정해주세요."
+        textfield.placeholder = " 아침에 하고 싶은 말 또는 패널티를 정해주세요."
         textfield.backgroundColor = DesignSystemColor.Gray150.value
         textfield.font = DesignSystemFont.Pretendard_Medium14.value
         textfield.textColor = .black
         textfield.layer.cornerRadius = 8
-        textfield.textAlignment = .center
+        textfield.textAlignment = .left
         
         //텍스트 필드 교정 메서드
         textfield.autocorrectionType = .no
@@ -285,20 +286,19 @@ class MakeAlarmViewController : UIViewController, UIScrollViewDelegate, UISheetP
     
     //MARK: - 저장 버튼
     private lazy var saveButton : UIButton = {
-        var configuration = UIButton.Configuration.filled()
-        configuration.baseBackgroundColor = DesignSystemColor.Orange500.value
-        configuration.baseForegroundColor = .white
-        configuration.titleAlignment = .center
-        configuration.contentInsets = NSDirectionalEdgeInsets(top:0, leading: 0, bottom: 40, trailing: 0) // 텍스트 위치 조정
-        
-        let titleTextAttributes = AttributeContainer([
-            NSAttributedString.Key.font: DesignSystemFont.Pretendard_Bold16.value
-        ])
-        configuration.attributedTitle = AttributedString("저장", attributes: titleTextAttributes)
-        
-        let button = UIButton(configuration: configuration)
+        let button = UIButton()
+        button.addSubview(buttonLabel)
+        button.backgroundColor = DesignSystemColor.Orange500.value
         button.addTarget(self, action: #selector(saveclicked), for: .touchUpInside)
         return button
+    }()
+    
+    private lazy var buttonLabel : UILabel = {
+        let label = UILabel()
+        label.text = "다음"
+        label.textColor = .white
+        label.font = DesignSystemFont.Pretendard_Bold16.value
+        return label
     }()
     
     
@@ -446,6 +446,10 @@ class MakeAlarmViewController : UIViewController, UIScrollViewDelegate, UISheetP
             $0.leading.trailing.bottom.equalToSuperview()
             $0.height.equalTo(92)
         }
+        buttonLabel.snp.makeConstraints{
+            $0.centerX.equalToSuperview()
+            $0.top.equalToSuperview().offset(20)
+        }
         
     }
     //MARK: - @objc func
@@ -482,7 +486,12 @@ class MakeAlarmViewController : UIViewController, UIScrollViewDelegate, UISheetP
         }
     }
     @objc func sliderValueChanged(_ sender: CustomSlider){
+        
+        let roundedValue = roundf(sender.value / 10) * 10
+            sender.value = roundedValue
+        
         let value : Int = Int(sender.value)
+        
         if value == 0 {
             sliderImage.image = UIImage(named: "Volumeoff")
             
@@ -560,6 +569,7 @@ class CustomSlider: UISlider {
         super.trackRect(forBounds: customTrackRect)
         return customTrackRect
     }
+    
 }
 
 

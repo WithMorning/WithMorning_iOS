@@ -505,6 +505,7 @@ class MyPageViewController : UIViewController {
         self.navigationController?.pushViewController(vc, animated: true)
     }
 }
+
 //Preview code
 #if DEBUG
 import SwiftUI
