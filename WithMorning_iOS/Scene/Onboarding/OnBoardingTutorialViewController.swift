@@ -41,7 +41,22 @@ class OnBoardingTutorialViewController : UIViewController{
         return page
     }()
     
+    //MARK: - 다음 버튼
+    private lazy var nextButton : UIButton = {
+        let button = UIButton()
+        button.addSubview(buttonLabel)
+        button.backgroundColor = .black
+//        button.addTarget(self, action: #selector(nextbtn), for: .touchUpInside)
+        return button
+    }()
     
+    private lazy var buttonLabel : UILabel = {
+        let label = UILabel()
+        label.text = "다음"
+        label.textColor = .white
+        label.font = DesignSystemFont.Pretendard_Bold16.value
+        return label
+    }()
     
     
     
@@ -53,7 +68,7 @@ class OnBoardingTutorialViewController : UIViewController{
     
     
     func setUI(){
-        view.addSubviews(mainLabel,popButton,pageControl)
+        view.addSubviews(mainLabel,popButton,pageControl,nextButton)
         
         mainLabel.snp.makeConstraints{
             $0.centerX.equalToSuperview()
@@ -68,7 +83,15 @@ class OnBoardingTutorialViewController : UIViewController{
             $0.top.equalTo(mainLabel.snp.bottom).offset(20)
             $0.centerX.equalToSuperview()
         }
-        
+        nextButton.snp.makeConstraints{
+            $0.leading.trailing.bottom.equalToSuperview()
+            $0.height.equalTo(92)
+        }
+        buttonLabel.snp.makeConstraints{
+            $0.centerX.equalToSuperview()
+            $0.top.equalToSuperview().offset(20)
+            $0.bottom.equalToSuperview().inset(50)
+        }
     }
 }
 
