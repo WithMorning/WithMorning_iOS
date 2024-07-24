@@ -170,7 +170,7 @@ class OnBoardingFirstViewController: UIViewController{
         
         mainLabel.snp.makeConstraints{
             $0.centerX.equalToSuperview()
-            $0.top.equalTo(view.safeAreaLayoutGuide)
+            $0.top.equalTo(view.safeAreaLayoutGuide).offset(20)
         }
         view1.snp.makeConstraints{
             $0.top.equalTo(mainLabel.snp.bottom).offset(21)

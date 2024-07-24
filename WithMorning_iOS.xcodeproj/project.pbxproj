@@ -31,6 +31,7 @@
 		D19A9CB22C26901100748CE8 /* MakeAlarmViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D19A9CB12C26901100748CE8 /* MakeAlarmViewController.swift */; };
 		D19E7FAA2C4A47C10053ACA8 /* OnBoardingSecondViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D19E7FA92C4A47C10053ACA8 /* OnBoardingSecondViewController.swift */; };
 		D1AA9A442C429965001A26B4 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = D1AA9A432C429965001A26B4 /* GoogleService-Info.plist */; };
+		D1B12F2F2C50E7770041288C /* OnBoardingTutorialViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D1B12F2E2C50E7770041288C /* OnBoardingTutorialViewController.swift */; };
 		D1D891EE2C42684B00ED8092 /* FirebaseAnalytics in Frameworks */ = {isa = PBXBuildFile; productRef = D1D891ED2C42684B00ED8092 /* FirebaseAnalytics */; };
 		D1D891F02C42684B00ED8092 /* FirebaseAnalyticsOnDeviceConversion in Frameworks */ = {isa = PBXBuildFile; productRef = D1D891EF2C42684B00ED8092 /* FirebaseAnalyticsOnDeviceConversion */; };
 		D1D891F22C42684B00ED8092 /* FirebaseAnalyticsSwift in Frameworks */ = {isa = PBXBuildFile; productRef = D1D891F12C42684B00ED8092 /* FirebaseAnalyticsSwift */; };
@@ -80,6 +81,7 @@
 		D19A9CB12C26901100748CE8 /* MakeAlarmViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MakeAlarmViewController.swift; sourceTree = "<group>"; };
 		D19E7FA92C4A47C10053ACA8 /* OnBoardingSecondViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnBoardingSecondViewController.swift; sourceTree = "<group>"; };
 		D1AA9A432C429965001A26B4 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
+		D1B12F2E2C50E7770041288C /* OnBoardingTutorialViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnBoardingTutorialViewController.swift; sourceTree = "<group>"; };
 		D1DB46E22C4BA10C00BDC3D8 /* OnBoardingRegisterViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnBoardingRegisterViewController.swift; sourceTree = "<group>"; };
 		D1DECB1B2BE54B37009AC667 /* Pretendard-Regular.otf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Pretendard-Regular.otf"; sourceTree = "<group>"; };
 		D1DECB1C2BE54B37009AC667 /* Pretendard-Black.otf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Pretendard-Black.otf"; sourceTree = "<group>"; };
@@ -172,6 +174,7 @@
 				D1DB46E22C4BA10C00BDC3D8 /* OnBoardingRegisterViewController.swift */,
 				D13B6B7F2C4FAB2B00D963DC /* OnBoardingCertificateViewController.swift */,
 				D1F71B192C50AE2C0070A8AA /* OnBoardingProfileViewController.swift */,
+				D1B12F2E2C50E7770041288C /* OnBoardingTutorialViewController.swift */,
 			);
 			path = Onboarding;
 			sourceTree = "<group>";
@@ -422,6 +425,7 @@
 				D1DB46E32C4BA10C00BDC3D8 /* OnBoardingRegisterViewController.swift in Sources */,
 				D16F5FD32BC65679006640F9 /* Constants.swift in Sources */,
 				D14A2D6C2BC8EB810087E0CB /* DesignSystem.swift in Sources */,
+				D1B12F2F2C50E7770041288C /* OnBoardingTutorialViewController.swift in Sources */,
 				D16F5FD52BC65680006640F9 /* Router.swift in Sources */,
 				D13B6B802C4FAB2B00D963DC /* OnBoardingCertificateViewController.swift in Sources */,
 				D15D60C72BCA8BC3009C0874 /* AlarmTableViewCell.swift in Sources */,

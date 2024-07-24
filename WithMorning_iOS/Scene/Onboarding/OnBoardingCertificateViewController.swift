@@ -120,6 +120,9 @@ class OnBoardingCertificateViewController : UIViewController{
         if text.count < 6{
             nextButton.backgroundColor = DesignSystemColor.Gray300.value
         }
+        if text.count == 6{
+            nextButton.backgroundColor = DesignSystemColor.Orange500.value
+        }
     
     }
     
