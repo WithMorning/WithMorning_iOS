@@ -309,7 +309,7 @@ class OnBoardingFirstViewController: UIViewController{
     
     @objc func nextbtn(){
         if nextButton.backgroundColor == DesignSystemColor.Gray300.value {
-           
+           //토스트팝업
         }else{
             let vc = OnBoardingSecondViewController()
             self.navigationController?.pushViewController(vc, animated: true)

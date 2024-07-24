@@ -113,7 +113,7 @@ class OnBoardingCertificateViewController : UIViewController{
     @objc func editchange(_ sender: Any){
         guard let txtfield = sender as? UITextField, let text = txtfield.text else {return}
 
-        if text.count >= 6{
+        if text.count > 6{
             txtfield.deleteBackward()
             nextButton.backgroundColor = DesignSystemColor.Orange500.value
         }
@@ -125,7 +125,8 @@ class OnBoardingCertificateViewController : UIViewController{
     
     @objc func nextclick(){
         if nextButton.backgroundColor == DesignSystemColor.Orange500.value{
-            print("다음버튼 활성화")
+            let vc = OnBoardingProfileViewController()
+            self.navigationController?.pushViewController(vc, animated: true)
         }else{
             print("비활성화")
         }
