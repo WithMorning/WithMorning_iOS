@@ -31,6 +31,9 @@
 		D19A9CB22C26901100748CE8 /* MakeAlarmViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D19A9CB12C26901100748CE8 /* MakeAlarmViewController.swift */; };
 		D19E7FAA2C4A47C10053ACA8 /* OnBoardingSecondViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D19E7FA92C4A47C10053ACA8 /* OnBoardingSecondViewController.swift */; };
 		D1AA9A442C429965001A26B4 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = D1AA9A432C429965001A26B4 /* GoogleService-Info.plist */; };
+		D1ABF7922C5239C7008B5084 /* TutorialFirstViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D1ABF7912C5239C7008B5084 /* TutorialFirstViewController.swift */; };
+		D1ABF7942C5239D6008B5084 /* TutorialSecondViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D1ABF7932C5239D6008B5084 /* TutorialSecondViewController.swift */; };
+		D1ABF7962C5239E4008B5084 /* TutorialThirdViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D1ABF7952C5239E4008B5084 /* TutorialThirdViewController.swift */; };
 		D1B12F2F2C50E7770041288C /* OnBoardingTutorialViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D1B12F2E2C50E7770041288C /* OnBoardingTutorialViewController.swift */; };
 		D1D891EE2C42684B00ED8092 /* FirebaseAnalytics in Frameworks */ = {isa = PBXBuildFile; productRef = D1D891ED2C42684B00ED8092 /* FirebaseAnalytics */; };
 		D1D891F02C42684B00ED8092 /* FirebaseAnalyticsOnDeviceConversion in Frameworks */ = {isa = PBXBuildFile; productRef = D1D891EF2C42684B00ED8092 /* FirebaseAnalyticsOnDeviceConversion */; };
@@ -81,6 +84,9 @@
 		D19A9CB12C26901100748CE8 /* MakeAlarmViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MakeAlarmViewController.swift; sourceTree = "<group>"; };
 		D19E7FA92C4A47C10053ACA8 /* OnBoardingSecondViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnBoardingSecondViewController.swift; sourceTree = "<group>"; };
 		D1AA9A432C429965001A26B4 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
+		D1ABF7912C5239C7008B5084 /* TutorialFirstViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TutorialFirstViewController.swift; sourceTree = "<group>"; };
+		D1ABF7932C5239D6008B5084 /* TutorialSecondViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TutorialSecondViewController.swift; sourceTree = "<group>"; };
+		D1ABF7952C5239E4008B5084 /* TutorialThirdViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TutorialThirdViewController.swift; sourceTree = "<group>"; };
 		D1B12F2E2C50E7770041288C /* OnBoardingTutorialViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnBoardingTutorialViewController.swift; sourceTree = "<group>"; };
 		D1DB46E22C4BA10C00BDC3D8 /* OnBoardingRegisterViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnBoardingRegisterViewController.swift; sourceTree = "<group>"; };
 		D1DECB1B2BE54B37009AC667 /* Pretendard-Regular.otf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Pretendard-Regular.otf"; sourceTree = "<group>"; };
@@ -169,12 +175,12 @@
 		D14A9DB42C2AD2BA00019B8B /* Onboarding */ = {
 			isa = PBXGroup;
 			children = (
+				D1ABF7902C52399D008B5084 /* OnboardingTutorial */,
 				D138F0B22C48090300233AFA /* OnBoardingFirstViewController.swift */,
 				D19E7FA92C4A47C10053ACA8 /* OnBoardingSecondViewController.swift */,
 				D1DB46E22C4BA10C00BDC3D8 /* OnBoardingRegisterViewController.swift */,
 				D13B6B7F2C4FAB2B00D963DC /* OnBoardingCertificateViewController.swift */,
 				D1F71B192C50AE2C0070A8AA /* OnBoardingProfileViewController.swift */,
-				D1B12F2E2C50E7770041288C /* OnBoardingTutorialViewController.swift */,
 			);
 			path = Onboarding;
 			sourceTree = "<group>";
@@ -235,6 +241,17 @@
 				D1E672BC2BC4FD3300A32790 /* SceneDelegate.swift */,
 			);
 			name = Resource;
+			sourceTree = "<group>";
+		};
+		D1ABF7902C52399D008B5084 /* OnboardingTutorial */ = {
+			isa = PBXGroup;
+			children = (
+				D1B12F2E2C50E7770041288C /* OnBoardingTutorialViewController.swift */,
+				D1ABF7912C5239C7008B5084 /* TutorialFirstViewController.swift */,
+				D1ABF7932C5239D6008B5084 /* TutorialSecondViewController.swift */,
+				D1ABF7952C5239E4008B5084 /* TutorialThirdViewController.swift */,
+			);
+			path = OnboardingTutorial;
 			sourceTree = "<group>";
 		};
 		D1E1DF802C3ACFE7001A132F /* AlarmPage */ = {
@@ -416,6 +433,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				D1ABF7942C5239D6008B5084 /* TutorialSecondViewController.swift in Sources */,
 				D19E7FAA2C4A47C10053ACA8 /* OnBoardingSecondViewController.swift in Sources */,
 				D1773F892BC988AB005C82FA /* UIFont_Extension.swift in Sources */,
 				D1E672BF2BC4FD3300A32790 /* MainViewController.swift in Sources */,
@@ -425,6 +443,8 @@
 				D1DB46E32C4BA10C00BDC3D8 /* OnBoardingRegisterViewController.swift in Sources */,
 				D16F5FD32BC65679006640F9 /* Constants.swift in Sources */,
 				D14A2D6C2BC8EB810087E0CB /* DesignSystem.swift in Sources */,
+				D1ABF7962C5239E4008B5084 /* TutorialThirdViewController.swift in Sources */,
+				D1ABF7922C5239C7008B5084 /* TutorialFirstViewController.swift in Sources */,
 				D1B12F2F2C50E7770041288C /* OnBoardingTutorialViewController.swift in Sources */,
 				D16F5FD52BC65680006640F9 /* Router.swift in Sources */,
 				D13B6B802C4FAB2B00D963DC /* OnBoardingCertificateViewController.swift in Sources */,
