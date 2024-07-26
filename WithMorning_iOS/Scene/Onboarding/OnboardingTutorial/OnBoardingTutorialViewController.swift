@@ -8,9 +8,9 @@
 import UIKit
 import SnapKit
 import Then
-import Alamofire
 
 class OnBoardingTutorialViewController : UIViewController{
+    
     
     //MARK: - properties
     private lazy var mainLabel : UILabel = {
@@ -28,8 +28,8 @@ class OnBoardingTutorialViewController : UIViewController{
         //        button.addTarget(self, action: #selector(popclicked), for: .touchUpInside)
         return button
     }()
-    
-    var pages = [UIViewController]()
+    //MARK: - 온보딩 페이지 컨트롤러
+    lazy var pages = [UIViewController]()
     
     private lazy var pageControl : UIPageControl = {
         let page = UIPageControl()
@@ -41,12 +41,24 @@ class OnBoardingTutorialViewController : UIViewController{
         return page
     }()
     
+    private lazy var pageViewController : UIPageViewController = {
+        let view = UIPageViewController(transitionStyle: .scroll, navigationOrientation: .horizontal, options: nil)
+        view.view.backgroundColor = .gray
+        view.delegate = self
+        view.dataSource = self
+        
+        let vc = [TutorialFirstViewController()]
+        
+        view.setViewControllers(vc, direction: .reverse, animated: true)
+        return view
+    }()
+    
     //MARK: - 다음 버튼
     private lazy var nextButton : UIButton = {
         let button = UIButton()
         button.addSubview(buttonLabel)
         button.backgroundColor = .black
-//        button.addTarget(self, action: #selector(nextbtn), for: .touchUpInside)
+        //        button.addTarget(self, action: #selector(nextbtn), for: .touchUpInside)
         return button
     }()
     
@@ -68,7 +80,7 @@ class OnBoardingTutorialViewController : UIViewController{
     
     
     func setUI(){
-        view.addSubviews(mainLabel,popButton,pageControl,nextButton)
+        view.addSubviews(mainLabel,popButton,pageControl,pageViewController.view,nextButton)
         
         mainLabel.snp.makeConstraints{
             $0.centerX.equalToSuperview()
@@ -83,6 +95,12 @@ class OnBoardingTutorialViewController : UIViewController{
             $0.top.equalTo(mainLabel.snp.bottom).offset(20)
             $0.centerX.equalToSuperview()
         }
+        pageViewController.view.snp.makeConstraints{
+            $0.leading.trailing.equalToSuperview()
+            $0.bottom.equalTo(nextButton.snp.top)
+            $0.top.equalTo(pageControl.snp.bottom)
+        }
+        
         nextButton.snp.makeConstraints{
             $0.leading.trailing.bottom.equalToSuperview()
             $0.height.equalTo(92)
@@ -92,8 +110,63 @@ class OnBoardingTutorialViewController : UIViewController{
             $0.top.equalToSuperview().offset(20)
             $0.bottom.equalToSuperview().inset(50)
         }
+        
     }
 }
+
+//MARK: - 온보딩 페이지
+
+extension OnBoardingTutorialViewController : UIPageViewControllerDelegate, UIPageViewControllerDataSource{
+    
+    func pageViewController(_ pageViewController: UIPageViewController, viewControllerBefore viewController: UIViewController) -> UIViewController? {
+        switch viewController {
+        case is TutorialFirstViewController:
+            return nil
+        case is TutorialSecondViewController:
+            return TutorialFirstViewController()
+        case is TutorialThirdViewController:
+            return TutorialSecondViewController()
+        default:
+            return nil
+        }
+    }
+    
+    func pageViewController(_ pageViewController: UIPageViewController, viewControllerAfter viewController: UIViewController) -> UIViewController? {
+        switch viewController {
+        case is TutorialFirstViewController:
+            return TutorialSecondViewController()
+        case is TutorialSecondViewController:
+            return TutorialThirdViewController()
+        case is TutorialThirdViewController:
+            return nil
+        default:
+            return nil
+        }
+    }
+    
+    func pageViewController(_ pageViewController: UIPageViewController, didFinishAnimating finished: Bool, previousViewControllers: [UIViewController], transitionCompleted completed: Bool) {
+        if completed, let currentViewController = pageViewController.viewControllers?.first {
+                switch currentViewController {
+                case is TutorialFirstViewController:
+                    pageControl.currentPage = 0
+                case is TutorialSecondViewController:
+                    pageControl.currentPage = 1
+                case is TutorialThirdViewController:
+                    pageControl.currentPage = 2
+                default:
+                    break
+                }
+            }
+}
+
+
+
+}
+
+
+
+
+
 
 
 //Preview code

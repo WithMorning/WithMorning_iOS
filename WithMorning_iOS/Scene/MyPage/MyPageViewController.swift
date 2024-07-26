@@ -31,6 +31,7 @@ class MyPageViewController : UIViewController {
     }()
     
     //MARK: - profile
+    
     private lazy var profileImage : UIImageView = {
         let image = UIImageView()
         image.backgroundColor = .gray
@@ -71,6 +72,7 @@ class MyPageViewController : UIViewController {
     }()
     
     //MARK: - topView
+    
     private lazy var topView : UIView = {
         let view = UIView()
         view.backgroundColor = .white
@@ -80,6 +82,7 @@ class MyPageViewController : UIViewController {
     }()
     
     //MARK: - 취침 시간 알림
+    
     private lazy var sleeptimeStackView: UIStackView = {
         let stackView = UIStackView()
         stackView.axis = .horizontal
@@ -373,6 +376,11 @@ class MyPageViewController : UIViewController {
         SetUI()
     }
     
+    override func viewDidLayoutSubviews() {
+        print("높이",view.bounds.height)
+        print("너비",view.bounds.width) //se 375, 미니3 360
+    }
+    
     func SetUI(){
         view.addSubviews(myPageLabel,popButton,profileImage,nickNameLabel,editProfileButton,ContectButton,topView,middleView,bottomView,logoutButton,bar1,quitButton)
         
@@ -387,8 +395,8 @@ class MyPageViewController : UIViewController {
         }
         profileImage.snp.makeConstraints{
             $0.bottom.equalTo(topView.snp.top).offset(-24)
-            $0.width.height.equalTo(100)
-            $0.leading.equalToSuperview().inset(32)
+            $0.width.height.equalTo(view.bounds.width/360*100)
+            $0.trailing.equalTo(editProfileButton.snp.leading).offset(-16)
         }
         nickNameLabel.snp.makeConstraints{
             $0.top.equalTo(view.safeAreaLayoutGuide).offset(109.5)
@@ -402,15 +410,15 @@ class MyPageViewController : UIViewController {
             $0.trailing.equalTo(ContectButton.snp.leading).offset(-6)
             $0.top.equalTo(nickNameLabel.snp.bottom).offset(16)
             $0.height.equalTo(44)
-            $0.width.equalTo(97)
+            $0.width.equalTo(ContectButton.snp.width)
         }
+        
         ContectButton.snp.makeConstraints{
             $0.trailing.equalToSuperview().offset(-32)
             $0.top.equalTo(nickNameLabel.snp.bottom).offset(16)
             $0.height.equalTo(44)
-            $0.width.equalTo(97)
+            $0.width.equalTo(view.bounds.width/360*97)
         }
-        
         
         topView.snp.makeConstraints{
             $0.top.equalTo(editProfileButton.snp.bottom).offset(37.5)
@@ -565,7 +573,7 @@ struct ProfileViewControllerRepresentable_PreviewProvider: PreviewProvider {
                 ProfileViewControllerRepresentable()
                     .ignoresSafeArea()
                     .previewDisplayName(/*@START_MENU_TOKEN@*/"Preview"/*@END_MENU_TOKEN@*/)
-                    .previewDevice(PreviewDevice(rawValue: "iPhone se3"))
+                    .previewDevice(PreviewDevice(rawValue: "iPhone 12pro"))
             } else {
                 // Fallback on earlier versions
             }
