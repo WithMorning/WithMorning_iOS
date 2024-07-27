@@ -141,9 +141,10 @@ class OnBoardingProfileViewController : UIViewController {
         self.navigationController?.popViewController(animated: true)
         print("pop")
     }
+    
     @objc func doneclick(){
         let vc = OnBoardingTutorialViewController()
-        self.navigationController?.navigationController?.pushViewController(vc, animated: true)
+        self.navigationController?.pushViewController(vc, animated: true)
     }
 }
 

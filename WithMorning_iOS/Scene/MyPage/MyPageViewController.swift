@@ -126,8 +126,8 @@ class MyPageViewController : UIViewController {
         stackView.alignment = .fill
         stackView.addSubviews(pushnotiLabel,pushnotiLabel2)
         stackView.isUserInteractionEnabled = true
-//        let tapGestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(repeatDay))
-//        stackView.addGestureRecognizer(tapGestureRecognizer)
+        //        let tapGestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(repeatDay))
+        //        stackView.addGestureRecognizer(tapGestureRecognizer)
         return stackView
     }()
     
@@ -154,7 +154,7 @@ class MyPageViewController : UIViewController {
         label.font = DesignSystemFont.Pretendard_Medium14.value
         return label
     }()
-
+    
     
     
     //MARK: - middleView
@@ -173,8 +173,8 @@ class MyPageViewController : UIViewController {
         stackView.alignment = .fill
         stackView.addSubviews(noticeLabel,noticeLabel2)
         stackView.isUserInteractionEnabled = true
-//        let tapGestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(repeatDay))
-//        stackView.addGestureRecognizer(tapGestureRecognizer)
+        //        let tapGestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(repeatDay))
+        //        stackView.addGestureRecognizer(tapGestureRecognizer)
         return stackView
     }()
     
@@ -208,8 +208,8 @@ class MyPageViewController : UIViewController {
         stackView.alignment = .fill
         stackView.addSubviews(serviceLabel,serviceLabel2)
         stackView.isUserInteractionEnabled = true
-//        let tapGestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(repeatDay))
-//        stackView.addGestureRecognizer(tapGestureRecognizer)
+        //        let tapGestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(repeatDay))
+        //        stackView.addGestureRecognizer(tapGestureRecognizer)
         return stackView
     }()
     
@@ -243,8 +243,8 @@ class MyPageViewController : UIViewController {
         stackView.alignment = .fill
         stackView.addSubviews(privacyLabel,privacyLabel2)
         stackView.isUserInteractionEnabled = true
-//        let tapGestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(repeatDay))
-//        stackView.addGestureRecognizer(tapGestureRecognizer)
+        //        let tapGestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(repeatDay))
+        //        stackView.addGestureRecognizer(tapGestureRecognizer)
         return stackView
     }()
     
@@ -280,7 +280,7 @@ class MyPageViewController : UIViewController {
         view.addSubviews(inquiryStackView,versionStackView)
         return view
     }()
-
+    
     //MARK: - 문의하기
     private lazy var inquiryStackView: UIStackView = {
         let stackView = UIStackView()
@@ -288,8 +288,8 @@ class MyPageViewController : UIViewController {
         stackView.alignment = .fill
         stackView.addSubviews(inquiryLabel,inquiryLabel2)
         stackView.isUserInteractionEnabled = true
-//        let tapGestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(repeatDay))
-//        stackView.addGestureRecognizer(tapGestureRecognizer)
+        //        let tapGestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(repeatDay))
+        //        stackView.addGestureRecognizer(tapGestureRecognizer)
         return stackView
     }()
     
@@ -323,8 +323,8 @@ class MyPageViewController : UIViewController {
         stackView.alignment = .fill
         stackView.addSubviews(versionLabel,versionLabel2)
         stackView.isUserInteractionEnabled = true
-//        let tapGestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(repeatDay))
-//        stackView.addGestureRecognizer(tapGestureRecognizer)
+        //        let tapGestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(repeatDay))
+        //        stackView.addGestureRecognizer(tapGestureRecognizer)
         return stackView
     }()
     
@@ -367,9 +367,9 @@ class MyPageViewController : UIViewController {
         button.setTitleColor(DesignSystemColor.Gray400.value, for: .normal)
         return button
     }()
-
-
-
+    
+    
+    
     //MARK: - Life Cycle
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -397,12 +397,12 @@ class MyPageViewController : UIViewController {
             $0.leading.equalToSuperview().offset(16)
             $0.height.width.equalTo(24)
         }
-//        profileImage.snp.makeConstraints{
-//            $0.bottom.equalTo(topView.snp.top).offset(-24)
-//            $0.width.height.equalTo(view.bounds.width/360*100)
-//            $0.trailing.equalTo(editProfileButton.snp.leading).offset(-16)
-//            $0.leading.equalToSuperview().offset(32)
-//        }
+        //        profileImage.snp.makeConstraints{
+        //            $0.bottom.equalTo(topView.snp.top).offset(-24)
+        //            $0.width.height.equalTo(view.bounds.width/360*100)
+        //            $0.trailing.equalTo(editProfileButton.snp.leading).offset(-16)
+        //            $0.leading.equalToSuperview().offset(32)
+        //        }
         profileImage.snp.makeConstraints{
             $0.bottom.equalTo(topView.snp.top).offset(-24)
             $0.height.equalTo(profileImage.snp.width)
@@ -418,7 +418,7 @@ class MyPageViewController : UIViewController {
             $0.trailing.equalTo(ContectButton.snp.trailing)
         }
         //MARK: - 버튼 두개 수정 필요
-
+        
         editProfileButton.snp.makeConstraints{
             $0.trailing.equalTo(ContectButton.snp.leading).offset(-6)
             $0.top.equalTo(nickNameLabel.snp.bottom).offset(16)
@@ -548,7 +548,7 @@ class MyPageViewController : UIViewController {
         
     }
     //MARK: - objc func
-
+    
     @objc func popclicked(){
         self.navigationController?.popViewController(animated: true)
         print("pop")
