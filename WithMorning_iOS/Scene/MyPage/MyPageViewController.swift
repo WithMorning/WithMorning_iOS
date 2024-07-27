@@ -34,10 +34,11 @@ class MyPageViewController : UIViewController {
     
     private lazy var profileImage : UIImageView = {
         let image = UIImageView()
-        image.backgroundColor = .gray
-        image.layer.cornerRadius = 50
+        image.backgroundColor = .green
+        image.contentMode = .scaleAspectFill
+        image.clipsToBounds = true
         image.image = UIImage(systemName: "person.circle")
-        image.tintColor = .white
+        image.tintColor = .black
         return image
     }()
     
@@ -378,11 +379,14 @@ class MyPageViewController : UIViewController {
     
     override func viewDidLayoutSubviews() {
         print("높이",view.bounds.height)
-        print("너비",view.bounds.width) //se 375, 미니3 360
+        print("너비",view.bounds.width)
+        profileImage.layer.cornerRadius = profileImage.bounds.width / 2
     }
     
     func SetUI(){
         view.addSubviews(myPageLabel,popButton,profileImage,nickNameLabel,editProfileButton,ContectButton,topView,middleView,bottomView,logoutButton,bar1,quitButton)
+        
+        profileImage.layer.cornerRadius = profileImage.bounds.width / 2
         
         myPageLabel.snp.makeConstraints{
             $0.centerX.equalToSuperview()
@@ -393,10 +397,19 @@ class MyPageViewController : UIViewController {
             $0.leading.equalToSuperview().offset(16)
             $0.height.width.equalTo(24)
         }
+//        profileImage.snp.makeConstraints{
+//            $0.bottom.equalTo(topView.snp.top).offset(-24)
+//            $0.width.height.equalTo(view.bounds.width/360*100)
+//            $0.trailing.equalTo(editProfileButton.snp.leading).offset(-16)
+//            $0.leading.equalToSuperview().offset(32)
+//        }
         profileImage.snp.makeConstraints{
             $0.bottom.equalTo(topView.snp.top).offset(-24)
-            $0.width.height.equalTo(view.bounds.width/360*100)
+            $0.height.equalTo(profileImage.snp.width)
+            
             $0.trailing.equalTo(editProfileButton.snp.leading).offset(-16)
+            
+            $0.leading.equalToSuperview().offset(32)
         }
         nickNameLabel.snp.makeConstraints{
             $0.top.equalTo(view.safeAreaLayoutGuide).offset(109.5)

@@ -91,7 +91,6 @@ class OnBoardingProfileViewController : UIViewController {
         self.view.backgroundColor = DesignSystemColor.Gray150.value
         setUI()
         hideKeyboardWhenTappedAround()
-//        setUpKeyboard()
     }
     
     func setUI(){
@@ -143,7 +142,8 @@ class OnBoardingProfileViewController : UIViewController {
         print("pop")
     }
     @objc func doneclick(){
-        
+        let vc = OnBoardingTutorialViewController()
+        self.navigationController?.navigationController?.pushViewController(vc, animated: true)
     }
 }
 

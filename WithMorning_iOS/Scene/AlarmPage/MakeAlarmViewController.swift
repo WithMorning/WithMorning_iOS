@@ -461,10 +461,13 @@ class MakeAlarmViewController : UIViewController, UIScrollViewDelegate, UISheetP
         let vc = WeekChoiceViewController()
         self.present(vc, animated: true)
         
+        let height = view.bounds.height * 0.65
+        
         if let sheet = vc.sheetPresentationController {
             if #available(iOS 16.0, *) {
                 sheet.detents = [.custom { context in
-                    return 472 //고정
+                    
+                    return height //고정
                 }]
                 
                 sheet.delegate = self
