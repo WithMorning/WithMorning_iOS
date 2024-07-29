@@ -43,7 +43,7 @@ class OnBoardingTutorialViewController : UIViewController{
     
     private lazy var pageViewController : UIPageViewController = {
         let view = UIPageViewController(transitionStyle: .scroll, navigationOrientation: .horizontal, options: nil)
-        view.view.backgroundColor = .gray
+        view.view.backgroundColor = .clear
         view.delegate = self
         view.dataSource = self
         

@@ -53,8 +53,10 @@ class OnBoardingProfileViewController : UIViewController {
         button.layer.cornerRadius = 20
         button.tintColor = .white
         button.backgroundColor = .black
+        button.addTarget(self, action: #selector(galleryclick), for: .touchUpInside)
         return button
     }()
+    
     
     private lazy var nicknameTextfield : UITextField = {
         let textfield = UITextField()
@@ -83,9 +85,9 @@ class OnBoardingProfileViewController : UIViewController {
         button.addTarget(self, action: #selector(doneclick), for: .touchUpInside)
         return button
     }()
-
+    
     //MARK: - Life cycle
-
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         self.view.backgroundColor = DesignSystemColor.Gray150.value
@@ -146,6 +148,20 @@ class OnBoardingProfileViewController : UIViewController {
         let vc = OnBoardingTutorialViewController()
         self.navigationController?.pushViewController(vc, animated: true)
     }
+    
+    @objc func galleryclick() {
+        let alert = UIAlertController(title:nil, message: nil, preferredStyle: .actionSheet)
+        
+        let okAction = UIAlertAction(title: "앨범에서 선택", style: .default, handler: nil)
+        let removeAction = UIAlertAction(title: "프로필 사진 삭제", style: .destructive, handler: nil)
+        let cancelAction = UIAlertAction(title: "닫기", style: .cancel, handler: nil)
+        
+        alert.addAction(okAction)
+        alert.addAction(removeAction)
+        alert.addAction(cancelAction)
+        
+        present(alert, animated: true, completion: nil)
+    }
 }
 
 
@@ -175,15 +191,15 @@ extension OnBoardingProfileViewController : UITextFieldDelegate {
     }
     
     func textField(_ textField: UITextField, shouldChangeCharactersIn range: NSRange, replacementString string: String) -> Bool {
-           if let char = string.cString(using: String.Encoding.utf8) {
-                  let isBackSpace = strcmp(char, "\\b")
-                  if isBackSpace == -92 {
-                      return true
-                  }
+        if let char = string.cString(using: String.Encoding.utf8) {
+            let isBackSpace = strcmp(char, "\\b")
+            if isBackSpace == -92 {
+                return true
             }
-            guard textField.text!.count < 10 else { return false } // 10 글자로 제한
-            return true
         }
+        guard textField.text!.count < 10 else { return false } // 10 글자로 제한
+        return true
+    }
     
     
 }

@@ -10,7 +10,7 @@ import SnapKit
 import Then
 import Alamofire
 
-class MyPageViewController : UIViewController {
+class MyPageViewController : UIViewController, UIScrollViewDelegate {
     
     //MARK: - 네비게이션
     
@@ -30,11 +30,28 @@ class MyPageViewController : UIViewController {
         return button
     }()
     
+    private lazy var mypageScrollView : UIScrollView = {
+        let scrollview = UIScrollView()
+        scrollview.addSubview(contentView)
+        scrollview.isScrollEnabled = true
+        scrollview.delegate = self
+        scrollview.showsVerticalScrollIndicator = false
+        scrollview.backgroundColor = .green
+        return scrollview
+    }()
+    
+    private lazy var contentView : UIView = {
+        let view = UIView()
+        view.addSubviews(profileImage,nickNameLabel,editProfileButton,ContectButton,topView,middleView,bottomView,logoutButton,bar1,quitButton)
+//        view.backgroundColor = .gray
+        return view
+    }()
+    
     //MARK: - profile
     
     private lazy var profileImage : UIImageView = {
         let image = UIImageView()
-        image.backgroundColor = .green
+        image.backgroundColor = .yellow
         image.contentMode = .scaleAspectFill
         image.clipsToBounds = true
         image.image = UIImage(systemName: "person.circle")
@@ -380,11 +397,12 @@ class MyPageViewController : UIViewController {
     override func viewDidLayoutSubviews() {
         print("높이",view.bounds.height)
         print("너비",view.bounds.width)
+        
         profileImage.layer.cornerRadius = profileImage.bounds.width / 2
     }
     
     func SetUI(){
-        view.addSubviews(myPageLabel,popButton,profileImage,nickNameLabel,editProfileButton,ContectButton,topView,middleView,bottomView,logoutButton,bar1,quitButton)
+        view.addSubviews(myPageLabel,popButton,mypageScrollView)
         
         profileImage.layer.cornerRadius = profileImage.bounds.width / 2
         
@@ -397,26 +415,34 @@ class MyPageViewController : UIViewController {
             $0.leading.equalToSuperview().offset(16)
             $0.height.width.equalTo(24)
         }
-        //        profileImage.snp.makeConstraints{
-        //            $0.bottom.equalTo(topView.snp.top).offset(-24)
-        //            $0.width.height.equalTo(view.bounds.width/360*100)
-        //            $0.trailing.equalTo(editProfileButton.snp.leading).offset(-16)
-        //            $0.leading.equalToSuperview().offset(32)
-        //        }
+        
+        mypageScrollView.snp.makeConstraints{
+            $0.top.equalTo(myPageLabel.snp.bottom).offset(21)
+            $0.leading.trailing.equalToSuperview().inset(16)
+            $0.bottom.equalTo(view.safeAreaLayoutGuide)
+        }
+        
+        contentView.snp.makeConstraints{
+            $0.edges.equalTo(mypageScrollView.contentLayoutGuide)
+        }
+        
         profileImage.snp.makeConstraints{
-            $0.bottom.equalTo(topView.snp.top).offset(-24)
+//            $0.bottom.equalTo(topView.snp.top).offset(-24) 여기
             $0.height.equalTo(profileImage.snp.width)
+            $0.centerY.equalTo(editProfileButton.snp.top) //여기
             
             $0.trailing.equalTo(editProfileButton.snp.leading).offset(-16)
             
-            $0.leading.equalToSuperview().offset(32)
+            $0.leading.equalToSuperview().offset(16)
         }
+        
         nickNameLabel.snp.makeConstraints{
             $0.top.equalTo(view.safeAreaLayoutGuide).offset(109.5)
             $0.trailing.equalTo(ContectButton)
             $0.leading.equalTo(editProfileButton.snp.leading)
             $0.trailing.equalTo(ContectButton.snp.trailing)
         }
+        
         //MARK: - 버튼 두개 수정 필요
         
         editProfileButton.snp.makeConstraints{
@@ -427,7 +453,7 @@ class MyPageViewController : UIViewController {
         }
         
         ContectButton.snp.makeConstraints{
-            $0.trailing.equalToSuperview().offset(-32)
+            $0.trailing.equalToSuperview().offset(-16)
             $0.top.equalTo(nickNameLabel.snp.bottom).offset(16)
             $0.height.equalTo(44)
             $0.width.equalTo(view.bounds.width/360*97)
@@ -435,8 +461,9 @@ class MyPageViewController : UIViewController {
         
         topView.snp.makeConstraints{
             $0.top.equalTo(editProfileButton.snp.bottom).offset(37.5)
-            $0.leading.trailing.equalToSuperview().inset(16)
+            $0.leading.trailing.equalToSuperview()
             $0.height.equalTo(108)
+            $0.width.equalTo(mypageScrollView.frameLayoutGuide)
         }
         sleeptimeStackView.snp.makeConstraints{
             $0.leading.trailing.equalToSuperview().inset(16)
@@ -464,7 +491,7 @@ class MyPageViewController : UIViewController {
         
         middleView.snp.makeConstraints{
             $0.top.equalTo(topView.snp.bottom).offset(8)
-            $0.leading.trailing.equalToSuperview().inset(16)
+            $0.leading.trailing.equalToSuperview()
             $0.height.equalTo(152)
         }
         noticeStackView.snp.makeConstraints{
@@ -504,7 +531,7 @@ class MyPageViewController : UIViewController {
         
         bottomView.snp.makeConstraints{
             $0.top.equalTo(middleView.snp.bottom).offset(8)
-            $0.leading.trailing.equalToSuperview().inset(16)
+            $0.leading.trailing.equalToSuperview()
             $0.height.equalTo(108)
         }
         inquiryStackView.snp.makeConstraints{
@@ -535,6 +562,7 @@ class MyPageViewController : UIViewController {
             $0.height.equalTo(12)
             $0.centerX.equalToSuperview()
             $0.top.equalTo(bottomView.snp.bottom).offset(24)
+            $0.bottom.equalToSuperview().inset(30)
         }
         logoutButton.snp.makeConstraints{
             $0.centerY.equalTo(bar1)

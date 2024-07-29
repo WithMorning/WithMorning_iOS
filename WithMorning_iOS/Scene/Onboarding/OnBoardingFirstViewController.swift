@@ -10,7 +10,6 @@ import Then
 import SnapKit
 
 class OnBoardingFirstViewController: UIViewController{
-
     
     private lazy var mainLabel : UILabel = {
         let label = UILabel()
@@ -162,6 +161,7 @@ class OnBoardingFirstViewController: UIViewController{
     override func viewDidLoad() {
         super.viewDidLoad()
         view.backgroundColor = DesignSystemColor.Gray150.value
+        self.navigationController?.isNavigationBarHidden = true
         setUI()
     }
     
