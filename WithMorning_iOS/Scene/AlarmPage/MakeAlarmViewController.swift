@@ -10,7 +10,8 @@ import SnapKit
 import Then
 import Alamofire
 
-class MakeAlarmViewController : UIViewController, UIScrollViewDelegate, UISheetPresentationControllerDelegate {
+class MakeAlarmViewController : UIViewController, UIScrollViewDelegate, UISheetPresentationControllerDelegate{
+    
     
     //MARK: - 네비게이션 바
     private lazy var MainLabel : UILabel = {
@@ -60,13 +61,20 @@ class MakeAlarmViewController : UIViewController, UIScrollViewDelegate, UISheetP
         return view
     }()
     
-    private lazy var timePicker : UIDatePicker = {
-        let picker = UIDatePicker()
-        picker.datePickerMode = .time
-        picker.preferredDatePickerStyle = .wheels
+    private lazy var timePicker : UIPickerView = {
+        let picker = UIPickerView()
+        picker.delegate = self
+        picker.dataSource = self
         picker.backgroundColor = .clear
+        picker.subviews.forEach { subview in
+            subview.backgroundColor = .clear
+        }
         return picker
     }()
+    
+    var hour = Array(1...12)
+    var min = Array(0...59)
+    var AMPM = ["AM","PM"]
     
     //MARK: - 반복 요일 스택뷰
     private lazy var alarmViewStackView: UIStackView = {
@@ -238,7 +246,8 @@ class MakeAlarmViewController : UIViewController, UIScrollViewDelegate, UISheetP
         textfield.font = DesignSystemFont.Pretendard_Medium14.value
         textfield.textColor = .black
         textfield.layer.cornerRadius = 8
-        textfield.textAlignment = .center
+        textfield.textAlignment = .left
+        textfield.addleftPadding()
         
         //텍스트 필드 교정 메서드
         textfield.autocorrectionType = .no
@@ -246,7 +255,6 @@ class MakeAlarmViewController : UIViewController, UIScrollViewDelegate, UISheetP
         textfield.autocapitalizationType = .none
         return textfield
     }()
-    
     
     //MARK: - 메모
     private lazy var memoView : UIView = {
@@ -302,13 +310,21 @@ class MakeAlarmViewController : UIViewController, UIScrollViewDelegate, UISheetP
     
     
     //MARK: - Life cycle
-
     override func viewDidLoad() {
         super.viewDidLoad()
         self.view.backgroundColor = DesignSystemColor.Gray150.value
         SetUI()
         hideKeyboardWhenTappedAround()
         setUpKeyboard()
+    }
+    
+    override func viewDidLayoutSubviews() {
+        super.viewDidLayoutSubviews()
+        
+        let colonLabel = UILabel(frame: CGRect(x: timePicker.frame.width / 2 - 5, y: timePicker.frame.height / 2 - 15, width: 10, height: 30))
+        colonLabel.text = ":"
+        colonLabel.font = DesignSystemFont.Pretendard_Bold30.value
+        timePicker.addSubview(colonLabel)
     }
     
     
@@ -346,7 +362,8 @@ class MakeAlarmViewController : UIViewController, UIScrollViewDelegate, UISheetP
             
         }
         timePicker.snp.makeConstraints{
-            $0.leading.trailing.equalToSuperview().inset(83)
+            $0.top.equalToSuperview()
+            $0.bottom.equalTo(bar1.snp.top)
             $0.height.equalTo(120)
         }
         bar1.snp.makeConstraints{
@@ -460,13 +477,13 @@ class MakeAlarmViewController : UIViewController, UIScrollViewDelegate, UISheetP
         let vc = WeekChoiceViewController()
         self.present(vc, animated: true)
         
-//        let height = view.bounds.height * 0.65
+        //        let height = view.bounds.height * 0.65
         
         if let sheet = vc.sheetPresentationController {
             if #available(iOS 16.0, *) {
                 sheet.detents = [.custom { context in
                     
-//                    return height //고정
+                    //                    return height //고정
                     return 472
                 }]
                 
@@ -492,7 +509,7 @@ class MakeAlarmViewController : UIViewController, UIScrollViewDelegate, UISheetP
     @objc func sliderValueChanged(_ sender: CustomSlider){
         
         let roundedValue = roundf(sender.value / 10) * 10
-            sender.value = roundedValue
+        sender.value = roundedValue
         
         let value : Int = Int(sender.value)
         
@@ -512,6 +529,7 @@ class MakeAlarmViewController : UIViewController, UIScrollViewDelegate, UISheetP
 }
 //MARK: - 키보드 세팅, textfield세팅
 extension MakeAlarmViewController : UITextFieldDelegate {
+    
     func hideKeyboardWhenTappedAround() {
         let tap = UITapGestureRecognizer(target: self, action: #selector(MakeAlarmViewController.dismissKeyboard))
         tap.cancelsTouchesInView = false
@@ -538,6 +556,7 @@ extension MakeAlarmViewController : UITextFieldDelegate {
                                                selector: #selector(keyboardWillShow),
                                                name: UIResponder.keyboardWillShowNotification,
                                                object: nil)
+        
         NotificationCenter.default.addObserver(self,
                                                selector: #selector(keyboardWillHide),
                                                name: UIResponder.keyboardWillHideNotification,
@@ -546,22 +565,78 @@ extension MakeAlarmViewController : UITextFieldDelegate {
     
     @objc func keyboardWillShow(notification: NSNotification) {
         if let keyboardSize = (notification.userInfo?[UIResponder.keyboardFrameEndUserInfoKey] as? NSValue)?.cgRectValue {
+            
             if self.view.frame.origin.y == 0 {
                 self.view.frame.origin.y -= keyboardSize.height
+                self.saveButton.isHidden = true
             }
         }
     }
     
     @objc func keyboardWillHide(notification: NSNotification) {
+        
         if self.view.frame.origin.y != 0 {
             self.view.frame.origin.y = 0
+            self.saveButton.isHidden = false
         }
     }
 }
+//MARK: - pickerView custom
 
+extension MakeAlarmViewController : UIPickerViewDelegate, UIPickerViewDataSource {
+    
+    func numberOfComponents(in pickerView: UIPickerView) -> Int {
+        3
+    }
+    
+    func pickerView(_ pickerView: UIPickerView, numberOfRowsInComponent component: Int) -> Int {
+        switch component {
+        case 0:
+            return hour.count
+        case 1:
+            return min.count
+        case 2:
+            return AMPM.count
+        default:
+            return 0
+        }
+    }
+    
+    
+    func pickerView(_ pickerView: UIPickerView, titleForRow row: Int, forComponent component: Int) -> String? {
+        switch component {
+        case 0:
+            return String(format: "%02d", hour[row])
+        case 1:
+            return String(format: "%02d", min[row])
+        case 2:
+            return "\(AMPM[row])"
+        default:
+            return ""
+        }
+    }
+    
+    
+    func pickerView(_ pickerView: UIPickerView, viewForRow row: Int, forComponent component: Int, reusing view: UIView?) -> UIView {
+        
+        let label = UILabel(frame: CGRect(x: 0, y: 0, width: 40, height: 21))
+        label.textAlignment = .center
+        label.font = DesignSystemFont.Pretendard_Bold30.value
+        
+        if component == 0 {
+            label.text = String(format: "%02d", hour[row])
+        } else if component == 1 {
+            label.text = String(format: "%02d", min[row])
+        } else if component == 2 {
+            label.text = String(AMPM[row])
+        }
+        
+        return label
+    }
+    
+}
 //MARK: - 슬라이더 두께 조절
 class CustomSlider: UISlider {
-    
     override func trackRect(forBounds bounds: CGRect) -> CGRect {
         // 원하는 두께로 조절하세요. 여기서는 10으로 설정했습니다.
         let customTrackRect = CGRect(
@@ -575,7 +650,6 @@ class CustomSlider: UISlider {
     }
     
 }
-
 
 
 //Preview code
