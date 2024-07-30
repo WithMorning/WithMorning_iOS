@@ -36,7 +36,6 @@ class MakeAlarmViewController : UIViewController, UIScrollViewDelegate, UISheetP
         scrollview.isScrollEnabled = true
         scrollview.delegate = self
         scrollview.showsVerticalScrollIndicator = false
-
         return scrollview
     }()
     

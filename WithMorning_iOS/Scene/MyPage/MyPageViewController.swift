@@ -36,14 +36,12 @@ class MyPageViewController : UIViewController, UIScrollViewDelegate {
         scrollview.isScrollEnabled = true
         scrollview.delegate = self
         scrollview.showsVerticalScrollIndicator = false
-        scrollview.backgroundColor = .green
         return scrollview
     }()
     
     private lazy var contentView : UIView = {
         let view = UIView()
         view.addSubviews(profileImage,nickNameLabel,editProfileButton,ContectButton,topView,middleView,bottomView,logoutButton,bar1,quitButton)
-//        view.backgroundColor = .gray
         return view
     }()
     
@@ -416,14 +414,14 @@ class MyPageViewController : UIViewController, UIScrollViewDelegate {
             $0.height.width.equalTo(24)
         }
         
+        contentView.snp.makeConstraints{
+            $0.edges.equalTo(mypageScrollView.contentLayoutGuide)
+        }
+        
         mypageScrollView.snp.makeConstraints{
             $0.top.equalTo(myPageLabel.snp.bottom).offset(21)
             $0.leading.trailing.equalToSuperview().inset(16)
             $0.bottom.equalTo(view.safeAreaLayoutGuide)
-        }
-        
-        contentView.snp.makeConstraints{
-            $0.edges.equalTo(mypageScrollView.contentLayoutGuide)
         }
         
         profileImage.snp.makeConstraints{
@@ -437,8 +435,7 @@ class MyPageViewController : UIViewController, UIScrollViewDelegate {
         }
         
         nickNameLabel.snp.makeConstraints{
-            $0.top.equalTo(view.safeAreaLayoutGuide).offset(109.5)
-            $0.trailing.equalTo(ContectButton)
+            $0.top.equalToSuperview().offset(45.5)
             $0.leading.equalTo(editProfileButton.snp.leading)
             $0.trailing.equalTo(ContectButton.snp.trailing)
         }
@@ -562,15 +559,17 @@ class MyPageViewController : UIViewController, UIScrollViewDelegate {
             $0.height.equalTo(12)
             $0.centerX.equalToSuperview()
             $0.top.equalTo(bottomView.snp.bottom).offset(24)
-            $0.bottom.equalToSuperview().inset(30)
+            $0.bottom.equalToSuperview().offset(-30)
         }
         logoutButton.snp.makeConstraints{
             $0.centerY.equalTo(bar1)
             $0.trailing.equalTo(bar1.snp.leading).offset(-16)
+            $0.bottom.equalToSuperview().offset(-30)
         }
         quitButton.snp.makeConstraints{
             $0.centerY.equalTo(bar1)
             $0.leading.equalTo(bar1.snp.trailing).offset(16)
+            $0.bottom.equalToSuperview().offset(-30)
         }
         
         
