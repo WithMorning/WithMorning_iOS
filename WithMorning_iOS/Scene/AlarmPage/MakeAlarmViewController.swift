@@ -66,9 +66,7 @@ class MakeAlarmViewController : UIViewController, UIScrollViewDelegate, UISheetP
         picker.delegate = self
         picker.dataSource = self
         picker.backgroundColor = .clear
-        picker.subviews.forEach { subview in
-            subview.backgroundColor = .clear
-        }
+        picker.setContentCompressionResistancePriority(.defaultLow, for: .vertical)
         return picker
     }()
     
@@ -241,7 +239,7 @@ class MakeAlarmViewController : UIViewController, UIScrollViewDelegate, UISheetP
     private lazy var groupTextfield : UITextField = {
         let textfield = UITextField()
         textfield.translatesAutoresizingMaskIntoConstraints = false
-        textfield.placeholder = "윗모닝 모임명을 적어주세요."
+        textfield.attributedPlaceholder = NSAttributedString(string: "윗모닝 모임명을 적어주세요.", attributes: [NSAttributedString.Key.foregroundColor : DesignSystemColor.Gray400.value])
         textfield.backgroundColor = DesignSystemColor.Gray150.value
         textfield.font = DesignSystemFont.Pretendard_Medium14.value
         textfield.textColor = .black
@@ -261,7 +259,7 @@ class MakeAlarmViewController : UIViewController, UIScrollViewDelegate, UISheetP
         let view = UIView()
         view.backgroundColor = .white
         view.layer.cornerRadius = 8
-        view.addSubviews(memoLabel,memoTextfield)
+        view.addSubviews(memoLabel,memoTextView)
         return view
     }()
     
@@ -273,22 +271,20 @@ class MakeAlarmViewController : UIViewController, UIScrollViewDelegate, UISheetP
         return label
     }()
     
-    private lazy var memoTextfield : UITextField = {
-        let textfield = UITextField()
-        textfield.translatesAutoresizingMaskIntoConstraints = false
-        textfield.placeholder = " 아침에 하고 싶은 말 또는 패널티를 정해주세요."
-        textfield.backgroundColor = DesignSystemColor.Gray150.value
-        textfield.font = DesignSystemFont.Pretendard_Medium14.value
-        textfield.textColor = .black
-        textfield.layer.cornerRadius = 8
-        textfield.textAlignment = .left
+    private lazy var memoTextView : UITextView = {
+        let view = UITextView()
+        view.backgroundColor = DesignSystemColor.Gray150.value
+        view.text = placeholder
         
-        //텍스트 필드 교정 메서드
-        textfield.autocorrectionType = .no
-        textfield.spellCheckingType = .no
-        textfield.autocapitalizationType = .none
-        return textfield
+        view.font = DesignSystemFont.Pretendard_Medium14.value
+        view.textAlignment = .left
+        view.textColor = DesignSystemColor.Gray400.value
+        view.layer.cornerRadius = 8
+//        view.textContainerInset = UIEdgeInsets(top: 16, left: 15, bottom: 0, right: 0)
+        return view
     }()
+    
+    let placeholder = "아침에 하고 싶은 말 또는 패널티를 정해주세요."
     
     
     //MARK: - 저장 버튼
@@ -302,7 +298,7 @@ class MakeAlarmViewController : UIViewController, UIScrollViewDelegate, UISheetP
     
     private lazy var buttonLabel : UILabel = {
         let label = UILabel()
-        label.text = "다음"
+        label.text = "저장"
         label.textColor = .white
         label.font = DesignSystemFont.Pretendard_Bold16.value
         return label
@@ -320,17 +316,14 @@ class MakeAlarmViewController : UIViewController, UIScrollViewDelegate, UISheetP
     
     override func viewDidLayoutSubviews() {
         super.viewDidLayoutSubviews()
-        
-        let colonLabel = UILabel(frame: CGRect(x: timePicker.frame.width / 2 - 5, y: timePicker.frame.height / 2 - 15, width: 10, height: 30))
-        colonLabel.text = ":"
-        colonLabel.font = DesignSystemFont.Pretendard_Bold30.value
-        timePicker.addSubview(colonLabel)
+        pickerviewUI()
     }
     
+    //MARK: - Autolayout
     
     func SetUI(){
         groupTextfield.delegate = self
-        memoTextfield.delegate = self
+        memoTextView.delegate = self
         
         view.addSubviews(MainLabel,popButton,alarmScrollVeiw,saveButton)
         
@@ -364,18 +357,21 @@ class MakeAlarmViewController : UIViewController, UIScrollViewDelegate, UISheetP
         timePicker.snp.makeConstraints{
             $0.top.equalToSuperview()
             $0.bottom.equalTo(bar1.snp.top)
-            $0.height.equalTo(120)
+            $0.centerY.equalToSuperview()
+            $0.leading.trailing.equalToSuperview()
         }
         bar1.snp.makeConstraints{
-            $0.top.equalTo(timePicker.snp.bottom).offset(16)
+            $0.leading.trailing.equalToSuperview().inset(16)
             $0.height.equalTo(1)
-            $0.leading.trailing.equalToSuperview().inset(16)
+            $0.bottom.equalTo(alarmViewStackView.snp.top).offset(-16)
         }
+        
         alarmViewStackView.snp.makeConstraints{
-            $0.top.equalTo(bar1.snp.bottom).offset(16)
+            $0.height.equalTo(24)
             $0.leading.trailing.equalToSuperview().inset(16)
-            $0.height.equalTo(40)
+            $0.bottom.equalToSuperview().inset(16)
         }
+        
         repeatLabel.snp.makeConstraints {
             $0.leading.centerY.equalToSuperview()
         }
@@ -445,17 +441,16 @@ class MakeAlarmViewController : UIViewController, UIScrollViewDelegate, UISheetP
         memoView.snp.makeConstraints{
             $0.top.equalTo(groupView.snp.bottom).offset(8)
             $0.leading.trailing.equalToSuperview()
-            $0.height.equalTo(112)
+            $0.height.equalTo(152)
             $0.width.equalTo(alarmScrollVeiw.frameLayoutGuide)
             $0.bottom.equalToSuperview().inset(30)
         }
         memoLabel.snp.makeConstraints{
             $0.leading.top.equalToSuperview().offset(16)
         }
-        memoTextfield.snp.makeConstraints{
-            $0.trailing.bottom.equalToSuperview().offset(-16)
-            $0.leading.equalToSuperview().offset(16)
-            $0.height.equalTo(52)
+        memoTextView.snp.makeConstraints{
+            $0.top.equalTo(memoLabel.snp.bottom).inset(-8)
+            $0.leading.trailing.bottom.equalToSuperview().inset(16)
         }
         
         saveButton.snp.makeConstraints{
@@ -468,6 +463,22 @@ class MakeAlarmViewController : UIViewController, UIScrollViewDelegate, UISheetP
         }
         
     }
+    //MARK: - picker set
+    
+    func pickerviewUI(){
+        timePicker.subviews[1].isHidden = true
+        
+        let colonLabel = UILabel()
+        colonLabel.text = ":"
+        colonLabel.font = DesignSystemFont.Pretendard_Bold30.value
+        timePicker.addSubview(colonLabel)
+        
+        colonLabel.snp.makeConstraints{
+            $0.centerY.equalToSuperview().offset(-3)
+            $0.centerX.equalToSuperview().offset(-16.5)
+        }
+    }
+    
     //MARK: - @objc func
     @objc func popclicked(){
         self.navigationController?.popViewController(animated: true)
@@ -477,13 +488,12 @@ class MakeAlarmViewController : UIViewController, UIScrollViewDelegate, UISheetP
         let vc = WeekChoiceViewController()
         self.present(vc, animated: true)
         
-        //        let height = view.bounds.height * 0.65
+        //  let height = view.bounds.height * 0.65
         
         if let sheet = vc.sheetPresentationController {
             if #available(iOS 16.0, *) {
                 sheet.detents = [.custom { context in
                     
-                    //                    return height //고정
                     return 472
                 }]
                 
@@ -522,6 +532,7 @@ class MakeAlarmViewController : UIViewController, UIScrollViewDelegate, UISheetP
         sliderLabel.text = "\(value)" + "%"
         
     }
+    
     @objc func saveclicked(){
         self.navigationController?.popViewController(animated: true)
     }
@@ -585,10 +596,12 @@ extension MakeAlarmViewController : UITextFieldDelegate {
 
 extension MakeAlarmViewController : UIPickerViewDelegate, UIPickerViewDataSource {
     
+    //휠 개수
     func numberOfComponents(in pickerView: UIPickerView) -> Int {
         3
     }
     
+    //컴포넌트의 개수
     func pickerView(_ pickerView: UIPickerView, numberOfRowsInComponent component: Int) -> Int {
         switch component {
         case 0:
@@ -602,7 +615,7 @@ extension MakeAlarmViewController : UIPickerViewDelegate, UIPickerViewDataSource
         }
     }
     
-    
+    //컴포넌트 표시
     func pickerView(_ pickerView: UIPickerView, titleForRow row: Int, forComponent component: Int) -> String? {
         switch component {
         case 0:
@@ -616,24 +629,64 @@ extension MakeAlarmViewController : UIPickerViewDelegate, UIPickerViewDataSource
         }
     }
     
-    
+    //컴포넌트 표시
     func pickerView(_ pickerView: UIPickerView, viewForRow row: Int, forComponent component: Int, reusing view: UIView?) -> UIView {
         
-        let label = UILabel(frame: CGRect(x: 0, y: 0, width: 40, height: 21))
-        label.textAlignment = .center
-        label.font = DesignSystemFont.Pretendard_Bold30.value
-        
-        if component == 0 {
-            label.text = String(format: "%02d", hour[row])
-        } else if component == 1 {
-            label.text = String(format: "%02d", min[row])
-        } else if component == 2 {
-            label.text = String(AMPM[row])
+        if component == 0 || component == 1 {
+            let timelabel = UILabel()
+            timelabel.textAlignment = .center
+            timelabel.font = DesignSystemFont.Pretendard_Bold30.value
+            
+            if component == 0 {
+                timelabel.text = String(format: "%02d", hour[row])
+            } else {
+                timelabel.text = String(format: "%02d", min[row])
+            }
+            
+            return timelabel
+        } else {
+            let AMPMlabel = UILabel()
+            AMPMlabel.textAlignment = .center
+            AMPMlabel.font = DesignSystemFont.Pretendard_Bold18.value
+            AMPMlabel.text = String(AMPM[row])
+            
+            return AMPMlabel
         }
-        
-        return label
     }
     
+    //컴포넌트 위아래 간격
+    func pickerView(_ pickerView: UIPickerView, rowHeightForComponent component: Int) -> CGFloat {
+        return 46 // 각 행의 높이를 조절합니다. 필요에 따라 이 값을 조정하세요.
+    }
+    
+    func pickerView(_ pickerView: UIPickerView, widthForComponent component: Int) -> CGFloat {
+        switch component {
+        case 0, 1: // 시간과 분
+            return 75.5
+        case 2: // AM/PM
+            return 29
+        default:
+            return 45
+        }
+    }
+}
+
+extension MakeAlarmViewController : UITextViewDelegate {
+    
+    func textViewDidBeginEditing(_ textView: UITextView) {
+        func textViewDidBeginEditing(_ textView: UITextView) {
+            guard textView.textColor == DesignSystemColor.Gray400.value else { return }
+            textView.text = nil
+            textView.textColor = .label
+        }
+        
+        func textViewDidEndEditing(_ textView: UITextView) {
+            if(textView.text == ""){
+                textView.text = placeholder
+                textView.textColor = .systemGray3
+            }
+        }
+    }
 }
 //MARK: - 슬라이더 두께 조절
 class CustomSlider: UISlider {

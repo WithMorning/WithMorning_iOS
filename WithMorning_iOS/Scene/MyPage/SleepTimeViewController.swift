@@ -35,22 +35,38 @@ class SleepTimeViewController : UIViewController, UISheetPresentationControllerD
         let view = UIView()
         view.backgroundColor = .white
         view.layer.cornerRadius = 8
-        view.addSubviews(timePicker,bar1,repeatLabel,repeatDayLabel)
+        view.addSubviews(timePicker,bar1,repeatStackView)
         return view
     }()
     
-    private lazy var timePicker : UIDatePicker = {
-        let picker = UIDatePicker()
-        picker.datePickerMode = .time
-        picker.preferredDatePickerStyle = .wheels
+    private lazy var timePicker : UIPickerView = {
+        let picker = UIPickerView()
+        picker.delegate = self
+        picker.dataSource = self
         picker.backgroundColor = .clear
+        picker.setContentCompressionResistancePriority(.defaultLow, for: .vertical)
         return picker
     }()
+    
+    var hour = Array(1...12)
+    var min = Array(0...59)
+    var AMPM = ["AM","PM"]
     
     private lazy var bar1 : UIView = {
         let view = UIView()
         view.backgroundColor = DesignSystemColor.Gray200.value
         return view
+    }()
+    
+    private lazy var repeatStackView: UIStackView = {
+        let stackView = UIStackView()
+        stackView.axis = .horizontal
+        stackView.alignment = .fill
+        stackView.addSubviews(repeatLabel,repeatDayLabel)
+        stackView.isUserInteractionEnabled = true
+        let tapGestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(repeatDay))
+        stackView.addGestureRecognizer(tapGestureRecognizer)
+        return stackView
     }()
     
     private lazy var repeatLabel : UILabel = {
@@ -59,6 +75,7 @@ class SleepTimeViewController : UIViewController, UISheetPresentationControllerD
         label.font = DesignSystemFont.Pretendard_Bold14.value
         label.textColor = .black
         label.textAlignment = .left
+
         return label
     }()
     
@@ -119,6 +136,11 @@ class SleepTimeViewController : UIViewController, UISheetPresentationControllerD
         self.view.backgroundColor = DesignSystemColor.Gray150.value
         SetUI()
     }
+    
+    override func viewDidLayoutSubviews() {
+        super.viewDidLayoutSubviews()
+        pickerviewUI()
+    }
     //MARK: - setUI
     
     func SetUI(){
@@ -140,24 +162,29 @@ class SleepTimeViewController : UIViewController, UISheetPresentationControllerD
             $0.height.equalTo(208)
         }
         timePicker.snp.makeConstraints{
-            $0.top.equalToSuperview().offset(16)
-            $0.centerX.equalToSuperview()
-            $0.height.equalTo(120)
-            $0.width.equalTo(177)
+            $0.top.equalToSuperview()
+            $0.centerY.equalToSuperview()
+            $0.leading.trailing.equalToSuperview()
+            $0.bottom.equalTo(bar1.snp.top)
         }
+        
         bar1.snp.makeConstraints{
-            $0.height.equalTo(1)
-            $0.top.equalTo(timePicker.snp.bottom).offset(16)
             $0.leading.trailing.equalToSuperview().inset(16)
+            $0.height.equalTo(1)
+            $0.bottom.equalTo(repeatStackView.snp.top).offset(-16)
+        }
+        
+        repeatStackView.snp.makeConstraints{
+            $0.height.equalTo(24)
+            $0.leading.trailing.equalToSuperview().inset(16)
+            $0.bottom.equalToSuperview().inset(16)
         }
 
-        repeatLabel.snp.makeConstraints{
-            $0.top.equalTo(bar1.snp.bottom).offset(18)
-            $0.leading.equalToSuperview().inset(16)
+        repeatLabel.snp.makeConstraints {
+            $0.leading.centerY.equalToSuperview()
         }
-        repeatDayLabel.snp.makeConstraints{
-            $0.top.equalTo(bar1.snp.bottom).offset(18)
-            $0.trailing.equalToSuperview().inset(16)
+        repeatDayLabel.snp.makeConstraints {
+            $0.trailing.centerY.equalToSuperview()
         }
         
         
@@ -176,6 +203,22 @@ class SleepTimeViewController : UIViewController, UISheetPresentationControllerD
             $0.width.height.equalTo(24)
         }
         
+    }
+    
+    //MARK: - picker set
+
+    func pickerviewUI(){
+        timePicker.subviews[1].isHidden = true
+    
+        let colonLabel = UILabel()
+        colonLabel.text = ":"
+        colonLabel.font = DesignSystemFont.Pretendard_Bold30.value
+        timePicker.addSubview(colonLabel)
+        
+        colonLabel.snp.makeConstraints{
+            $0.centerY.equalToSuperview().offset(-3)
+            $0.centerX.equalToSuperview().offset(-16.5)
+        }
     }
     
     //MARK: - objc func
@@ -209,6 +252,85 @@ class SleepTimeViewController : UIViewController, UISheetPresentationControllerD
             notiImage.tintColor = DesignSystemColor.Gray200.value
         }
     }
+    
+}
+
+extension SleepTimeViewController : UIPickerViewDelegate, UIPickerViewDataSource {
+    
+    //휠 개수
+    func numberOfComponents(in pickerView: UIPickerView) -> Int {
+        3
+    }
+    
+    //컴포넌트의 개수
+    func pickerView(_ pickerView: UIPickerView, numberOfRowsInComponent component: Int) -> Int {
+        switch component {
+        case 0:
+            return hour.count
+        case 1:
+            return min.count
+        case 2:
+            return AMPM.count
+        default:
+            return 0
+        }
+    }
+    
+    //컴포넌트 표시
+    func pickerView(_ pickerView: UIPickerView, titleForRow row: Int, forComponent component: Int) -> String? {
+        switch component {
+        case 0:
+            return String(format: "%02d", hour[row])
+        case 1:
+            return String(format: "%02d", min[row])
+        case 2:
+            return "\(AMPM[row])"
+        default:
+            return ""
+        }
+    }
+    
+    //컴포넌트 표시
+    func pickerView(_ pickerView: UIPickerView, viewForRow row: Int, forComponent component: Int, reusing view: UIView?) -> UIView {
+        
+        if component == 0 || component == 1 {
+            let timelabel = UILabel()
+            timelabel.textAlignment = .center
+            timelabel.font = DesignSystemFont.Pretendard_Bold30.value
+            
+            if component == 0 {
+                timelabel.text = String(format: "%02d", hour[row])
+            } else {
+                timelabel.text = String(format: "%02d", min[row])
+            }
+            
+            return timelabel
+        } else {
+            let AMPMlabel = UILabel()
+            AMPMlabel.textAlignment = .center
+            AMPMlabel.font = DesignSystemFont.Pretendard_Bold18.value
+            AMPMlabel.text = String(AMPM[row])
+            
+            return AMPMlabel
+        }
+    }
+    
+    //컴포넌트 위아래 간격
+    func pickerView(_ pickerView: UIPickerView, rowHeightForComponent component: Int) -> CGFloat {
+        return 46 // 각 행의 높이를 조절합니다. 필요에 따라 이 값을 조정하세요.
+    }
+    
+    func pickerView(_ pickerView: UIPickerView, widthForComponent component: Int) -> CGFloat {
+        switch component {
+        case 0, 1: // 시간과 분
+            return 75.5
+        case 2: // AM/PM
+            return 29
+        default:
+            return 45
+        }
+    }
+    
     
 }
 
