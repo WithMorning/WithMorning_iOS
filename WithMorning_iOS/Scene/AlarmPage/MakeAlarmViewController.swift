@@ -240,6 +240,7 @@ class MakeAlarmViewController : UIViewController, UIScrollViewDelegate, UISheetP
         let textfield = UITextField()
         textfield.translatesAutoresizingMaskIntoConstraints = false
         textfield.attributedPlaceholder = NSAttributedString(string: "윗모닝 모임명을 적어주세요.", attributes: [NSAttributedString.Key.foregroundColor : DesignSystemColor.Gray400.value])
+        textfield.tintColor = DesignSystemColor.Orange500.value
         textfield.backgroundColor = DesignSystemColor.Gray150.value
         textfield.font = DesignSystemFont.Pretendard_Medium14.value
         textfield.textColor = .black
@@ -271,20 +272,34 @@ class MakeAlarmViewController : UIViewController, UIScrollViewDelegate, UISheetP
         return label
     }()
     
+    private lazy var memoPlaceholder : UILabel = {
+        let label = UILabel()
+        label.text = "아침에 하고 싶은 말 또는 패널티를 정해주세요."
+        label.font = DesignSystemFont.Pretendard_Medium14.value
+        label.textColor = DesignSystemColor.Gray400.value
+        return label
+    }()
+    
+    
     private lazy var memoTextView : UITextView = {
         let view = UITextView()
         view.backgroundColor = DesignSystemColor.Gray150.value
-        view.text = placeholder
-        
         view.font = DesignSystemFont.Pretendard_Medium14.value
         view.textAlignment = .left
-        view.textColor = DesignSystemColor.Gray400.value
+        view.textColor = .black
         view.layer.cornerRadius = 8
-//        view.textContainerInset = UIEdgeInsets(top: 16, left: 15, bottom: 0, right: 0)
+        view.tintColor = DesignSystemColor.Orange500.value
+        
+        view.textContainerInset = UIEdgeInsets(top: 16, left: 13, bottom: 0, right: 0)
+        
+        view.addSubview(memoPlaceholder)
+
+        view.autocorrectionType = .no
+        view.spellCheckingType = .no
+        view.autocapitalizationType = .none        
         return view
     }()
     
-    let placeholder = "아침에 하고 싶은 말 또는 패널티를 정해주세요."
     
     
     //MARK: - 저장 버튼
@@ -312,6 +327,7 @@ class MakeAlarmViewController : UIViewController, UIScrollViewDelegate, UISheetP
         SetUI()
         hideKeyboardWhenTappedAround()
         setUpKeyboard()
+        setCurrentTimeOnPicker()
     }
     
     override func viewDidLayoutSubviews() {
@@ -452,6 +468,9 @@ class MakeAlarmViewController : UIViewController, UIScrollViewDelegate, UISheetP
             $0.top.equalTo(memoLabel.snp.bottom).inset(-8)
             $0.leading.trailing.bottom.equalToSuperview().inset(16)
         }
+        memoPlaceholder.snp.makeConstraints{
+            $0.leading.top.equalToSuperview().offset(16)
+        }
         
         saveButton.snp.makeConstraints{
             $0.leading.trailing.bottom.equalToSuperview()
@@ -479,6 +498,33 @@ class MakeAlarmViewController : UIViewController, UIScrollViewDelegate, UISheetP
         }
     }
     
+    func setCurrentTimeOnPicker() {
+        let currentDate = Date()
+        let calendar = Calendar.current
+        
+        let hour = calendar.component(.hour, from: currentDate)
+        let minute = calendar.component(.minute, from: currentDate)
+        
+        let hourForPicker: Int
+        let ampm: Int
+        
+        if hour >= 12 {
+            hourForPicker = hour == 12 ? 12 : hour - 12
+            ampm = 1 // PM
+        } else {
+            hourForPicker = hour == 0 ? 12 : hour
+            ampm = 0 // AM
+        }
+        
+        let middleHour = self.hour.count * 50
+        let middleMinute = min.count * 50
+        let middleAMPM = AMPM.count * 50
+        
+        timePicker.selectRow(middleHour + hourForPicker - 1, inComponent: 0, animated: false)
+        timePicker.selectRow(middleMinute + minute, inComponent: 1, animated: false)
+        timePicker.selectRow(middleAMPM + ampm, inComponent: 2, animated: false)
+    }
+    
     //MARK: - @objc func
     @objc func popclicked(){
         self.navigationController?.popViewController(animated: true)
@@ -492,10 +538,11 @@ class MakeAlarmViewController : UIViewController, UIScrollViewDelegate, UISheetP
         
         if let sheet = vc.sheetPresentationController {
             if #available(iOS 16.0, *) {
-                sheet.detents = [.custom { context in
-                    
-                    return 472
-                }]
+                //                sheet.detents = [.custom { context in
+                //
+                //                    return 472
+                //                }]
+                sheet.detents = [ .medium() ]
                 
                 sheet.delegate = self
                 sheet.prefersGrabberVisible = false
@@ -578,7 +625,7 @@ extension MakeAlarmViewController : UITextFieldDelegate {
         if let keyboardSize = (notification.userInfo?[UIResponder.keyboardFrameEndUserInfoKey] as? NSValue)?.cgRectValue {
             
             if self.view.frame.origin.y == 0 {
-                self.view.frame.origin.y -= keyboardSize.height
+                self.view.frame.origin.y -= (keyboardSize.height - self.saveButton.bounds.height)
                 self.saveButton.isHidden = true
             }
         }
@@ -605,9 +652,9 @@ extension MakeAlarmViewController : UIPickerViewDelegate, UIPickerViewDataSource
     func pickerView(_ pickerView: UIPickerView, numberOfRowsInComponent component: Int) -> Int {
         switch component {
         case 0:
-            return hour.count
+            return hour.count*100
         case 1:
-            return min.count
+            return min.count*100
         case 2:
             return AMPM.count
         default:
@@ -619,9 +666,9 @@ extension MakeAlarmViewController : UIPickerViewDelegate, UIPickerViewDataSource
     func pickerView(_ pickerView: UIPickerView, titleForRow row: Int, forComponent component: Int) -> String? {
         switch component {
         case 0:
-            return String(format: "%02d", hour[row])
+            return String(format: "%02d", hour[row % hour.count])
         case 1:
-            return String(format: "%02d", min[row])
+            return String(format: "%02d", min[row % min.count])
         case 2:
             return "\(AMPM[row])"
         default:
@@ -638,12 +685,12 @@ extension MakeAlarmViewController : UIPickerViewDelegate, UIPickerViewDataSource
             timelabel.font = DesignSystemFont.Pretendard_Bold30.value
             
             if component == 0 {
-                timelabel.text = String(format: "%02d", hour[row])
+                timelabel.text = String(format: "%02d", hour[row % hour.count])
             } else {
-                timelabel.text = String(format: "%02d", min[row])
+                timelabel.text = String(format: "%02d", min[row % min.count])
             }
-            
             return timelabel
+            
         } else {
             let AMPMlabel = UILabel()
             AMPMlabel.textAlignment = .center
@@ -674,19 +721,20 @@ extension MakeAlarmViewController : UIPickerViewDelegate, UIPickerViewDataSource
 extension MakeAlarmViewController : UITextViewDelegate {
     
     func textViewDidBeginEditing(_ textView: UITextView) {
-        func textViewDidBeginEditing(_ textView: UITextView) {
-            guard textView.textColor == DesignSystemColor.Gray400.value else { return }
-            textView.text = nil
-            textView.textColor = .label
-        }
-        
-        func textViewDidEndEditing(_ textView: UITextView) {
-            if(textView.text == ""){
-                textView.text = placeholder
-                textView.textColor = .systemGray3
-            }
-        }
+        memoTextView.layer.borderWidth = 1
+        memoTextView.layer.borderColor = DesignSystemColor.Orange500.value.cgColor
+        memoPlaceholder.isHidden = !memoTextView.text.isEmpty
     }
+
+    func textViewDidChange(_ textView: UITextView) {
+        memoPlaceholder.isHidden = !textView.text.isEmpty
+    }
+
+    func textViewDidEndEditing(_ textView: UITextView) {
+        memoTextView.layer.borderWidth = 0
+    }
+
+    
 }
 //MARK: - 슬라이더 두께 조절
 class CustomSlider: UISlider {

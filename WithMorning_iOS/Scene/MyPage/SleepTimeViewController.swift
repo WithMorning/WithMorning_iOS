@@ -135,6 +135,7 @@ class SleepTimeViewController : UIViewController, UISheetPresentationControllerD
         super.viewDidLoad()
         self.view.backgroundColor = DesignSystemColor.Gray150.value
         SetUI()
+        setCurrentTimeOnPicker()
     }
     
     override func viewDidLayoutSubviews() {
@@ -221,6 +222,33 @@ class SleepTimeViewController : UIViewController, UISheetPresentationControllerD
         }
     }
     
+    func setCurrentTimeOnPicker() {
+        let currentDate = Date()
+        let calendar = Calendar.current
+        
+        let hour = calendar.component(.hour, from: currentDate)
+        let minute = calendar.component(.minute, from: currentDate)
+        
+        let hourForPicker: Int
+        let ampm: Int
+        
+        if hour >= 12 {
+            hourForPicker = hour == 12 ? 12 : hour - 12
+            ampm = 1 // PM
+        } else {
+            hourForPicker = hour == 0 ? 12 : hour
+            ampm = 0 // AM
+        }
+        
+        let middleHour = self.hour.count * 50
+        let middleMinute = min.count * 50
+        let middleAMPM = AMPM.count * 50
+        
+        timePicker.selectRow(middleHour + hourForPicker - 1, inComponent: 0, animated: false)
+        timePicker.selectRow(middleMinute + minute, inComponent: 1, animated: false)
+        timePicker.selectRow(middleAMPM + ampm, inComponent: 2, animated: false)
+    }
+    
     //MARK: - objc func
     
     @objc func popclicked(){
@@ -266,9 +294,9 @@ extension SleepTimeViewController : UIPickerViewDelegate, UIPickerViewDataSource
     func pickerView(_ pickerView: UIPickerView, numberOfRowsInComponent component: Int) -> Int {
         switch component {
         case 0:
-            return hour.count
+            return hour.count*100
         case 1:
-            return min.count
+            return min.count*100
         case 2:
             return AMPM.count
         default:
@@ -280,9 +308,9 @@ extension SleepTimeViewController : UIPickerViewDelegate, UIPickerViewDataSource
     func pickerView(_ pickerView: UIPickerView, titleForRow row: Int, forComponent component: Int) -> String? {
         switch component {
         case 0:
-            return String(format: "%02d", hour[row])
+            return String(format: "%02d", hour[row % hour.count])
         case 1:
-            return String(format: "%02d", min[row])
+            return String(format: "%02d", min[row % min.count])
         case 2:
             return "\(AMPM[row])"
         default:
@@ -299,12 +327,12 @@ extension SleepTimeViewController : UIPickerViewDelegate, UIPickerViewDataSource
             timelabel.font = DesignSystemFont.Pretendard_Bold30.value
             
             if component == 0 {
-                timelabel.text = String(format: "%02d", hour[row])
+                timelabel.text = String(format: "%02d", hour[row % hour.count])
             } else {
-                timelabel.text = String(format: "%02d", min[row])
+                timelabel.text = String(format: "%02d", min[row % min.count])
             }
-            
             return timelabel
+            
         } else {
             let AMPMlabel = UILabel()
             AMPMlabel.textAlignment = .center
