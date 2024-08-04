@@ -10,7 +10,7 @@ import Alamofire
 
 let Accesstoken = "Bearer" + "  eyJ0eXBlIjoiand0IiwiYWxnIjoiSFMyNTYifQ.eyJpZCI6MSwiZW1haWwiOiJoeXVuMTIzQG5hdmVyLmNvbSIsInN1YiI6Imh5dW4xMjNAbmF2ZXIuY29tIiwiaWF0IjoxNzA3MjE0NzYzLCJleHAiOjE3MDcyMjE5NjN9.vG0GDgQSJv9znIH9zE7ElwhpSiyeWnk6oEVy3AlBduw" //수정
 
-let BaseURL = "https://mogak.shop:8080" //수정
+let BaseURL = "http://54.180.194.69:8080/" //수정
 
 enum Router : URLRequestConvertible{
     

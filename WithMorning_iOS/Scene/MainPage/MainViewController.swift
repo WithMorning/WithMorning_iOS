@@ -138,7 +138,7 @@ class MainViewController: UIViewController, UISheetPresentationControllerDelegat
             $0.leading.equalToSuperview().inset(16)
         }
         
-        profileButton.snp.makeConstraints{
+        profileButton.snp.makeConstraints{ 
             $0.top.equalTo(view.safeAreaLayoutGuide).offset(27)
             $0.trailing.equalToSuperview().inset(16)
             $0.width.equalTo(36)
@@ -218,10 +218,9 @@ class MainViewController: UIViewController, UISheetPresentationControllerDelegat
     
     @objc func clickedmakeAlarm(){ //새 알람설정
         print("알람생성버튼 : 아왜불러")
-//        alarmData.append(AlarmModel(isTurn: true, alarmTitle: "asd", Memo: "asd"))
         let vc = MakeAlarmViewController()
         self.navigationController?.pushViewController(vc, animated: true)
-                AlarmTableView.reloadData()
+        AlarmTableView.reloadData()
     }
     
     @objc func clickedcode() { // 참여코드입력
@@ -276,7 +275,7 @@ extension MainViewController : UITableViewDelegate, UITableViewDataSource{
         
         if cell.toggleButton.isOn == true{
             self.alarmData[indexPath.row].isTurn = true
-//            print(self.alarmData[indexPath.row])
+            //            print(self.alarmData[indexPath.row])
             cell.bottomView.isHidden = false
             //월
             cell.MonLabel.backgroundColor = DesignSystemColor.Orange500.value
@@ -302,7 +301,7 @@ extension MainViewController : UITableViewDelegate, UITableViewDataSource{
             
         }else{
             self.alarmData[indexPath.row].isTurn = false
-//            print(self.alarmData[indexPath.row])
+            //            print(self.alarmData[indexPath.row])
             cell.bottomView.isHidden = true
             
             
@@ -336,12 +335,12 @@ extension MainViewController : UITableViewDelegate, UITableViewDataSource{
             
             if cell.toggleButton.isOn == true{
                 self.alarmData[indexPath.row].isTurn = true
-//                print(self.alarmData[indexPath.row])
+                //                print(self.alarmData[indexPath.row])
                 cell.bottomView.isHidden = false
                 
             }else{
                 self.alarmData[indexPath.row].isTurn = false
-//                print(self.alarmData[indexPath.row])
+                //                print(self.alarmData[indexPath.row])
                 cell.bottomView.isHidden = true
                 
             }
