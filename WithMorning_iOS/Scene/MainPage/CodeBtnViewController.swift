@@ -30,12 +30,14 @@ class CodeBtnViewController: UIViewController {
         textfield.font = DesignSystemFont.Pretendard_Medium14.value
         textfield.textColor = .black
         textfield.layer.cornerRadius = 8
-        textfield.textAlignment = .center
-        
+        textfield.textAlignment = .left
+        textfield.tintColor = DesignSystemColor.Orange500.value
         //텍스트 필드 교정 메서드
         textfield.autocorrectionType = .no
         textfield.spellCheckingType = .no
         textfield.autocapitalizationType = .none
+        textfield.addleftPadding()
+        
         return textfield
     }()
     
