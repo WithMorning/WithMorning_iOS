@@ -259,7 +259,9 @@ class MainViewController: UIViewController, UISheetPresentationControllerDelegat
     }
     
     @objc func soundclick(){
-        print("asd")
+        let vc = AlarmSoundViewController()
+        self.navigationController?.pushViewController(vc, animated: true)
+        
     }
     
 //    @objc func refreshControl(){

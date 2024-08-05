@@ -42,7 +42,7 @@ class MakeAlarmViewController : UIViewController, UIScrollViewDelegate, UISheetP
     
     private lazy var contentView : UIView = {
         let view = UIView()
-        view.addSubviews(timerView,soundView,groupView,memoView)
+        view.addSubviews(timerView,groupView,memoView)
         return view
     }()
     
@@ -111,113 +111,8 @@ class MakeAlarmViewController : UIViewController, UIScrollViewDelegate, UISheetP
         return label
     }()
     
-    //MARK: - 알림음
-    private lazy var soundView : UIView = {
-        let view = UIView()
-        view.backgroundColor = .white
-        view.layer.cornerRadius = 8
-        view.addSubviews(SoundViewStackView,bar2,sliderImage,volumeSlider,sliderLabel,vibrateLabel,vibrateImage)
-        return view
-    }()
-    
-    private lazy var bar2 : UIView = {
-        let view = UIView()
-        view.backgroundColor = DesignSystemColor.Gray200.value
-        return view
-    }()
     
     
-    //MARK: - 알림음 스택뷰
-    private lazy var SoundViewStackView: UIStackView = {
-        let stackView = UIStackView()
-        stackView.axis = .horizontal
-        stackView.alignment = .fill
-        stackView.distribution = .equalSpacing
-        stackView.spacing = 8
-        stackView.addSubviews(alarmsoundLabel,alarmsoundLabel2)
-        let tapGestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(soundsetting))
-        stackView.addGestureRecognizer(tapGestureRecognizer)
-        return stackView
-    }()
-    
-    
-    private lazy var alarmsoundLabel : UILabel = {
-        let label = UILabel()
-        label.text = "알림음"
-        label.font = DesignSystemFont.Pretendard_Bold14.value
-        label.textColor = .black
-        label.textAlignment = .left
-        return label
-    }()
-    
-    private lazy var alarmsoundLabel2 : UILabel = {
-        let attributedString1 = NSMutableAttributedString(string: "기본   ")
-        let imageAttachment1 = NSTextAttachment()
-        imageAttachment1.image = UIImage(systemName: "greaterthan")
-        imageAttachment1.bounds = CGRect(x: 0, y: -3, width: 10, height: 16)
-        attributedString1.append(NSAttributedString(attachment: imageAttachment1))
-        
-        let label = UILabel()
-        label.attributedText = attributedString1
-        label.textAlignment = .right
-        label.textColor = DesignSystemColor.Gray400.value
-        label.font = DesignSystemFont.Pretendard_Medium14.value
-        return label
-    }()
-    
-    //MARK: - 알림음 슬라이더
-    private lazy var sliderImage : UIImageView = {
-        let img = UIImageView()
-        img.tintColor = .black
-        img.image = UIImage(named: "Volumeon")
-        return img
-    }()
-    
-    private lazy var volumeSlider : CustomSlider = {
-        let slider = CustomSlider()
-        slider.minimumValue = 0
-        slider.maximumValue = 100
-        slider.tintColor = DesignSystemColor.Orange500.value
-        slider.isUserInteractionEnabled = true
-        slider.thumbTintColor = .white
-        slider.value = 50
-        slider.addTarget(self, action: #selector(sliderValueChanged), for: .valueChanged)
-        
-        return slider
-    }()
-    
-    private lazy var sliderLabel : UILabel = {
-        let label = UILabel()
-        label.text = "50%"
-        label.textColor = .black
-        label.textAlignment = .center
-        label.font = DesignSystemFont.Pretendard_Medium14.value
-        return label
-    }()
-    
-    
-    //MARK: - 진동 버튼
-    private lazy var vibrateLabel : UILabel = {
-        let label = UILabel()
-        label.text = "진동"
-        label.textAlignment = .right
-        label.textColor = .black
-        label.font = DesignSystemFont.Pretendard_Medium14.value
-        label.isUserInteractionEnabled = true
-        
-        let tapGestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(vibratesetting))
-        label.addGestureRecognizer(tapGestureRecognizer)
-        return label
-    }()
-    
-    private lazy var vibrateImage : UIButton = {
-        let button = UIButton()
-        button.setImage(UIImage(systemName: "checkmark.square.fill"), for: .normal)
-        button.tintColor = DesignSystemColor.Gray200.value
-        
-        button.addTarget(self, action: #selector(vibratesetting), for: .touchUpInside)
-        return button
-    }()
     
     //MARK: - 모임명
     private lazy var groupView : UIView = {
@@ -395,53 +290,8 @@ class MakeAlarmViewController : UIViewController, UIScrollViewDelegate, UISheetP
             $0.trailing.centerY.equalToSuperview()
         }
         
-        soundView.snp.makeConstraints{
-            $0.top.equalTo(timerView.snp.bottom).offset(8)
-            $0.leading.trailing.equalToSuperview()
-            $0.height.equalTo(112)
-        }
-        SoundViewStackView.snp.makeConstraints{
-            $0.center.equalToSuperview().multipliedBy(0.5)
-            $0.leading.trailing.equalToSuperview().inset(16)
-            $0.height.equalTo(40)
-        }
-        bar2.snp.makeConstraints{
-            $0.center.equalToSuperview()
-            $0.height.equalTo(1)
-            $0.leading.trailing.equalToSuperview().inset(16)
-        }
-        alarmsoundLabel.snp.makeConstraints {
-            $0.leading.centerY.equalToSuperview()
-        }
-        alarmsoundLabel2.snp.makeConstraints {
-            $0.trailing.centerY.equalToSuperview()
-        }
-        sliderImage.snp.makeConstraints{
-            $0.width.height.equalTo(24)
-            $0.leading.equalToSuperview().offset(16)
-            $0.centerY.equalTo(vibrateImage)
-        }
-        volumeSlider.snp.makeConstraints{
-            $0.bottom.equalToSuperview().inset(10)
-            $0.leading.equalTo(sliderImage.snp.trailing).offset(4)
-            $0.width.equalTo(160)
-        }
-        sliderLabel.snp.makeConstraints{
-            $0.centerY.equalTo(sliderImage)
-            $0.leading.equalTo(volumeSlider.snp.trailing).offset(8)
-        }
-        vibrateLabel.snp.makeConstraints{
-            $0.trailing.equalTo(vibrateImage.snp.leading).offset(-4)
-            $0.bottom.equalToSuperview().inset(18)
-        }
-        vibrateImage.snp.makeConstraints{
-            $0.width.height.equalTo(20)
-            $0.centerY.equalTo(vibrateLabel)
-            $0.trailing.equalToSuperview().inset(16)
-        }
-        
         groupView.snp.makeConstraints{
-            $0.top.equalTo(soundView.snp.bottom).offset(8)
+            $0.top.equalTo(timerView.snp.bottom).offset(8)
             $0.leading.trailing.equalToSuperview()
             $0.height.equalTo(112)
         }
@@ -555,30 +405,6 @@ class MakeAlarmViewController : UIViewController, UIScrollViewDelegate, UISheetP
         print("알림설정")
     }
     
-    @objc func vibratesetting(){
-        if vibrateImage.tintColor == DesignSystemColor.Gray200.value{
-            vibrateImage.tintColor = DesignSystemColor.Orange500.value
-        }else{
-            vibrateImage.tintColor = DesignSystemColor.Gray200.value
-        }
-    }
-    
-    @objc func sliderValueChanged(_ sender: CustomSlider){
-        
-        let roundedValue = roundf(sender.value / 10) * 10
-        sender.value = roundedValue
-        
-        let value : Int = Int(sender.value)
-        
-        if value == 0 {
-            sliderImage.image = UIImage(named: "Volumeoff")
-            
-        }else{
-            sliderImage.image = UIImage(named: "Volumeon")
-        }
-        sliderLabel.text = "\(value)" + "%"
-        
-    }
     
     @objc func saveclicked(){
         self.navigationController?.popViewController(animated: true)
@@ -734,21 +560,6 @@ extension MakeAlarmViewController : UITextViewDelegate {
         memoTextView.layer.borderWidth = 0
     }
 
-    
-}
-//MARK: - 슬라이더 두께 조절
-class CustomSlider: UISlider {
-    override func trackRect(forBounds bounds: CGRect) -> CGRect {
-        // 원하는 두께로 조절하세요. 여기서는 10으로 설정했습니다.
-        let customTrackRect = CGRect(
-            x: 0,
-            y: bounds.origin.y + bounds.size.height/2 - 3,
-            width: bounds.width,
-            height: 6
-        )
-        super.trackRect(forBounds: customTrackRect)
-        return customTrackRect
-    }
     
 }
 

@@ -1,5 +1,5 @@
 //
-//  OnBoardingSecondViewController.swift
+//  LoginViewController.swift
 //  WithMorning_iOS
 //
 //  Created by 안세훈 on 7/19/24.
@@ -10,7 +10,7 @@ import Then
 import SnapKit
 import AuthenticationServices
 
-class OnBoardingSecondViewController: UIViewController, ASAuthorizationControllerDelegate, ASAuthorizationControllerPresentationContextProviding{
+class LoginViewController: UIViewController{
     
     //MARK: - properties
     
@@ -52,7 +52,7 @@ class OnBoardingSecondViewController: UIViewController, ASAuthorizationControlle
     }()
     
     //MARK: - lifecycle
-
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         view.backgroundColor = DesignSystemColor.Gray150.value
@@ -61,7 +61,7 @@ class OnBoardingSecondViewController: UIViewController, ASAuthorizationControlle
     }
     
     //MARK: - setUI
-
+    
     func setUI(){
         view.addSubviews(popButton,appleButton,guestButton)
         
@@ -94,74 +94,86 @@ class OnBoardingSecondViewController: UIViewController, ASAuthorizationControlle
         self.navigationController?.pushViewController(vc, animated: true)
     }
     @objc func apple(){
-//        applelogin()
-        let vc = OnBoardingRegisterViewController()
-        self.navigationController?.pushViewController(vc, animated: true)
+        applelogin()
+        //        let vc = OnBoardingRegisterViewController()
+        //        self.navigationController?.pushViewController(vc, animated: true)
         
     }
     
     //MARK: - 애플 로그인
     func applelogin(){
         let appleIDProvider = ASAuthorizationAppleIDProvider()
-         let request = appleIDProvider.createRequest()
-         request.requestedScopes = [.fullName, .email] //유저로 부터 알 수 있는 정보들(name, email)
-                
-         let authorizationController = ASAuthorizationController(authorizationRequests: [request])
-         authorizationController.delegate = self
-         authorizationController.presentationContextProvider = self
-         authorizationController.performRequests()
+        let request = appleIDProvider.createRequest()
+        
+        //유저로 부터 알 수 있는 정보들(name, email)
+        request.requestedScopes = [.fullName, .email]
+        
+        let controller = ASAuthorizationController(authorizationRequests: [request])
+        
+        controller.delegate = self
+        controller.presentationContextProvider = self
+        controller.performRequests()
     }
+}
+
+
+
+extension LoginViewController : ASAuthorizationControllerDelegate, ASAuthorizationControllerPresentationContextProviding{
     
+    // 인증창을 보여주기 위한 메서드 (인증창을 보여 줄 화면을 설정)
     func presentationAnchor(for controller: ASAuthorizationController) -> ASPresentationAnchor {
         return self.view.window!
     }
     
+    
+    // Apple ID 로그인에 성공한 경우, 사용자의 인증 정보를 확인하고 필요한 작업을 수행합니다
     func authorizationController(controller: ASAuthorizationController, didCompleteWithAuthorization authorization: ASAuthorization) {
-        //로그인 성공
-            switch authorization.credential {
-            case let appleIDCredential as ASAuthorizationAppleIDCredential:
-                // You can create an account in your system.
-                let userIdentifier = appleIDCredential.user
-                let fullName = appleIDCredential.fullName
-                let email = appleIDCredential.email
-                
-                if  let authorizationCode = appleIDCredential.authorizationCode,
-                    let identityToken = appleIDCredential.identityToken,
-                    let authCodeString = String(data: authorizationCode, encoding: .utf8),
-                    let identifyTokenString = String(data: identityToken, encoding: .utf8) {
-                    print("authorizationCode: \(authorizationCode)")
-                    print("identityToken: \(identityToken)")
-                    print("authCodeString: \(authCodeString)")
-                    print("identifyTokenString: \(identifyTokenString)")
-                }
-                
-                print("useridentifier: \(userIdentifier)")
-                print("fullName: \(fullName)")
-                print("email: \(email)")
-                
-                //Move to MainPage
-                //let validVC = SignValidViewController()
-                //validVC.modalPresentationStyle = .fullScreen
-                //present(validVC, animated: true, completion: nil)
-                
-            case let passwordCredential as ASPasswordCredential:
-                // Sign in using an existing iCloud Keychain credential.
-                let username = passwordCredential.user
-                let password = passwordCredential.password
-                
-                print("username: \(username)")
-                print("password: \(password)")
-                
-            default:
-                break
-            }
-        }
         
-
-        func authorizationController(controller: ASAuthorizationController, didCompleteWithError error: Error) {
-            // 로그인 실패(유저의 취소도 포함)
-            print("login failed - \(error.localizedDescription)")
+        switch authorization.credential {
+        case let appleIDCredential as ASAuthorizationAppleIDCredential:
+            // 계정생성
+            let userIdentifier = appleIDCredential.user
+            let fullName = appleIDCredential.fullName
+            let email = appleIDCredential.email
+            
+            let identityToken = appleIDCredential.identityToken
+            let authorizationCode = appleIDCredential.authorizationCode
+            
+            print("Apple ID 로그인에 성공하였습니다.")
+            print("사용자 ID: \(userIdentifier)")
+            print("전체 이름: \(fullName?.givenName ?? "") \(fullName?.familyName ?? "")")
+            print("이메일: \(email ?? "")")
+            print("Token: \(identityToken!)")
+            print("authorizationCode: \(authorizationCode!)")
+            
+            // 여기에 로그인 성공 후 수행할 작업을 추가하세요.
+            //            let mainVC = MainViewController()
+            //            mainVC.modalPresentationStyle = .fullScreen
+            //            present(mainVC, animated: true)
+            
+            // 암호 기반 인증에 성공한 경우(iCloud), 사용자의 인증 정보를 확인하고 필요한 작업을 수행합니다
+        case let passwordCredential as ASPasswordCredential:
+            let userIdentifier = passwordCredential.user
+            let password = passwordCredential.password
+            
+            print("암호 기반 인증에 성공하였습니다.")
+            print("사용자 이름: \(userIdentifier)")
+            print("비밀번호: \(password)")
+            
+            // 여기에 로그인 성공 후 수행할 작업을 추가하세요.
+            //            let mainVC = MainViewController()
+            //            mainVC.modalPresentationStyle = .fullScreen
+            //            present(mainVC, animated: true)
+            
+        default: break
         }
+    }
+    
+    
+    func authorizationController(controller: ASAuthorizationController, didCompleteWithError error: Error) {
+        // 로그인 실패(유저의 취소도 포함)
+        print("로그인 실패 - \(error.localizedDescription)")
+    }
     
 }
 
@@ -176,7 +188,7 @@ struct OnBoardingSecondViewControllerRepresentable: UIViewControllerRepresentabl
     }
     @available(iOS 13.0.0, *)
     func makeUIViewController(context: Context) -> UIViewController{
-        OnBoardingSecondViewController()
+        LoginViewController()
     }
 }
 @available(iOS 13.0, *)
