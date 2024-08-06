@@ -46,6 +46,7 @@ class MainViewController: UIViewController, UISheetPresentationControllerDelegat
     //MARK: - tableView
     private lazy var headerView : UIView = {
         let view = UIView()
+        view.backgroundColor = .gray
         return view
     }()
     
@@ -162,6 +163,7 @@ class MainViewController: UIViewController, UISheetPresentationControllerDelegat
         }
         
         headerStackView.snp.makeConstraints{
+            $0.top.equalToSuperview()
             $0.leading.trailing.equalToSuperview()
         }
         
@@ -212,7 +214,7 @@ class MainViewController: UIViewController, UISheetPresentationControllerDelegat
         
         let alarmButtonHeight: CGFloat = 56
         let codeButtonHeight: CGFloat = 56
-        let spacing: CGFloat = 13 //headerview와 cell간격
+        let spacing: CGFloat = 12 //headerview와 cell간격
         
         let headerStackViewHeight = alarmButtonHeight + codeButtonHeight + spacing
         
@@ -286,7 +288,7 @@ extension MainViewController : UITableViewDelegate, UITableViewDataSource{
         let alarm = alarmData[indexPath.row]
         
         cell.selectionStyle = .none
-        cell.backgroundColor = .clear
+        cell.backgroundColor = .yellow
         cell.topViewLabel.text = alarm.alarmTitle
         cell.memoLabel.text = alarm.Memo
         cell.memberCount = alarm.memberCount

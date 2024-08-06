@@ -188,10 +188,10 @@ class MakeAlarmViewController : UIViewController, UIScrollViewDelegate, UISheetP
         view.textContainerInset = UIEdgeInsets(top: 16, left: 13, bottom: 0, right: 0)
         
         view.addSubview(memoPlaceholder)
-
+        
         view.autocorrectionType = .no
         view.spellCheckingType = .no
-        view.autocapitalizationType = .none        
+        view.autocapitalizationType = .none
         return view
     }()
     
@@ -388,11 +388,11 @@ class MakeAlarmViewController : UIViewController, UIScrollViewDelegate, UISheetP
         
         if let sheet = vc.sheetPresentationController {
             if #available(iOS 16.0, *) {
-                //                sheet.detents = [.custom { context in
-                //
-                //                    return 472
-                //                }]
-                sheet.detents = [ .medium() ]
+                sheet.detents = [.custom { context in
+                    
+                    return 440
+                }]
+                //                sheet.detents = [ .medium() ]
                 
                 sheet.delegate = self
                 sheet.prefersGrabberVisible = false
@@ -551,15 +551,15 @@ extension MakeAlarmViewController : UITextViewDelegate {
         memoTextView.layer.borderColor = DesignSystemColor.Orange500.value.cgColor
         memoPlaceholder.isHidden = !memoTextView.text.isEmpty
     }
-
+    
     func textViewDidChange(_ textView: UITextView) {
         memoPlaceholder.isHidden = !textView.text.isEmpty
     }
-
+    
     func textViewDidEndEditing(_ textView: UITextView) {
         memoTextView.layer.borderWidth = 0
     }
-
+    
     
 }
 

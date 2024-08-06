@@ -12,6 +12,8 @@ import Alamofire
 
 class MyPageViewController : UIViewController, UIScrollViewDelegate {
     
+    let APInetwork = Network.shared
+    
     //MARK: - 네비게이션
     
     private lazy var myPageLabel : UILabel = {
@@ -392,13 +394,16 @@ class MyPageViewController : UIViewController, UIScrollViewDelegate {
         SetUI()
     }
     
+    override func viewWillAppear(_ animated: Bool) {
+        getMypage()
+    }
+    
     override func viewDidLayoutSubviews() {
-        print("높이",view.bounds.height)
-        print("너비",view.bounds.width)
-        
         profileImage.layer.cornerRadius = profileImage.bounds.width / 2
     }
     
+    //MARK: - Autolayout
+
     func SetUI(){
         view.addSubviews(myPageLabel,popButton,mypageScrollView)
         
@@ -425,7 +430,7 @@ class MyPageViewController : UIViewController, UIScrollViewDelegate {
         }
         
         profileImage.snp.makeConstraints{
-//            $0.bottom.equalTo(topView.snp.top).offset(-24) 여기
+            //            $0.bottom.equalTo(topView.snp.top).offset(-24) 여기
             $0.height.equalTo(profileImage.snp.width)
             $0.centerY.equalTo(editProfileButton.snp.top) //여기
             
@@ -590,6 +595,23 @@ class MyPageViewController : UIViewController, UIScrollViewDelegate {
         let vc = SleepTimeViewController()
         self.navigationController?.pushViewController(vc, animated: true)
     }
+    
+    
+    
+    //MARK: - API
+    func getMypage(){
+        APInetwork.getMypage(){ result in
+            switch result{
+            case.success(let mypage):
+                print("Mypage data: \(mypage)")
+                print("성공")
+            case.failure(let error):
+                print("뷰컨에서 failure",error)
+            }
+        }
+    }
+    
+    
 }
 
 //Preview code
