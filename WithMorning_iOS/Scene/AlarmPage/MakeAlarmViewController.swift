@@ -191,6 +191,8 @@ class MakeAlarmViewController : UIViewController, UIScrollViewDelegate, UISheetP
         view.autocorrectionType = .no
         view.spellCheckingType = .no
         view.autocapitalizationType = .none
+        view.textContainer.maximumNumberOfLines = 3
+        
         return view
     }()
     
@@ -202,7 +204,7 @@ class MakeAlarmViewController : UIViewController, UIScrollViewDelegate, UISheetP
         label.font = DesignSystemFont.Pretendard_Medium12.value
         return label
     }()
-
+    
     
     //MARK: - 저장 버튼
     private lazy var saveButton : UIButton = {
@@ -316,7 +318,7 @@ class MakeAlarmViewController : UIViewController, UIScrollViewDelegate, UISheetP
             $0.leading.trailing.equalToSuperview()
             $0.height.equalTo(152)
             $0.width.equalTo(alarmScrollVeiw.frameLayoutGuide)
-            $0.bottom.equalToSuperview().inset(30)
+            $0.bottom.equalToSuperview().inset(50)
         }
         memoLabel.snp.makeConstraints{
             $0.leading.top.equalToSuperview().offset(16)
@@ -459,8 +461,12 @@ extension MakeAlarmViewController : UITextFieldDelegate {
     @objc func keyboardWillShow(notification: NSNotification) {
         if let keyboardSize = (notification.userInfo?[UIResponder.keyboardFrameEndUserInfoKey] as? NSValue)?.cgRectValue {
             
-            if self.view.frame.origin.y == 0 {
-                self.view.frame.origin.y -= (keyboardSize.height - self.saveButton.bounds.height)
+            let notiLabelBottom = notiLabel.frame.origin.y + notiLabel.frame.height
+            let keyboardTop = self.view.frame.height - keyboardSize.height
+            let offset = (notiLabelBottom - keyboardTop) + 10
+            
+            if offset > 0 && self.view.frame.origin.y == 0 {
+                self.view.frame.origin.y -= offset
                 self.saveButton.isHidden = true
             }
         }
