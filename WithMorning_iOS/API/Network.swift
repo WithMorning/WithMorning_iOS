@@ -11,7 +11,7 @@ import Alamofire
 class Network{
     static let shared = Network()
     
-    func getMypage(completionHandler: @escaping (Result<Mypage, Error>) -> Void) {
+    func getMypage(completionHandler: @escaping (Result<MypageResponse, Error>) -> Void) {
         //        AF.request(Router.getmypage, interceptor: CommonLoginManage()) 소셜로그인
         AF.request(Router.getmypage)
             .validate(statusCode: 200..<1001)
@@ -21,9 +21,11 @@ class Network{
                 case .failure(let error):
                     completionHandler(.failure(error))
                 case .success(let data):
-                    completionHandler(.success(data))
+                    if let result = data.result {
+                        completionHandler(.success(result))
+                    }
                 }
+                
             }
-        
     }
 }

@@ -603,8 +603,8 @@ class MyPageViewController : UIViewController, UIScrollViewDelegate {
         APInetwork.getMypage(){ result in
             switch result{
             case.success(let mypage):
-                print("Mypage data: \(mypage)")
-                print("성공")
+                self.nickNameLabel.text = mypage.nickname
+                print(mypage)
             case.failure(let error):
                 print("뷰컨에서 failure",error)
             }

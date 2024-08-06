@@ -188,14 +188,21 @@ class MakeAlarmViewController : UIViewController, UIScrollViewDelegate, UISheetP
         view.textContainerInset = UIEdgeInsets(top: 16, left: 13, bottom: 0, right: 0)
         
         view.addSubview(memoPlaceholder)
-        
         view.autocorrectionType = .no
         view.spellCheckingType = .no
         view.autocapitalizationType = .none
         return view
     }()
     
-    
+    private lazy var notiLabel : UILabel = {
+        let label = UILabel()
+        label.text = "📢 알람음 설정은 메인홈 상단에서 할 수 있어요"
+        label.textAlignment = .center
+        label.textColor = DesignSystemColor.Gray500.value
+        label.font = DesignSystemFont.Pretendard_Medium12.value
+        return label
+    }()
+
     
     //MARK: - 저장 버튼
     private lazy var saveButton : UIButton = {
@@ -236,7 +243,7 @@ class MakeAlarmViewController : UIViewController, UIScrollViewDelegate, UISheetP
         groupTextfield.delegate = self
         memoTextView.delegate = self
         
-        view.addSubviews(MainLabel,popButton,alarmScrollVeiw,saveButton)
+        view.addSubviews(MainLabel,popButton,alarmScrollVeiw,notiLabel,saveButton)
         
         MainLabel.snp.makeConstraints{
             $0.centerX.equalToSuperview()
@@ -321,6 +328,10 @@ class MakeAlarmViewController : UIViewController, UIScrollViewDelegate, UISheetP
         memoPlaceholder.snp.makeConstraints{
             $0.leading.top.equalToSuperview().offset(16)
         }
+        notiLabel.snp.makeConstraints{
+            $0.centerX.equalToSuperview()
+            $0.top.equalTo(memoView.snp.bottom).offset(18)
+        }
         
         saveButton.snp.makeConstraints{
             $0.leading.trailing.bottom.equalToSuperview()
@@ -389,10 +400,8 @@ class MakeAlarmViewController : UIViewController, UIScrollViewDelegate, UISheetP
         if let sheet = vc.sheetPresentationController {
             if #available(iOS 16.0, *) {
                 sheet.detents = [.custom { context in
-                    
                     return 440
                 }]
-                //                sheet.detents = [ .medium() ]
                 
                 sheet.delegate = self
                 sheet.prefersGrabberVisible = false

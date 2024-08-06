@@ -28,7 +28,7 @@ struct Mypage: Codable {
 struct MypageResponse: Codable {
     let userID: Int
     let imageURL, nickname: String
-    let bedtime: Int
+    let bedtime: Int?
     let dayOfWeekList: [String]
 
     enum CodingKeys: String, CodingKey {
