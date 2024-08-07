@@ -28,6 +28,15 @@ class OnBoardingTutorialViewController : UIViewController{
         //        button.addTarget(self, action: #selector(popclicked), for: .touchUpInside)
         return button
     }()
+    
+    private lazy var skipButton : UIButton = {
+        let button = UIButton()
+        button.setTitle("건너뛰기", for: .normal)
+        button.titleLabel?.font = DesignSystemFont.Pretendard_Medium16.value
+        button.setTitleColor(DesignSystemColor.Gray400.value, for: .normal)
+        return button
+    }()
+
     //MARK: - 온보딩 페이지 컨트롤러
     lazy var pages = [UIViewController]()
     
@@ -80,7 +89,7 @@ class OnBoardingTutorialViewController : UIViewController{
     
     
     func setUI(){
-        view.addSubviews(mainLabel,popButton,pageControl,pageViewController.view,nextButton)
+        view.addSubviews(mainLabel,popButton,skipButton,pageControl,pageViewController.view,nextButton)
         
         mainLabel.snp.makeConstraints{
             $0.centerX.equalToSuperview()
@@ -91,14 +100,20 @@ class OnBoardingTutorialViewController : UIViewController{
             $0.leading.equalToSuperview().offset(16)
             $0.height.width.equalTo(24)
         }
+        skipButton.snp.makeConstraints{
+            $0.trailing.equalToSuperview().inset(16)
+            $0.centerY.equalTo(mainLabel)
+        }
+        
         pageControl.snp.makeConstraints{
-            $0.top.equalTo(mainLabel.snp.bottom).offset(20)
+            $0.top.equalTo(mainLabel.snp.bottom).offset(36)
             $0.centerX.equalToSuperview()
+            $0.height.equalTo(6)
         }
         pageViewController.view.snp.makeConstraints{
             $0.leading.trailing.equalToSuperview()
             $0.bottom.equalTo(nextButton.snp.top)
-            $0.top.equalTo(pageControl.snp.bottom)
+            $0.top.equalTo(pageControl.snp.bottom).offset(16)
         }
         
         nextButton.snp.makeConstraints{

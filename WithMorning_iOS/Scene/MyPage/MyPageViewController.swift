@@ -392,9 +392,6 @@ class MyPageViewController : UIViewController, UIScrollViewDelegate {
         super.viewDidLoad()
         self.view.backgroundColor = DesignSystemColor.Gray150.value
         SetUI()
-    }
-    
-    override func viewWillAppear(_ animated: Bool) {
         getMypage()
     }
     

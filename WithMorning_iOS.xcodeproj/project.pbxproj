@@ -206,6 +206,13 @@
 			path = API;
 			sourceTree = "<group>";
 		};
+		D13178992C635412002C368A /* CustomView */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = CustomView;
+			sourceTree = "<group>";
+		};
 		D14A2D6A2BC8EB6D0087E0CB /* DesignSystem */ = {
 			isa = PBXGroup;
 			children = (
@@ -327,6 +334,7 @@
 			isa = PBXGroup;
 			children = (
 				D10978402C48E31B00CBF9E3 /* WithMorning_iOS.entitlements */,
+				D13178992C635412002C368A /* CustomView */,
 				D10F846D2BC7E72000F3A172 /* Extension */,
 				D14A2D6A2BC8EB6D0087E0CB /* DesignSystem */,
 				D16F5FCF2BC6562A006640F9 /* Resource */,
