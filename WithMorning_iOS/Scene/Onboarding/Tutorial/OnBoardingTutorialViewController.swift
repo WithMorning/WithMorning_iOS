@@ -36,7 +36,7 @@ class OnBoardingTutorialViewController : UIViewController{
         button.setTitleColor(DesignSystemColor.Gray400.value, for: .normal)
         return button
     }()
-
+    
     //MARK: - 온보딩 페이지 컨트롤러
     lazy var pages = [UIViewController]()
     
@@ -67,7 +67,7 @@ class OnBoardingTutorialViewController : UIViewController{
         let button = UIButton()
         button.addSubview(buttonLabel)
         button.backgroundColor = .black
-        //        button.addTarget(self, action: #selector(nextbtn), for: .touchUpInside)
+        button.addTarget(self, action: #selector(nextbtn), for: .touchUpInside)
         return button
     }()
     
@@ -79,14 +79,13 @@ class OnBoardingTutorialViewController : UIViewController{
         return label
     }()
     
-    
-    
     override func viewDidLoad() {
         super.viewDidLoad()
         self.view.backgroundColor = DesignSystemColor.Gray150.value
         setUI()
     }
     
+    //MARK: - Autolayout
     
     func setUI(){
         view.addSubviews(mainLabel,popButton,skipButton,pageControl,pageViewController.view,nextButton)
@@ -125,7 +124,27 @@ class OnBoardingTutorialViewController : UIViewController{
             $0.top.equalToSuperview().offset(20)
             $0.bottom.equalToSuperview().inset(50)
         }
-        
+    }
+    
+    @objc func nextbtn(){
+        if pageControl.currentPage < pageControl.numberOfPages - 1 {
+            pageControl.currentPage += 1
+            
+            let nextViewController: UIViewController?
+            switch pageControl.currentPage {
+            case 0:
+                nextViewController = TutorialFirstViewController()
+            case 1:
+                nextViewController = TutorialSecondViewController()
+            case 2:
+                nextViewController = TutorialThirdViewController()
+            default:
+                nextViewController = nil
+            }
+            if let nextViewController = nextViewController {
+                pageViewController.setViewControllers([nextViewController], direction: .forward, animated: true, completion: nil)
+            }
+        }
     }
 }
 
@@ -160,22 +179,20 @@ extension OnBoardingTutorialViewController : UIPageViewControllerDelegate, UIPag
     }
     
     func pageViewController(_ pageViewController: UIPageViewController, didFinishAnimating finished: Bool, previousViewControllers: [UIViewController], transitionCompleted completed: Bool) {
+        
         if completed, let currentViewController = pageViewController.viewControllers?.first {
-                switch currentViewController {
-                case is TutorialFirstViewController:
-                    pageControl.currentPage = 0
-                case is TutorialSecondViewController:
-                    pageControl.currentPage = 1
-                case is TutorialThirdViewController:
-                    pageControl.currentPage = 2
-                default:
-                    break
-                }
+            switch currentViewController {
+            case is TutorialFirstViewController:
+                pageControl.currentPage = 0
+            case is TutorialSecondViewController:
+                pageControl.currentPage = 1
+            case is TutorialThirdViewController:
+                pageControl.currentPage = 2
+            default:
+                break
             }
-}
-
-
-
+        }
+    }
 }
 
 

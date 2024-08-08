@@ -345,7 +345,7 @@ class MakeAlarmViewController : UIViewController, UIScrollViewDelegate, UISheetP
         }
         
     }
-    //MARK: - picker set
+    //MARK: - picker SET
     
     func pickerviewUI(){
         timePicker.subviews[1].isHidden = true

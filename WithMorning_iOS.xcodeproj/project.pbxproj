@@ -224,11 +224,8 @@
 		D14A9DB42C2AD2BA00019B8B /* Onboarding */ = {
 			isa = PBXGroup;
 			children = (
-				D1ABF7902C52399D008B5084 /* OnboardingTutorial */,
-				D138F0B22C48090300233AFA /* OnBoardingFirstViewController.swift */,
-				D1DB46E22C4BA10C00BDC3D8 /* OnBoardingRegisterViewController.swift */,
-				D13B6B7F2C4FAB2B00D963DC /* OnBoardingCertificateViewController.swift */,
-				D1F71B192C50AE2C0070A8AA /* OnBoardingProfileViewController.swift */,
+				D14AF09E2C64BBC700E390F7 /* Register */,
+				D1ABF7902C52399D008B5084 /* Tutorial */,
 			);
 			path = Onboarding;
 			sourceTree = "<group>";
@@ -241,6 +238,17 @@
 				D1303A002C451B3F0071267A /* EditprofileViewController.swift */,
 			);
 			path = MyPage;
+			sourceTree = "<group>";
+		};
+		D14AF09E2C64BBC700E390F7 /* Register */ = {
+			isa = PBXGroup;
+			children = (
+				D138F0B22C48090300233AFA /* OnBoardingFirstViewController.swift */,
+				D1DB46E22C4BA10C00BDC3D8 /* OnBoardingRegisterViewController.swift */,
+				D13B6B7F2C4FAB2B00D963DC /* OnBoardingCertificateViewController.swift */,
+				D1F71B192C50AE2C0070A8AA /* OnBoardingProfileViewController.swift */,
+			);
+			path = Register;
 			sourceTree = "<group>";
 		};
 		D15AE72C2BC98F8900024CE3 /* Fonts */ = {
@@ -292,7 +300,7 @@
 			name = Resource;
 			sourceTree = "<group>";
 		};
-		D1ABF7902C52399D008B5084 /* OnboardingTutorial */ = {
+		D1ABF7902C52399D008B5084 /* Tutorial */ = {
 			isa = PBXGroup;
 			children = (
 				D1B12F2E2C50E7770041288C /* OnBoardingTutorialViewController.swift */,
@@ -300,7 +308,7 @@
 				D1ABF7932C5239D6008B5084 /* TutorialSecondViewController.swift */,
 				D1ABF7952C5239E4008B5084 /* TutorialThirdViewController.swift */,
 			);
-			path = OnboardingTutorial;
+			path = Tutorial;
 			sourceTree = "<group>";
 		};
 		D1E1DF802C3ACFE7001A132F /* AlarmPage */ = {

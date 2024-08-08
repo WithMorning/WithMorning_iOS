@@ -573,9 +573,8 @@ class MyPageViewController : UIViewController, UIScrollViewDelegate {
             $0.leading.equalTo(bar1.snp.trailing).offset(16)
             $0.bottom.equalToSuperview().offset(-30)
         }
-        
-        
     }
+    
     //MARK: - objc func
     
     @objc func popclicked(){

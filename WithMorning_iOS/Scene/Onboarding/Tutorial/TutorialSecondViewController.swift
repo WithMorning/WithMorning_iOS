@@ -1,5 +1,5 @@
 //
-//  TutorialFirstViewController.swift
+//  TutorialSecondViewController.swift
 //  WithMorning_iOS
 //
 //  Created by 안세훈 on 7/25/24.
@@ -10,17 +10,16 @@ import SnapKit
 import Then
 import Alamofire
 
-class TutorialFirstViewController : UIViewController {
+class TutorialSecondViewController : UIViewController {
     
     private lazy var tutorialLabel : UILabel = {
         let label = UILabel()
-        label.text = "기상하고 싶은 시간이 언제인가요?"
+        label.text = "반복하고 싶은 요일을 선택해 주세요!"
         label.textAlignment = .center
         label.font = DesignSystemFont.Pretendard_Medium14.value
         label.textColor = DesignSystemColor.Gray500.value
         return label
     }()
-
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -36,5 +35,4 @@ class TutorialFirstViewController : UIViewController {
             $0.top.equalToSuperview()
         }
     }
-    
 }
