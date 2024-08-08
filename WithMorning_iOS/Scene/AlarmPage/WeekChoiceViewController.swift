@@ -239,7 +239,7 @@ class WeekChoiceViewController : UIViewController, UIScrollViewDelegate {
         button.backgroundColor = DesignSystemColor.Gray200.value
         button.layer.cornerRadius = 8
         button.titleLabel?.font = DesignSystemFont.Pretendard_Bold14.value
-        button.addTarget(self, action: #selector(weekdatclick), for: .touchUpInside)
+        button.addTarget(self, action: #selector(weekdayclick), for: .touchUpInside)
         return button
     }()
     
@@ -498,7 +498,7 @@ class WeekChoiceViewController : UIViewController, UIScrollViewDelegate {
         self.dismiss(animated: true)
     }
     
-    @objc func weekdatclick(){
+    @objc func weekdayclick(){
         if weekdayButton.backgroundColor == DesignSystemColor.Gray200.value {
             weekdayButton.backgroundColor = DesignSystemColor.Orange500.value
             weekdayButton.setTitleColor(.white, for: .normal)

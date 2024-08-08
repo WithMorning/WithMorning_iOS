@@ -34,6 +34,7 @@ class OnBoardingTutorialViewController : UIViewController{
         button.setTitle("건너뛰기", for: .normal)
         button.titleLabel?.font = DesignSystemFont.Pretendard_Medium16.value
         button.setTitleColor(DesignSystemColor.Gray400.value, for: .normal)
+        button.addTarget(self, action: #selector(skip), for: .touchUpInside)
         return button
     }()
     
@@ -125,7 +126,8 @@ class OnBoardingTutorialViewController : UIViewController{
             $0.bottom.equalToSuperview().inset(50)
         }
     }
-    
+    //MARK: - objc func
+
     @objc func nextbtn(){
         if pageControl.currentPage < pageControl.numberOfPages - 1 {
             pageControl.currentPage += 1
@@ -142,9 +144,14 @@ class OnBoardingTutorialViewController : UIViewController{
                 nextViewController = nil
             }
             if let nextViewController = nextViewController {
+                
                 pageViewController.setViewControllers([nextViewController], direction: .forward, animated: true, completion: nil)
             }
         }
+    }
+    
+    @objc func skip(){
+        
     }
 }
 
