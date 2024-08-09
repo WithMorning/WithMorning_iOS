@@ -393,6 +393,7 @@ class MyPageViewController : UIViewController, UIScrollViewDelegate {
         self.view.backgroundColor = DesignSystemColor.Gray150.value
         SetUI()
         getMypage()
+        popGesture()
     }
     
     override func viewDidLayoutSubviews() {
@@ -604,8 +605,13 @@ class MyPageViewController : UIViewController, UIScrollViewDelegate {
             }
         }
     }
-    
-    
+}
+
+extension MyPageViewController : UIGestureRecognizerDelegate{
+    func popGesture(){
+        navigationController?.interactivePopGestureRecognizer?.delegate = self
+        navigationController?.interactivePopGestureRecognizer?.isEnabled = true
+    }
 }
 
 //Preview code

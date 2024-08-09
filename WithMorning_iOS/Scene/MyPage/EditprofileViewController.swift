@@ -92,7 +92,7 @@ class EditprofileViewController : UIViewController {
         self.view.backgroundColor = DesignSystemColor.Gray150.value
         setUI()
         hideKeyboardWhenTappedAround()
-        //        setUpKeyboard()
+        popGesture()
     }
     
     func setUI(){
@@ -168,7 +168,7 @@ class EditprofileViewController : UIViewController {
 
 //MARK: - 키보드 세팅, textfield세팅
 
-extension EditprofileViewController : UITextFieldDelegate {
+extension EditprofileViewController : UITextFieldDelegate,UIGestureRecognizerDelegate {
     func hideKeyboardWhenTappedAround() {
         let tap = UITapGestureRecognizer(target: self, action: #selector(EditprofileViewController.dismissKeyboard))
         tap.cancelsTouchesInView = false
@@ -200,6 +200,11 @@ extension EditprofileViewController : UITextFieldDelegate {
         }
         guard textField.text!.count < 10 else { return false } // 10 글자로 제한
         return true
+    }
+    
+    func popGesture(){
+        navigationController?.interactivePopGestureRecognizer?.delegate = self
+        navigationController?.interactivePopGestureRecognizer?.isEnabled = true
     }
     
     

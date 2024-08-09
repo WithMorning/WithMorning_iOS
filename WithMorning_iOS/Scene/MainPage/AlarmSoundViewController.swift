@@ -110,6 +110,7 @@ class AlarmSoundViewController : UIViewController {
         super.viewDidLoad()
         view.backgroundColor = DesignSystemColor.Gray150.value
         setUI()
+        popGesture()
     }
     
     func setUI(){
@@ -195,6 +196,12 @@ class AlarmSoundViewController : UIViewController {
     
 }
 
+extension AlarmSoundViewController : UIGestureRecognizerDelegate{
+    func popGesture(){
+        navigationController?.interactivePopGestureRecognizer?.delegate = self
+        navigationController?.interactivePopGestureRecognizer?.isEnabled = true
+    }
+}
 
 //Preview code
 #if DEBUG

@@ -56,6 +56,7 @@
 		D1DECB252BE54B37009AC667 /* Pretendard-ExtraLight.otf in Resources */ = {isa = PBXBuildFile; fileRef = D1DECB1F2BE54B37009AC667 /* Pretendard-ExtraLight.otf */; };
 		D1DECB262BE54B37009AC667 /* Pretendard-Light.otf in Resources */ = {isa = PBXBuildFile; fileRef = D1DECB202BE54B37009AC667 /* Pretendard-Light.otf */; };
 		D1E1DF822C3AD04F001A132F /* WeekChoiceViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D1E1DF812C3AD04F001A132F /* WeekChoiceViewController.swift */; };
+		D1E1FBDE2C65F23E001E5375 /* Toast_Message.swift in Sources */ = {isa = PBXBuildFile; fileRef = D1E1FBDD2C65F23E001E5375 /* Toast_Message.swift */; };
 		D1E672BB2BC4FD3300A32790 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = D1E672BA2BC4FD3300A32790 /* AppDelegate.swift */; };
 		D1E672BD2BC4FD3300A32790 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = D1E672BC2BC4FD3300A32790 /* SceneDelegate.swift */; };
 		D1E672BF2BC4FD3300A32790 /* MainViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D1E672BE2BC4FD3300A32790 /* MainViewController.swift */; };
@@ -110,6 +111,7 @@
 		D1DECB1F2BE54B37009AC667 /* Pretendard-ExtraLight.otf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Pretendard-ExtraLight.otf"; sourceTree = "<group>"; };
 		D1DECB202BE54B37009AC667 /* Pretendard-Light.otf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Pretendard-Light.otf"; sourceTree = "<group>"; };
 		D1E1DF812C3AD04F001A132F /* WeekChoiceViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WeekChoiceViewController.swift; sourceTree = "<group>"; };
+		D1E1FBDD2C65F23E001E5375 /* Toast_Message.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Toast_Message.swift; sourceTree = "<group>"; };
 		D1E672B72BC4FD3300A32790 /* WithMorning_iOS.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = WithMorning_iOS.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		D1E672BA2BC4FD3300A32790 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		D1E672BC2BC4FD3300A32790 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -212,6 +214,7 @@
 			isa = PBXGroup;
 			children = (
 				D135377C2C3285AD004B49BB /* AlterUIView.swift */,
+				D1E1FBDD2C65F23E001E5375 /* Toast_Message.swift */,
 			);
 			path = CustomView;
 			sourceTree = "<group>";
@@ -495,6 +498,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				D1891F302C58F72500DFF89C /* UITextField_Extension.swift in Sources */,
+				D1E1FBDE2C65F23E001E5375 /* Toast_Message.swift in Sources */,
 				D16B609B2C65EF190039B99A /* UISlider_Extension.swift in Sources */,
 				D1ABF7942C5239D6008B5084 /* TutorialSecondViewController.swift in Sources */,
 				D19E7FAA2C4A47C10053ACA8 /* LoginViewController.swift in Sources */,

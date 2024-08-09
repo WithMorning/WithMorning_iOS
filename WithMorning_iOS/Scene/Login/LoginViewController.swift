@@ -94,9 +94,9 @@ class LoginViewController: UIViewController{
         self.navigationController?.pushViewController(vc, animated: true)
     }
     @objc func apple(){
-        applelogin()
-        //        let vc = OnBoardingRegisterViewController()
-        //        self.navigationController?.pushViewController(vc, animated: true)
+//        applelogin()
+                let vc = OnBoardingRegisterViewController()
+                self.navigationController?.pushViewController(vc, animated: true)
         
     }
     

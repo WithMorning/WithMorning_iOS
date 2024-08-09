@@ -232,6 +232,7 @@ class MakeAlarmViewController : UIViewController, UIScrollViewDelegate, UISheetP
         hideKeyboardWhenTappedAround()
         setUpKeyboard()
         setCurrentTimeOnPicker()
+        popGesture()
     }
     
     override func viewDidLayoutSubviews() {
@@ -559,7 +560,7 @@ extension MakeAlarmViewController : UIPickerViewDelegate, UIPickerViewDataSource
     }
 }
 
-extension MakeAlarmViewController : UITextViewDelegate {
+extension MakeAlarmViewController : UITextViewDelegate,UIGestureRecognizerDelegate{
     
     func textViewDidBeginEditing(_ textView: UITextView) {
         memoTextView.layer.borderWidth = 1
@@ -573,6 +574,11 @@ extension MakeAlarmViewController : UITextViewDelegate {
     
     func textViewDidEndEditing(_ textView: UITextView) {
         memoTextView.layer.borderWidth = 0
+    }
+    
+    func popGesture(){
+        navigationController?.interactivePopGestureRecognizer?.delegate = self
+        navigationController?.interactivePopGestureRecognizer?.isEnabled = true
     }
     
     

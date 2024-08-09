@@ -98,7 +98,7 @@ class OnBoardingFirstViewController: UIViewController{
         return button
     }()
     //MARK: - 전체 동의
-
+    
     private lazy var view2 : UIView = {
         let view = UIView()
         view.backgroundColor = .white
@@ -157,7 +157,7 @@ class OnBoardingFirstViewController: UIViewController{
     }()
     
     //MARK: - life cycle
-
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         view.backgroundColor = DesignSystemColor.Gray150.value
@@ -205,7 +205,7 @@ class OnBoardingFirstViewController: UIViewController{
         }
         maketingLabel.snp.makeConstraints{
             $0.top.equalTo(infoLabel.snp.bottom)
-            .offset(20)
+                .offset(20)
             $0.leading.equalToSuperview().offset(24)
             $0.height.equalTo(26)
         }
@@ -296,7 +296,7 @@ class OnBoardingFirstViewController: UIViewController{
     
     @objc func allbtn(){
         if allagreeButton.tintColor == DesignSystemColor.Gray200.value{
-
+            
             [agecheckButton,serviceButton,infoButton,maketingButton].forEach({$0.tintColor = DesignSystemColor.Orange500.value})
             nextButton.backgroundColor = DesignSystemColor.Orange500.value
             allagreeButton.tintColor = DesignSystemColor.Orange500.value
@@ -309,7 +309,6 @@ class OnBoardingFirstViewController: UIViewController{
     
     @objc func nextbtn(){
         if nextButton.backgroundColor == DesignSystemColor.Gray300.value {
-           //토스트팝업
         }else{
             let vc = LoginViewController()
             self.navigationController?.pushViewController(vc, animated: true)

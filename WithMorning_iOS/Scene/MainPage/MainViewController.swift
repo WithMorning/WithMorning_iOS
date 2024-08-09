@@ -130,10 +130,6 @@ class MainViewController: UIViewController, UISheetPresentationControllerDelegat
         SetUI()
     }
     
-    override func viewWillAppear(_ animated: Bool) {
-        self.navigationController?.navigationBar.isHidden = true
-    }
-    
     //MARK: - UI
     func SetUI(){
         view.addSubviews(nameLabel,profileButton,soundButton,AlarmTableView)
@@ -232,14 +228,14 @@ class MainViewController: UIViewController, UISheetPresentationControllerDelegat
         self.navigationController?.pushViewController(vc, animated: true)
     }
     
-    @objc func clickedmakeAlarm(){ //새알람설정
+    @objc func clickedmakeAlarm(){ //새로운 알람설정
         let vc = MakeAlarmViewController()
         self.navigationController?.pushViewController(vc, animated: true)
+        showToast(message: "상하 좌우 16만큼 이동함용", delayTime: 0.9)
         AlarmTableView.reloadData()
     }
     
     @objc func clickedcode() { //참여코드입력
-        
         let vc = CodeBtnViewController()
         vc.modalPresentationStyle = .formSheet
         self.present(vc, animated: true)
