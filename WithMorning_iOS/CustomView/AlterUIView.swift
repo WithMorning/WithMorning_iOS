@@ -1,5 +1,5 @@
 //
-//  AlterViewController.swift
+//  AlterUIView.swift
 //  WithMorning_iOS
 //
 //  Created by 안세훈 on 7/1/24.
@@ -25,7 +25,7 @@ enum Altertype {
     case outGroup
 }
 
-class AlterViewController: UIViewController {
+class AlterUIView: UIViewController {
     
     var alterType : Altertype
     var delegate : AlterDelegate?

@@ -8,6 +8,8 @@
 import Foundation
 import UIKit
 
+//MARK: - 뷰 갯수 많이 한번에 칰칰칰~
+
 extension UIView {
     func addSubviews(_ views: UIView...) {
         for view in views {

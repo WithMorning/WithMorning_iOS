@@ -592,8 +592,6 @@ class MyPageViewController : UIViewController, UIScrollViewDelegate {
         self.navigationController?.pushViewController(vc, animated: true)
     }
     
-    
-    
     //MARK: - API
     func getMypage(){
         APInetwork.getMypage(){ result in

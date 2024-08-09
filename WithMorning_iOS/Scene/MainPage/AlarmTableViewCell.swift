@@ -36,7 +36,6 @@ class AlarmTableViewCell : UITableViewCell, UISheetPresentationControllerDelegat
         let label = UILabel()
         label.font = DesignSystemFont.Pretendard_SemiBold14.value
         label.textColor = DesignSystemColor.Black.value
-        //        label.text = "우리 같이 조깅하고 출근하쟈 🏃‍♀"
         return label
     }()
     
@@ -386,7 +385,7 @@ class AlarmTableViewCell : UITableViewCell, UISheetPresentationControllerDelegat
         
         vc.Menuclicked = {
             vc.dismiss(animated: true) {
-                let alterVC = AlterViewController(alterType: .deleteAlarm)
+                let alterVC = AlterUIView(alterType: .deleteAlarm)
                 alterVC.modalPresentationStyle = .overFullScreen
                 alterVC.modalTransitionStyle = .crossDissolve
                 parentViewController.present(alterVC, animated: true, completion: nil)

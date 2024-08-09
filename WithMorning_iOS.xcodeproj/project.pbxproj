@@ -19,7 +19,7 @@
 		D12D513A2C60BC6300D3F1A9 /* AppleLoginManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = D12D51392C60BC6300D3F1A9 /* AppleLoginManager.swift */; };
 		D12FF2532C2FCB2F00B22DB4 /* CodeBtnViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D12FF2522C2FCB2F00B22DB4 /* CodeBtnViewController.swift */; };
 		D1303A012C451B3F0071267A /* EditprofileViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D1303A002C451B3F0071267A /* EditprofileViewController.swift */; };
-		D135377D2C3285AD004B49BB /* AlterViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D135377C2C3285AD004B49BB /* AlterViewController.swift */; };
+		D135377D2C3285AD004B49BB /* AlterUIView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D135377C2C3285AD004B49BB /* AlterUIView.swift */; };
 		D138F0B32C48090300233AFA /* OnBoardingFirstViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D138F0B22C48090300233AFA /* OnBoardingFirstViewController.swift */; };
 		D13B6B802C4FAB2B00D963DC /* OnBoardingCertificateViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D13B6B7F2C4FAB2B00D963DC /* OnBoardingCertificateViewController.swift */; };
 		D146706B2BEA8FF9007B7132 /* MyPageViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D146706A2BEA8FF9007B7132 /* MyPageViewController.swift */; };
@@ -29,6 +29,7 @@
 		D15AE7382BC990E900024CE3 /* Pretendard-SemiBold.otf in Resources */ = {isa = PBXBuildFile; fileRef = D15AE7372BC990E900024CE3 /* Pretendard-SemiBold.otf */; };
 		D15AE73A2BC995B800024CE3 /* UIView_Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = D15AE7392BC995B800024CE3 /* UIView_Extension.swift */; };
 		D15D60C72BCA8BC3009C0874 /* AlarmTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = D15D60C62BCA8BC3009C0874 /* AlarmTableViewCell.swift */; };
+		D16B609B2C65EF190039B99A /* UISlider_Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = D16B609A2C65EF190039B99A /* UISlider_Extension.swift */; };
 		D16F5FD12BC65671006640F9 /* Network.swift in Sources */ = {isa = PBXBuildFile; fileRef = D16F5FD02BC65671006640F9 /* Network.swift */; };
 		D16F5FD32BC65679006640F9 /* Constants.swift in Sources */ = {isa = PBXBuildFile; fileRef = D16F5FD22BC65679006640F9 /* Constants.swift */; };
 		D16F5FD52BC65680006640F9 /* Router.swift in Sources */ = {isa = PBXBuildFile; fileRef = D16F5FD42BC65680006640F9 /* Router.swift */; };
@@ -78,7 +79,7 @@
 		D12D51392C60BC6300D3F1A9 /* AppleLoginManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppleLoginManager.swift; sourceTree = "<group>"; };
 		D12FF2522C2FCB2F00B22DB4 /* CodeBtnViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CodeBtnViewController.swift; sourceTree = "<group>"; };
 		D1303A002C451B3F0071267A /* EditprofileViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditprofileViewController.swift; sourceTree = "<group>"; };
-		D135377C2C3285AD004B49BB /* AlterViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AlterViewController.swift; sourceTree = "<group>"; };
+		D135377C2C3285AD004B49BB /* AlterUIView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AlterUIView.swift; sourceTree = "<group>"; };
 		D138F0B22C48090300233AFA /* OnBoardingFirstViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnBoardingFirstViewController.swift; sourceTree = "<group>"; };
 		D13B6B7F2C4FAB2B00D963DC /* OnBoardingCertificateViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnBoardingCertificateViewController.swift; sourceTree = "<group>"; };
 		D146706A2BEA8FF9007B7132 /* MyPageViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyPageViewController.swift; sourceTree = "<group>"; };
@@ -88,6 +89,7 @@
 		D15AE7372BC990E900024CE3 /* Pretendard-SemiBold.otf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Pretendard-SemiBold.otf"; sourceTree = "<group>"; };
 		D15AE7392BC995B800024CE3 /* UIView_Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIView_Extension.swift; sourceTree = "<group>"; };
 		D15D60C62BCA8BC3009C0874 /* AlarmTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AlarmTableViewCell.swift; sourceTree = "<group>"; };
+		D16B609A2C65EF190039B99A /* UISlider_Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UISlider_Extension.swift; sourceTree = "<group>"; };
 		D16F5FD02BC65671006640F9 /* Network.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Network.swift; sourceTree = "<group>"; };
 		D16F5FD22BC65679006640F9 /* Constants.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Constants.swift; sourceTree = "<group>"; };
 		D16F5FD42BC65680006640F9 /* Router.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Router.swift; sourceTree = "<group>"; };
@@ -161,6 +163,7 @@
 				D10F846E2BC7E7CF00F3A172 /* UIColor_Extension.swift */,
 				D1773F882BC988AB005C82FA /* UIFont_Extension.swift */,
 				D15AE7392BC995B800024CE3 /* UIView_Extension.swift */,
+				D16B609A2C65EF190039B99A /* UISlider_Extension.swift */,
 			);
 			name = Extension;
 			sourceTree = "<group>";
@@ -172,7 +175,6 @@
 				D15D60C62BCA8BC3009C0874 /* AlarmTableViewCell.swift */,
 				D129AAF02C2D4C0800F995D2 /* CellMenuViewController.swift */,
 				D12FF2522C2FCB2F00B22DB4 /* CodeBtnViewController.swift */,
-				D135377C2C3285AD004B49BB /* AlterViewController.swift */,
 				D12D512D2C60A28800D3F1A9 /* AlarmSoundViewController.swift */,
 			);
 			path = MainPage;
@@ -209,6 +211,7 @@
 		D13178992C635412002C368A /* CustomView */ = {
 			isa = PBXGroup;
 			children = (
+				D135377C2C3285AD004B49BB /* AlterUIView.swift */,
 			);
 			path = CustomView;
 			sourceTree = "<group>";
@@ -492,6 +495,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				D1891F302C58F72500DFF89C /* UITextField_Extension.swift in Sources */,
+				D16B609B2C65EF190039B99A /* UISlider_Extension.swift in Sources */,
 				D1ABF7942C5239D6008B5084 /* TutorialSecondViewController.swift in Sources */,
 				D19E7FAA2C4A47C10053ACA8 /* LoginViewController.swift in Sources */,
 				D1773F892BC988AB005C82FA /* UIFont_Extension.swift in Sources */,
@@ -515,7 +519,7 @@
 				D129AAF12C2D4C0800F995D2 /* CellMenuViewController.swift in Sources */,
 				D19A9CB22C26901100748CE8 /* MakeAlarmViewController.swift in Sources */,
 				D12D51312C60BBFF00D3F1A9 /* UserModel.swift in Sources */,
-				D135377D2C3285AD004B49BB /* AlterViewController.swift in Sources */,
+				D135377D2C3285AD004B49BB /* AlterUIView.swift in Sources */,
 				D10F846F2BC7E7CF00F3A172 /* UIColor_Extension.swift in Sources */,
 				D1E1DF822C3AD04F001A132F /* WeekChoiceViewController.swift in Sources */,
 				D146706B2BEA8FF9007B7132 /* MyPageViewController.swift in Sources */,

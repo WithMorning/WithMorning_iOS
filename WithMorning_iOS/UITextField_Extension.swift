@@ -7,8 +7,8 @@
 
 import Foundation
 import UIKit
-//MARK: - textfield 패딩값주는거임
 
+//MARK: - textfield 패딩값주는거임
 extension UITextField{
     func addleftPadding(){
         let paddingView = UIView(frame: CGRect(x: 0, y: 0, width: 16, height: self.frame.height))
