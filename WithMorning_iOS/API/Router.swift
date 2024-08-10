@@ -19,13 +19,13 @@ let userId = 1
 enum Router : URLRequestConvertible{
     
     case getmypage                                      //모다라트 리스트 조회
-    
+    case getmainpage
     
     // url가르기
     var endPoint: String {
         switch self {
         case .getmypage: return "/mypage"
-            
+        case .getmainpage: return "/main"
         }
     }
     
@@ -42,6 +42,8 @@ enum Router : URLRequestConvertible{
     var method: HTTPMethod {
         switch self {
         case .getmypage: return .get
+        case .getmainpage: return .get
+            
         }
     }
     
@@ -74,9 +76,9 @@ enum Router : URLRequestConvertible{
         request.headers = headers
         
         switch self {
-        case .getmypage:
-            request = try URLEncoding.queryString.encode(request, with: parameters)
+        case .getmypage: request = try URLEncoding.queryString.encode(request, with: parameters)
             
+        case .getmainpage: request = try URLEncoding.queryString.encode(request, with: parameters)
         }
         //request = try URLEncoding.queryString.encode(request, with: parameters)
         //이 인코딩 방식은 GET 요청 또는 URL 쿼리 매개변수를 전송할 때 사용

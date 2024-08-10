@@ -607,6 +607,8 @@ class MyPageViewController : UIViewController, UIScrollViewDelegate {
     }
 }
 
+//MARK: - extension
+ 
 extension MyPageViewController : UIGestureRecognizerDelegate{
     func popGesture(){
         navigationController?.interactivePopGestureRecognizer?.delegate = self

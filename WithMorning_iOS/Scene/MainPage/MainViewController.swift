@@ -12,6 +12,8 @@ import Alamofire
 
 class MainViewController: UIViewController, UISheetPresentationControllerDelegate {
     
+    let APInetwork = Network.shared
+    
     //MARK: - properties
     
     private lazy var nameLabel : UILabel = {
@@ -41,7 +43,7 @@ class MainViewController: UIViewController, UISheetPresentationControllerDelegat
         button.addTarget(self, action: #selector(soundclick), for: .touchUpInside)
         return button
     }()
-
+    
     
     //MARK: - tableView
     private lazy var headerView : UIView = {
@@ -109,12 +111,12 @@ class MainViewController: UIViewController, UISheetPresentationControllerDelegat
     }()
     
     //리프레쉬컨트롤
-//    private lazy var tableViewRefresh : UIRefreshControl = {
-//        let refresh = UIRefreshControl()
-//        refresh.endRefreshing()
-//        refresh.addTarget(self, action: #selector(refreshControl), for: .valueChanged)
-//        return refresh
-//    }()
+    //    private lazy var tableViewRefresh : UIRefreshControl = {
+    //        let refresh = UIRefreshControl()
+    //        refresh.endRefreshing()
+    //        refresh.addTarget(self, action: #selector(refreshControl), for: .valueChanged)
+    //        return refresh
+    //    }()
     
     
     //MARK: - Data Array
@@ -122,12 +124,12 @@ class MainViewController: UIViewController, UISheetPresentationControllerDelegat
     var alarmData  : [AlarmModel] = [AlarmModel(isTurn: false,alarmTitle: "1번째 알람의 타이틀",Memo: "1번재 알람의 메모", memberCount: 4),AlarmModel(isTurn: false,alarmTitle: "2번째 알람의 타이틀",Memo: "2번째 알람의 메모", memberCount: 3)]
     
     //MARK: - LifeCycle
-    
     override func viewDidLoad() {
         super.viewDidLoad()
         self.view.backgroundColor = DesignSystemColor.Gray150.value
         tableSetting()
         SetUI()
+        getMainpage()
     }
     
     //MARK: - UI
@@ -143,7 +145,7 @@ class MainViewController: UIViewController, UISheetPresentationControllerDelegat
             $0.leading.equalToSuperview().inset(16)
         }
         
-        profileButton.snp.makeConstraints{ 
+        profileButton.snp.makeConstraints{
             $0.centerY.equalTo(nameLabel)
             $0.trailing.equalToSuperview().inset(16)
             $0.width.equalTo(36)
@@ -202,7 +204,7 @@ class MainViewController: UIViewController, UISheetPresentationControllerDelegat
         
         AlarmTableView.rowHeight = 108 //cell높이
         AlarmTableView.estimatedRowHeight = UITableView.automaticDimension
-//        AlarmTableView.refreshControl = tableViewRefresh
+        //        AlarmTableView.refreshControl = tableViewRefresh
         
         headerView.layoutIfNeeded()
         
@@ -219,7 +221,6 @@ class MainViewController: UIViewController, UISheetPresentationControllerDelegat
         headerStackView.frame = CGRect(x: 0, y: 0, width: UIScreen.main.bounds.width, height: headerStackViewHeight)
         
     }
-    
     
     //MARK: - objc func
     
@@ -258,18 +259,39 @@ class MainViewController: UIViewController, UISheetPresentationControllerDelegat
     
     @objc func soundclick(){
         let vc = AlarmSoundViewController()
+        vc.volume = { [weak self] value in
+            self?.handleVolumeChange(value)
+        }
         self.navigationController?.pushViewController(vc, animated: true)
         
     }
     
-//    @objc func refreshControl(){
-//        print("refreshTable")
-//        DispatchQueue.main.asyncAfter(deadline: .now() + 1.0) {
-//            self.AlarmTableView.reloadData()
-//            self.tableViewRefresh.endRefreshing()
-//        }
-//    }
+    func handleVolumeChange(_ value: Int) {
+        if value == 0{
+            soundButton.setImage(UIImage(named: "Volumeoff"), for: .normal)
+        }
+        
+    }
+    //    @objc func refreshControl(){
+    //        print("refreshTable")
+    //        DispatchQueue.main.asyncAfter(deadline: .now() + 1.0) {
+    //            self.AlarmTableView.reloadData()
+    //            self.tableViewRefresh.endRefreshing()
+    //        }
+    //    }
     
+    //MARK: - API
+    func getMainpage(){
+        APInetwork.getMainpage(){ result in
+            switch result{
+            case.success(let mainpage):
+                print(mainpage)
+            case.failure(let error):
+                print("뷰컨에서 failure",error)
+            }
+        }
+    }
+
 }
 
 extension MainViewController : UITableViewDelegate, UITableViewDataSource{

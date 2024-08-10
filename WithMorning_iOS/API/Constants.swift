@@ -37,4 +37,46 @@ struct MypageResponse: Codable {
     }
 }
 
+// MARK: - Mainpage
+struct Mainpage: Codable {
+    let isSuccess: Bool
+    let code: Int
+    let message: String
+    let result: MainpageResponse?
+}
+
+// MARK: - MainpageResponse
+struct MainpageResponse: Codable {
+    let connectorProfileURL: String
+    let groupList: [GroupList]?
+    let listSize: Int
+}
+
+// MARK: - Mainpage GroupList
+struct GroupList: Codable {
+    let groupID: Int
+    let name, wakeupTime: String
+    let wakeUpDayOfWeekList: [String]
+    let userList: [UserList]?
+    let memo: String
+
+    enum CodingKeys: String, CodingKey {
+        case groupID = "groupId"
+        case name, wakeupTime, wakeUpDayOfWeekList, userList, memo
+    }
+}
+
+// MARK: - Mainpage UserList
+struct UserList: Codable {
+    let userID: Int
+    let imageURL, nickname: String
+//  let imageURL: URL
+    let isWakeup, isDisturbBanMode: Bool
+    let phone: String
+
+    enum CodingKeys: String, CodingKey {
+        case userID = "userId"
+        case imageURL, nickname, isWakeup, isDisturbBanMode, phone
+    }
+}
 

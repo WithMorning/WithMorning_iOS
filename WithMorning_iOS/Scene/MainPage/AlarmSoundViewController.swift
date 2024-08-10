@@ -12,6 +12,8 @@ import Alamofire
 
 class AlarmSoundViewController : UIViewController {
     
+    var volume :  ((Int)->Void)?
+    
     //MARK: - 네비게이션 바
     private lazy var MainLabel : UILabel = {
         let label = UILabel()
@@ -178,6 +180,8 @@ class AlarmSoundViewController : UIViewController {
         
         if value == 0 {
             sliderImage.image = UIImage(named: "Volumeoff")
+            
+            volume?(value)
             
         }else{
             sliderImage.image = UIImage(named: "Volumeon")
