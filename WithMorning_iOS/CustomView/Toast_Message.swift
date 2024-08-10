@@ -27,7 +27,7 @@ extension UIViewController {
             $0.edges.equalToSuperview().inset(16)
         }
         
-        UIView.animate(withDuration: 2.0, delay: delayTime, options: .curveEaseOut, animations: {
+        UIView.animate(withDuration: 1.0, delay: delayTime, options: .curveEaseOut, animations: {
             containerView.alpha = 0.0
         }, completion: { _ in
             containerView.removeFromSuperview()

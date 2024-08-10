@@ -231,7 +231,9 @@ class MainViewController: UIViewController, UISheetPresentationControllerDelegat
     @objc func clickedmakeAlarm(){ //새로운 알람설정
         let vc = MakeAlarmViewController()
         self.navigationController?.pushViewController(vc, animated: true)
-        showToast(message: "상하 좌우 16만큼 이동함용", delayTime: 0.9)
+        
+        showToast(message: "상하 좌우 16만큼 이동함용", delayTime: 0.3)
+        
         AlarmTableView.reloadData()
     }
     
