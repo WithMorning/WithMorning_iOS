@@ -45,14 +45,12 @@ struct Mainpage: Codable {
     let result: MainpageResponse?
 }
 
-// MARK: - MainpageResponse
 struct MainpageResponse: Codable {
     let connectorProfileURL: String
     let groupList: [GroupList]?
     let listSize: Int
 }
 
-// MARK: - Mainpage GroupList
 struct GroupList: Codable {
     let groupID: Int
     let name, wakeupTime: String
@@ -66,11 +64,9 @@ struct GroupList: Codable {
     }
 }
 
-// MARK: - Mainpage UserList
 struct UserList: Codable {
     let userID: Int
     let imageURL, nickname: String
-//  let imageURL: URL
     let isWakeup, isDisturbBanMode: Bool
     let phone: String
 
@@ -79,4 +75,3 @@ struct UserList: Codable {
         case imageURL, nickname, isWakeup, isDisturbBanMode, phone
     }
 }
-
