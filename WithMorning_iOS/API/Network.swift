@@ -9,6 +9,7 @@ import Foundation
 import Alamofire
 
 class Network{
+    
     static let shared = Network()
     
     //MARK: - 마이페이지

@@ -601,7 +601,7 @@ class MyPageViewController : UIViewController, UIScrollViewDelegate {
                 self.nickNameLabel.text = mypage.nickname
                 print(mypage)
             case.failure(let error):
-                print("뷰컨에서 failure",error)
+                print(error)
             }
         }
     }

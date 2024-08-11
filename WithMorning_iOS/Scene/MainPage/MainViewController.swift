@@ -263,22 +263,14 @@ class MainViewController: UIViewController, UISheetPresentationControllerDelegat
             self?.handleVolumeChange(value)
         }
         self.navigationController?.pushViewController(vc, animated: true)
-        
     }
     
     func handleVolumeChange(_ value: Int) {
-        if value == 0{
+        if value == 0 {
             soundButton.setImage(UIImage(named: "Volumeoff"), for: .normal)
         }
         
     }
-    //    @objc func refreshControl(){
-    //        print("refreshTable")
-    //        DispatchQueue.main.asyncAfter(deadline: .now() + 1.0) {
-    //            self.AlarmTableView.reloadData()
-    //            self.tableViewRefresh.endRefreshing()
-    //        }
-    //    }
     
     //MARK: - API
     func getMainpage(){
