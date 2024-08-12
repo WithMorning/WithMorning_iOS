@@ -10,7 +10,7 @@ import SnapKit
 import Then
 import Alamofire
 
-class OnBoardingProfileViewController : UIViewController {
+class OnBoardingProfileViewController : UIViewController, UIImagePickerControllerDelegate & UINavigationControllerDelegate {
     
     //MARK: - properties
     
@@ -44,6 +44,9 @@ class OnBoardingProfileViewController : UIViewController {
         image.image = UIImage(named: "profile")
         return image
     }()
+    
+    let imgPicker = UIImagePickerController()
+    
     
     private lazy var galleryButton : UIButton = {
         let button = UIButton()
@@ -93,11 +96,12 @@ class OnBoardingProfileViewController : UIViewController {
         self.view.backgroundColor = DesignSystemColor.Gray150.value
         setUI()
         hideKeyboardWhenTappedAround()
+        
     }
     
     func setUI(){
         nicknameTextfield.delegate = self
-        
+        imgPicker.delegate = self
         view.addSubviews(mainLabel,popButton,profileLabel,profileImage,galleryButton,nicknameTextfield,doneButton)
         
         mainLabel.snp.makeConstraints{
@@ -135,7 +139,11 @@ class OnBoardingProfileViewController : UIViewController {
             $0.leading.trailing.equalToSuperview().inset(16)
             $0.height.equalTo(62)
         }
-        
+    }
+    
+    func openGallery(){
+        imgPicker.sourceType = .photoLibrary
+        present(imgPicker, animated: true, completion: nil)
     }
     //MARK: - objc func
     
@@ -150,13 +158,15 @@ class OnBoardingProfileViewController : UIViewController {
     }
     
     @objc func galleryclick() {
-        let alert = UIAlertController(title:nil, message: nil, preferredStyle: .actionSheet)
+        let alert = UIAlertController(title:nil, message:nil, preferredStyle: .actionSheet)
         
-        let okAction = UIAlertAction(title: "앨범에서 선택", style: .default, handler: nil)
+        let galleyAction = UIAlertAction(title: "앨범에서 선택", style: .default) {
+            (action) in self.openGallery()
+        }
         let removeAction = UIAlertAction(title: "프로필 사진 삭제", style: .destructive, handler: nil)
         let cancelAction = UIAlertAction(title: "닫기", style: .cancel, handler: nil)
         
-        alert.addAction(okAction)
+        alert.addAction(galleyAction)
         alert.addAction(removeAction)
         alert.addAction(cancelAction)
         
@@ -200,9 +210,10 @@ extension OnBoardingProfileViewController : UITextFieldDelegate {
         guard textField.text!.count < 10 else { return false } // 10 글자로 제한
         return true
     }
-    
-    
 }
+
+
+
 //Preview code
 #if DEBUG
 import SwiftUI
