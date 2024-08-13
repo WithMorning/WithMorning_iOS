@@ -118,11 +118,6 @@ class MainViewController: UIViewController, UISheetPresentationControllerDelegat
     //        return refresh
     //    }()
     
-    
-    //MARK: - Data Array
-    
-    var alarmData  : [AlarmModel] = [AlarmModel(isTurn: false,alarmTitle: "1번째 알람의 타이틀",Memo: "1번재 알람의 메모", memberCount: 4),AlarmModel(isTurn: false,alarmTitle: "2번째 알람의 타이틀",Memo: "2번째 알람의 메모", memberCount: 3)]
-    
     //MARK: - LifeCycle
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -272,18 +267,35 @@ class MainViewController: UIViewController, UISheetPresentationControllerDelegat
         
     }
     
+    
+    //MARK: - Data Array
+    var alarmData  : [GroupList] = []
+    
     //MARK: - API
-    func getMainpage(){
-        APInetwork.getMainpage(){ result in
-            switch result{
-            case.success(let mainpage):
-                print(mainpage)
-            case.failure(let error):
-                print("뷰컨에서 failure",error)
+    func getMainpage() {
+        APInetwork.getMainpage() { [weak self] result in
+            switch result {
+            case .success(let mainpage):
+                self?.MainpageUpdate(with: mainpage)
+            case .failure(let error):
+                print("뷰컨에서 failure", error)
             }
         }
     }
-
+    
+    
+    func MainpageUpdate(with mainpage: MainpageResponse){
+        guard let groupList = mainpage.groupList else {
+            return
+        }
+        
+        self.alarmData = groupList
+        
+        DispatchQueue.main.async {
+            self.AlarmTableView.reloadData()
+        }
+        print(alarmData)
+    }
 }
 
 extension MainViewController : UITableViewDelegate, UITableViewDataSource{
@@ -297,70 +309,85 @@ extension MainViewController : UITableViewDelegate, UITableViewDataSource{
         
         let alarm = alarmData[indexPath.row]
         
+        let isTurn = true
+        
         cell.selectionStyle = .none
         cell.backgroundColor = .clear
-        cell.topViewLabel.text = alarm.alarmTitle
-        cell.memoLabel.text = alarm.Memo
-        cell.memberCount = alarm.memberCount
+        
+        cell.topViewLabel.text = alarm.name
+        cell.memoLabel.text = alarm.memo
+        cell.ConfigureMember(alarm.userList ?? [])
         
         // 토글의 상태를 데이터 모델로부터 가져와 설정
-        cell.toggleButton.isOn = alarm.isTurn
-        cell.bottomView.isHidden = !alarm.isTurn
-        cell.bottomView.subviews.forEach { $0.isHidden = !alarm.isTurn }
+        cell.toggleButton.isOn = isTurn
+        cell.bottomView.isHidden = false
         
-        if cell.toggleButton.isOn == true{
-            self.alarmData[indexPath.row].isTurn = true
-            //            print(self.alarmData[indexPath.row])
-            cell.bottomView.isHidden = false
-            //월
-            cell.MonLabel.backgroundColor = DesignSystemColor.Orange500.value
-            cell.MonLabel.textColor = .white
-            //화
-            cell.TueLabel.backgroundColor = DesignSystemColor.Orange500.value
-            cell.TueLabel.textColor = .white
-            //수
-            cell.WedLabel.backgroundColor = DesignSystemColor.Orange500.value
-            cell.WedLabel.textColor = .white
-            //목
-            cell.ThuLabel.backgroundColor = DesignSystemColor.Orange500.value
-            cell.ThuLabel.textColor = .white
-            //금
-            cell.FriLabel.backgroundColor = DesignSystemColor.Orange500.value
-            cell.FriLabel.textColor = .white
-            //토
-            cell.SatLabel.backgroundColor = DesignSystemColor.Orange500.value
-            cell.SatLabel.textColor = .white
-            //일
-            cell.SunLabel.backgroundColor = DesignSystemColor.Orange500.value
-            cell.SunLabel.textColor = .white
+//        cell.bottomView.subviews.forEach { $0.isHidden = isTurn }
+        
+        let dayLabels = [cell.MonLabel, cell.TueLabel, cell.WedLabel, cell.ThuLabel, cell.FriLabel, cell.SatLabel, cell.SunLabel]
+        
+            let days = ["mon", "tue", "wed", "thu", "fri", "sat", "sun"]
             
-        }else{
-            self.alarmData[indexPath.row].isTurn = false
-            //            print(self.alarmData[indexPath.row])
-            cell.bottomView.isHidden = true
-            
-            cell.MonLabel.backgroundColor = DesignSystemColor.Gray100.value
-            cell.MonLabel.textColor = DesignSystemColor.Gray300.value
-            
-            cell.TueLabel.backgroundColor = DesignSystemColor.Gray100.value
-            cell.TueLabel.textColor = DesignSystemColor.Gray300.value
-            
-            cell.WedLabel.backgroundColor = DesignSystemColor.Gray100.value
-            cell.WedLabel.textColor = DesignSystemColor.Gray300.value
-            
-            cell.ThuLabel.backgroundColor = DesignSystemColor.Gray100.value
-            cell.ThuLabel.textColor = DesignSystemColor.Gray300.value
-            
-            cell.FriLabel.backgroundColor = DesignSystemColor.Gray100.value
-            cell.FriLabel.textColor = DesignSystemColor.Gray300.value
-            
-            cell.SatLabel.backgroundColor = DesignSystemColor.Gray100.value
-            cell.SatLabel.textColor = DesignSystemColor.Gray300.value
-            
-            cell.SunLabel.backgroundColor = DesignSystemColor.Gray100.value
-            cell.SunLabel.textColor = DesignSystemColor.Gray300.value
-            
-        }
+            for (index, dayLabel) in dayLabels.enumerated() {
+                if alarm.wakeUpDayOfWeekList.contains(days[index]) {
+                    dayLabel.backgroundColor = DesignSystemColor.Orange500.value
+                    dayLabel.textColor = .white
+                } else {
+                    dayLabel.backgroundColor = DesignSystemColor.Gray100.value
+                    dayLabel.textColor = DesignSystemColor.Gray300.value
+                }
+            }
+//        if cell.toggleButton.isOn == true{
+////            self.alarmData[indexPath.row].isTurn = true
+//            cell.bottomView.isHidden = false
+//            //월
+//            cell.MonLabel.backgroundColor = DesignSystemColor.Orange500.value
+//            cell.MonLabel.textColor = .white
+//            //화
+//            cell.TueLabel.backgroundColor = DesignSystemColor.Orange500.value
+//            cell.TueLabel.textColor = .white
+//            //수
+//            cell.WedLabel.backgroundColor = DesignSystemColor.Orange500.value
+//            cell.WedLabel.textColor = .white
+//            //목
+//            cell.ThuLabel.backgroundColor = DesignSystemColor.Orange500.value
+//            cell.ThuLabel.textColor = .white
+//            //금
+//            cell.FriLabel.backgroundColor = DesignSystemColor.Orange500.value
+//            cell.FriLabel.textColor = .white
+//            //토
+//            cell.SatLabel.backgroundColor = DesignSystemColor.Orange500.value
+//            cell.SatLabel.textColor = .white
+//            //일
+//            cell.SunLabel.backgroundColor = DesignSystemColor.Orange500.value
+//            cell.SunLabel.textColor = .white
+//            
+//        }else{
+////            self.alarmData[indexPath.row].isTurn = false
+//            cell.bottomView.isHidden = true
+//            
+//            cell.MonLabel.backgroundColor = DesignSystemColor.Gray100.value
+//            cell.MonLabel.textColor = DesignSystemColor.Gray300.value
+//            
+//            cell.TueLabel.backgroundColor = DesignSystemColor.Gray100.value
+//            cell.TueLabel.textColor = DesignSystemColor.Gray300.value
+//            
+//            cell.WedLabel.backgroundColor = DesignSystemColor.Gray100.value
+//            cell.WedLabel.textColor = DesignSystemColor.Gray300.value
+//            
+//            cell.ThuLabel.backgroundColor = DesignSystemColor.Gray100.value
+//            cell.ThuLabel.textColor = DesignSystemColor.Gray300.value
+//            
+//            cell.FriLabel.backgroundColor = DesignSystemColor.Gray100.value
+//            cell.FriLabel.textColor = DesignSystemColor.Gray300.value
+//            
+//            cell.SatLabel.backgroundColor = DesignSystemColor.Gray100.value
+//            cell.SatLabel.textColor = DesignSystemColor.Gray300.value
+//            
+//            cell.SunLabel.backgroundColor = DesignSystemColor.Gray100.value
+//            cell.SunLabel.textColor = DesignSystemColor.Gray300.value
+//            
+//        }
         
         // togglebutton on,off closure
         cell.toggleclicked = {
@@ -368,14 +395,14 @@ extension MainViewController : UITableViewDelegate, UITableViewDataSource{
             self.AlarmTableView.reloadData()
             
             if cell.toggleButton.isOn == true{
-                self.alarmData[indexPath.row].isTurn = true
+//                self.alarmData[indexPath.row].isTurn = true
                 //                print(self.alarmData[indexPath.row])
                 cell.bottomView.isHidden = false
                 
             }else{
-                self.alarmData[indexPath.row].isTurn = false
+//                self.alarmData[indexPath.row].isTurn = false
                 //                print(self.alarmData[indexPath.row])
-                cell.bottomView.isHidden = true
+//                cell.bottomView.isHidden = true
                 
             }
         }
@@ -389,11 +416,12 @@ extension MainViewController : UITableViewDelegate, UITableViewDataSource{
         let baseHeight: CGFloat = 132
         let extraHeight: CGFloat = 217
         
-        if alarmData[indexPath.row].isTurn {
-            return baseHeight + extraHeight
-        } else {
-            return baseHeight
-        }
+//        if alarmData[indexPath.row].isTurn == true {
+//            return baseHeight + extraHeight
+//        } else {
+//            return baseHeight
+//        }
+        return baseHeight + extraHeight
         
     }
     

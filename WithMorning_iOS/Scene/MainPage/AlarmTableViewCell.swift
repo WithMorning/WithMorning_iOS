@@ -350,7 +350,14 @@ class AlarmTableViewCell : UITableViewCell, UISheetPresentationControllerDelegat
         memoLabel.snp.makeConstraints{
             $0.centerY.centerX.equalTo(memoView)
         }
-        
+    }
+    
+    var userData : [UserList] = []
+    
+    func ConfigureMember(_ userList: [UserList]) {
+        self.memberCount = userList.count
+        userData = userList
+        self.memberCollectionView.reloadData()
     }
     
     
@@ -397,13 +404,16 @@ class AlarmTableViewCell : UITableViewCell, UISheetPresentationControllerDelegat
     
     //멤버 숫자
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        print("멤버의 숫자",memberCount)
+        
         return memberCount
     }
     
     //셀 재사용
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "memberCollectioViewCell", for: indexPath) as! memberCollectioViewCell
+        
+        let userlistData = userData[indexPath.item]
+        cell.memberLabel.text = userlistData.nickname
         
         return cell
     }
@@ -449,7 +459,7 @@ extension UITableViewCell {
 //MARK: - memberCollectionViewCell
 class memberCollectioViewCell : UICollectionViewCell{
     
-    private lazy var memberImageView : UIImageView = {
+     lazy var memberImageView : UIImageView = {
         let view = UIImageView()
         view.backgroundColor = DesignSystemColor.Orange500.value
         view.image = UIImage(systemName: "person.circle.fill")
@@ -458,7 +468,7 @@ class memberCollectioViewCell : UICollectionViewCell{
         return view
     }()
     
-    private lazy var memberLabel : UILabel = {
+     lazy var memberLabel : UILabel = {
         let label = UILabel()
         label.text = "멤버 이름"
         label.textColor = .black

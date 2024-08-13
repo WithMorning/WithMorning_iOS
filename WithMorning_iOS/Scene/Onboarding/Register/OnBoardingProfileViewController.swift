@@ -42,6 +42,8 @@ class OnBoardingProfileViewController : UIViewController, UIImagePickerControlle
     private lazy var profileImage : UIImageView = {
         let image = UIImageView()
         image.image = UIImage(named: "profile")
+        image.clipsToBounds = true
+        image.layer.cornerRadius = 75
         return image
     }()
     
@@ -141,10 +143,6 @@ class OnBoardingProfileViewController : UIViewController, UIImagePickerControlle
         }
     }
     
-    func openGallery(){
-        imgPicker.sourceType = .photoLibrary
-        present(imgPicker, animated: true, completion: nil)
-    }
     //MARK: - objc func
     
     @objc func popclicked(){
@@ -163,7 +161,9 @@ class OnBoardingProfileViewController : UIViewController, UIImagePickerControlle
         let galleyAction = UIAlertAction(title: "앨범에서 선택", style: .default) {
             (action) in self.openGallery()
         }
-        let removeAction = UIAlertAction(title: "프로필 사진 삭제", style: .destructive, handler: nil)
+        let removeAction = UIAlertAction(title: "프로필 사진 삭제", style: .destructive){
+            (action) in self.deletephoto()
+        }
         let cancelAction = UIAlertAction(title: "닫기", style: .cancel, handler: nil)
         
         alert.addAction(galleyAction)
@@ -172,11 +172,29 @@ class OnBoardingProfileViewController : UIViewController, UIImagePickerControlle
         
         present(alert, animated: true, completion: nil)
     }
+    
+    //MARK: - Gallery Setting
+    func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [UIImagePickerController.InfoKey : Any]) {
+        if let image = info[UIImagePickerController.InfoKey.originalImage] as? UIImage{
+            profileImage.image = image
+            print(info)
+            
+        }
+        dismiss(animated: true, completion: nil)
+    }
+    
+    func openGallery(){
+        imgPicker.sourceType = .photoLibrary
+        present(imgPicker, animated: true, completion: nil)
+    }
+    func deletephoto(){
+        profileImage.image = UIImage(named: "profile")
+    }
+    
 }
 
 
 //MARK: - 키보드 세팅, textfield세팅
-
 extension OnBoardingProfileViewController : UITextFieldDelegate {
     func hideKeyboardWhenTappedAround() {
         let tap = UITapGestureRecognizer(target: self, action: #selector(EditprofileViewController.dismissKeyboard))
@@ -211,7 +229,6 @@ extension OnBoardingProfileViewController : UITextFieldDelegate {
         return true
     }
 }
-
 
 
 //Preview code

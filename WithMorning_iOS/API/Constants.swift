@@ -8,15 +8,6 @@
 import Foundation
 import Alamofire
 
-//MARK: - dummydata
-struct AlarmModel{
-   //var cellText : Int
-    var isTurn : Bool
-    var alarmTitle : String
-    var Memo : String
-    var memberCount : Int
-}
-
 // MARK: - Mypage
 struct Mypage: Codable {
     let isSuccess: Bool?
