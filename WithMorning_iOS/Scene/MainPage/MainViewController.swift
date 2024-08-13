@@ -228,7 +228,7 @@ class MainViewController: UIViewController, UISheetPresentationControllerDelegat
         let vc = MakeAlarmViewController()
         self.navigationController?.pushViewController(vc, animated: true)
         
-        showToast(message: "상하 좌우 16만큼 이동함용", delayTime: 0.3)
+        showToast(message: "상하 좌우 16만큼 이동함용", delayTime: 0.8, withduration : 1.3)
         
         AlarmTableView.reloadData()
     }
@@ -337,57 +337,6 @@ extension MainViewController : UITableViewDelegate, UITableViewDataSource{
                     dayLabel.textColor = DesignSystemColor.Gray300.value
                 }
             }
-//        if cell.toggleButton.isOn == true{
-////            self.alarmData[indexPath.row].isTurn = true
-//            cell.bottomView.isHidden = false
-//            //월
-//            cell.MonLabel.backgroundColor = DesignSystemColor.Orange500.value
-//            cell.MonLabel.textColor = .white
-//            //화
-//            cell.TueLabel.backgroundColor = DesignSystemColor.Orange500.value
-//            cell.TueLabel.textColor = .white
-//            //수
-//            cell.WedLabel.backgroundColor = DesignSystemColor.Orange500.value
-//            cell.WedLabel.textColor = .white
-//            //목
-//            cell.ThuLabel.backgroundColor = DesignSystemColor.Orange500.value
-//            cell.ThuLabel.textColor = .white
-//            //금
-//            cell.FriLabel.backgroundColor = DesignSystemColor.Orange500.value
-//            cell.FriLabel.textColor = .white
-//            //토
-//            cell.SatLabel.backgroundColor = DesignSystemColor.Orange500.value
-//            cell.SatLabel.textColor = .white
-//            //일
-//            cell.SunLabel.backgroundColor = DesignSystemColor.Orange500.value
-//            cell.SunLabel.textColor = .white
-//            
-//        }else{
-////            self.alarmData[indexPath.row].isTurn = false
-//            cell.bottomView.isHidden = true
-//            
-//            cell.MonLabel.backgroundColor = DesignSystemColor.Gray100.value
-//            cell.MonLabel.textColor = DesignSystemColor.Gray300.value
-//            
-//            cell.TueLabel.backgroundColor = DesignSystemColor.Gray100.value
-//            cell.TueLabel.textColor = DesignSystemColor.Gray300.value
-//            
-//            cell.WedLabel.backgroundColor = DesignSystemColor.Gray100.value
-//            cell.WedLabel.textColor = DesignSystemColor.Gray300.value
-//            
-//            cell.ThuLabel.backgroundColor = DesignSystemColor.Gray100.value
-//            cell.ThuLabel.textColor = DesignSystemColor.Gray300.value
-//            
-//            cell.FriLabel.backgroundColor = DesignSystemColor.Gray100.value
-//            cell.FriLabel.textColor = DesignSystemColor.Gray300.value
-//            
-//            cell.SatLabel.backgroundColor = DesignSystemColor.Gray100.value
-//            cell.SatLabel.textColor = DesignSystemColor.Gray300.value
-//            
-//            cell.SunLabel.backgroundColor = DesignSystemColor.Gray100.value
-//            cell.SunLabel.textColor = DesignSystemColor.Gray300.value
-//            
-//        }
         
         // togglebutton on,off closure
         cell.toggleclicked = {

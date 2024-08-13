@@ -4,7 +4,7 @@ import SnapKit
 
 extension UIViewController {
     
-    func showToast(message: String, delayTime: Double) {
+    func showToast(message: String, delayTime: Double, withduration : Double) {
         let containerView = UIView()
         containerView.backgroundColor = UIColor(red: 0, green: 0, blue: 0, alpha: 0.6)
         containerView.layer.cornerRadius = 4
@@ -27,7 +27,7 @@ extension UIViewController {
             $0.edges.equalToSuperview().inset(16)
         }
         
-        UIView.animate(withDuration: 1.0, delay: delayTime, options: .curveEaseOut, animations: {
+        UIView.animate(withDuration: withduration, delay: delayTime, options: .curveEaseOut, animations: {
             containerView.alpha = 0.0
         }, completion: { _ in
             containerView.removeFromSuperview()
