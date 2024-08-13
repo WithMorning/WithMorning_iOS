@@ -368,6 +368,7 @@ class MyPageViewController : UIViewController, UIScrollViewDelegate {
         button.setTitle("로그아웃", for: .normal)
         button.titleLabel?.font = DesignSystemFont.Pretendard_Medium14.value
         button.setTitleColor(DesignSystemColor.Gray400.value, for: .normal)
+        button.addTarget(self, action: #selector(logout), for: .touchUpInside)
         return button
     }()
     
@@ -382,6 +383,7 @@ class MyPageViewController : UIViewController, UIScrollViewDelegate {
         button.setTitle("회원탈퇴", for: .normal)
         button.titleLabel?.font = DesignSystemFont.Pretendard_Medium14.value
         button.setTitleColor(DesignSystemColor.Gray400.value, for: .normal)
+        button.addTarget(self, action: #selector(quitclick), for: .touchUpInside)
         return button
     }()
     
@@ -592,6 +594,16 @@ class MyPageViewController : UIViewController, UIScrollViewDelegate {
         let vc = SleepTimeViewController()
         self.navigationController?.pushViewController(vc, animated: true)
     }
+    @objc func logout(){
+        
+    }
+    
+    @objc func quitclick(){
+        let alterVC = AlterUIView(alterType: .quit)
+        alterVC.modalPresentationStyle = .overFullScreen
+        alterVC.modalTransitionStyle = .crossDissolve
+        present(alterVC, animated: true, completion: nil)
+    }
     
     //MARK: - API
     func getMypage(){
@@ -610,6 +622,7 @@ class MyPageViewController : UIViewController, UIScrollViewDelegate {
 //MARK: - extension
  
 extension MyPageViewController : UIGestureRecognizerDelegate{
+    
     func popGesture(){
         navigationController?.interactivePopGestureRecognizer?.delegate = self
         navigationController?.interactivePopGestureRecognizer?.isEnabled = true

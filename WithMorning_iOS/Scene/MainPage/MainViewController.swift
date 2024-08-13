@@ -228,8 +228,6 @@ class MainViewController: UIViewController, UISheetPresentationControllerDelegat
         let vc = MakeAlarmViewController()
         self.navigationController?.pushViewController(vc, animated: true)
         
-        showToast(message: "상하 좌우 16만큼 이동함용", delayTime: 0.8, withduration : 1.3)
-        
         AlarmTableView.reloadData()
     }
     

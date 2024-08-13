@@ -17,12 +17,13 @@ protocol AlterDelegate {
 }
 
 //MARK: - 알림창의 타입을 위한 enum
-//let alterVC = AlterViewController(alterType: .outGroup)
-//let alterVC = AlterViewController(alterType: .deleteAlarm) 으로 사용
+//let alterVC = AlterUIView(alterType: .outGroup)
+//let alterVC = AlterUIView(alterType: .deleteAlarm) 으로 사용
 
 enum Altertype {
     case deleteAlarm
     case outGroup
+    case quit
 }
 
 class AlterUIView: UIViewController {
@@ -93,6 +94,8 @@ class AlterUIView: UIViewController {
         return button
     }()
     
+    //MARK: - Life Cycle
+
     override func viewDidLoad() {
         super.viewDidLoad()
         view.backgroundColor = UIColor(red: 0, green: 0, blue: 0, alpha: 0.6)
@@ -100,6 +103,8 @@ class AlterUIView: UIViewController {
         types()
     }
     
+    //MARK: - UI
+
     func SetUI() {
         view.addSubview(AlterView)
         
@@ -129,7 +134,7 @@ class AlterUIView: UIViewController {
             
         }
     }
-    
+
     func types() {
         switch alterType {
             
@@ -149,20 +154,70 @@ class AlterUIView: UIViewController {
                 $0.centerX.equalToSuperview()
                 
             }
+        case .quit:
+            MainLabel.text = "정말 윗모닝을 탈퇴하시겠습니까? 🥲"
+            SubLabel.text = "탈퇴시 모든 개인정보는 바로 삭제 처리됩니다."
+            
+            AlterView.snp.makeConstraints{
+                $0.center.equalToSuperview()
+                $0.height.equalTo(170)
+                $0.width.equalTo(343)
+            }
+            
+            MainLabel.snp.makeConstraints{
+                $0.top.equalToSuperview().inset(20)
+                $0.centerX.equalToSuperview()
+            }
+            SubLabel.snp.makeConstraints{
+                $0.centerX.equalToSuperview().offset(12)
+                
+            }
         }
     }
-    
+    //MARK: - objc func
+
     @objc func cancelclicked(){
         self.dismiss(animated: true) {
             self.delegate?.cancel()
             print("취소버튼")
         }
     }
-    @objc func confirmclicked(){
-        self.dismiss(animated: true) {
-            self.delegate?.confirm()
-            print("확인버튼")
+    
+    
+    @objc func confirmclicked() {
+        switch alterType {
+        case .deleteAlarm:
+            handleDeleteAlarm()
+            
+        case .outGroup:
+            handleOutGroup()
+            
+        case .quit:
+            handleQuit()
         }
+        
+        self.dismiss(animated: true) {
+                self.delegate?.confirm()
+                print("확인버튼")
+            }
     }
-}
+    
+    private func handleDeleteAlarm() {
+        // 알람 삭제에 대한 처리 로직
+        print("알람 삭제 로직 실행")
+        // 예시: 서버에 요청 보내기, 로컬 데이터 삭제 등
+    }
 
+    private func handleOutGroup() {
+        // 모임 나가기 처리 로직
+        print("모임 나가기 로직 실행")
+        // 예시: 서버에 나가기 요청 보내기, UI 업데이트 등
+    }
+
+    private func handleQuit() {
+        // 윗모닝 탈퇴 처리 로직
+        print("윗모닝 탈퇴 로직 실행")
+        // 예시: 서버에 탈퇴 요청 보내기, 유저 정보 삭제 등
+    }
+    
+}

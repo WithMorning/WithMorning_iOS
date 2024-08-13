@@ -172,7 +172,6 @@ class AlarmTableViewCell : UITableViewCell, UISheetPresentationControllerDelegat
     }()
     
     //MARK: - 아랫 부분
-    
     lazy var bottomView : UIView = {
         let view = UIView()
         view.addSubviews(borderLine,bottomViewLabel,memberCollectionView,memoView,memoLabel)
@@ -348,7 +347,7 @@ class AlarmTableViewCell : UITableViewCell, UISheetPresentationControllerDelegat
             $0.leading.trailing.bottom.equalToSuperview().inset(16)
         }
         memoLabel.snp.makeConstraints{
-            $0.centerY.centerX.equalTo(memoView)
+            $0.center.equalTo(memoView)
         }
     }
     
