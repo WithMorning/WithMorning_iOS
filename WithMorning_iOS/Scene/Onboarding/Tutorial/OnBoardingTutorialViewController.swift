@@ -151,6 +151,9 @@ class OnBoardingTutorialViewController : UIViewController{
     }
     
     @objc func skip(){
+        let vc = TutorialThirdViewController()
+            pageViewController.setViewControllers([vc], direction: .forward, animated: true, completion: nil)
+            pageControl.currentPage = 2
         
     }
 }

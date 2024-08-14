@@ -10,6 +10,7 @@ pod 'SnapKit', '~> 5.7.0'
 pod 'Then'
 pod 'Alamofire'
 pod 'JSPhoneFormat'
+pod 'Kingfisher', '~> 7.0'
 
   #target 'WithMorning_iOSTests' do
     inherit! :search_paths

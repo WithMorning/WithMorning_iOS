@@ -433,27 +433,34 @@ class AlarmTableViewCell : UITableViewCell, UISheetPresentationControllerDelegat
     }
     
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+        
+        guard let parentViewController = self.parentVC else {
+            return
+        }
+        
+        let vc = UserStateViewController()
+        vc.modalPresentationStyle = .formSheet
+        parentViewController.present(vc, animated: true)
+        
+        if let vc = vc.sheetPresentationController{
+            if #available(iOS 16.0, *) {
+                vc.detents = [.custom { context in
+                    return 245
+                }]
+                
+                vc.delegate = self
+                vc.prefersGrabberVisible = false
+                vc.preferredCornerRadius = 16
+            }
+            
+        }
+        
         print(indexPath.section,indexPath.row,indexPath.item)
     }
     
+    
+    
 }
-
-//MARK: - VC가 아닌 cell의 property에서 click이벤트를 위해 VC를 위에 깔아줌
-extension UITableViewCell {
-    var parentVC: UIViewController? {
-        var responder: UIResponder? = self
-        while let nextResponder = responder?.next {
-            if let viewController = nextResponder as? UIViewController {
-                return viewController
-            }
-            responder = nextResponder
-        }
-        return nil
-    }
-}
-
-
-
 
 //MARK: - memberCollectionViewCell
 class memberCollectioViewCell : UICollectionViewCell{
