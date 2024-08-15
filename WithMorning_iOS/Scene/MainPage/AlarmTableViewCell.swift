@@ -350,18 +350,19 @@ class AlarmTableViewCell : UITableViewCell, UISheetPresentationControllerDelegat
             $0.center.equalTo(memoView)
         }
     }
-    
+//MARK: - API 통신
+
     var userData : [UserList] = []
     
     func ConfigureMember(_ userList: [UserList]) {
         self.memberCount = userList.count
         userData = userList
         self.memberCollectionView.reloadData()
+
     }
     
     
     //MARK: - objc func
-    
     @objc func clicktoggle(sender : UISwitch){
         toggleclicked()
         
@@ -409,9 +410,11 @@ class AlarmTableViewCell : UITableViewCell, UISheetPresentationControllerDelegat
     
     //셀 재사용
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
+        
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "memberCollectioViewCell", for: indexPath) as! memberCollectioViewCell
         
         let userlistData = userData[indexPath.item]
+        
         cell.memberLabel.text = userlistData.nickname
         
         return cell
@@ -433,10 +436,10 @@ class AlarmTableViewCell : UITableViewCell, UISheetPresentationControllerDelegat
     }
     
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-        
         guard let parentViewController = self.parentVC else {
             return
         }
+        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "memberCollectioViewCell", for: indexPath) as! memberCollectioViewCell
         
         let vc = UserStateViewController()
         vc.modalPresentationStyle = .formSheet
@@ -445,7 +448,7 @@ class AlarmTableViewCell : UITableViewCell, UISheetPresentationControllerDelegat
         if let vc = vc.sheetPresentationController{
             if #available(iOS 16.0, *) {
                 vc.detents = [.custom { context in
-                    return 245
+                    return 330
                 }]
                 
                 vc.delegate = self
@@ -476,7 +479,6 @@ class memberCollectioViewCell : UICollectionViewCell{
     
      lazy var memberLabel : UILabel = {
         let label = UILabel()
-        label.text = "멤버 이름"
         label.textColor = .black
         label.font = DesignSystemFont.Pretendard_SemiBold12.value
         return label

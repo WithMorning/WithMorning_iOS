@@ -292,7 +292,7 @@ class MainViewController: UIViewController, UISheetPresentationControllerDelegat
         DispatchQueue.main.async {
             self.AlarmTableView.reloadData()
         }
-        print(alarmData)
+        
     }
 }
 
