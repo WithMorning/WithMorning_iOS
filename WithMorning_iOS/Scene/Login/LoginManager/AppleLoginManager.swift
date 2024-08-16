@@ -67,6 +67,7 @@ final class AppleLoginManager : NSObject {
         
         authorizationController.delegate = self
         authorizationController.performRequests()
+        
     }
     
 }
@@ -94,25 +95,25 @@ extension AppleLoginManager : ASAuthorizationControllerDelegate {
                 return
             }
             
-            
             if let authorizationCode = appleIDCredential.authorizationCode,
                /*if let authorizationCode = appleIDCredential.identityToken*/
                let codeString = String(data: authorizationCode, encoding: .utf8) {
                 print(#fileID, #function, #line, "- codeString🔥: \(codeString)")
                 
                 let loginRequestTokenData = AppleloginRequest(code: idTokenString)
-//                let loginRequestTokenData = AppleloginRequest(code: idTokenString, authorizationCode: codeString) 코드 두개를 보낼 생각
-
+                
+                //                let loginRequestTokenData = AppleloginRequest(code: idTokenString, authorizationCode: codeString) 코드 두개를 보낼 생각
+                
                 //MARK: - 로그인 요청
                 AF.request(LoginRouter.AppleLogin(data: loginRequestTokenData))
                     .responseDecodable(of: AppleloginResponse.self) { (response: DataResponse<AppleloginResponse, AFError> ) in
                         switch response.result {
+                            
                         case .failure(let error):
                             print(#fileID, #function, #line, "- error: \(error.localizedDescription)")
                         case .success(let data):
                             if let dataResult = data.result {
-//                                print(#fileID, #function, #line, "- accessToken: \(dataResult.accessToken)")
-                                print(#fileID, #function, #line, data)
+                                print(#fileID, #function, #line, "- accessToken: \(dataResult)")
                             }
                         }
                         

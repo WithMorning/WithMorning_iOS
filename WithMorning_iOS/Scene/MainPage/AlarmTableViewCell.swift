@@ -242,7 +242,6 @@ class AlarmTableViewCell : UITableViewCell, UISheetPresentationControllerDelegat
     //MARK: - SetUI
     func setCell(){
         contentView.addSubview(AlarmStackView)
-        
         contentView.layer.cornerRadius = 8
         contentView.frame = contentView.frame.inset(by: UIEdgeInsets(top: 0, left: 0, bottom: 8, right: 0))
         contentView.backgroundColor = .white

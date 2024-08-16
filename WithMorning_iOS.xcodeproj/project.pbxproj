@@ -45,6 +45,8 @@
 		D1B12F2F2C50E7770041288C /* OnBoardingTutorialViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D1B12F2E2C50E7770041288C /* OnBoardingTutorialViewController.swift */; };
 		D1B86A012C6D12710052F528 /* UserStateViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D1B86A002C6D12710052F528 /* UserStateViewController.swift */; };
 		D1B86A032C6D13D20052F528 /* UIcell_Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = D1B86A022C6D13D20052F528 /* UIcell_Extension.swift */; };
+		D1B86A052C6F2EAC0052F528 /* LoginModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = D1B86A042C6F2EAC0052F528 /* LoginModel.swift */; };
+		D1B86A072C6F2EB40052F528 /* LoginRouter.swift in Sources */ = {isa = PBXBuildFile; fileRef = D1B86A062C6F2EB40052F528 /* LoginRouter.swift */; };
 		D1D891EE2C42684B00ED8092 /* FirebaseAnalytics in Frameworks */ = {isa = PBXBuildFile; productRef = D1D891ED2C42684B00ED8092 /* FirebaseAnalytics */; };
 		D1D891F02C42684B00ED8092 /* FirebaseAnalyticsOnDeviceConversion in Frameworks */ = {isa = PBXBuildFile; productRef = D1D891EF2C42684B00ED8092 /* FirebaseAnalyticsOnDeviceConversion */; };
 		D1D891F22C42684B00ED8092 /* FirebaseAnalyticsSwift in Frameworks */ = {isa = PBXBuildFile; productRef = D1D891F12C42684B00ED8092 /* FirebaseAnalyticsSwift */; };
@@ -109,6 +111,8 @@
 		D1B12F2E2C50E7770041288C /* OnBoardingTutorialViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnBoardingTutorialViewController.swift; sourceTree = "<group>"; };
 		D1B86A002C6D12710052F528 /* UserStateViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserStateViewController.swift; sourceTree = "<group>"; };
 		D1B86A022C6D13D20052F528 /* UIcell_Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIcell_Extension.swift; sourceTree = "<group>"; };
+		D1B86A042C6F2EAC0052F528 /* LoginModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginModel.swift; sourceTree = "<group>"; };
+		D1B86A062C6F2EB40052F528 /* LoginRouter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginRouter.swift; sourceTree = "<group>"; };
 		D1DB46E22C4BA10C00BDC3D8 /* OnBoardingRegisterViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnBoardingRegisterViewController.swift; sourceTree = "<group>"; };
 		D1DECB1B2BE54B37009AC667 /* Pretendard-Regular.otf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Pretendard-Regular.otf"; sourceTree = "<group>"; };
 		D1DECB1C2BE54B37009AC667 /* Pretendard-Black.otf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Pretendard-Black.otf"; sourceTree = "<group>"; };
@@ -194,19 +198,21 @@
 		D12D512F2C60BB0000D3F1A9 /* Login */ = {
 			isa = PBXGroup;
 			children = (
-				D12D51362C60BC3400D3F1A9 /* SnsLoginManager */,
-				D12D51372C60BC4700D3F1A9 /* API */,
 				D19E7FA92C4A47C10053ACA8 /* LoginViewController.swift */,
+				D12D51362C60BC3400D3F1A9 /* LoginManager */,
+				D12D51372C60BC4700D3F1A9 /* API */,
 			);
 			path = Login;
 			sourceTree = "<group>";
 		};
-		D12D51362C60BC3400D3F1A9 /* SnsLoginManager */ = {
+		D12D51362C60BC3400D3F1A9 /* LoginManager */ = {
 			isa = PBXGroup;
 			children = (
 				D12D51392C60BC6300D3F1A9 /* AppleLoginManager.swift */,
+				D1B86A042C6F2EAC0052F528 /* LoginModel.swift */,
+				D1B86A062C6F2EB40052F528 /* LoginRouter.swift */,
 			);
-			path = SnsLoginManager;
+			path = LoginManager;
 			sourceTree = "<group>";
 		};
 		D12D51372C60BC4700D3F1A9 /* API */ = {
@@ -511,6 +517,7 @@
 				D16B609B2C65EF190039B99A /* UISlider_Extension.swift in Sources */,
 				D1ABF7942C5239D6008B5084 /* TutorialSecondViewController.swift in Sources */,
 				D19E7FAA2C4A47C10053ACA8 /* LoginViewController.swift in Sources */,
+				D1B86A052C6F2EAC0052F528 /* LoginModel.swift in Sources */,
 				D1B86A012C6D12710052F528 /* UserStateViewController.swift in Sources */,
 				D19589E02C6745C50000B77C /* CoreHaptics_Extension.swift in Sources */,
 				D1773F892BC988AB005C82FA /* UIFont_Extension.swift in Sources */,
@@ -521,6 +528,7 @@
 				D16F5FD12BC65671006640F9 /* Network.swift in Sources */,
 				D1DB46E32C4BA10C00BDC3D8 /* OnBoardingRegisterViewController.swift in Sources */,
 				D12D513A2C60BC6300D3F1A9 /* AppleLoginManager.swift in Sources */,
+				D1B86A072C6F2EB40052F528 /* LoginRouter.swift in Sources */,
 				D16F5FD32BC65679006640F9 /* Constants.swift in Sources */,
 				D14A2D6C2BC8EB810087E0CB /* DesignSystem.swift in Sources */,
 				D12D51332C60BC0900D3F1A9 /* UserRouter.swift in Sources */,

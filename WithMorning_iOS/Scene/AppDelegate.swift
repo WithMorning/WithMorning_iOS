@@ -33,7 +33,7 @@ class AppDelegate:UIResponder, UIApplicationDelegate {
         
         var window: UIWindow?
         window = UIWindow()
-        window?.rootViewController = MainViewController() //루트뷰컨트롤러
+//        window?.rootViewController = MainViewController() //루트뷰컨트롤러
         window?.makeKeyAndVisible()
         
         return true
@@ -75,7 +75,7 @@ extension AppDelegate: MessagingDelegate {
     
     // 파이어베이스 MessagingDelegate 설정
     func messaging(_ messaging: Messaging, didReceiveRegistrationToken fcmToken: String?) {
-      print("Firebase registration token: \(String(describing: fcmToken))")
+//      print("Firebase registration token: \(String(describing: fcmToken))")
 
       let dataDict: [String: String] = ["token": fcmToken ?? ""]
       NotificationCenter.default.post(
