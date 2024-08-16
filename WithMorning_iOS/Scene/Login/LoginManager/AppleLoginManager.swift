@@ -108,12 +108,23 @@ extension AppleLoginManager : ASAuthorizationControllerDelegate {
                 AF.request(LoginRouter.AppleLogin(data: loginRequestTokenData))
                     .responseDecodable(of: AppleloginResponse.self) { (response: DataResponse<AppleloginResponse, AFError> ) in
                         switch response.result {
-                            
                         case .failure(let error):
                             print(#fileID, #function, #line, "- error: \(error.localizedDescription)")
                         case .success(let data):
                             if let dataResult = data.result {
                                 print(#fileID, #function, #line, "- accessToken: \(dataResult)")
+                                
+                                if let httpResponse = response.response {
+                                    if let headerFields = httpResponse.allHeaderFields as? [String: String],
+                                       let url = httpResponse.url {
+                                        // HTTPCookie로 쿠키를 만듭니다.
+                                        let cookies = HTTPCookie.cookies(withResponseHeaderFields: headerFields, for: url)
+                                        
+                                        for cookie in cookies {
+                                            print("쿠키 이름: \(cookie.name), 쿠키 값: \(cookie.value)")
+                                        }
+                                    }
+                                }
                             }
                         }
                         
