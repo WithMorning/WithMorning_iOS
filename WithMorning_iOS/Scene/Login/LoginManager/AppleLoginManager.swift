@@ -80,8 +80,8 @@ extension AppleLoginManager : ASAuthorizationControllerDelegate {
         if let appleIDCredential = authorization.credential as? ASAuthorizationAppleIDCredential {
             print(#fileID, #function, #line, "- 애플 로그인 성공🍎")
             
-            
-            guard let nonce = currentNonce else {
+//            guard let nonce = currentNonce else
+            guard currentNonce != nil else {
                 fatalError(" - Invalid state: A login callback was received, but no login request was sent.")
             }
             

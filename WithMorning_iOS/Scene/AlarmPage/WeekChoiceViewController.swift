@@ -273,7 +273,8 @@ class WeekChoiceViewController : UIViewController, UIScrollViewDelegate {
     }()
 
 
-    
+    //MARK: - Life Cycle
+
     override func viewDidLoad(){
         super.viewDidLoad()
         view.backgroundColor = .white

@@ -123,9 +123,10 @@ class UserStateViewController : UIViewController{
         
         buttonLabel.snp.makeConstraints{
             $0.centerX.equalToSuperview()
-            $0.top.equalTo(DoneButton.snp.top).offset(20)
+            $0.top.equalToSuperview().offset(20)
         }
     }
+    
     
     
 }

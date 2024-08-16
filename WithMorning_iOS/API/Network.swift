@@ -16,7 +16,7 @@ class Network{
     func getMypage(completionHandler: @escaping (Result<MypageResponse, Error>) -> Void) {
         //        AF.request(Router.getmypage, interceptor: CommonLoginManage()) 소셜로그인
         AF.request(Router.getmypage)
-            .validate(statusCode: 200..<1001)
+            .validate(statusCode: 200..<300)
             .responseDecodable(of: Mypage.self) { (response: DataResponse<Mypage, AFError>) in
                 switch response.result {
                 case .failure(let error):
@@ -32,7 +32,7 @@ class Network{
     //MARK: - 메인페이지
     func getMainpage(completionHandler: @escaping (Result<MainpageResponse, Error>) -> Void) {
         AF.request(Router.getmainpage)
-            .validate(statusCode: 200..<1001)
+            .validate(statusCode: 200..<300)
             .responseDecodable(of: Mainpage.self) { (response: DataResponse<Mainpage, AFError>) in
                 switch response.result {
                 case .failure(let error):
@@ -45,36 +45,3 @@ class Network{
             }
     }
 }
-
-//func getMainpage(completionHandler: @escaping (Result<MainpageResponse, Error>) -> Void) {
-//    AF.request(Router.getmainpage)
-//        .validate(statusCode: 200..<1001)
-//        .responseDecodable(of: MainpageResponse.self) { response in
-//            switch response.result {
-//            case .success(let mainpage):
-//                completionHandler(.success(mainpage))
-//            case .failure(let error):
-//                if let data = response.data,
-//                   let str = String(data: data, encoding: .utf8) {
-//                    print("Raw response: \(str)")
-//                }
-//
-//                if let decodingError = error.underlyingError as? DecodingError {
-//                    switch decodingError {
-//                    case .dataCorrupted(let context):
-//                        print("Data corrupted: \(context)")
-//                    case .keyNotFound(let key, let context):
-//                        print("Key '\(key)' not found: \(context.debugDescription)")
-//                    case .typeMismatch(let type, let context):
-//                        print("Type '\(type)' mismatch: \(context.debugDescription)")
-//                    case .valueNotFound(let type, let context):
-//                        print("Value of type '\(type)' not found: \(context.debugDescription)")
-//                    @unknown default:
-//                        print("Unknown decoding error")
-//                    }
-//                }
-//                print("Decoding error: \(error)")
-//                completionHandler(.failure(error))
-//            }
-//        }
-//}

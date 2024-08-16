@@ -108,6 +108,22 @@ class AlarmSoundViewController : UIViewController {
         return view
     }()
     
+    private lazy var DoneButton : UIButton = {
+        let button = UIButton()
+        button.addSubview(buttonLabel)
+        button.backgroundColor = DesignSystemColor.Orange500.value
+        button.addTarget(self, action: #selector(doneclick), for: .touchUpInside)
+        return button
+    }()
+    
+    private lazy var buttonLabel : UILabel = {
+        let label = UILabel()
+        label.text = "완료"
+        label.textColor = .white
+        label.font = DesignSystemFont.Pretendard_Bold16.value
+        return label
+    }()
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         view.backgroundColor = DesignSystemColor.Gray150.value
@@ -116,7 +132,7 @@ class AlarmSoundViewController : UIViewController {
     }
     
     func setUI(){
-        view.addSubviews(MainLabel,popButton,soundView,alarmView)
+        view.addSubviews(MainLabel,popButton,soundView,alarmView,DoneButton)
         
         MainLabel.snp.makeConstraints{
             $0.centerX.equalToSuperview()
@@ -164,6 +180,14 @@ class AlarmSoundViewController : UIViewController {
             $0.leading.trailing.equalToSuperview().inset(16)
             $0.height.equalTo(332)
         }
+        DoneButton.snp.makeConstraints{
+            $0.height.equalTo(92)
+            $0.leading.trailing.bottom.equalToSuperview()
+        }
+        buttonLabel.snp.makeConstraints{
+            $0.centerX.equalToSuperview()
+            $0.top.equalToSuperview().offset(20)
+        }
         
     }
     
@@ -172,7 +196,6 @@ class AlarmSoundViewController : UIViewController {
     }
     
     @objc func sliderValueChanged(_ sender: CustomSlider){
-        
         let roundedValue = roundf(sender.value / 10) * 10
         sender.value = roundedValue
         
@@ -180,9 +203,7 @@ class AlarmSoundViewController : UIViewController {
         
         if value == 0 {
             sliderImage.image = UIImage(named: "Volumeoff")
-            
             volume?(value)
-            
         }else{
             sliderImage.image = UIImage(named: "Volumeon")
         }
@@ -196,6 +217,10 @@ class AlarmSoundViewController : UIViewController {
         }else{
             vibrateImage.tintColor = DesignSystemColor.Gray200.value
         }
+    }
+    
+    @objc func doneclick(){
+        self.dismiss(animated: true)
     }
     
 }

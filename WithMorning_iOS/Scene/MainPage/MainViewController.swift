@@ -275,6 +275,7 @@ class MainViewController: UIViewController, UISheetPresentationControllerDelegat
             switch result {
             case .success(let mainpage):
                 self?.MainpageUpdate(with: mainpage)
+                print(mainpage)
             case .failure(let error):
                 print("뷰컨에서 failure", error)
             }

@@ -47,16 +47,6 @@ enum Router : URLRequestConvertible{
         return Parameters()
     }
     
-    //    func asURLRequest() throws -> URLRequest {
-    //        var url = BaseURL.appending(endPoint)
-    //        url = url.addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed)!
-    //        let urlString = URL(string: url)!
-    //
-    //        var request = URLRequest(url: urlString)
-    //        request.method = method
-    //        request.headers = headers
-    
-    
     func asURLRequest() throws -> URLRequest {
         guard var urlComponents = URLComponents(string: BaseURL) else {
             throw AFError.invalidURL(url: BaseURL)
