@@ -83,6 +83,7 @@ extension AppDelegate: MessagingDelegate {
         object: nil,
         userInfo: dataDict
       )
+        #warning("토큰은 여기에서 처리하세요 ! ")
       // TODO: If necessary send token to application server.
       // Note: This callback is fired at each app startup and whenever a new token is generated.
     }

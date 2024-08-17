@@ -13,13 +13,10 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
     
     func scene(_ scene: UIScene, willConnectTo session: UISceneSession, options connectionOptions: UIScene.ConnectionOptions) {
         guard let windowScene = (scene as? UIWindowScene) else { return }
-//        window = UIWindow(frame: UIScreen.main.bounds)
-//        window?.windowScene = windowScene
-//        let startView = MainViewController()
-//        window?.rootViewController = startView
-//        window?.makeKeyAndVisible()
         
         let window = UIWindow(windowScene: windowScene)
+        
+        
         window.rootViewController = UINavigationController(rootViewController: OnBoardingFirstViewController())
 //        window.rootViewController = UINavigationController(rootViewController: MainViewController())
         self.window = window
@@ -54,7 +51,20 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         // Use this method to save data, release shared resources, and store enough scene-specific state information
         // to restore the scene back to its current state.
     }
-    
-    
 }
 
+enum rootViewController {
+    case login
+    case main
+    case termAgree
+    case onBoarding
+    
+    var vc : UIViewController{
+        switch self{
+        case .login : return LoginViewController()
+        case .main: return MainViewController()
+        case .termAgree: return OnBoardingFirstViewController()
+        case .onBoarding: return OnBoardingTutorialViewController()
+        }
+    }
+}
