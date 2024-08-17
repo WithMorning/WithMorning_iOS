@@ -94,7 +94,8 @@ class LoginViewController: UIViewController{
         self.navigationController?.pushViewController(vc, animated: true)
     }
     @objc private func apple(){
-        AppleLoginManager.shared.startSignInWithAppleFlow()
+//        AppleLoginManager.shared.startSignInWithAppleFlow()
+        print("i love apple;;")
         
     }
     

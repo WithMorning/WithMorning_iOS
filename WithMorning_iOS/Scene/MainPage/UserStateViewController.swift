@@ -66,7 +66,7 @@ class UserStateViewController : UIViewController{
         let button = UIButton()
         button.addSubview(buttonLabel)
         button.backgroundColor = .black
-        //        button.addTarget(self, action: #selector(doneclick), for: .touchUpInside)
+        button.addTarget(self, action: #selector(doneclick), for: .touchUpInside)
         return button
     }()
     
@@ -126,6 +126,12 @@ class UserStateViewController : UIViewController{
             $0.top.equalToSuperview().offset(20)
         }
     }
+    
+//MARK: - @objc func
+    @objc func doneclick(){
+        self.dismiss(animated: true)
+    }
+
     
     
     

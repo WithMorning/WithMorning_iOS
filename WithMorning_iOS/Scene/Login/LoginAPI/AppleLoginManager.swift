@@ -13,6 +13,7 @@ import Alamofire
 
 final class AppleLoginManager : NSObject {
     
+    let registerUserInfo = RegisterUserInfo.shared
     static let shared = AppleLoginManager()
     
     //MARK: - ID토큰이 명시적으로 부여되었는지 확인
@@ -80,7 +81,7 @@ extension AppleLoginManager : ASAuthorizationControllerDelegate {
         if let appleIDCredential = authorization.credential as? ASAuthorizationAppleIDCredential {
             print(#fileID, #function, #line, "- 애플 로그인 성공🍎")
             
-//            guard let nonce = currentNonce else
+            //            guard let nonce = currentNonce else
             guard currentNonce != nil else {
                 fatalError(" - Invalid state: A login callback was received, but no login request was sent.")
             }
@@ -96,7 +97,6 @@ extension AppleLoginManager : ASAuthorizationControllerDelegate {
             }
             
             if let authorizationCode = appleIDCredential.authorizationCode,
-               /*if let authorizationCode = appleIDCredential.identityToken*/
                let codeString = String(data: authorizationCode, encoding: .utf8) {
                 print(#fileID, #function, #line, "- codeString🔥: \(codeString)")
                 
@@ -112,20 +112,22 @@ extension AppleLoginManager : ASAuthorizationControllerDelegate {
                             print(#fileID, #function, #line, "- error: \(error.localizedDescription)")
                         case .success(let data):
                             if let dataResult = data.result {
-                                print(#fileID, #function, #line, "- accessToken: \(dataResult)")
+                                KeyChain.create(key: "accessToken", token: dataResult.accessToken)
                                 
                                 if let httpResponse = response.response {
                                     if let headerFields = httpResponse.allHeaderFields as? [String: String],
                                        let url = httpResponse.url {
-                                        // HTTPCookie로 쿠키를 만듭니다.
                                         let cookies = HTTPCookie.cookies(withResponseHeaderFields: headerFields, for: url)
-                                        
                                         for cookie in cookies {
-                                            print("쿠키 이름: \(cookie.name), 쿠키 값: \(cookie.value)")
+                                            KeyChain.create(key: "refreshToken", token: cookie.value)
                                         }
                                     }
                                 }
                             }
+                            
+                            self.registerUserInfo.loginState = .Login
+                            print("🔥KeyChain에 저장된 accessToken : ", KeyChain.read(key: "accessToken") ?? "")
+                            print("🔥KeyChain에 저장된 refreshToken : ",KeyChain.read(key: "refreshToken") ?? "")
                         }
                         
                     }

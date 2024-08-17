@@ -32,6 +32,7 @@ class Network{
     //MARK: - 메인페이지
     func getMainpage(completionHandler: @escaping (Result<MainpageResponse, Error>) -> Void) {
         AF.request(Router.getmainpage)
+        //        AF.request(Router.getmypage, interceptor: CommonLoginManage()) 소셜로그인
             .validate(statusCode: 200..<300)
             .responseDecodable(of: Mainpage.self) { (response: DataResponse<Mainpage, AFError>) in
                 switch response.result {

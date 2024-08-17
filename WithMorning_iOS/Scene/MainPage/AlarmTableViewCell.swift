@@ -419,9 +419,9 @@ class AlarmTableViewCell : UITableViewCell, UISheetPresentationControllerDelegat
         return cell
     }
     
-    //셀 크가 = 이미지 + 라벨
+    //셀 크기 = 이미지 + 라벨
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
-        return CGSize(width: 62, height: 87)
+        return CGSize(width: 62, height: 84.5)
     }
     
     //셀 중앙정렬
@@ -435,15 +435,18 @@ class AlarmTableViewCell : UITableViewCell, UISheetPresentationControllerDelegat
     }
     
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+        
         guard let parentViewController = self.parentVC else {
             return
         }
-        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "memberCollectioViewCell", for: indexPath) as! memberCollectioViewCell
         
         let vc = UserStateViewController()
         vc.modalPresentationStyle = .formSheet
         parentViewController.present(vc, animated: true)
         
+        vc.nicknameLabel.text = userData[indexPath.item].nickname
+
+        print(userData[indexPath.item])
         if let vc = vc.sheetPresentationController{
             if #available(iOS 16.0, *) {
                 vc.detents = [.custom { context in
@@ -459,8 +462,6 @@ class AlarmTableViewCell : UITableViewCell, UISheetPresentationControllerDelegat
         
         print(indexPath.section,indexPath.row,indexPath.item)
     }
-    
-    
     
 }
 

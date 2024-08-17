@@ -45,13 +45,13 @@ struct MainpageResponse: Codable {
 struct GroupList: Codable {
     let groupID: Int
     let name, wakeupTime: String
-    let wakeUpDayOfWeekList: [String]
+    let dayOfWeekList: [String]
     let userList: [UserList]?
     let memo: String
 
     enum CodingKeys: String, CodingKey {
         case groupID = "groupId"
-        case name, wakeupTime, wakeUpDayOfWeekList, userList, memo
+        case name, wakeupTime, dayOfWeekList, userList, memo
     }
 }
 

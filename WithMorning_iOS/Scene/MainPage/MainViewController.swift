@@ -110,14 +110,6 @@ class MainViewController: UIViewController, UISheetPresentationControllerDelegat
         return tableView
     }()
     
-    //리프레쉬컨트롤
-    //    private lazy var tableViewRefresh : UIRefreshControl = {
-    //        let refresh = UIRefreshControl()
-    //        refresh.endRefreshing()
-    //        refresh.addTarget(self, action: #selector(refreshControl), for: .valueChanged)
-    //        return refresh
-    //    }()
-    
     //MARK: - LifeCycle
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -218,7 +210,6 @@ class MainViewController: UIViewController, UISheetPresentationControllerDelegat
     }
     
     //MARK: - objc func
-    
     @objc func clickedprofile(){ //프로필버튼
         let vc = MyPageViewController()
         self.navigationController?.pushViewController(vc, animated: true)
@@ -328,7 +319,7 @@ extension MainViewController : UITableViewDelegate, UITableViewDataSource{
             let days = ["mon", "tue", "wed", "thu", "fri", "sat", "sun"]
             
             for (index, dayLabel) in dayLabels.enumerated() {
-                if alarm.wakeUpDayOfWeekList.contains(days[index]) {
+                if alarm.dayOfWeekList.contains(days[index]) {
                     dayLabel.backgroundColor = DesignSystemColor.Orange500.value
                     dayLabel.textColor = .white
                 } else {
