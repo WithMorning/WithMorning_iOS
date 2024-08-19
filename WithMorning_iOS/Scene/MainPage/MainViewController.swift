@@ -307,6 +307,8 @@ extension MainViewController : UITableViewDelegate, UITableViewDataSource{
         cell.topViewLabel.text = alarm.name
         cell.memoLabel.text = alarm.memo
         cell.ConfigureMember(alarm.userList ?? [])
+        cell.timeLabel.text = alarm.wakeupTime
+        cell.groupID = alarm.groupID
         
         // 토글의 상태를 데이터 모델로부터 가져와 설정
         cell.toggleButton.isOn = isTurn

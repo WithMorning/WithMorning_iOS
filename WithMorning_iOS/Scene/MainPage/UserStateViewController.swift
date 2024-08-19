@@ -44,7 +44,7 @@ class UserStateViewController : UIViewController{
         button.setTitleColor(.white, for: .normal)
         button.layer.cornerRadius = 8
         button.setImage(UIImage(named: "phone"), for: .normal)
-        //        button.addTarget(self, action: #selector(clickedcode), for: .touchUpInside)
+        button.addTarget(self, action: #selector(callclick), for: .touchUpInside)
         return button
     }()
     
@@ -57,7 +57,7 @@ class UserStateViewController : UIViewController{
         button.setTitleColor(.white, for: .normal)
         button.layer.cornerRadius = 8
         button.setImage(UIImage(named: "pick"), for: .normal)
-        //        button.addTarget(self, action: #selector(clickedcode), for: .touchUpInside)
+        button.addTarget(self, action: #selector(pickup), for: .touchUpInside)
         return button
     }()
     
@@ -127,11 +127,21 @@ class UserStateViewController : UIViewController{
         }
     }
     
-//MARK: - @objc func
+    var userphoneNum : String = ""
+    
+    //MARK: - @objc func
+    @objc func callclick(){
+        print(userphoneNum)
+    }
+    
+    @objc func pickup(){
+        print(nicknameLabel.text ?? "","를 콕 찔찔러 깨움")
+    }
+    
     @objc func doneclick(){
         self.dismiss(animated: true)
     }
-
+    
     
     
     

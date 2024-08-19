@@ -9,6 +9,7 @@ import UIKit
 import SnapKit
 import Then
 import Alamofire
+import Kingfisher
 
 class MyPageViewController : UIViewController, UIScrollViewDelegate {
     

@@ -25,7 +25,6 @@ class AlarmTableViewCell : UITableViewCell, UISheetPresentationControllerDelegat
     }()
     
     //MARK: - 윗부분
-    
     lazy var topView : UIView = {
         let view = UIView()
         view.addSubviews(topViewLabel,toggleButton,settingButton,timeLabel,noonLabel,WeekStackView)
@@ -55,14 +54,14 @@ class AlarmTableViewCell : UITableViewCell, UISheetPresentationControllerDelegat
         return button
     }()
     
-    private lazy var timeLabel : UILabel = {
+     lazy var timeLabel : UILabel = {
         let label = UILabel()
         label.text = "07:30"
         label.font = DesignSystemFont.Pretendard_Bold30.value
         return label
     }()
     
-    private lazy var noonLabel : UILabel = {
+     lazy var noonLabel : UILabel = {
         let label = UILabel()
         label.text = "AM"
         label.font = DesignSystemFont.Pretendard_Bold18.value
@@ -222,8 +221,6 @@ class AlarmTableViewCell : UITableViewCell, UISheetPresentationControllerDelegat
         label.textAlignment = .center
         return label
     }()
-    //MARK: - DataSET
-    var memberCount : Int = 0
     
     //MARK: - LifeCycle
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
@@ -349,22 +346,24 @@ class AlarmTableViewCell : UITableViewCell, UISheetPresentationControllerDelegat
             $0.center.equalTo(memoView)
         }
     }
-//MARK: - API 통신
-
+    
+    //MARK: - 유저API 통신
     var userData : [UserList] = []
+    var memberCount : Int = 0
     
     func ConfigureMember(_ userList: [UserList]) {
         self.memberCount = userList.count
         userData = userList
         self.memberCollectionView.reloadData()
-
     }
+    
+    //MARK: - 그룹API 통신
+    var groupID : Int = 0
     
     
     //MARK: - objc func
     @objc func clicktoggle(sender : UISwitch){
         toggleclicked()
-        
     }
     
     @objc func clickSetting(){
@@ -375,6 +374,7 @@ class AlarmTableViewCell : UITableViewCell, UISheetPresentationControllerDelegat
         let vc = CellMenuViewController()
         vc.modalPresentationStyle = .formSheet
         parentViewController.present(vc, animated: true)
+        print("groupID : ",groupID)
         
         if let vc = vc.sheetPresentationController{
             if #available(iOS 16.0, *) {
@@ -401,13 +401,12 @@ class AlarmTableViewCell : UITableViewCell, UISheetPresentationControllerDelegat
     }
     //MARK: - collectionView delegate func
     
-    //멤버 숫자
+    //그룹내의 멤버 숫자
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        
         return memberCount
     }
     
-    //셀 재사용
+    //그룹내의 셀 재사용
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "memberCollectioViewCell", for: indexPath) as! memberCollectioViewCell
@@ -419,12 +418,12 @@ class AlarmTableViewCell : UITableViewCell, UISheetPresentationControllerDelegat
         return cell
     }
     
-    //셀 크기 = 이미지 + 라벨
+    //그룹내의 셀 크기 = 이미지 + 라벨
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
         return CGSize(width: 62, height: 84.5)
     }
     
-    //셀 중앙정렬
+    //그룹내의 셀 중앙정렬
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, insetForSectionAt section: Int) -> UIEdgeInsets {
         let totalCellWidth = 62 * memberCount
         let totalSpacingWidth = 8 * (memberCount - 1)
@@ -434,6 +433,7 @@ class AlarmTableViewCell : UITableViewCell, UISheetPresentationControllerDelegat
         return UIEdgeInsets(top: 0, left: leftInset, bottom: 0, right: rightInset)
     }
     
+    //그룹내의 셀 클릭시 이벤트
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         
         guard let parentViewController = self.parentVC else {
@@ -445,29 +445,27 @@ class AlarmTableViewCell : UITableViewCell, UISheetPresentationControllerDelegat
         parentViewController.present(vc, animated: true)
         
         vc.nicknameLabel.text = userData[indexPath.item].nickname
-
+        vc.userphoneNum = userData[indexPath.item].phone
+        
         print(userData[indexPath.item])
+        
         if let vc = vc.sheetPresentationController{
             if #available(iOS 16.0, *) {
                 vc.detents = [.custom { context in
                     return 330
                 }]
-                
                 vc.delegate = self
                 vc.prefersGrabberVisible = false
                 vc.preferredCornerRadius = 16
             }
             
         }
-        
-        print(indexPath.section,indexPath.row,indexPath.item)
     }
     
 }
 
 //MARK: - memberCollectionViewCell
 class memberCollectioViewCell : UICollectionViewCell{
-    
      lazy var memberImageView : UIImageView = {
         let view = UIImageView()
         view.backgroundColor = DesignSystemColor.Orange500.value

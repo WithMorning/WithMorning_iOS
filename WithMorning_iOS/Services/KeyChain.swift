@@ -9,9 +9,11 @@ import Foundation
 import Security
 
 
-#warning("로그인 시, 토큰 저장 부분 (UserDefaults.standard.set -> KeyChain.create 변경)")
+    #warning("로그인 시, 토큰 저장 부분 (UserDefaults.standard.set -> KeyChain.create 변경)")
+
 class KeyChain{
-    // Create
+    
+    //MARK: - create
     class func create(key: String, token: String) {
         let query: NSDictionary = [
             kSecClass: kSecClassGenericPassword,
@@ -23,7 +25,7 @@ class KeyChain{
         assert(status == noErr,"토큰 저장 실패")
     }
     
-    // Read
+    //MARK: - read
     class func read(key: String) -> String? {
         let query: NSDictionary = [
             kSecClass: kSecClassGenericPassword,
@@ -46,8 +48,9 @@ class KeyChain{
         }
     }
     
-#warning("2) 로그아웃 시, 토큰 삭제 부분 (UserDefaults.standard.removeObject -> KeyChain.delete 변경)")
-    // Delete
+    #warning("2) 로그아웃 시, 토큰 삭제 부분 (UserDefaults.standard.removeObject -> KeyChain.delete 변경)")
+    
+    //MARK: - delete
     class func delete(key: String) {
         let query: NSDictionary = [
             kSecClass: kSecClassGenericPassword,

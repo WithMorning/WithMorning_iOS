@@ -14,14 +14,14 @@ let userId = 1
 
 enum Router : URLRequestConvertible{
     
-    case getmypage                                      //모다라트 리스트 조회
+    case getmypage                                     
     case getmainpage
     
     // url가르기
     var endPoint: String {
         switch self {
-        case .getmypage: return "/mypage"
-        case .getmainpage: return "/main"
+        case .getmypage: return "/user/mypage"
+        case .getmainpage: return "/home"
         }
     }
     

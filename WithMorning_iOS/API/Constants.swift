@@ -10,7 +10,7 @@ import Alamofire
 
 // MARK: - Mypage
 struct Mypage: Codable {
-    let isSuccess: Bool?
+    let isSuccess: Bool
     let code: Int
     let message: String
     let result: MypageResponse?
@@ -18,13 +18,13 @@ struct Mypage: Codable {
 
 struct MypageResponse: Codable {
     let userID: Int
-    let imageURL, nickname: String
-    let bedtime: Int?
+    let imageURL, nickname, bedtime: String
+    let isAllowBedTimeAlarm: Bool
     let dayOfWeekList: [String]
-
+    
     enum CodingKeys: String, CodingKey {
         case userID = "userId"
-        case imageURL, nickname, bedtime, dayOfWeekList
+        case imageURL, nickname, bedtime, isAllowBedTimeAlarm, dayOfWeekList
     }
 }
 
@@ -48,7 +48,7 @@ struct GroupList: Codable {
     let dayOfWeekList: [String]
     let userList: [UserList]?
     let memo: String
-
+    
     enum CodingKeys: String, CodingKey {
         case groupID = "groupId"
         case name, wakeupTime, dayOfWeekList, userList, memo
@@ -60,7 +60,7 @@ struct UserList: Codable {
     let imageURL, nickname: String
     let isWakeup, isDisturbBanMode: Bool
     let phone: String
-
+    
     enum CodingKeys: String, CodingKey {
         case userID = "userId"
         case imageURL, nickname, isWakeup, isDisturbBanMode, phone
