@@ -14,7 +14,7 @@ class MakeAlarmViewController : UIViewController, UIScrollViewDelegate, UISheetP
     
     
     //MARK: - 네비게이션 바
-    private lazy var MainLabel : UILabel = {
+    private lazy var mainLabel : UILabel = {
         let label = UILabel()
         label.text = "알람 생성"
         label.tintColor = DesignSystemColor.Black.value
@@ -42,7 +42,7 @@ class MakeAlarmViewController : UIViewController, UIScrollViewDelegate, UISheetP
     
     private lazy var contentView : UIView = {
         let view = UIView()
-        view.addSubviews(timerView,groupView,memoView)
+        view.addSubviews(timerView,groupView,memoView,notiLabel)
         return view
     }()
     
@@ -246,14 +246,14 @@ class MakeAlarmViewController : UIViewController, UIScrollViewDelegate, UISheetP
         groupTextfield.delegate = self
         memoTextView.delegate = self
         
-        view.addSubviews(MainLabel,popButton,alarmScrollVeiw,notiLabel,saveButton)
+        view.addSubviews(mainLabel,popButton,alarmScrollVeiw,saveButton)
         
-        MainLabel.snp.makeConstraints{
+        mainLabel.snp.makeConstraints{
             $0.centerX.equalToSuperview()
             $0.top.equalTo(view.safeAreaLayoutGuide).offset(20)
         }
         popButton.snp.makeConstraints{
-            $0.centerY.equalTo(MainLabel)
+            $0.centerY.equalTo(mainLabel)
             $0.leading.equalToSuperview().offset(16)
             $0.height.width.equalTo(24)
         }
@@ -263,7 +263,7 @@ class MakeAlarmViewController : UIViewController, UIScrollViewDelegate, UISheetP
         }
         
         alarmScrollVeiw.snp.makeConstraints{
-            $0.top.equalTo(MainLabel.snp.bottom).offset(21)
+            $0.top.equalTo(mainLabel.snp.bottom).offset(21)
             $0.leading.trailing.equalToSuperview().inset(16)
             $0.bottom.equalTo(saveButton.snp.top)
         }
@@ -331,6 +331,7 @@ class MakeAlarmViewController : UIViewController, UIScrollViewDelegate, UISheetP
         memoPlaceholder.snp.makeConstraints{
             $0.leading.top.equalToSuperview().offset(16)
         }
+        
         notiLabel.snp.makeConstraints{
             $0.centerX.equalToSuperview()
             $0.top.equalTo(memoView.snp.bottom).offset(18)
@@ -461,24 +462,23 @@ extension MakeAlarmViewController : UITextFieldDelegate {
     
     @objc func keyboardWillShow(notification: NSNotification) {
         if let keyboardSize = (notification.userInfo?[UIResponder.keyboardFrameEndUserInfoKey] as? NSValue)?.cgRectValue {
-            
-            let notiLabelBottom = notiLabel.frame.origin.y + notiLabel.frame.height
-            let keyboardTop = self.view.frame.height - keyboardSize.height
-            let offset = (notiLabelBottom - keyboardTop) + 10
-            
-            if offset > 0 && self.view.frame.origin.y == 0 {
-                self.view.frame.origin.y -= offset
+            let keyboardFrame = view.convert(keyboardSize, from: nil)
+            let notiLabelFrame = view.convert(notiLabel.frame, from: notiLabel.superview)
+            if notiLabelFrame.maxY > keyboardFrame.minY {
+                let offset = notiLabelFrame.maxY - keyboardFrame.minY + 10
+                self.alarmScrollVeiw.contentOffset.y += offset
                 self.saveButton.isHidden = true
+
+                
             }
         }
     }
     
     @objc func keyboardWillHide(notification: NSNotification) {
         
-        if self.view.frame.origin.y != 0 {
-            self.view.frame.origin.y = 0
-            self.saveButton.isHidden = false
-        }
+        self.alarmScrollVeiw.contentOffset.y = .zero
+        self.saveButton.isHidden = false
+        
     }
 }
 //MARK: - pickerView custom

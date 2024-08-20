@@ -70,6 +70,7 @@
 		D1E672C42BC4FD3500A32790 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = D1E672C32BC4FD3500A32790 /* Assets.xcassets */; };
 		D1E672C72BC4FD3500A32790 /* Base in Resources */ = {isa = PBXBuildFile; fileRef = D1E672C62BC4FD3500A32790 /* Base */; };
 		D1F71B1A2C50AE2C0070A8AA /* OnBoardingProfileViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D1F71B192C50AE2C0070A8AA /* OnBoardingProfileViewController.swift */; };
+		D1FC698D2C74EA69006B93C8 /* MyPageWebViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D1FC698C2C74EA69006B93C8 /* MyPageWebViewController.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -134,6 +135,7 @@
 		D1E672C62BC4FD3500A32790 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		D1E672C82BC4FD3500A32790 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		D1F71B192C50AE2C0070A8AA /* OnBoardingProfileViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnBoardingProfileViewController.swift; sourceTree = "<group>"; };
+		D1FC698C2C74EA69006B93C8 /* MyPageWebViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyPageWebViewController.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -270,6 +272,7 @@
 				D146706A2BEA8FF9007B7132 /* MyPageViewController.swift */,
 				D109BC8B2C43B23A005E075F /* SleepTimeViewController.swift */,
 				D1303A002C451B3F0071267A /* EditprofileViewController.swift */,
+				D1FC698C2C74EA69006B93C8 /* MyPageWebViewController.swift */,
 			);
 			path = MyPage;
 			sourceTree = "<group>";
@@ -542,6 +545,7 @@
 				D12D51352C60BC1500D3F1A9 /* UserNetwork.swift in Sources */,
 				D12FF2532C2FCB2F00B22DB4 /* CodeBtnViewController.swift in Sources */,
 				D16F5FD12BC65671006640F9 /* Network.swift in Sources */,
+				D1FC698D2C74EA69006B93C8 /* MyPageWebViewController.swift in Sources */,
 				D1DB46E32C4BA10C00BDC3D8 /* OnBoardingRegisterViewController.swift in Sources */,
 				D12D513A2C60BC6300D3F1A9 /* AppleLoginManager.swift in Sources */,
 				D1B86A072C6F2EB40052F528 /* LoginRouter.swift in Sources */,
