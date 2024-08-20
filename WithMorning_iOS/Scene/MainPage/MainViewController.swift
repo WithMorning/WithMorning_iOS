@@ -328,10 +328,6 @@ extension MainViewController : UITableViewDelegate, UITableViewDataSource{
                     dayLabel.textColor = DesignSystemColor.Gray300.value
                 }
             }
-        cell.moreclicked = {
-            
-        }
-        
         
         // togglebutton on,off closure
         cell.toggleclicked = {

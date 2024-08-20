@@ -174,7 +174,7 @@ class AlarmTableViewCell : UITableViewCell, UISheetPresentationControllerDelegat
     //MARK: - 아랫 부분
     lazy var bottomView : UIView = {
         let view = UIView()
-        view.addSubviews(borderLine,bottomViewLabel,memberCollectionView,memoView,moreButton,memoLabel)
+        view.addSubviews(borderLine,bottomViewLabel,memberCollectionView,memoView)
         view.isHidden = true
         return view
     }()
@@ -209,6 +209,7 @@ class AlarmTableViewCell : UITableViewCell, UISheetPresentationControllerDelegat
     
     private lazy var memoView : UIView = {
         let view = UIView()
+        view.addSubviews(memoLabel,moreButton)
         view.backgroundColor = DesignSystemColor.Gray100.value
         view.layer.cornerRadius = 4
         return view
@@ -352,28 +353,28 @@ class AlarmTableViewCell : UITableViewCell, UISheetPresentationControllerDelegat
         
         memoView.snp.makeConstraints{
             $0.top.equalTo(memberCollectionView.snp.bottom).offset(12)
-            $0.height.equalTo(100)
+            $0.height.equalTo(49)
             $0.leading.trailing.bottom.equalToSuperview().inset(16)
         }
         memoLabel.snp.makeConstraints{
-            $0.edges.equalTo(memoView).inset(UIEdgeInsets(top: 16, left: 16, bottom: 16, right: 16))
-            $0.center.equalTo(memoView)
+            $0.edges.equalToSuperview().inset(UIEdgeInsets(top: 16, left: 16, bottom: 16, right: 16))
+            $0.center.equalToSuperview()
         }
         moreButton.snp.makeConstraints{
-            $0.centerY.equalTo(memoView)
+            $0.centerY.equalToSuperview()
             $0.trailing.equalTo(memoLabel.snp.trailing).offset(10)
         }
     }
     
     //MARK: - 더보기 버튼 관련 함수
-
-
     private var memoExtended : Bool = false
     
     @objc func MemoExpansion() {
-        print("더보기 클릭")
-        memoLabel.numberOfLines = memoExtended ? 0 : 3
-        invalidateIntrinsicContentSize()
+        if memoExtended == false{
+            memoView.frame.size.height = 83
+        }else{
+            memoView.bounds.size.height = 49
+        }
         
     }
 
