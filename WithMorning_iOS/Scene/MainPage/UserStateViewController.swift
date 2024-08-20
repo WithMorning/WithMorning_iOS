@@ -127,15 +127,23 @@ class UserStateViewController : UIViewController{
         }
     }
     
-    var userphoneNum : String = ""
+    var userphoneNum: String = ""
     
     //MARK: - @objc func
-    @objc func callclick(){
+    @objc func callclick() {
         print(userphoneNum)
+        self.dismiss(animated: true, completion: {
+            if let phoneURL = URL(string: "tel://\(self.userphoneNum)"), UIApplication.shared.canOpenURL(phoneURL) {
+                UIApplication.shared.open(phoneURL, options: [:], completionHandler: nil)
+            }
+        })
     }
+
+    
     
     @objc func pickup(){
         print(nicknameLabel.text ?? "","를 콕 찔찔러 깨움")
+        showToast(message:"번 클릭" )
     }
     
     @objc func doneclick(){

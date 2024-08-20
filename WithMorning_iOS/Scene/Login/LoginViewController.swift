@@ -13,6 +13,16 @@ import Alamofire
 
 class LoginViewController: UIViewController{
     
+    
+    private lazy var titleLabel1 : UILabel = {
+        let label = UILabel()
+        label.text = ""
+        label.numberOfLines = 2
+        return label
+    }()
+    
+
+
     //MARK: - properties
     private lazy var popButton : UIButton = {
         let button = UIButton()
@@ -94,8 +104,10 @@ class LoginViewController: UIViewController{
         self.navigationController?.pushViewController(vc, animated: true)
     }
     @objc private func apple(){
-//        AppleLoginManager.shared.startSignInWithAppleFlow()
-        print("i love apple;;")
+        AppleLoginManager.shared.startSignInWithAppleFlow()
+//        print("i love apple;;")
+//        let vc = OnBoardingProfileViewController()
+//        self.navigationController?.pushViewController(vc, animated: true)
         
     }
     

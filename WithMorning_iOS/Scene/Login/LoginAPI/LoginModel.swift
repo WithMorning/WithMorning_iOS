@@ -28,6 +28,7 @@ struct AppleloginResponse: Codable {
 
 struct AppleLoginData: Codable {
     let accessToken: String
+    let refreshToken: String
 }
 
 struct AppleloginFailResponse: Codable {

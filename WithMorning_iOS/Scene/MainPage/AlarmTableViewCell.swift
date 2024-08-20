@@ -16,6 +16,7 @@ class AlarmTableViewCell : UITableViewCell, UISheetPresentationControllerDelegat
     
     //MARK: - closure
     var toggleclicked : ( () -> Void ) = {}
+    var moreclicked : ( () -> Void) = {}
     
     lazy var AlarmStackView : UIStackView = {
         let view = UIStackView()
@@ -173,7 +174,7 @@ class AlarmTableViewCell : UITableViewCell, UISheetPresentationControllerDelegat
     //MARK: - 아랫 부분
     lazy var bottomView : UIView = {
         let view = UIView()
-        view.addSubviews(borderLine,bottomViewLabel,memberCollectionView,memoView,memoLabel)
+        view.addSubviews(borderLine,bottomViewLabel,memberCollectionView,memoView,moreButton,memoLabel)
         view.isHidden = true
         return view
     }()
@@ -215,11 +216,22 @@ class AlarmTableViewCell : UITableViewCell, UISheetPresentationControllerDelegat
     
     lazy var memoLabel : UILabel = {
         let label = UILabel()
-        //        label.text = "아침에 하고 싶은 말 또는 패널티를 정해주세요."
         label.textColor = DesignSystemColor.Gray400.value
         label.font = DesignSystemFont.Pretendard_Medium12.value
-        label.textAlignment = .center
+        label.textAlignment = .left
+        label.lineBreakMode = .byWordWrapping
+        label.numberOfLines = 3
         return label
+    }()
+    
+    private lazy var moreButton : UIButton = {
+        let button = UIButton()
+        button.setTitle("더보기", for: .normal)
+        button.titleLabel?.font = DesignSystemFont.Pretendard_SemiBold12.value
+        button.setTitleColor(DesignSystemColor.Gray600.value, for: .normal)
+        button.addTarget(self, action: #selector(MemoExpansion), for: .touchUpInside)
+        button.isHidden = false
+        return button
     }()
     
     //MARK: - LifeCycle
@@ -339,13 +351,34 @@ class AlarmTableViewCell : UITableViewCell, UISheetPresentationControllerDelegat
         }
         
         memoView.snp.makeConstraints{
-            $0.height.equalTo(49)
+            $0.top.equalTo(memberCollectionView.snp.bottom).offset(12)
+            $0.height.equalTo(100)
             $0.leading.trailing.bottom.equalToSuperview().inset(16)
         }
         memoLabel.snp.makeConstraints{
+            $0.edges.equalTo(memoView).inset(UIEdgeInsets(top: 16, left: 16, bottom: 16, right: 16))
             $0.center.equalTo(memoView)
         }
+        moreButton.snp.makeConstraints{
+            $0.centerY.equalTo(memoView)
+            $0.trailing.equalTo(memoLabel.snp.trailing).offset(10)
+        }
     }
+    
+    //MARK: - 더보기 버튼 관련 함수
+
+
+    private var memoExtended : Bool = false
+    
+    @objc func MemoExpansion() {
+        print("더보기 클릭")
+        memoLabel.numberOfLines = memoExtended ? 0 : 3
+        invalidateIntrinsicContentSize()
+        
+    }
+
+    
+
     
     //MARK: - 유저API 통신
     var userData : [UserList] = []
@@ -356,6 +389,7 @@ class AlarmTableViewCell : UITableViewCell, UISheetPresentationControllerDelegat
         userData = userList
         self.memberCollectionView.reloadData()
     }
+    
     
     //MARK: - 그룹API 통신
     var groupID : Int = 0
@@ -465,6 +499,7 @@ class AlarmTableViewCell : UITableViewCell, UISheetPresentationControllerDelegat
 }
 
 //MARK: - memberCollectionViewCell
+
 class memberCollectioViewCell : UICollectionViewCell{
      lazy var memberImageView : UIImageView = {
         let view = UIImageView()

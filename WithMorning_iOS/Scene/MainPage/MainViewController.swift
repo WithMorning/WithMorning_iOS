@@ -189,9 +189,8 @@ class MainViewController: UIViewController, UISheetPresentationControllerDelegat
         AlarmTableView.backgroundColor = DesignSystemColor.Gray150.value
         AlarmTableView.separatorStyle = .none
         
-        AlarmTableView.rowHeight = 108 //cell높이
+//        AlarmTableView.rowHeight = 108 //cell높이
         AlarmTableView.estimatedRowHeight = UITableView.automaticDimension
-        //        AlarmTableView.refreshControl = tableViewRefresh
         
         headerView.layoutIfNeeded()
         
@@ -329,6 +328,10 @@ extension MainViewController : UITableViewDelegate, UITableViewDataSource{
                     dayLabel.textColor = DesignSystemColor.Gray300.value
                 }
             }
+        cell.moreclicked = {
+            
+        }
+        
         
         // togglebutton on,off closure
         cell.toggleclicked = {
@@ -356,12 +359,14 @@ extension MainViewController : UITableViewDelegate, UITableViewDataSource{
         
         let baseHeight: CGFloat = 132
         let extraHeight: CGFloat = 217
+//        let memoHeight : CGFloat = 34
         
 //        if alarmData[indexPath.row].isTurn == true {
 //            return baseHeight + extraHeight
 //        } else {
 //            return baseHeight
 //        }
+        
         return baseHeight + extraHeight
         
     }
