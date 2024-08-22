@@ -19,7 +19,9 @@ class AppDelegate:UIResponder, UIApplicationDelegate {
         FirebaseApp.configure()
         
         // 앱 실행시 사용자에게 알림 허용 권한을 받음
-        let authOptions: UNAuthorizationOptions = [.alert, .badge, .sound] // 필요한 알림 권한을 설정
+        UNUserNotificationCenter.current().delegate = self
+        
+        let authOptions: UNAuthorizationOptions = [.alert, .badge, .sound]
         UNUserNotificationCenter.current().requestAuthorization(
             options: authOptions,
             completionHandler: { _, _ in }
@@ -52,7 +54,8 @@ class AppDelegate:UIResponder, UIApplicationDelegate {
         // Use this method to release any resources that were specific to the discarded scenes, as they will not return.
     }
     
-    // Foreground(앱 켜진 상태)에서도 알림 오는 설정
+    //MARK: - Foreground(앱 켜진 상태)에서도 알림 오는 설정
+    #warning("앱이 켜져있는 상태에서도 어떻게 알람이 와야할지")
     func userNotificationCenter(_ center: UNUserNotificationCenter, willPresent notification: UNNotification, withCompletionHandler completionHandler: @escaping (UNNotificationPresentationOptions) -> Void) {
             completionHandler([.banner, .list, .sound])
         }

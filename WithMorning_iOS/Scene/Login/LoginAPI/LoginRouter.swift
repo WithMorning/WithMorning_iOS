@@ -13,20 +13,20 @@ private let BaseURL = "https://withmorning.site"
 enum LoginRouter : URLRequestConvertible{
     
     case AppleLogin(data : AppleloginRequest)
-//    case getNewToken
+    case getNewAccessToken(refreshToken: String)
     
     // url가르기
     var endPoint: String {
         switch self {
         case .AppleLogin : return "/login/oauth/apple"
-//        case .getNewToken : return "/token"
-            
+        case .getNewAccessToken(refreshToken: let refreshToken): return "/accesstoken"
         }
     }
     
     //헤더
     var headers: HTTPHeaders {
         switch self {
+        case.getNewAccessToken(let refreshToken): return HTTPHeaders(["accept" : "application/json", "Content-Type" : "application/json","RefreshToken" : refreshToken])
         default: return HTTPHeaders(["accept" : "application/json", "Content-Type" : "application/json"])
         }
     }
@@ -59,11 +59,9 @@ enum LoginRouter : URLRequestConvertible{
         
         switch self {
         case .AppleLogin(let data):
-            print(#fileID, #function, #line, "- data: \(data)")
             request = try JSONParameterEncoder().encode(data, into: request)
-            
-//        case .getNewToken:
-//            request = try JSONParameterEncoder().encode(into: request)
+        case .getNewAccessToken(refreshToken: let refreshToken):
+            request = try URLEncoding.queryString.encode(request, with: parameters)
         }
         //request = try URLEncoding.queryString.encode(request, with: parameters)
         //이 인코딩 방식은 GET 요청 또는 URL 쿼리 매개변수를 전송할 때 사용

@@ -112,14 +112,14 @@ extension AppleLoginManager : ASAuthorizationControllerDelegate {
                             print(#fileID, #function, #line, "- error: \(error.localizedDescription)")
                         case .success(let data):
                             if let dataResult = data.result {
-                                #warning("UserDeault에 userID 저장 후 userID로 토큰 저장")
+//                                #warning("UserDeault에 userID 저장 후 userID로 토큰 저장")
                                 KeyChain.create(key: "accessToken", token: dataResult.accessToken)
                                 KeyChain.create(key: "refreshToken", token: dataResult.refreshToken)
                             }
                             
                             self.registerUserInfo.loginState = .Login
-                            print("🔥KeyChain에 저장된 accessToken : ", KeyChain.read(key: "accessToken") ?? "")
-                            print("🔥KeyChain에 저장된 refreshToken : ",KeyChain.read(key: "refreshToken") ?? "")
+//                            print("🔥KeyChain에 저장된 accessToken : ", KeyChain.read(key: "accessToken") ?? "")
+//                            print("🔥KeyChain에 저장된 refreshToken : ",KeyChain.read(key: "refreshToken") ?? "")
                         }
                         
                     }

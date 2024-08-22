@@ -10,9 +10,9 @@ import SnapKit
 import Then
 import Alamofire
 
-class EditprofileViewController : UIViewController {
+class EditprofileViewController : UIViewController,UIImagePickerControllerDelegate & UINavigationControllerDelegate {
     
-    //MARK: - properties
+//MARK: - properties
     
     private lazy var mainLabel : UILabel = {
         let label = UILabel()
@@ -39,9 +39,13 @@ class EditprofileViewController : UIViewController {
         return label
     }()
     
+    let imgPicker = UIImagePickerController()
+    
     private lazy var profileImage : UIImageView = {
         let image = UIImageView()
         image.image = UIImage(named: "profile")
+        image.clipsToBounds = true
+        image.layer.cornerRadius = 75
         return image
     }()
     
@@ -97,7 +101,7 @@ class EditprofileViewController : UIViewController {
     
     func setUI(){
         nicknameTextfield.delegate = self
-        
+        imgPicker.delegate = self
         view.addSubviews(mainLabel,popButton,profileLabel,profileImage,galleryButton,nicknameTextfield,doneButton)
         
         mainLabel.snp.makeConstraints{
@@ -150,17 +154,38 @@ class EditprofileViewController : UIViewController {
     @objc func galleryclick(){
         let alert = UIAlertController(title:nil, message: nil, preferredStyle: .actionSheet)
         
-        let okAction = UIAlertAction(title: "앨범에서 선택", style: .default, handler: nil)
-        
-        let removeAction = UIAlertAction(title: "프로필 사진 삭제", style: .destructive, handler: nil)
+        let galleyAction = UIAlertAction(title: "앨범에서 선택", style: .default) {
+            (action) in self.openGallery()
+        }
+        let removeAction = UIAlertAction(title: "프로필 사진 삭제", style: .destructive){
+            (action) in self.deletephoto()
+        }
         
         let cancelAction = UIAlertAction(title: "닫기", style: .cancel, handler: nil)
         
-        alert.addAction(okAction)
+        alert.addAction(galleyAction)
         alert.addAction(removeAction)
         alert.addAction(cancelAction)
         
         present(alert, animated: true, completion: nil)
+    }
+    
+    //MARK: - Gallery Setting
+    func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [UIImagePickerController.InfoKey : Any]) {
+        if let image = info[UIImagePickerController.InfoKey.originalImage] as? UIImage{
+            profileImage.image = image
+            print(info)
+            
+        }
+        dismiss(animated: true, completion: nil)
+    }
+    
+    func openGallery(){
+        imgPicker.sourceType = .photoLibrary
+        present(imgPicker, animated: true, completion: nil)
+    }
+    func deletephoto(){
+        profileImage.image = UIImage(named: "profile")
     }
     
 }

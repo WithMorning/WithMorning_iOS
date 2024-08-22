@@ -49,7 +49,6 @@ class OnBoardingProfileViewController : UIViewController, UIImagePickerControlle
     
     let imgPicker = UIImagePickerController()
     
-    
     private lazy var galleryButton : UIButton = {
         let button = UIButton()
         let imageConfig = UIImage.SymbolConfiguration(pointSize: 18, weight: .light)

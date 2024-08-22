@@ -7,7 +7,6 @@
 
 import Foundation
 
-
 enum LoginStatus {
     case Login //로그인
     case Logout//로그아웃
@@ -36,3 +35,17 @@ struct AppleloginFailResponse: Codable {
     let code: Int
     let message: String
 }
+
+//MARK: - 리프레쉬로 엑세스 재발급
+struct getTokenResponse: Codable {
+    let isSuccess: Bool
+    let code: Int
+    let message: String
+    let result: getTokenData?
+}
+
+struct getTokenData: Codable {
+    let accessToken, refreshToken: String?
+}
+
+

@@ -414,7 +414,7 @@ class AlarmTableViewCell : UITableViewCell, UISheetPresentationControllerDelegat
         if let vc = vc.sheetPresentationController{
             if #available(iOS 16.0, *) {
                 vc.detents = [.custom { context in
-                    return 245
+                    return 260
                 }]
                 
                 vc.delegate = self

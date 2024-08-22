@@ -14,15 +14,6 @@ import Alamofire
 class LoginViewController: UIViewController{
     
     
-    private lazy var titleLabel1 : UILabel = {
-        let label = UILabel()
-        label.text = ""
-        label.numberOfLines = 2
-        return label
-    }()
-    
-
-
     //MARK: - properties
     private lazy var popButton : UIButton = {
         let button = UIButton()
@@ -31,6 +22,14 @@ class LoginViewController: UIViewController{
         button.addTarget(self, action: #selector(popclicked), for: .touchUpInside)
         return button
     }()
+    //MARK: - 메인 라벨
+    private lazy var titleIMG : UIImageView = {
+        let view = UIImageView()
+        view.image = UIImage(named: "titleLabel")
+        return view
+    }()
+
+    
     //MARK: - 애플로 로그인
     private lazy var appleButton : UIButton = {
         let button = UIButton()
@@ -73,12 +72,16 @@ class LoginViewController: UIViewController{
     //MARK: - setUI
     
     func setUI(){
-        view.addSubviews(popButton,appleButton,guestButton)
+        view.addSubviews(popButton,titleIMG,appleButton,guestButton)
         
         popButton.snp.makeConstraints{
             $0.top.equalTo(view.safeAreaLayoutGuide).offset(20)
             $0.leading.equalToSuperview().offset(16)
             $0.height.width.equalTo(24)
+        }
+        titleIMG.snp.makeConstraints{
+            $0.top.equalTo(view.safeAreaLayoutGuide).offset(70)
+            $0.leading.equalToSuperview().inset(24)
         }
         
         appleButton.snp.makeConstraints{
@@ -105,7 +108,6 @@ class LoginViewController: UIViewController{
     }
     @objc private func apple(){
         AppleLoginManager.shared.startSignInWithAppleFlow()
-//        print("i love apple;;")
 //        let vc = OnBoardingProfileViewController()
 //        self.navigationController?.pushViewController(vc, animated: true)
         

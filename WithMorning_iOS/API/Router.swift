@@ -28,8 +28,8 @@ enum Router : URLRequestConvertible{
     //헤더
     var headers: HTTPHeaders {
         switch self {
-            //        default: return HTTPHeaders(["accept":"application/json", "Authorization" : Accesstoken])
-        default: return HTTPHeaders(["accept":"application/json", "userId":"\(userId)"]) //"인증아이디" : "인증코드"
+//        default: return HTTPHeaders(["accept":"application/json", "userId":"\(userId)"])
+        default: return HTTPHeaders(["accept":"application/json"]) //"인증아이디" : "인증코드"
         }
     }
     

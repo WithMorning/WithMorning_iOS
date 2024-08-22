@@ -12,6 +12,8 @@ import Alamofire
 
 class SleepTimeViewController : UIViewController, UISheetPresentationControllerDelegate {
     
+    let sleepNoti = PushNotificationHelper.shared
+    
     //MARK: - properties
     
     private lazy var mainLabel : UILabel = {
@@ -75,7 +77,7 @@ class SleepTimeViewController : UIViewController, UISheetPresentationControllerD
         label.font = DesignSystemFont.Pretendard_Bold14.value
         label.textColor = .black
         label.textAlignment = .left
-
+        
         return label
     }()
     
@@ -128,6 +130,23 @@ class SleepTimeViewController : UIViewController, UISheetPresentationControllerD
         return button
     }()
     
+    //MARK: - 저장 버튼
+    private lazy var saveButton : UIButton = {
+        let button = UIButton()
+        button.addSubview(buttonLabel)
+        button.backgroundColor = DesignSystemColor.Orange500.value
+        button.addTarget(self, action: #selector(saveclicked), for: .touchUpInside)
+        return button
+    }()
+    
+    private lazy var buttonLabel : UILabel = {
+        let label = UILabel()
+        label.text = "저장"
+        label.textColor = .white
+        label.font = DesignSystemFont.Pretendard_Bold16.value
+        return label
+    }()
+    
     
     //MARK: - life cycle
     
@@ -145,7 +164,7 @@ class SleepTimeViewController : UIViewController, UISheetPresentationControllerD
     //MARK: - setUI
     
     func SetUI(){
-        view.addSubviews(mainLabel,popButton,baseView,baseView2)
+        view.addSubviews(mainLabel,popButton,baseView,baseView2,saveButton)
         
         mainLabel.snp.makeConstraints{
             $0.centerX.equalToSuperview()
@@ -180,7 +199,7 @@ class SleepTimeViewController : UIViewController, UISheetPresentationControllerD
             $0.leading.trailing.equalToSuperview().inset(16)
             $0.bottom.equalToSuperview().inset(16)
         }
-
+        
         repeatLabel.snp.makeConstraints {
             $0.leading.centerY.equalToSuperview()
         }
@@ -204,13 +223,22 @@ class SleepTimeViewController : UIViewController, UISheetPresentationControllerD
             $0.width.height.equalTo(24)
         }
         
+        saveButton.snp.makeConstraints{
+            $0.leading.trailing.bottom.equalToSuperview()
+            $0.height.equalTo(92)
+        }
+        buttonLabel.snp.makeConstraints{
+            $0.centerX.equalToSuperview()
+            $0.top.equalToSuperview().offset(20)
+        }
+        
     }
     
     //MARK: - picker set
-
+    
     func pickerviewUI(){
         timePicker.subviews[1].isHidden = true
-    
+        
         let colonLabel = UILabel()
         colonLabel.text = ":"
         colonLabel.font = DesignSystemFont.Pretendard_Bold30.value
@@ -263,7 +291,7 @@ class SleepTimeViewController : UIViewController, UISheetPresentationControllerD
         if let sheet = vc.sheetPresentationController {
             if #available(iOS 16.0, *) {
                 sheet.detents = [.custom { context in
-                    return 472 //고정
+                    return 452 //고정
                 }]
                 
                 sheet.delegate = self
@@ -279,6 +307,14 @@ class SleepTimeViewController : UIViewController, UISheetPresentationControllerD
         }else{
             notiImage.tintColor = DesignSystemColor.Gray200.value
         }
+    }
+    
+    @objc func saveclicked(){
+        self.navigationController?.popViewController(animated: true)
+        
+        //1일요일~ 7토요일
+//        self.sleepNoti.sleepTimeNotifications(title: "알람 테스트", body: "알람 테스트 입니다.", weekdays: [4], hour: 6, minute: 7, ampm: .pm, identifier: "SleepTimeNotification")
+        
     }
     
 }

@@ -48,8 +48,17 @@ class OnBoardingTutorialViewController : UIViewController{
         page.numberOfPages = 3
         page.currentPage = 0
         page.isUserInteractionEnabled = false
+        //        page.backgroundColor = .gray
         return page
     }()
+    
+    private lazy var firstpage : UIView = {
+        let view = UIView()
+        view.layer.cornerRadius = 7.69/2
+        view.backgroundColor = DesignSystemColor.Orange500.value
+        return view
+    }()
+    
     
     private lazy var pageViewController : UIPageViewController = {
         let view = UIPageViewController(transitionStyle: .scroll, navigationOrientation: .horizontal, options: nil)
@@ -89,7 +98,7 @@ class OnBoardingTutorialViewController : UIViewController{
     //MARK: - Autolayout
     
     func setUI(){
-        view.addSubviews(mainLabel,popButton,skipButton,pageControl,pageViewController.view,nextButton)
+        view.addSubviews(mainLabel,popButton,skipButton,pageControl,firstpage,pageViewController.view,nextButton)
         
         mainLabel.snp.makeConstraints{
             $0.centerX.equalToSuperview()
@@ -110,6 +119,12 @@ class OnBoardingTutorialViewController : UIViewController{
             $0.centerX.equalToSuperview()
             $0.height.equalTo(6)
         }
+        firstpage.snp.makeConstraints{
+            $0.width.height.equalTo(7.69)
+            $0.centerY.equalTo(pageControl).offset(-0.2)
+            $0.centerX.equalTo(pageControl).offset(-18)
+        }
+        
         pageViewController.view.snp.makeConstraints{
             $0.leading.trailing.equalToSuperview()
             $0.bottom.equalTo(nextButton.snp.top)
@@ -127,7 +142,7 @@ class OnBoardingTutorialViewController : UIViewController{
         }
     }
     //MARK: - objc func
-
+    
     @objc func nextbtn(){
         if pageControl.currentPage < pageControl.numberOfPages - 1 {
             pageControl.currentPage += 1
@@ -152,10 +167,12 @@ class OnBoardingTutorialViewController : UIViewController{
     
     @objc func skip(){
         let vc = TutorialThirdViewController()
-            pageViewController.setViewControllers([vc], direction: .forward, animated: true, completion: nil)
-            pageControl.currentPage = 2
+        pageViewController.setViewControllers([vc], direction: .forward, animated: true, completion: nil)
+        pageControl.currentPage = 2
         
     }
+    
+    private var visitedPages: [Int] = []
 }
 
 //MARK: - 온보딩 페이지
@@ -188,20 +205,35 @@ extension OnBoardingTutorialViewController : UIPageViewControllerDelegate, UIPag
         }
     }
     
+    
     func pageViewController(_ pageViewController: UIPageViewController, didFinishAnimating finished: Bool, previousViewControllers: [UIViewController], transitionCompleted completed: Bool) {
         
         if completed, let currentViewController = pageViewController.viewControllers?.first {
-            switch currentViewController {
-            case is TutorialFirstViewController:
-                pageControl.currentPage = 0
-            case is TutorialSecondViewController:
-                pageControl.currentPage = 1
-            case is TutorialThirdViewController:
-                pageControl.currentPage = 2
-            default:
-                break
+            var currentPage: Int?
+            if currentViewController is TutorialFirstViewController {
+                currentPage = 0
+            } else if currentViewController is TutorialSecondViewController {
+                currentPage = 1
+            } else if currentViewController is TutorialThirdViewController {
+                currentPage = 2
+            }
+            
+            if let currentPage = currentPage {
+                pageControl.currentPage = currentPage
+                updatePageControlIndicatorColor(currentPage: currentPage)
             }
         }
+    }
+    
+    
+    private func updatePageControlIndicatorColor(currentPage: Int) {
+        for _ in 0...currentPage {
+            pageControl.pageIndicatorTintColor = DesignSystemColor.Orange500.value
+        }
+        for _ in currentPage+1..<pageControl.numberOfPages {
+            pageControl.pageIndicatorTintColor = DesignSystemColor.Gray300.value
+        }
+        pageControl.currentPageIndicatorTintColor = DesignSystemColor.Orange500.value
     }
 }
 

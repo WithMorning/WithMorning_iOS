@@ -101,7 +101,6 @@ class MyPageViewController : UIViewController, UIScrollViewDelegate {
     }()
     
     //MARK: - 취침 시간 알림
-    
     private lazy var sleeptimeStackView: UIStackView = {
         let stackView = UIStackView()
         stackView.axis = .horizontal
