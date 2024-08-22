@@ -6,21 +6,21 @@
 //
 
 import UIKit
+import Combine
+import AuthenticationServices
 
 class SceneDelegate: UIResponder, UIWindowSceneDelegate {
     
     var window: UIWindow?
     
     func scene(_ scene: UIScene, willConnectTo session: UISceneSession, options connectionOptions: UIScene.ConnectionOptions) {
+        
         guard let windowScene = (scene as? UIWindowScene) else { return }
         
-        let window = UIWindow(windowScene: windowScene)
+        RegisterUserInfo.shared.$loginState.sink{LoginStatus in
+            let refreshToken = KeyChain.read(key: "refreshToken")
+        }
         
-        
-        window.rootViewController = UINavigationController(rootViewController: OnBoardingFirstViewController())
-//        window.rootViewController = UINavigationController(rootViewController: MainViewController())
-        self.window = window
-        self.window?.makeKeyAndVisible()
         
     }
     
@@ -52,19 +52,78 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         // to restore the scene back to its current state.
     }
 }
+//MARK: - 상태
 
 enum rootViewController {
     case login
     case main
     case termAgree
-    case onBoarding
+    //    case onBoarding
     
     var vc : UIViewController{
         switch self{
-        case .login : return LoginViewController()
+        case .login : return MainViewController()
+            //        case .login : return LoginViewController()
         case .main: return MainViewController()
         case .termAgree: return OnBoardingFirstViewController()
-        case .onBoarding: return OnBoardingTutorialViewController()
+            //        case .onBoarding: return OnBoardingTutorialViewController()
         }
     }
 }
+
+//MARK: - 시작 순서 결정 : 약관동의 -> 로그인 -> 회원가입 -> 인증번호 -> 프로필작성 -> 튜토리얼
+
+extension SceneDelegate{
+    private func setRootViewController(_ scene: UIScene) {
+        let refreshToken = KeyChain.read(key: "refreshToken")
+        print(#fileID, #function, #line, "- refreshToken: \(refreshToken)")
+        
+        //        if refreshToken != ""{
+        //            setRootViewContrller(scene, type: .main)
+        //        }
+        
+        if Storage.isFirstTime() {
+            setRootViewContrller(scene, type: .termAgree)
+        }
+        else if refreshToken != "" {
+            setRootViewContrller(scene, type: .main)
+        }
+        else {
+            setRootViewContrller(scene, type: .login)
+        }
+    }
+    
+    private func setRootViewContrller(_ scene: UIScene, type: rootViewController) {
+        if let windowScene = scene as? UIWindowScene {
+            DispatchQueue.main.async {
+                let window = UIWindow(windowScene: windowScene)
+                print(#fileID, #function, #line, "- 어떤 type의 data인지 확인하기⭐️: \(type)")
+                if type == .termAgree {
+                    let navigationController = UINavigationController(rootViewController: type.vc)
+                    window.rootViewController = navigationController
+                } else {
+                    window.rootViewController = type.vc //그에 맞게 Rootview를 변경해준다
+                }
+                
+                self.window = window
+                window.makeKeyAndVisible()
+            }
+            
+        }
+    }
+    
+    public class Storage {
+        static func isFirstTime() -> Bool {
+            let defaults = UserDefaults.standard //defaults DB를 가지고 온다
+            if defaults.object(forKey: "isFirstTime") == nil { //해당 DB에서 isFirstTime이라는 키가 있느지 체크한다
+                defaults.set(true, forKey: "isFirstTime")
+                return true
+            } else {
+                let isFirstTime = UserDefaults.standard.bool(forKey: "isFirstTime") //isFirstTime인지 체크하기
+                return isFirstTime
+            }
+        }
+    }
+    
+}
+
