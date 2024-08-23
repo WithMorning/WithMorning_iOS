@@ -55,14 +55,14 @@ class AlarmTableViewCell : UITableViewCell, UISheetPresentationControllerDelegat
         return button
     }()
     
-     lazy var timeLabel : UILabel = {
+    lazy var timeLabel : UILabel = {
         let label = UILabel()
         label.text = "07:30"
         label.font = DesignSystemFont.Pretendard_Bold30.value
         return label
     }()
     
-     lazy var noonLabel : UILabel = {
+    lazy var noonLabel : UILabel = {
         let label = UILabel()
         label.text = "AM"
         label.font = DesignSystemFont.Pretendard_Bold18.value
@@ -361,8 +361,9 @@ class AlarmTableViewCell : UITableViewCell, UISheetPresentationControllerDelegat
             $0.center.equalToSuperview()
         }
         moreButton.snp.makeConstraints{
-            $0.centerY.equalToSuperview()
-            $0.trailing.equalTo(memoLabel.snp.trailing).offset(10)
+            $0.centerX.equalToSuperview()
+            $0.top.equalTo(memoView.snp.top)
+            //            $0.trailing.equalTo(memoLabel.snp.trailing).offset(10)
         }
     }
     
@@ -371,15 +372,28 @@ class AlarmTableViewCell : UITableViewCell, UISheetPresentationControllerDelegat
     
     @objc func MemoExpansion() {
         if memoExtended == false{
-            memoView.frame.size.height = 83
-        }else{
-            memoView.bounds.size.height = 49
+            memoExtended = true
+            print(memoExtended)
+            memoView.snp.makeConstraints{
+                $0.top.equalTo(memberCollectionView.snp.bottom).offset(12)
+                $0.height.equalTo(49)
+                $0.leading.trailing.bottom.equalToSuperview().inset(16)
+            }
+        }
+        if memoExtended == true{
+            memoExtended = false
+            print(memoExtended)
+            memoView.snp.makeConstraints{
+                $0.top.equalTo(memberCollectionView.snp.bottom).offset(12)
+                $0.height.equalTo(49)
+                $0.leading.trailing.bottom.equalToSuperview().inset(16)
+            }
         }
         
     }
-
     
-
+    
+    
     
     //MARK: - 유저API 통신
     var userData : [UserList] = []
@@ -502,7 +516,7 @@ class AlarmTableViewCell : UITableViewCell, UISheetPresentationControllerDelegat
 //MARK: - memberCollectionViewCell
 
 class memberCollectioViewCell : UICollectionViewCell{
-     lazy var memberImageView : UIImageView = {
+    lazy var memberImageView : UIImageView = {
         let view = UIImageView()
         view.backgroundColor = DesignSystemColor.Orange500.value
         view.image = UIImage(systemName: "person.circle.fill")
@@ -511,7 +525,7 @@ class memberCollectioViewCell : UICollectionViewCell{
         return view
     }()
     
-     lazy var memberLabel : UILabel = {
+    lazy var memberLabel : UILabel = {
         let label = UILabel()
         label.textColor = .black
         label.font = DesignSystemFont.Pretendard_SemiBold12.value

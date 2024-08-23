@@ -311,6 +311,7 @@ extension MainViewController : UITableViewDelegate, UITableViewDataSource{
         
         // 토글의 상태를 데이터 모델로부터 가져와 설정
         cell.toggleButton.isOn = isTurn
+        
         cell.bottomView.isHidden = false
         
 //        cell.bottomView.subviews.forEach { $0.isHidden = isTurn }
@@ -355,7 +356,7 @@ extension MainViewController : UITableViewDelegate, UITableViewDataSource{
         
         let baseHeight: CGFloat = 132
         let extraHeight: CGFloat = 217
-//        let memoHeight : CGFloat = 34
+        let memoHeight : CGFloat = 34
         
 //        if alarmData[indexPath.row].isTurn == true {
 //            return baseHeight + extraHeight
