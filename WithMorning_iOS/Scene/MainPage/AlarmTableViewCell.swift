@@ -192,7 +192,6 @@ class AlarmTableViewCell : UITableViewCell, UISheetPresentationControllerDelegat
         attributeLabel.insert(imageString, at: 0)
         label.attributedText = attributeLabel
         
-        label.backgroundColor = .green
         return label
     }()
     
@@ -206,7 +205,6 @@ class AlarmTableViewCell : UITableViewCell, UISheetPresentationControllerDelegat
         view.delegate = self
         view.register(memberCollectioViewCell.self, forCellWithReuseIdentifier: "memberCollectioViewCell")
         view.isScrollEnabled = false
-        view.backgroundColor = .yellow
         
         return view
     }()
@@ -349,18 +347,17 @@ class AlarmTableViewCell : UITableViewCell, UISheetPresentationControllerDelegat
         }
         
         memberCollectionView.snp.makeConstraints{
-            $0.top.equalTo(bottomViewLabel.snp.bottom)
+            $0.top.equalTo(bottomViewLabel.snp.bottom).offset(12)
             $0.leading.trailing.equalToSuperview().inset(20)
             $0.height.equalTo(collectionViewHeight)
 
         }
         
-//        memoView.snp.makeConstraints{
-//            $0.top.equalTo(memberCollectionView.snp.bottom).offset(12)
-//            $0.height.equalTo(49)
-//            $0.leading.trailing.equalToSuperview().inset(16)
-//            $0.bottom.equalToSuperview()
-//        }
+        memoView.snp.makeConstraints{
+            $0.top.equalTo(memberCollectionView.snp.bottom).offset(12)
+            $0.leading.trailing.bottom.equalToSuperview().inset(20)
+            $0.bottom.equalToSuperview()
+        }
 //        memoLabel.snp.makeConstraints{
 //            $0.edges.equalToSuperview().inset(UIEdgeInsets(top: 16, left: 16, bottom: 16, right: 16))
 //            $0.center.equalToSuperview()
@@ -374,8 +371,8 @@ class AlarmTableViewCell : UITableViewCell, UISheetPresentationControllerDelegat
     
     
     //MARK: - 유저API 통신
-    var userData : [UserList] = []
-    var memberCount : Int = 0
+    private var userData : [UserList] = []
+    private var memberCount : Int = 0
     private var collectionViewHeight: CGFloat = 87
     
     func ConfigureMember(_ userList: [UserList]) {
@@ -400,12 +397,11 @@ class AlarmTableViewCell : UITableViewCell, UISheetPresentationControllerDelegat
         memberCollectionView.layoutIfNeeded()
         
         let contentHeight = memberCollectionView.collectionViewLayout.collectionViewContentSize.height
+        
         memberCollectionView.snp.updateConstraints {
             $0.height.equalTo(contentHeight)
         }
         
-        bottomView.setNeedsLayout()
-        bottomView.layoutIfNeeded()
         
         contentView.setNeedsLayout()
         contentView.layoutIfNeeded()
@@ -420,7 +416,9 @@ class AlarmTableViewCell : UITableViewCell, UISheetPresentationControllerDelegat
         var maxHeight: CGFloat = 0
         
         for i in 0..<memberCount {
-            let text = userData[i].nickname
+            //MARK: - 여기에 추가하면 댐
+            let text = userData[i].nickname + "asd"
+            
             let font = DesignSystemFont.Pretendard_SemiBold12.value
             let maxWidth: CGFloat = 62
             
@@ -496,13 +494,11 @@ class AlarmTableViewCell : UITableViewCell, UISheetPresentationControllerDelegat
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "memberCollectioViewCell", for: indexPath) as! memberCollectioViewCell
         
         let userlistData = userData[indexPath.item]
-        cell.configure(with: userlistData.nickname + "asd")
-        
-        cell.backgroundColor = .gray
+        cell.configure(with: userlistData.nickname)
         return cell
     }
-    //그룹내의 셀 크기 = 이미지 + 라벨
     
+    //그룹내의 셀 크기 = 이미지 + 라벨
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
         return CGSize(width: 62, height: collectionViewHeight)
     }
@@ -569,7 +565,6 @@ class memberCollectioViewCell: UICollectionViewCell {
         label.font = DesignSystemFont.Pretendard_SemiBold12.value
         label.numberOfLines = 0
         label.textAlignment = .center
-        label.backgroundColor = .orange
         return label
     }()
     
@@ -599,7 +594,7 @@ class memberCollectioViewCell: UICollectionViewCell {
     }
     
     func configure(with nickname: String) {
-        memberLabel.text = nickname
+        memberLabel.text = nickname + "asd"
         setNeedsLayout()
         layoutIfNeeded()
     }
