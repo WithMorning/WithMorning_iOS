@@ -191,19 +191,23 @@ class AlarmTableViewCell : UITableViewCell, UISheetPresentationControllerDelegat
         let imageString = NSAttributedString(attachment: attachImage)
         attributeLabel.insert(imageString, at: 0)
         label.attributedText = attributeLabel
+        
+        label.backgroundColor = .green
         return label
     }()
     
     lazy var memberCollectionView : UICollectionView = {
         let layout = UICollectionViewFlowLayout()
         layout.scrollDirection = .horizontal
-        layout.itemSize = CGSize(width: 62, height: 62)
+//        layout.estimatedItemSize = UICollectionViewFlowLayout.automaticSize
         
         let view = UICollectionView(frame: .zero, collectionViewLayout: layout)
         view.dataSource = self
         view.delegate = self
         view.register(memberCollectioViewCell.self, forCellWithReuseIdentifier: "memberCollectioViewCell")
         view.isScrollEnabled = false
+        view.backgroundColor = .yellow
+        
         return view
     }()
     
@@ -230,7 +234,7 @@ class AlarmTableViewCell : UITableViewCell, UISheetPresentationControllerDelegat
         button.setTitle("더보기", for: .normal)
         button.titleLabel?.font = DesignSystemFont.Pretendard_SemiBold12.value
         button.setTitleColor(DesignSystemColor.Gray600.value, for: .normal)
-        button.addTarget(self, action: #selector(MemoExpansion), for: .touchUpInside)
+//        button.addTarget(self, action: #selector(MemoExpansion), for: .touchUpInside)
         button.isHidden = false
         return button
     }()
@@ -331,7 +335,6 @@ class AlarmTableViewCell : UITableViewCell, UISheetPresentationControllerDelegat
         bottomView.snp.makeConstraints{
             $0.top.equalTo(topView.snp.bottom)
             $0.leading.trailing.bottom.equalToSuperview()
-            
         }
         borderLine.snp.makeConstraints{
             $0.leading.trailing.equalToSuperview().inset(16)
@@ -341,74 +344,106 @@ class AlarmTableViewCell : UITableViewCell, UISheetPresentationControllerDelegat
         
         bottomViewLabel.snp.makeConstraints{
             $0.top.equalTo(borderLine.snp.bottom).offset(20)
+            $0.height.equalTo(17)
             $0.centerX.equalToSuperview()
         }
         
         memberCollectionView.snp.makeConstraints{
-            $0.top.equalTo(bottomViewLabel.snp.bottom).offset(12)
+            $0.top.equalTo(bottomViewLabel.snp.bottom)
             $0.leading.trailing.equalToSuperview().inset(20)
-            $0.height.equalTo(87)
-            $0.width.equalToSuperview().offset(-40)
+            $0.height.equalTo(collectionViewHeight)
+
         }
         
-        memoView.snp.makeConstraints{
-            $0.top.equalTo(memberCollectionView.snp.bottom).offset(12)
-            $0.height.equalTo(49)
-            $0.leading.trailing.bottom.equalToSuperview().inset(16)
-        }
-        memoLabel.snp.makeConstraints{
-            $0.edges.equalToSuperview().inset(UIEdgeInsets(top: 16, left: 16, bottom: 16, right: 16))
-            $0.center.equalToSuperview()
-        }
-        moreButton.snp.makeConstraints{
-            $0.centerX.equalToSuperview()
-            $0.top.equalTo(memoView.snp.top)
-            //            $0.trailing.equalTo(memoLabel.snp.trailing).offset(10)
-        }
+//        memoView.snp.makeConstraints{
+//            $0.top.equalTo(memberCollectionView.snp.bottom).offset(12)
+//            $0.height.equalTo(49)
+//            $0.leading.trailing.equalToSuperview().inset(16)
+//            $0.bottom.equalToSuperview()
+//        }
+//        memoLabel.snp.makeConstraints{
+//            $0.edges.equalToSuperview().inset(UIEdgeInsets(top: 16, left: 16, bottom: 16, right: 16))
+//            $0.center.equalToSuperview()
+//        }
+//        moreButton.snp.makeConstraints{
+//            $0.centerX.equalToSuperview()
+//            $0.top.equalTo(memoView.snp.top)
+//            //            $0.trailing.equalTo(memoLabel.snp.trailing).offset(10)
+//        }
     }
-    
-    //MARK: - 더보기 버튼 관련 함수
-    private var memoExtended : Bool = false
-    
-    @objc func MemoExpansion() {
-        if memoExtended == false{
-            memoExtended = true
-            print(memoExtended)
-            memoView.snp.makeConstraints{
-                $0.top.equalTo(memberCollectionView.snp.bottom).offset(12)
-                $0.height.equalTo(49)
-                $0.leading.trailing.bottom.equalToSuperview().inset(16)
-            }
-        }
-        if memoExtended == true{
-            memoExtended = false
-            print(memoExtended)
-            memoView.snp.makeConstraints{
-                $0.top.equalTo(memberCollectionView.snp.bottom).offset(12)
-                $0.height.equalTo(49)
-                $0.leading.trailing.bottom.equalToSuperview().inset(16)
-            }
-        }
-        
-    }
-    
-    
     
     
     //MARK: - 유저API 통신
     var userData : [UserList] = []
     var memberCount : Int = 0
+    private var collectionViewHeight: CGFloat = 87
     
     func ConfigureMember(_ userList: [UserList]) {
         self.memberCount = userList.count
         userData = userList
+        
+        // 최대 셀 높이 계산
+        collectionViewHeight = calculateMaxCellHeight()
+        
         self.memberCollectionView.reloadData()
+        
+        // 레이아웃 업데이트
+        DispatchQueue.main.async {
+            self.updateCollectionViewHeight()
+        }
+    }
+
+
+    
+    func updateCollectionViewHeight() {
+        memberCollectionView.collectionViewLayout.invalidateLayout()
+        memberCollectionView.layoutIfNeeded()
+        
+        let contentHeight = memberCollectionView.collectionViewLayout.collectionViewContentSize.height
+        memberCollectionView.snp.updateConstraints {
+            $0.height.equalTo(contentHeight)
+        }
+        
+        bottomView.setNeedsLayout()
+        bottomView.layoutIfNeeded()
+        
+        contentView.setNeedsLayout()
+        contentView.layoutIfNeeded()
+        
+        if let tableView = superview as? UITableView {
+            tableView.beginUpdates()
+            tableView.endUpdates()
+        }
     }
     
+    func calculateMaxCellHeight() -> CGFloat {
+        var maxHeight: CGFloat = 0
+        
+        for i in 0..<memberCount {
+            let text = userData[i].nickname
+            let font = DesignSystemFont.Pretendard_SemiBold12.value
+            let maxWidth: CGFloat = 62
+            
+            let textSize = (text as NSString).boundingRect(
+                with: CGSize(width: maxWidth, height: .greatestFiniteMagnitude),
+                options: [.usesLineFragmentOrigin, .usesFontLeading],
+                attributes: [NSAttributedString.Key.font: font],
+                context: nil
+            ).size
+            
+            let labelHeight = min(ceil(textSize.height), 34)
+            let imageHeight: CGFloat = 62
+            let spacing: CGFloat = 8
+            
+            let cellHeight = imageHeight + spacing + labelHeight
+            maxHeight = max(maxHeight, cellHeight)
+        }
+        
+        return maxHeight
+    }
     
     //MARK: - 그룹API 통신
     var groupID : Int = 0
-    
     
     //MARK: - objc func
     @objc func clicktoggle(sender : UISwitch){
@@ -448,6 +483,7 @@ class AlarmTableViewCell : UITableViewCell, UISheetPresentationControllerDelegat
         }
         
     }
+    
     //MARK: - collectionView delegate func
     
     //그룹내의 멤버 숫자
@@ -457,20 +493,22 @@ class AlarmTableViewCell : UITableViewCell, UISheetPresentationControllerDelegat
     
     //그룹내의 셀 재사용
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "memberCollectioViewCell", for: indexPath) as! memberCollectioViewCell
         
         let userlistData = userData[indexPath.item]
+        cell.configure(with: userlistData.nickname + "asd")
         
-        cell.memberLabel.text = userlistData.nickname
-        
+        cell.backgroundColor = .gray
         return cell
     }
-    
     //그룹내의 셀 크기 = 이미지 + 라벨
+    
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
-        return CGSize(width: 62, height: 84.5)
+        return CGSize(width: 62, height: collectionViewHeight)
     }
+
+
+
     
     //그룹내의 셀 중앙정렬
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, insetForSectionAt section: Int) -> UIEdgeInsets {
@@ -515,8 +553,8 @@ class AlarmTableViewCell : UITableViewCell, UISheetPresentationControllerDelegat
 
 //MARK: - memberCollectionViewCell
 
-class memberCollectioViewCell : UICollectionViewCell{
-    lazy var memberImageView : UIImageView = {
+class memberCollectioViewCell: UICollectionViewCell {
+    lazy var memberImageView: UIImageView = {
         let view = UIImageView()
         view.backgroundColor = DesignSystemColor.Orange500.value
         view.image = UIImage(systemName: "person.circle.fill")
@@ -525,15 +563,17 @@ class memberCollectioViewCell : UICollectionViewCell{
         return view
     }()
     
-    lazy var memberLabel : UILabel = {
+    lazy var memberLabel: UILabel = {
         let label = UILabel()
         label.textColor = .black
         label.font = DesignSystemFont.Pretendard_SemiBold12.value
+        label.numberOfLines = 0
+        label.textAlignment = .center
+        label.backgroundColor = .orange
         return label
     }()
     
-    
-    override init(frame: CGRect){
+    override init(frame: CGRect) {
         super.init(frame: frame)
         setUI()
     }
@@ -542,18 +582,26 @@ class memberCollectioViewCell : UICollectionViewCell{
         fatalError("init(coder:) has not been implemented")
     }
     
-    func setUI(){
-        contentView.addSubviews(memberImageView,memberLabel)
+    func setUI() {
+        contentView.addSubviews(memberImageView, memberLabel)
         
-        memberImageView.snp.makeConstraints{
+        memberImageView.snp.makeConstraints {
+            $0.top.equalToSuperview()
+            $0.centerX.equalToSuperview()
             $0.height.width.equalTo(62)
-            
         }
-        memberLabel.snp.makeConstraints{
-            $0.bottom.equalToSuperview()
-            $0.centerX.equalTo(memberImageView)
+        
+        memberLabel.snp.makeConstraints {
+            $0.top.equalTo(memberImageView.snp.bottom).offset(8)
+            $0.leading.trailing.equalToSuperview()
+            $0.bottom.lessThanOrEqualToSuperview()
         }
     }
     
+    func configure(with nickname: String) {
+        memberLabel.text = nickname
+        setNeedsLayout()
+        layoutIfNeeded()
+    }
 }
 

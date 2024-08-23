@@ -364,7 +364,7 @@ extension MainViewController : UITableViewDelegate, UITableViewDataSource{
 //            return baseHeight
 //        }
         
-        return baseHeight + extraHeight
+        return baseHeight + extraHeight + memoHeight
         
     }
     
