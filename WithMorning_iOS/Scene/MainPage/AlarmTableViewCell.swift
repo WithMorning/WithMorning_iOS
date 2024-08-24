@@ -198,7 +198,6 @@ class AlarmTableViewCell : UITableViewCell, UISheetPresentationControllerDelegat
     lazy var memberCollectionView : UICollectionView = {
         let layout = UICollectionViewFlowLayout()
         layout.scrollDirection = .horizontal
-//        layout.estimatedItemSize = UICollectionViewFlowLayout.automaticSize
         
         let view = UICollectionView(frame: .zero, collectionViewLayout: layout)
         view.dataSource = self
@@ -222,8 +221,7 @@ class AlarmTableViewCell : UITableViewCell, UISheetPresentationControllerDelegat
         label.textColor = DesignSystemColor.Gray400.value
         label.font = DesignSystemFont.Pretendard_Medium12.value
         label.textAlignment = .left
-        label.lineBreakMode = .byWordWrapping
-        label.numberOfLines = 3
+        label.numberOfLines = 0
         return label
     }()
     
@@ -232,7 +230,7 @@ class AlarmTableViewCell : UITableViewCell, UISheetPresentationControllerDelegat
         button.setTitle("더보기", for: .normal)
         button.titleLabel?.font = DesignSystemFont.Pretendard_SemiBold12.value
         button.setTitleColor(DesignSystemColor.Gray600.value, for: .normal)
-//        button.addTarget(self, action: #selector(MemoExpansion), for: .touchUpInside)
+        //        button.addTarget(self, action: #selector(MemoExpansion), for: .touchUpInside)
         button.isHidden = false
         return button
     }()
@@ -350,30 +348,25 @@ class AlarmTableViewCell : UITableViewCell, UISheetPresentationControllerDelegat
             $0.top.equalTo(bottomViewLabel.snp.bottom).offset(12)
             $0.leading.trailing.equalToSuperview().inset(20)
             $0.height.equalTo(collectionViewHeight)
-
+            
         }
-        
         memoView.snp.makeConstraints{
             $0.top.equalTo(memberCollectionView.snp.bottom).offset(12)
-            $0.leading.trailing.bottom.equalToSuperview().inset(20)
-            $0.bottom.equalToSuperview()
+            $0.leading.trailing.equalToSuperview().inset(20)
+            memoViewHeightConstraint = $0.height.equalTo(83).constraint // 기본 높이 49
+//            $0.bottom.equalToSuperview().inset(20)
         }
-//        memoLabel.snp.makeConstraints{
-//            $0.edges.equalToSuperview().inset(UIEdgeInsets(top: 16, left: 16, bottom: 16, right: 16))
-//            $0.center.equalToSuperview()
-//        }
-//        moreButton.snp.makeConstraints{
-//            $0.centerX.equalToSuperview()
-//            $0.top.equalTo(memoView.snp.top)
-//            //            $0.trailing.equalTo(memoLabel.snp.trailing).offset(10)
-//        }
+        memoLabel.snp.makeConstraints{
+            $0.edges.equalToSuperview().inset(UIEdgeInsets(top: 16, left: 16, bottom: 16, right: 16))
+        }
     }
-    
-    
-    //MARK: - 유저API 통신
-    private var userData : [UserList] = []
+    //MARK: - API
+
+    var groupID : Int = 0 //그룹 아이디
+    private var userData : [UserList] = [] //유저 데이터
     private var memberCount : Int = 0
     private var collectionViewHeight: CGFloat = 87
+    private var memoViewHeightConstraint: Constraint?
     
     func ConfigureMember(_ userList: [UserList]) {
         self.memberCount = userList.count
@@ -386,12 +379,14 @@ class AlarmTableViewCell : UITableViewCell, UISheetPresentationControllerDelegat
         
         // 레이아웃 업데이트
         DispatchQueue.main.async {
+            self.updateMemoViewHeight()
             self.updateCollectionViewHeight()
+            
         }
+        
     }
-
-
     
+    //MARK: - 유저 collectionview UI
     func updateCollectionViewHeight() {
         memberCollectionView.collectionViewLayout.invalidateLayout()
         memberCollectionView.layoutIfNeeded()
@@ -416,8 +411,8 @@ class AlarmTableViewCell : UITableViewCell, UISheetPresentationControllerDelegat
         var maxHeight: CGFloat = 0
         
         for i in 0..<memberCount {
-            //MARK: - 여기에 추가하면 댐
-            let text = userData[i].nickname + "asd"
+            //여기에 추가하면 댐
+            let text = userData[i].nickname
             
             let font = DesignSystemFont.Pretendard_SemiBold12.value
             let maxWidth: CGFloat = 62
@@ -439,9 +434,45 @@ class AlarmTableViewCell : UITableViewCell, UISheetPresentationControllerDelegat
         
         return maxHeight
     }
+    //MARK: - memoViewUI
+    func updateMemoViewHeight() {
+        let baseHeight: CGFloat = 49 // 1줄일 때의 기본 높이
+        let maxWidth = memoView.frame.width - 32 // 좌우 패딩 16씩 제외
+        let lineHeight: CGFloat = 17 // 한 줄의 높이 (폰트 크기 + 약간의 여유)
+
+        let size = memoLabel.sizeThatFits(CGSize(width: maxWidth, height: .greatestFiniteMagnitude))
+        let numberOfLines = max(1, Int(ceil(size.height / lineHeight)))
+
+        let newHeight = baseHeight + CGFloat(max(0, numberOfLines - 1)) * lineHeight
+
+        memoView.snp.updateConstraints {
+            $0.height.equalTo(newHeight)
+        }
+
+        // 셀의 레이아웃을 업데이트합니다.
+        self.setNeedsLayout()
+        self.layoutIfNeeded()
+
+        // 테이블 뷰의 레이아웃을 업데이트합니다.
+        if let tableView = self.superview as? UITableView {
+            tableView.beginUpdates()
+            tableView.endUpdates()
+        }
+    }
+
+    func setMemoText(_ text: String) {
+        memoLabel.text = text
+        DispatchQueue.main.async { [weak self] in
+            self?.updateMemoViewHeight()
+        }
+    }
+
+
+
+
     
-    //MARK: - 그룹API 통신
-    var groupID : Int = 0
+
+    
     
     //MARK: - objc func
     @objc func clicktoggle(sender : UISwitch){
@@ -502,9 +533,9 @@ class AlarmTableViewCell : UITableViewCell, UISheetPresentationControllerDelegat
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
         return CGSize(width: 62, height: collectionViewHeight)
     }
-
-
-
+    
+    
+    
     
     //그룹내의 셀 중앙정렬
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, insetForSectionAt section: Int) -> UIEdgeInsets {
@@ -592,9 +623,10 @@ class memberCollectioViewCell: UICollectionViewCell {
             $0.bottom.lessThanOrEqualToSuperview()
         }
     }
+    //MARK: - 닉네임 설정
     
     func configure(with nickname: String) {
-        memberLabel.text = nickname + "asd"
+        memberLabel.text = nickname
         setNeedsLayout()
         layoutIfNeeded()
     }

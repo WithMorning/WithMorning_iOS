@@ -304,7 +304,7 @@ extension MainViewController : UITableViewDelegate, UITableViewDataSource{
         cell.backgroundColor = .clear
         
         cell.topViewLabel.text = alarm.name
-        cell.memoLabel.text = alarm.memo
+        cell.setMemoText(alarm.memo)
         cell.ConfigureMember(alarm.userList ?? [])
         cell.timeLabel.text = alarm.wakeupTime
         cell.groupID = alarm.groupID
@@ -356,8 +356,7 @@ extension MainViewController : UITableViewDelegate, UITableViewDataSource{
         
         let baseHeight: CGFloat = 132
         let extraHeight: CGFloat = 217
-        let memoHeight : CGFloat = 34
-        
+        let memoHeight : CGFloat = 100
 //        if alarmData[indexPath.row].isTurn == true {
 //            return baseHeight + extraHeight
 //        } else {
