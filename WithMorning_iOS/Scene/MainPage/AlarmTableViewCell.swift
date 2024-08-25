@@ -216,24 +216,30 @@ class AlarmTableViewCell : UITableViewCell, UISheetPresentationControllerDelegat
         return view
     }()
     
-    lazy var memoLabel : UILabel = {
+    lazy var memoLabel: UILabel = {
         let label = UILabel()
         label.textColor = DesignSystemColor.Gray400.value
         label.font = DesignSystemFont.Pretendard_Medium12.value
         label.textAlignment = .left
         label.numberOfLines = 0
+        label.isUserInteractionEnabled = true
+//        label.backgroundColor = .green
+        
+        let tapGesture = UITapGestureRecognizer(target: self, action: #selector(memoLabelTapped))
+        label.addGestureRecognizer(tapGesture)
+        
         return label
     }()
     
-    private lazy var moreButton : UIButton = {
-        let button = UIButton()
+    lazy var moreButton: UIButton = {
+        let button = UIButton(type: .system)
         button.setTitle("더보기", for: .normal)
-        button.titleLabel?.font = DesignSystemFont.Pretendard_SemiBold12.value
+        button.titleLabel?.font = DesignSystemFont.Pretendard_Medium12.value
         button.setTitleColor(DesignSystemColor.Gray600.value, for: .normal)
-        //        button.addTarget(self, action: #selector(MemoExpansion), for: .touchUpInside)
-        button.isHidden = false
+//        button.addTarget(self, action: #selector(moreButtonTapped), for: .touchUpInside)
         return button
     }()
+    
     
     //MARK: - LifeCycle
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
@@ -353,20 +359,22 @@ class AlarmTableViewCell : UITableViewCell, UISheetPresentationControllerDelegat
         memoView.snp.makeConstraints{
             $0.top.equalTo(memberCollectionView.snp.bottom).offset(12)
             $0.leading.trailing.equalToSuperview().inset(20)
-            memoViewHeightConstraint = $0.height.equalTo(83).constraint // 기본 높이 49
-//            $0.bottom.equalToSuperview().inset(20)
+            $0.height.greaterThanOrEqualTo(49)
         }
         memoLabel.snp.makeConstraints{
-            $0.edges.equalToSuperview().inset(UIEdgeInsets(top: 16, left: 16, bottom: 16, right: 16))
+            $0.edges.equalToSuperview().inset(UIEdgeInsets(top: 16, left: 48, bottom: 16, right: 48))
         }
+//        moreButton.snp.makeConstraints{
+//            $0.centerY.equalToSuperview()
+//            $0.trailing.equalToSuperview()
+//        }
+        
     }
-    //MARK: - API
-
+    //MARK: - 멤버
     var groupID : Int = 0 //그룹 아이디
     private var userData : [UserList] = [] //유저 데이터
     private var memberCount : Int = 0
     private var collectionViewHeight: CGFloat = 87
-    private var memoViewHeightConstraint: Constraint?
     
     func ConfigureMember(_ userList: [UserList]) {
         self.memberCount = userList.count
@@ -434,44 +442,75 @@ class AlarmTableViewCell : UITableViewCell, UISheetPresentationControllerDelegat
         
         return maxHeight
     }
-    //MARK: - memoViewUI
+    
+    //MARK: - 메모View UI
     func updateMemoViewHeight() {
         let baseHeight: CGFloat = 49 // 1줄일 때의 기본 높이
-        let maxWidth = memoView.frame.width - 32 // 좌우 패딩 16씩 제외
-        let lineHeight: CGFloat = 17 // 한 줄의 높이 (폰트 크기 + 약간의 여유)
-
+        let maxWidth = memoView.frame.width - 96 // 좌우 패딩 16씩 제외
+        
         let size = memoLabel.sizeThatFits(CGSize(width: maxWidth, height: .greatestFiniteMagnitude))
-        let numberOfLines = max(1, Int(ceil(size.height / lineHeight)))
-
-        let newHeight = baseHeight + CGFloat(max(0, numberOfLines - 1)) * lineHeight
-
+        let newHeight = isExpanded ? size.height + 32 : min(baseHeight, size.height + 32) // 32는 상하 패딩
+        
         memoView.snp.updateConstraints {
             $0.height.equalTo(newHeight)
         }
-
-        // 셀의 레이아웃을 업데이트합니다.
+        
         self.setNeedsLayout()
         self.layoutIfNeeded()
-
-        // 테이블 뷰의 레이아웃을 업데이트합니다.
+        
         if let tableView = self.superview as? UITableView {
             tableView.beginUpdates()
             tableView.endUpdates()
         }
     }
-
+    
+    //MARK: - 메모LabelUI
+    var fullText: String = ""
+    var isExpanded = false
+    
     func setMemoText(_ text: String) {
-        memoLabel.text = text
-        DispatchQueue.main.async { [weak self] in
-            self?.updateMemoViewHeight()
+        fullText = text
+        isExpanded = false
+        updateMemoLabel()
+    }
+    
+    func updateMemoLabel() {
+        let maxWidth = memoView.frame.width - 96 // 좌우 패딩 48씩 제외
+        
+        // 텍스트가 1줄을 초과하는지 확인
+        let size = (fullText as NSString).boundingRect(
+            with: CGSize(width: maxWidth, height: .greatestFiniteMagnitude),
+            options: .usesLineFragmentOrigin,
+            attributes: [.font: memoLabel.font!],
+            context: nil
+        )
+        
+        let isMultiline = size.height > memoLabel.font.lineHeight
+        
+        if isMultiline {
+            if isExpanded {
+                memoLabel.numberOfLines = 0
+                memoLabel.text = fullText
+            } else {
+                memoLabel.numberOfLines = 1
+//                let truncatedText = memoLabel.truncateText(fullText, width: maxWidth, font: memoLabel.font)
+            }
+        } else {
+            memoLabel.numberOfLines = 1
+            memoLabel.text = fullText
         }
+        
+        updateMemoViewHeight()
     }
 
 
 
-
     
-
+    //MARK: - 더보기 탭
+    @objc func memoLabelTapped() {
+        isExpanded.toggle()
+        updateMemoLabel()
+    }
     
     
     //MARK: - objc func

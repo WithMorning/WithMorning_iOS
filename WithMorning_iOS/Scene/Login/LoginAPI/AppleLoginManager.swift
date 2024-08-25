@@ -118,8 +118,8 @@ extension AppleLoginManager : ASAuthorizationControllerDelegate {
                             }
                             
                             self.registerUserInfo.loginState = .login
-//                            print("🔥KeyChain에 저장된 accessToken : ", KeyChain.read(key: "accessToken") ?? "")
-//                            print("🔥KeyChain에 저장된 refreshToken : ",KeyChain.read(key: "refreshToken") ?? "")
+                            print("🔥KeyChain에 저장된 accessToken : ", KeyChain.read(key: "accessToken") ?? "")
+                            print("🔥KeyChain에 저장된 refreshToken : ",KeyChain.read(key: "refreshToken") ?? "")
                         }
                         
                     }

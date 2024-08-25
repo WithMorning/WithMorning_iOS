@@ -46,7 +46,7 @@ struct getTokenResponse: Codable {
 }
 
 struct getTokenData: Codable {
-    let accessToken, refreshToken: String?
+    let accessToken: String?
 }
 
 

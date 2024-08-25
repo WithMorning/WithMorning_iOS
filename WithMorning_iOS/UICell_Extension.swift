@@ -1,5 +1,5 @@
 //
-//  UIcell_Extension.swift
+//  UICell_Extension.swift
 //  WithMorning_iOS
 //
 //  Created by 안세훈 on 8/15/24.

@@ -37,9 +37,14 @@ struct Mainpage: Codable {
 }
 
 struct MainpageResponse: Codable {
-    let connectorProfileURL: String
+    let 커넥터ID, connectorProfileURL: String
     let groupList: [GroupList]?
     let listSize: Int
+    
+    enum CodingKeys: String, CodingKey {
+        case 커넥터ID = "커넥터 id"
+        case connectorProfileURL, groupList, listSize
+    }
 }
 
 struct GroupList: Codable {

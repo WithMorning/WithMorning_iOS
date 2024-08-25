@@ -19,14 +19,14 @@ enum LoginRouter : URLRequestConvertible{
     var endPoint: String {
         switch self {
         case .AppleLogin : return "/login/oauth/apple"
-        case .getNewAccessToken(refreshToken: let refreshToken): return "/accesstoken"
+        case .getNewAccessToken: return "/accesstoken"
         }
     }
     
     //헤더
     var headers: HTTPHeaders {
         switch self {
-        case.getNewAccessToken: return HTTPHeaders(["accept" : "application/json", "Content-Type" : "application/json"])
+        case.getNewAccessToken(let refreshToken): return HTTPHeaders(["accept" : "application/json", "Content-Type" : "application/json", "RefreshToken" : refreshToken])
         default: return HTTPHeaders(["accept" : "application/json", "Content-Type" : "application/json"])
         }
     }
@@ -60,7 +60,7 @@ enum LoginRouter : URLRequestConvertible{
         switch self {
         case .AppleLogin(let data):
             request = try JSONParameterEncoder().encode(data, into: request)
-        case .getNewAccessToken(refreshToken: let refreshToken):
+        case .getNewAccessToken:
             request = try URLEncoding.queryString.encode(request, with: parameters)
         }
         //request = try URLEncoding.queryString.encode(request, with: parameters)

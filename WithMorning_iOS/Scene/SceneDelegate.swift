@@ -33,11 +33,13 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
                 }
             } else {
                 // loginState가 nil인 경우 (로그아웃 상태)
+                
                 if refreshToken != "" {
                     print("🔥KeyChain에 저장된 accessToken : ", KeyChain.read(key: "accessToken") ?? "")
                     print("🔥KeyChain에 저장된 refreshToken : ",KeyChain.read(key: "refreshToken") ?? "")
                     // refreshToken이 있으면 자동 로그인
-                    self.setRootViewContrller(scene, type: .joined)
+                    self.setRootViewContrller(scene, type: .login)
+                    
                 } else if Storage.isFirstTime() {
                     self.setRootViewContrller(scene, type: .termAgree)
                 } else {
@@ -80,7 +82,6 @@ func sceneDidEnterBackground(_ scene: UIScene) {
 }
 
 //MARK: - 상태
-
 enum rootViewController {
     case login
     case joined
@@ -90,7 +91,6 @@ enum rootViewController {
     var vc : UIViewController{
         switch self{
         case .login : return LoginViewController()
-            //        case .login : return LoginViewController()
         case .joined: return MainViewController()
         case .termAgree: return OnBoardingFirstViewController()
             //        case .onBoarding: return OnBoardingTutorialViewController()
@@ -119,7 +119,7 @@ extension SceneDelegate{
             setRootViewContrller(scene, type: .login)
         }
     }
-    
+    //MARK: - 데이터 타입을 확인하고 문제가 뷰컨을 교체해줍니당
     private func setRootViewContrller(_ scene: UIScene, type: rootViewController) {
         if let windowScene = scene as? UIWindowScene {
             DispatchQueue.main.async {
