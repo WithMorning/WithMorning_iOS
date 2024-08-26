@@ -261,7 +261,8 @@ class MainViewController: UIViewController, UISheetPresentationControllerDelegat
     
     //MARK: - API
     func getMainpage() {
-        APInetwork.getMainpage() { [weak self] result in
+        APInetwork.getMainpage() { 
+            [weak self] result in
             switch result {
             case .success(let mainpage):
                 self?.MainpageUpdate(with: mainpage)
@@ -321,7 +322,7 @@ extension MainViewController : UITableViewDelegate, UITableViewDataSource{
             let days = ["mon", "tue", "wed", "thu", "fri", "sat", "sun"]
             
             for (index, dayLabel) in dayLabels.enumerated() {
-                if alarm.dayOfWeekList.contains(days[index]) {
+                if (((alarm.dayOfWeekList?.contains(days[index]))) != nil) {
                     dayLabel.backgroundColor = DesignSystemColor.Orange500.value
                     dayLabel.textColor = .white
                 } else {

@@ -26,8 +26,10 @@ enum LoginRouter : URLRequestConvertible{
     //헤더
     var headers: HTTPHeaders {
         switch self {
-        case.getNewAccessToken(let refreshToken): return HTTPHeaders(["accept" : "application/json", "Content-Type" : "application/json", "RefreshToken" : refreshToken])
-        default: return HTTPHeaders(["accept" : "application/json", "Content-Type" : "application/json"])
+            case.getNewAccessToken(let refreshToken):
+            return HTTPHeaders(["accept" : "application/json", "Content-Type" : "application/json", "refreshToken" : refreshToken])
+        default:
+            return HTTPHeaders(["accept" : "application/json", "Content-Type" : "application/json"])
         }
     }
     
@@ -35,7 +37,6 @@ enum LoginRouter : URLRequestConvertible{
     //어떤 방식(get, post, delete, update)
     var method: HTTPMethod {
         return .post
-        
     }
     
     var parameters: Parameters {

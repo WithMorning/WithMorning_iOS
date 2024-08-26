@@ -39,6 +39,7 @@ class Network{
                 switch response.result {
                 case .failure(let error):
                     print(#fileID, #function, #line, "- error: \(error.localizedDescription)")
+                    print(response.response?.statusCode ?? "")
                 case .success(let data):
                     print(#fileID, #function, #line, "- ⭐️메인페이지 조회 성공")
                     if let result = data.result {

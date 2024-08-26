@@ -36,36 +36,34 @@ struct Mainpage: Codable {
     let result: MainpageResponse?
 }
 
+// MARK: - Result
 struct MainpageResponse: Codable {
-    let 커넥터ID, connectorProfileURL: String
+    let connectorProfileURL: String
     let groupList: [GroupList]?
     let listSize: Int
-    
-    enum CodingKeys: String, CodingKey {
-        case 커넥터ID = "커넥터 id"
-        case connectorProfileURL, groupList, listSize
-    }
 }
 
+// MARK: - GroupList
 struct GroupList: Codable {
     let groupID: Int
     let name, wakeupTime: String
-    let dayOfWeekList: [String]
+    let dayOfWeekList: [String]?
     let userList: [UserList]?
     let memo: String
-    
+
     enum CodingKeys: String, CodingKey {
         case groupID = "groupId"
         case name, wakeupTime, dayOfWeekList, userList, memo
     }
 }
 
+// MARK: - UserList
 struct UserList: Codable {
     let userID: Int
     let imageURL, nickname: String
     let isWakeup, isDisturbBanMode: Bool
     let phone: String
-    
+
     enum CodingKeys: String, CodingKey {
         case userID = "userId"
         case imageURL, nickname, isWakeup, isDisturbBanMode, phone

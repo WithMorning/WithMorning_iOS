@@ -11,7 +11,7 @@ import Alamofire
 private let BaseURL = "https://withmorning.site"
 
 let userId = 1
-
+//let Authorization = "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiI2IiwiaWF0IjoxNzI0NjU5OTc2LCJleHAiOjE3MjQ2NjAxNTZ9.ffSEht-PiKPyCUQ7UOL6UQNDJcWmMJVP6tzEy8vEqvY"
 enum Router : URLRequestConvertible{
     
     case getmypage                                     
@@ -29,7 +29,7 @@ enum Router : URLRequestConvertible{
     var headers: HTTPHeaders {
         switch self {
 //        default: return HTTPHeaders(["accept":"application/json", "userId":"\(userId)"])
-        default: return HTTPHeaders(["accept":"application/json"])
+        default: return HTTPHeaders(["accept":"application/json", "Content-Type" : "application/json"])
         }
     }
     
@@ -63,8 +63,8 @@ enum Router : URLRequestConvertible{
         
         switch self {
         case .getmypage: request = try URLEncoding.queryString.encode(request, with: parameters)
-            
         case .getmainpage: request = try URLEncoding.queryString.encode(request, with: parameters)
+            
         }
         //request = try URLEncoding.queryString.encode(request, with: parameters)
         //이 인코딩 방식은 GET 요청 또는 URL 쿼리 매개변수를 전송할 때 사용

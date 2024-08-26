@@ -18,7 +18,7 @@ class AuthInterceptor : RequestInterceptor{
             return
         }
         print("🔑 adapt - 요청에 엑세스 토큰 추가: \(accessToken)")
-        urlRequest.headers.add(.authorization(bearerToken:accessToken))
+        urlRequest.headers.add(.authorization(bearerToken: accessToken))
         completion(.success(urlRequest))
     }
     
@@ -28,17 +28,15 @@ class AuthInterceptor : RequestInterceptor{
             print("❌ retry - HTTP 응답을 가져올 수 없습니다")
             return
         }
-        
         print("📊 retry - 응답 상태 코드: \(response.statusCode)")
         
+        //MARK: - 재발급 시도
         if response.statusCode == 9104 {
             print("🚨 retry - 엑세스 토큰 만료. 갱신 시도 중...")
-            
             guard let refreshToken = KeyChain.read(key: "refreshToken") else {
                 print("⚠️ retry - KeyChain에서 리프레시 토큰을 찾을 수 없습니다")
                 return
             }
-            
             print("🔄 retry - 사용 중인 리프레시 토큰: \(refreshToken)")
             
             AF.request(LoginRouter.getNewAccessToken(refreshToken: refreshToken))
@@ -68,7 +66,6 @@ class AuthInterceptor : RequestInterceptor{
             print("ℹ️ retry - 토큰 갱신이 필요하지 않습니다")
             completion(.doNotRetry)
         }
-        
         print("📌 현재 KeyChain의 엑세스 토큰: \(KeyChain.read(key: "accessToken") ?? "없음")")
         print("📌 현재 KeyChain의 리프레시 토큰: \(KeyChain.read(key: "refreshToken") ?? "없음")")
     }

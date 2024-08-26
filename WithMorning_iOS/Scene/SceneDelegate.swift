@@ -38,7 +38,7 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
                     print("🔥KeyChain에 저장된 accessToken : ", KeyChain.read(key: "accessToken") ?? "")
                     print("🔥KeyChain에 저장된 refreshToken : ",KeyChain.read(key: "refreshToken") ?? "")
                     // refreshToken이 있으면 자동 로그인
-                    self.setRootViewContrller(scene, type: .login)
+                    self.setRootViewContrller(scene, type: .login) //joined 바로 메인조회, login 토큰받고 메인
                     
                 } else if Storage.isFirstTime() {
                     self.setRootViewContrller(scene, type: .termAgree)
