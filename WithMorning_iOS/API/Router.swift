@@ -26,7 +26,7 @@ enum Router : URLRequestConvertible{
     }
     
     //헤더
-    var headers: HTTPHeaders {
+    var headers: HTTPHeaders { 
         switch self {
 //        default: return HTTPHeaders(["accept":"application/json", "userId":"\(userId)"])
         default: return HTTPHeaders(["accept":"application/json", "Content-Type" : "application/json"])
