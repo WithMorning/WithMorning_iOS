@@ -272,6 +272,7 @@ class MainViewController: UIViewController, UISheetPresentationControllerDelegat
             }
         }
     }
+
     
     
     func MainpageUpdate(with mainpage: MainpageResponse){
@@ -305,7 +306,8 @@ extension MainViewController : UITableViewDelegate, UITableViewDataSource{
         cell.backgroundColor = .clear
         
         cell.topViewLabel.text = alarm.name
-        cell.setMemoText(alarm.memo + "아아 마이크테스트 마이크테스트 줄 바꿈 테스트")
+        cell.setMemoText(alarm.memo + "아침에 하고 싶은 말 또는 패널티를 정해주세요.아침에 하고 싶은 말 또는 패널티를 정해주세요.아침에 하고 싶은 말 또는 패널티를 정해주세요.")
+        
         cell.ConfigureMember(alarm.userList ?? [])
         cell.timeLabel.text = alarm.wakeupTime
         cell.groupID = alarm.groupID

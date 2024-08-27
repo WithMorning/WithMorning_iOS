@@ -8,7 +8,7 @@
 import Foundation
 import Alamofire
 
-private let BaseURL = "https://withmorning.site"
+private let BaseURL = "https://withmorning.site/"
 
 enum LoginRouter : URLRequestConvertible{
     
@@ -18,8 +18,8 @@ enum LoginRouter : URLRequestConvertible{
     // url가르기
     var endPoint: String {
         switch self {
-        case .AppleLogin : return "/login/oauth/apple"
-        case .getNewAccessToken: return "/accesstoken"
+        case .AppleLogin : return "login/oauth/apple"
+        case .getNewAccessToken: return "accesstoken"
         }
     }
     

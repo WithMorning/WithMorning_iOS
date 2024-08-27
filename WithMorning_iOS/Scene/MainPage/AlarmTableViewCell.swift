@@ -204,6 +204,7 @@ class AlarmTableViewCell : UITableViewCell, UISheetPresentationControllerDelegat
         view.delegate = self
         view.register(memberCollectioViewCell.self, forCellWithReuseIdentifier: "memberCollectioViewCell")
         view.isScrollEnabled = false
+        view.backgroundColor = .gray
         
         return view
     }()
@@ -404,7 +405,7 @@ class AlarmTableViewCell : UITableViewCell, UISheetPresentationControllerDelegat
         memberCollectionView.snp.updateConstraints {
             $0.height.equalTo(contentHeight)
         }
-        
+
         
         contentView.setNeedsLayout()
         contentView.layoutIfNeeded()
@@ -413,10 +414,12 @@ class AlarmTableViewCell : UITableViewCell, UISheetPresentationControllerDelegat
             tableView.beginUpdates()
             tableView.endUpdates()
         }
+        print("콜렉션뷰 높이",contentHeight)
     }
     
     func calculateMaxCellHeight() -> CGFloat {
-        var maxHeight: CGFloat = 0
+        
+        var maxHeight: CGFloat = 104
         
         for i in 0..<memberCount {
             //여기에 추가하면 댐
@@ -436,7 +439,13 @@ class AlarmTableViewCell : UITableViewCell, UISheetPresentationControllerDelegat
             let imageHeight: CGFloat = 62
             let spacing: CGFloat = 8
             
-            let cellHeight = imageHeight + spacing + labelHeight
+            let cellHeight = imageHeight + spacing + labelHeight + 3
+            
+            print("전체 셀 높이",cellHeight)
+            print("이미지 높이",imageHeight)
+            print("간격 높이",spacing)
+            print("라벨 높이",labelHeight)
+            
             maxHeight = max(maxHeight, cellHeight)
         }
         
@@ -556,6 +565,7 @@ class AlarmTableViewCell : UITableViewCell, UISheetPresentationControllerDelegat
     
     //그룹내의 멤버 숫자
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
+
         return memberCount
     }
     
@@ -663,7 +673,6 @@ class memberCollectioViewCell: UICollectionViewCell {
         }
     }
     //MARK: - 닉네임 설정
-    
     func configure(with nickname: String) {
         memberLabel.text = nickname
         setNeedsLayout()

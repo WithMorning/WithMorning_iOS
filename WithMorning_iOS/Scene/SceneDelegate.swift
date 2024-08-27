@@ -38,7 +38,7 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
                     print("🔥KeyChain에 저장된 accessToken : ", KeyChain.read(key: "accessToken") ?? "")
                     print("🔥KeyChain에 저장된 refreshToken : ",KeyChain.read(key: "refreshToken") ?? "")
                     // refreshToken이 있으면 자동 로그인
-                    self.setRootViewContrller(scene, type: .login) //joined 바로 메인조회, login 토큰받고 메인
+                    self.setRootViewContrller(scene, type: .joined) //joined 바로 메인조회, login 토큰받고 메인
                     
                 } else if Storage.isFirstTime() {
                     self.setRootViewContrller(scene, type: .termAgree)
@@ -86,12 +86,14 @@ enum rootViewController {
     case login
     case joined
     case termAgree
+    case mypage
     //    case onBoarding
     
     var vc : UIViewController{
         switch self{
         case .login : return LoginViewController()
         case .joined: return MainViewController()
+        case .mypage: return MyPageViewController()
         case .termAgree: return OnBoardingFirstViewController()
             //        case .onBoarding: return OnBoardingTutorialViewController()
         }
@@ -122,6 +124,7 @@ extension SceneDelegate{
     //MARK: - 데이터 타입을 확인하고 문제가 뷰컨을 교체해줍니당
     private func setRootViewContrller(_ scene: UIScene, type: rootViewController) {
         if let windowScene = scene as? UIWindowScene {
+            
             DispatchQueue.main.async {
                 let window = UIWindow(windowScene: windowScene)
                 print(#fileID, #function, #line, "- 어떤 type의 data인지 확인하기⭐️: \(type)")
@@ -131,6 +134,11 @@ extension SceneDelegate{
                     window.rootViewController = navigationController
                 } else {
                     window.rootViewController = type.vc //그에 맞게 Rootview를 변경해준다
+                }
+                
+                if type == .joined {
+                    let navigationController = UINavigationController(rootViewController: type.vc)
+                    navigationController.setNavigationBarHidden(true, animated: false)
                 }
                 
                 self.window = window
