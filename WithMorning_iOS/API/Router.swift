@@ -11,7 +11,7 @@ import Alamofire
 private let BaseURL = "https://withmorning.site/"
 
 let Authorization =  "Bearer " +
-"eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiI2IiwiaWF0IjoxNzI0NzU1NzE5LCJleHAiOjE3MjQ3NTU4OTl9.549jyN7XzZ-YlGJUPW7M1jU6gVK65gK3vc_07KNnRe8"
+"eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiI2IiwiaWF0IjoxNzI0Nzc2NTQ5LCJleHAiOjE3MjQ3NzY3Mjl9.ZS5di7RzgWDeP_UPzIMXnMKYmzR0cPKip7D7ufhUiGc"
 
 enum Router : URLRequestConvertible{
     
