@@ -20,7 +20,6 @@ class AuthInterceptor : RequestInterceptor{
         
         print("🔑 adapt - 요청에 엑세스 토큰 추가: \(accessToken)")
         urlRequest.headers.add(.authorization(bearerToken: accessToken))
-        print("🔑 adapt - 요청 헤더: \(urlRequest.allHTTPHeaderFields ?? [:])")
         completion(.success(urlRequest))
     }
 }

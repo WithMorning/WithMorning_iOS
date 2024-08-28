@@ -384,28 +384,23 @@ class AlarmTableViewCell : UITableViewCell, UISheetPresentationControllerDelegat
         // 최대 셀 높이 계산
         collectionViewHeight = calculateMaxCellHeight()
         
-        self.memberCollectionView.reloadData()
-        
-        // 레이아웃 업데이트
-        DispatchQueue.main.async {
-            self.updateMemoViewHeight()
+        DispatchQueue.main.async { [weak self] in
+            guard let self = self else { return }
+            self.memberCollectionView.reloadData()
             self.updateCollectionViewHeight()
-            
+            self.updateMemoViewHeight()
         }
-        
     }
     
     //MARK: - 유저 collectionview UI
     func updateCollectionViewHeight() {
-        memberCollectionView.collectionViewLayout.invalidateLayout()
         memberCollectionView.layoutIfNeeded()
         
-        let contentHeight = memberCollectionView.collectionViewLayout.collectionViewContentSize.height
+        let height = collectionViewHeight
         
         memberCollectionView.snp.updateConstraints {
-            $0.height.equalTo(contentHeight)
+            $0.height.equalTo(height)
         }
-
         
         contentView.setNeedsLayout()
         contentView.layoutIfNeeded()
@@ -414,16 +409,15 @@ class AlarmTableViewCell : UITableViewCell, UISheetPresentationControllerDelegat
             tableView.beginUpdates()
             tableView.endUpdates()
         }
-        print("콜렉션뷰 높이",contentHeight)
+        
+        print("콜렉션뷰 높이", height)
     }
     
     func calculateMaxCellHeight() -> CGFloat {
-        
-        var maxHeight: CGFloat = 104
+        var maxHeight: CGFloat = 0
         
         for i in 0..<memberCount {
-            //여기에 추가하면 댐
-            let text = userData[i].nickname
+            let text = userData[i].nickname // 실제 표시되는 텍스트를 사용
             
             let font = DesignSystemFont.Pretendard_SemiBold12.value
             let maxWidth: CGFloat = 62
@@ -435,16 +429,11 @@ class AlarmTableViewCell : UITableViewCell, UISheetPresentationControllerDelegat
                 context: nil
             ).size
             
-            let labelHeight = min(ceil(textSize.height), 34)
+            let labelHeight = ceil(textSize.height)
             let imageHeight: CGFloat = 62
             let spacing: CGFloat = 8
             
-            let cellHeight = imageHeight + spacing + labelHeight + 3
-            
-            print("전체 셀 높이",cellHeight)
-            print("이미지 높이",imageHeight)
-            print("간격 높이",spacing)
-            print("라벨 높이",labelHeight)
+            let cellHeight = imageHeight + spacing + labelHeight
             
             maxHeight = max(maxHeight, cellHeight)
         }
@@ -502,7 +491,6 @@ class AlarmTableViewCell : UITableViewCell, UISheetPresentationControllerDelegat
                 memoLabel.text = fullText
             } else {
                 memoLabel.numberOfLines = 1
-//                let truncatedText = memoLabel.truncateText(fullText, width: maxWidth, font: memoLabel.font)
             }
         } else {
             memoLabel.numberOfLines = 1
@@ -575,11 +563,30 @@ class AlarmTableViewCell : UITableViewCell, UISheetPresentationControllerDelegat
         
         let userlistData = userData[indexPath.item]
         cell.configure(with: userlistData.nickname)
+        cell.backgroundColor = .blue
         return cell
     }
     
     //그룹내의 셀 크기 = 이미지 + 라벨
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
+        
+//        let nickname = userData[indexPath.item].nickname
+//            let font = DesignSystemFont.Pretendard_SemiBold12.value
+//            let maxWidth: CGFloat = 62
+//            
+//            let textSize = (nickname as NSString).boundingRect(
+//                with: CGSize(width: maxWidth, height: .greatestFiniteMagnitude),
+//                options: [.usesLineFragmentOrigin, .usesFontLeading],
+//                attributes: [NSAttributedString.Key.font: font],
+//                context: nil
+//            ).size
+//            
+//            let labelHeight = ceil(textSize.height)
+//            let imageHeight: CGFloat = 62
+//            let spacing: CGFloat = 8
+//            
+//            let cellHeight = imageHeight + spacing + labelHeight
+        
         return CGSize(width: 62, height: collectionViewHeight)
     }
     
@@ -611,7 +618,6 @@ class AlarmTableViewCell : UITableViewCell, UISheetPresentationControllerDelegat
         vc.userphoneNum = userData[indexPath.item].phone
         
         print(userData[indexPath.item])
-        
         if let vc = vc.sheetPresentationController{
             if #available(iOS 16.0, *) {
                 vc.detents = [.custom { context in
@@ -636,6 +642,7 @@ class memberCollectioViewCell: UICollectionViewCell {
         view.image = UIImage(systemName: "person.circle.fill")
         view.layer.cornerRadius = 31
         view.tintColor = .white
+        view.contentMode = .scaleAspectFit
         return view
     }()
     
@@ -674,7 +681,7 @@ class memberCollectioViewCell: UICollectionViewCell {
     }
     //MARK: - 닉네임 설정
     func configure(with nickname: String) {
-        memberLabel.text = nickname
+        memberLabel.text = nickname + "글자수에 제한이 있나 약간 그냥 시험용 테스트 입니다. 원래 글자는 10글자 내외입니다."
         setNeedsLayout()
         layoutIfNeeded()
     }

@@ -266,7 +266,6 @@ class MainViewController: UIViewController, UISheetPresentationControllerDelegat
             switch result {
             case .success(let mainpage):
                 self?.MainpageUpdate(with: mainpage)
-                print()
             case .failure(let error):
                 print(error)
             }
@@ -306,7 +305,7 @@ extension MainViewController : UITableViewDelegate, UITableViewDataSource{
         cell.backgroundColor = .clear
         
         cell.topViewLabel.text = alarm.name
-        cell.setMemoText(alarm.memo + "아침에 하고 싶은 말 또는 패널티를 정해주세요.아침에 하고 싶은 말 또는 패널티를 정해주세요.아침에 하고 싶은 말 또는 패널티를 정해주세요.")
+        cell.setMemoText(alarm.memo + "아침에 하고 싶은 말 또는 패널티를 정해주세요.아침에 하고 싶은 말 또는 패널티를 정해주세요.")
         
         cell.ConfigureMember(alarm.userList ?? [])
         cell.timeLabel.text = alarm.wakeupTime
@@ -324,7 +323,7 @@ extension MainViewController : UITableViewDelegate, UITableViewDataSource{
             let days = ["mon", "tue", "wed", "thu", "fri", "sat", "sun"]
             
             for (index, dayLabel) in dayLabels.enumerated() {
-                if (((alarm.dayOfWeekList.contains(days[index]))) != nil) {
+                if (((alarm.dayOfWeekList?.contains(days[index]))) != nil) {
                     dayLabel.backgroundColor = DesignSystemColor.Orange500.value
                     dayLabel.textColor = .white
                 } else {
