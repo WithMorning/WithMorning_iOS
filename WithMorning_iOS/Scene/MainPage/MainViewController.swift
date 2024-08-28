@@ -266,9 +266,9 @@ class MainViewController: UIViewController, UISheetPresentationControllerDelegat
             switch result {
             case .success(let mainpage):
                 self?.MainpageUpdate(with: mainpage)
-                print(mainpage)
+                print()
             case .failure(let error):
-                print("뷰컨에서 failure", error)
+                print(error)
             }
         }
     }
@@ -324,7 +324,7 @@ extension MainViewController : UITableViewDelegate, UITableViewDataSource{
             let days = ["mon", "tue", "wed", "thu", "fri", "sat", "sun"]
             
             for (index, dayLabel) in dayLabels.enumerated() {
-                if (((alarm.dayOfWeekList?.contains(days[index]))) != nil) {
+                if (((alarm.dayOfWeekList.contains(days[index]))) != nil) {
                     dayLabel.backgroundColor = DesignSystemColor.Orange500.value
                     dayLabel.textColor = .white
                 } else {

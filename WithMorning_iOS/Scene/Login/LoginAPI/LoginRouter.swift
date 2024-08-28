@@ -8,7 +8,7 @@
 import Foundation
 import Alamofire
 
-private let BaseURL = "https://withmorning.site/"
+private let BaseURL = "https://withmorning.site"
 
 enum LoginRouter : URLRequestConvertible{
     
@@ -18,21 +18,20 @@ enum LoginRouter : URLRequestConvertible{
     // url가르기
     var endPoint: String {
         switch self {
-        case .AppleLogin : return "login/oauth/apple"
-        case .getNewAccessToken: return "accesstoken"
+        case .AppleLogin : return "/login/oauth/apple"
+        case .getNewAccessToken: return "/accesstoken"
         }
     }
     
     //헤더
     var headers: HTTPHeaders {
         switch self {
-            case.getNewAccessToken(let refreshToken):
-            return HTTPHeaders(["accept" : "application/json", "Content-Type" : "application/json", "refreshToken" : refreshToken])
+            case.getNewAccessToken:
+            return HTTPHeaders(["accept" : "application/json", "Content-Type" : "application/json"])
         default:
             return HTTPHeaders(["accept" : "application/json", "Content-Type" : "application/json"])
         }
     }
-    
     
     //어떤 방식(get, post, delete, update)
     var method: HTTPMethod {
@@ -61,8 +60,10 @@ enum LoginRouter : URLRequestConvertible{
         switch self {
         case .AppleLogin(let data):
             request = try JSONParameterEncoder().encode(data, into: request)
-        case .getNewAccessToken:
-            request = try URLEncoding.queryString.encode(request, with: parameters)
+//        case .getNewAccessToken:
+//            request = try URLEncoding.queryString.encode(request, with: parameters)
+        case .getNewAccessToken(let refreshToken):
+            request = try JSONParameterEncoder().encode(refreshToken, into: request)
         }
         //request = try URLEncoding.queryString.encode(request, with: parameters)
         //이 인코딩 방식은 GET 요청 또는 URL 쿼리 매개변수를 전송할 때 사용

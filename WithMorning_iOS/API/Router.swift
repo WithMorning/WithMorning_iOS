@@ -8,10 +8,10 @@
 import Foundation
 import Alamofire
 
-private let BaseURL = "https://withmorning.site/"
+private let BaseURL = "https://withmorning.site"
 
-let Authorization =  "Bearer " +
-"eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiI2IiwiaWF0IjoxNzI0Nzc2NTQ5LCJleHAiOjE3MjQ3NzY3Mjl9.ZS5di7RzgWDeP_UPzIMXnMKYmzR0cPKip7D7ufhUiGc"
+//let Authorization =  "Bearer " +
+//"eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiI2IiwiaWF0IjoxNzI0ODE3NTQ5LCJleHAiOjE3MjQ4MTc3Mjl9.zCyQHWXXa5dxMb2rmYXgyqc3ofLmftUIK_4_qccXq9A"
 
 enum Router : URLRequestConvertible{
     
@@ -21,16 +21,16 @@ enum Router : URLRequestConvertible{
     // url가르기
     var endPoint: String {
         switch self {
-        case .getmypage: return "user/mypage"
-        case .getmainpage: return "home"
+        case .getmypage: return "/user/mypage"
+        case .getmainpage: return "/home"
         }
     }
     
     //헤더
     var headers: HTTPHeaders { 
         switch self {
-        default: return HTTPHeaders(["accept":"application/json", "Authorization":"\(Authorization)"])
-//        default: return HTTPHeaders(["accept":"application/json", "Content-Type" : "application/json"])
+//        default: return HTTPHeaders(["accept":"application/json", "Authorization":"\(Authorization)"])
+        default: return HTTPHeaders(["accept":"application/json", "Content-Type" : "application/json"])
         }
     }
     

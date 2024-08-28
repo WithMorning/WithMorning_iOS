@@ -38,15 +38,12 @@ struct AppleloginFailResponse: Codable {
 }
 
 //MARK: - 리프레쉬로 엑세스 재발급
-struct getTokenResponse: Codable {
+struct getToken: Codable {
     let isSuccess: Bool
     let code: Int
     let message: String
-    let result: getTokenData?
+    let result: getTokenResponse?
 }
-
-struct getTokenData: Codable {
+struct getTokenResponse: Codable {
     let accessToken: String?
 }
-
-

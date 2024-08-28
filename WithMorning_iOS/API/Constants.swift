@@ -36,9 +36,8 @@ struct Mainpage: Codable {
     let result: MainpageResponse?
 }
 
-// MARK: - Result
 struct MainpageResponse: Codable {
-    let connectorProfileURL: String
+    let connectorProfileURL: String?
     let groupList: [GroupList]?
     let listSize: Int
 }
@@ -47,7 +46,7 @@ struct MainpageResponse: Codable {
 struct GroupList: Codable {
     let groupID: Int
     let name, wakeupTime: String
-    let dayOfWeekList: [String]?
+    let dayOfWeekList: [String]
     let userList: [UserList]?
     let memo: String
 
