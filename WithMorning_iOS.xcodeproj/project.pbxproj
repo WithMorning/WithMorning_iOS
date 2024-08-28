@@ -34,7 +34,7 @@
 		D15D60C72BCA8BC3009C0874 /* AlarmTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = D15D60C62BCA8BC3009C0874 /* AlarmTableViewCell.swift */; };
 		D16B609B2C65EF190039B99A /* UISlider_Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = D16B609A2C65EF190039B99A /* UISlider_Extension.swift */; };
 		D16F5FD12BC65671006640F9 /* Network.swift in Sources */ = {isa = PBXBuildFile; fileRef = D16F5FD02BC65671006640F9 /* Network.swift */; };
-		D16F5FD32BC65679006640F9 /* Constants.swift in Sources */ = {isa = PBXBuildFile; fileRef = D16F5FD22BC65679006640F9 /* Constants.swift */; };
+		D16F5FD32BC65679006640F9 /* Model.swift in Sources */ = {isa = PBXBuildFile; fileRef = D16F5FD22BC65679006640F9 /* Model.swift */; };
 		D16F5FD52BC65680006640F9 /* Router.swift in Sources */ = {isa = PBXBuildFile; fileRef = D16F5FD42BC65680006640F9 /* Router.swift */; };
 		D1773F892BC988AB005C82FA /* UIFont_Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = D1773F882BC988AB005C82FA /* UIFont_Extension.swift */; };
 		D18288CB2C7EF45800BDAB3A /* Error.swift in Sources */ = {isa = PBXBuildFile; fileRef = D18288CA2C7EF45800BDAB3A /* Error.swift */; };
@@ -107,7 +107,7 @@
 		D15D60C62BCA8BC3009C0874 /* AlarmTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AlarmTableViewCell.swift; sourceTree = "<group>"; };
 		D16B609A2C65EF190039B99A /* UISlider_Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UISlider_Extension.swift; sourceTree = "<group>"; };
 		D16F5FD02BC65671006640F9 /* Network.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Network.swift; sourceTree = "<group>"; };
-		D16F5FD22BC65679006640F9 /* Constants.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Constants.swift; sourceTree = "<group>"; };
+		D16F5FD22BC65679006640F9 /* Model.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Model.swift; sourceTree = "<group>"; };
 		D16F5FD42BC65680006640F9 /* Router.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Router.swift; sourceTree = "<group>"; };
 		D1773F882BC988AB005C82FA /* UIFont_Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIFont_Extension.swift; sourceTree = "<group>"; };
 		D18288CA2C7EF45800BDAB3A /* Error.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Error.swift; sourceTree = "<group>"; };
@@ -333,7 +333,7 @@
 			isa = PBXGroup;
 			children = (
 				D16F5FD02BC65671006640F9 /* Network.swift */,
-				D16F5FD22BC65679006640F9 /* Constants.swift */,
+				D16F5FD22BC65679006640F9 /* Model.swift */,
 				D16F5FD42BC65680006640F9 /* Router.swift */,
 				D18288CA2C7EF45800BDAB3A /* Error.swift */,
 			);
@@ -562,7 +562,7 @@
 				D1DB46E32C4BA10C00BDC3D8 /* OnBoardingRegisterViewController.swift in Sources */,
 				D12D513A2C60BC6300D3F1A9 /* AppleLoginManager.swift in Sources */,
 				D1B86A072C6F2EB40052F528 /* LoginRouter.swift in Sources */,
-				D16F5FD32BC65679006640F9 /* Constants.swift in Sources */,
+				D16F5FD32BC65679006640F9 /* Model.swift in Sources */,
 				D14A2D6C2BC8EB810087E0CB /* DesignSystem.swift in Sources */,
 				D12D51332C60BC0900D3F1A9 /* UserRouter.swift in Sources */,
 				D1ABF7962C5239E4008B5084 /* TutorialThirdViewController.swift in Sources */,

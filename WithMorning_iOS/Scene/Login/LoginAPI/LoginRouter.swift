@@ -60,8 +60,6 @@ enum LoginRouter : URLRequestConvertible{
         switch self {
         case .AppleLogin(let data):
             request = try JSONParameterEncoder().encode(data, into: request)
-//        case .getNewAccessToken:
-//            request = try URLEncoding.queryString.encode(request, with: parameters)
         case .getNewAccessToken(let refreshToken):
             request = try JSONParameterEncoder().encode(refreshToken, into: request)
         }

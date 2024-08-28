@@ -1,5 +1,5 @@
 //
-//  Constants.swift
+//  Model.swift
 //  WithMorning_iOS
 //
 //  Created by 안세훈 on 4/10/24.
@@ -46,7 +46,7 @@ struct MainpageResponse: Codable {
 struct GroupList: Codable {
     let groupID: Int
     let name, wakeupTime: String
-    let dayOfWeekList: [String]
+    let dayOfWeekList: [String]?
     let userList: [UserList]?
     let memo: String
 
