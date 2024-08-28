@@ -139,7 +139,11 @@ extension SceneDelegate{
                 if type == .joined {
                     let navigationController = UINavigationController(rootViewController: type.vc)
                     navigationController.setNavigationBarHidden(true, animated: false)
+                    window.rootViewController = navigationController
+                } else {
+                    window.rootViewController = type.vc //그에 맞게 Rootview를 변경해준다
                 }
+                
                 
                 self.window = window
                 window.makeKeyAndVisible()

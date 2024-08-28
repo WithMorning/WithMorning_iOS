@@ -204,8 +204,7 @@ class AlarmTableViewCell : UITableViewCell, UISheetPresentationControllerDelegat
         view.delegate = self
         view.register(memberCollectioViewCell.self, forCellWithReuseIdentifier: "memberCollectioViewCell")
         view.isScrollEnabled = false
-        view.backgroundColor = .gray
-        
+        view.backgroundColor = .blue
         return view
     }()
     
@@ -224,7 +223,6 @@ class AlarmTableViewCell : UITableViewCell, UISheetPresentationControllerDelegat
         label.textAlignment = .left
         label.numberOfLines = 0
         label.isUserInteractionEnabled = true
-//        label.backgroundColor = .green
         
         let tapGesture = UITapGestureRecognizer(target: self, action: #selector(memoLabelTapped))
         label.addGestureRecognizer(tapGesture)
@@ -360,22 +358,18 @@ class AlarmTableViewCell : UITableViewCell, UISheetPresentationControllerDelegat
         memoView.snp.makeConstraints{
             $0.top.equalTo(memberCollectionView.snp.bottom).offset(12)
             $0.leading.trailing.equalToSuperview().inset(20)
-            $0.height.greaterThanOrEqualTo(49)
         }
+        
         memoLabel.snp.makeConstraints{
             $0.edges.equalToSuperview().inset(UIEdgeInsets(top: 16, left: 48, bottom: 16, right: 48))
         }
-//        moreButton.snp.makeConstraints{
-//            $0.centerY.equalToSuperview()
-//            $0.trailing.equalToSuperview()
-//        }
         
     }
     //MARK: - 멤버
     var groupID : Int = 0 //그룹 아이디
     private var userData : [UserList] = [] //유저 데이터
     private var memberCount : Int = 0
-    private var collectionViewHeight: CGFloat = 87
+    private var collectionViewHeight: CGFloat = 90
     
     func ConfigureMember(_ userList: [UserList]) {
         self.memberCount = userList.count
@@ -385,14 +379,16 @@ class AlarmTableViewCell : UITableViewCell, UISheetPresentationControllerDelegat
         collectionViewHeight = calculateMaxCellHeight()
         
         DispatchQueue.main.async { [weak self] in
+            
             guard let self = self else { return }
+            
             self.memberCollectionView.reloadData()
             self.updateCollectionViewHeight()
             self.updateMemoViewHeight()
         }
     }
     
-    //MARK: - 유저 collectionview UI
+    //MARK: - collectionview 높이 계산
     func updateCollectionViewHeight() {
         memberCollectionView.layoutIfNeeded()
         
@@ -409,15 +405,17 @@ class AlarmTableViewCell : UITableViewCell, UISheetPresentationControllerDelegat
             tableView.beginUpdates()
             tableView.endUpdates()
         }
-        
-        print("콜렉션뷰 높이", height)
     }
+    //MARK: - collectionviewcell 높이계산
+
+    let dummyname = ["asd","asdasd","asdasdasd","asdasdasdasd"]
+    
     
     func calculateMaxCellHeight() -> CGFloat {
         var maxHeight: CGFloat = 0
         
         for i in 0..<memberCount {
-            let text = userData[i].nickname // 실제 표시되는 텍스트를 사용
+            let text = userData[i].nickname
             
             let font = DesignSystemFont.Pretendard_SemiBold12.value
             let maxWidth: CGFloat = 62
@@ -430,7 +428,7 @@ class AlarmTableViewCell : UITableViewCell, UISheetPresentationControllerDelegat
             ).size
             
             let labelHeight = ceil(textSize.height)
-            let imageHeight: CGFloat = 62
+            let imageHeight: CGFloat = 64
             let spacing: CGFloat = 8
             
             let cellHeight = imageHeight + spacing + labelHeight
@@ -441,7 +439,7 @@ class AlarmTableViewCell : UITableViewCell, UISheetPresentationControllerDelegat
         return maxHeight
     }
     
-    //MARK: - 메모View UI
+    //MARK: - 메모View 높이 계산
     func updateMemoViewHeight() {
         let baseHeight: CGFloat = 49 // 1줄일 때의 기본 높이
         let maxWidth = memoView.frame.width - 96 // 좌우 패딩 16씩 제외
@@ -450,7 +448,7 @@ class AlarmTableViewCell : UITableViewCell, UISheetPresentationControllerDelegat
         let newHeight = isExpanded ? size.height + 32 : min(baseHeight, size.height + 32) // 32는 상하 패딩
         
         memoView.snp.updateConstraints {
-            $0.height.equalTo(newHeight)
+            $0.height.equalTo(max(newHeight, 49))
         }
         
         self.setNeedsLayout()
@@ -462,7 +460,7 @@ class AlarmTableViewCell : UITableViewCell, UISheetPresentationControllerDelegat
         }
     }
     
-    //MARK: - 메모LabelUI
+    //MARK: - 메모LabelUI 높이계산
     var fullText: String = ""
     var isExpanded = false
     
@@ -500,9 +498,6 @@ class AlarmTableViewCell : UITableViewCell, UISheetPresentationControllerDelegat
         updateMemoViewHeight()
     }
 
-
-
-    
     //MARK: - 더보기 탭
     @objc func memoLabelTapped() {
         isExpanded.toggle()
@@ -563,29 +558,12 @@ class AlarmTableViewCell : UITableViewCell, UISheetPresentationControllerDelegat
         
         let userlistData = userData[indexPath.item]
         cell.configure(with: userlistData.nickname)
-        cell.backgroundColor = .blue
+        cell.backgroundColor = .red
         return cell
     }
     
     //그룹내의 셀 크기 = 이미지 + 라벨
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
-        
-//        let nickname = userData[indexPath.item].nickname
-//            let font = DesignSystemFont.Pretendard_SemiBold12.value
-//            let maxWidth: CGFloat = 62
-//            
-//            let textSize = (nickname as NSString).boundingRect(
-//                with: CGSize(width: maxWidth, height: .greatestFiniteMagnitude),
-//                options: [.usesLineFragmentOrigin, .usesFontLeading],
-//                attributes: [NSAttributedString.Key.font: font],
-//                context: nil
-//            ).size
-//            
-//            let labelHeight = ceil(textSize.height)
-//            let imageHeight: CGFloat = 62
-//            let spacing: CGFloat = 8
-//            
-//            let cellHeight = imageHeight + spacing + labelHeight
         
         return CGSize(width: 62, height: collectionViewHeight)
     }
@@ -668,7 +646,7 @@ class memberCollectioViewCell: UICollectionViewCell {
         contentView.addSubviews(memberImageView, memberLabel)
         
         memberImageView.snp.makeConstraints {
-            $0.top.equalToSuperview()
+            $0.top.equalToSuperview().inset(1)
             $0.centerX.equalToSuperview()
             $0.height.width.equalTo(62)
         }
@@ -681,7 +659,7 @@ class memberCollectioViewCell: UICollectionViewCell {
     }
     //MARK: - 닉네임 설정
     func configure(with nickname: String) {
-        memberLabel.text = nickname + "글자수에 제한이 있나 약간 그냥 시험용 테스트 입니다. 원래 글자는 10글자 내외입니다."
+        memberLabel.text = nickname
         setNeedsLayout()
         layoutIfNeeded()
     }
