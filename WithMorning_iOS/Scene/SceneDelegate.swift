@@ -24,21 +24,25 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
             print(#fileID, #function, #line, "- sceneDelegate refreshToken: \(refreshToken)")
             if let loginState = loginState {
                 switch loginState {
+                    
                 case .login:
                     // 로그인 상태이지만 아직 회원가입을 완료하지 않은 경우
-                    self.setRootViewContrller(scene, type: .joined)
+                    self.setRootViewContrller(scene, type: .login)
                 case .joined:
                     // 로그인 상태이며 회원가입을 완료한 경우
                     self.setRootViewContrller(scene, type: .joined)
                 }
-            } else {
-                // loginState가 nil인 경우 (로그아웃 상태)
-                
+            } 
+            else {
+//               self.setRootViewContrller(scene, type: .login) //joined 바로 메인조회, login 토큰받고 메인
+//                // loginState가 nil인 경우 (로그아웃 상태)
+//                
                 if refreshToken != "" {
+                    
                     print("🔥KeyChain에 저장된 accessToken : ", KeyChain.read(key: "accessToken") ?? "")
                     print("🔥KeyChain에 저장된 refreshToken : ",KeyChain.read(key: "refreshToken") ?? "")
                     // refreshToken이 있으면 자동 로그인
-                    self.setRootViewContrller(scene, type: .joined) //joined 바로 메인조회, login 토큰받고 메인
+                    self.setRootViewContrller(scene, type: .login) //joined 바로 메인조회, login 토큰받고 메인
                     
                 } else if Storage.isFirstTime() {
                     self.setRootViewContrller(scene, type: .termAgree)

@@ -408,9 +408,6 @@ class AlarmTableViewCell : UITableViewCell, UISheetPresentationControllerDelegat
     }
     //MARK: - collectionviewcell 높이계산
 
-    let dummyname = ["asd","asdasd","asdasdasd","asdasdasdasd"]
-    
-    
     func calculateMaxCellHeight() -> CGFloat {
         var maxHeight: CGFloat = 0
         

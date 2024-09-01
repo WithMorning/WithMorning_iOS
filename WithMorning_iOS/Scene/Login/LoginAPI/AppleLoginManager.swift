@@ -97,12 +97,12 @@ extension AppleLoginManager : ASAuthorizationControllerDelegate {
             }
             
             if let authorizationCode = appleIDCredential.authorizationCode,
+               
                let codeString = String(data: authorizationCode, encoding: .utf8) {
                 print(#fileID, #function, #line, "- codeString🔥: \(codeString)")
                 
                 let loginRequestTokenData = AppleloginRequest(code: idTokenString)
-                
-                //                let loginRequestTokenData = AppleloginRequest(code: idTokenString, authorizationCode: codeString) 코드 두개를 보낼 생각
+                // loginRequestTokenData == idTokenString
                 
                 //MARK: - 로그인 요청
                 AF.request(LoginRouter.AppleLogin(data: loginRequestTokenData))
@@ -113,13 +113,20 @@ extension AppleLoginManager : ASAuthorizationControllerDelegate {
                         case .success(let data):
                             if let dataResult = data.result {
 //                                #warning("UserDeault에 userID 저장 후 userID로 토큰 저장")
+                                print("엑세스 : ",data.result?.accessToken as Any)
+                                print("리프레쉬 토큰 : ",data.result?.accessToken as Any)
+                                
                                 KeyChain.create(key: "accessToken", token: dataResult.accessToken)
                                 KeyChain.create(key: "refreshToken", token: dataResult.refreshToken)
+                                
+                                print("🔥KeyChain에 저장된 accessToken : ", KeyChain.read(key: "accessToken") ?? "")
+                                print("🔥KeyChain에 저장된 refreshToken : ",KeyChain.read(key: "refreshToken") ?? "")
+                                
                             }
                             
                             self.registerUserInfo.loginState = .login
-                            print("🔥KeyChain에 저장된 accessToken : ", KeyChain.read(key: "accessToken") ?? "")
-                            print("🔥KeyChain에 저장된 refreshToken : ",KeyChain.read(key: "refreshToken") ?? "")
+                            print("🔥KeyChain에 새로 저장된 accessToken : ", KeyChain.read(key: "accessToken") ?? "")
+                            print("🔥KeyChain에 새로 저장된 refreshToken : ",KeyChain.read(key: "refreshToken") ?? "")
                         }
                         
                     }
