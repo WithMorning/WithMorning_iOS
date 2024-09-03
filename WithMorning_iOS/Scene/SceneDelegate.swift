@@ -38,7 +38,7 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
                     print("🔥KeyChain에 저장된 accessToken : ", KeyChain.read(key: "accessToken") ?? "")
                     print("🔥KeyChain에 저장된 refreshToken : ",KeyChain.read(key: "refreshToken") ?? "")
                     
-                    self.setRootViewContrller(scene, type: .login) //joined 바로 메인조회, login 토큰받고 메인
+                    self.setRootViewContrller(scene, type: .joined) //joined 바로 메인조회, login 토큰받고 메인
                     
                 } else if Storage.isFirstTime() {
                     self.setRootViewContrller(scene, type: .termAgree)
@@ -107,15 +107,11 @@ extension SceneDelegate{
         let refreshToken = KeyChain.read(key: "refreshToken")
         print(#fileID, #function, #line, "- refreshToken: \(refreshToken)")
         
-        //        if refreshToken != ""{
-        //            setRootViewContrller(scene, type: .main)
-        //        }
-        
         if Storage.isFirstTime() {
-            setRootViewContrller(scene, type: .termAgree)
+            setRootViewContrller(scene, type: .termAgree) // 첫 로그인일때
         }
         else if refreshToken != "" {
-            setRootViewContrller(scene, type: .joined)
+            setRootViewContrller(scene, type: .joined) //리프레쉬토큰이 빈값이 아닐때 메인
         }
         else {
             setRootViewContrller(scene, type: .login)
@@ -124,29 +120,30 @@ extension SceneDelegate{
     //MARK: - 데이터 타입을 확인하고 문제가 뷰컨을 교체해줍니당
     private func setRootViewContrller(_ scene: UIScene, type: rootViewController) {
         if let windowScene = scene as? UIWindowScene {
-            
             DispatchQueue.main.async {
                 let window = UIWindow(windowScene: windowScene)
                 print(#fileID, #function, #line, "- 어떤 type의 data인지 확인하기⭐️: \(type)")
                 
-                if type == .termAgree {
+                let rootVC: UIViewController
+                
+                switch type {
+                case .termAgree, .joined:
                     let navigationController = UINavigationController(rootViewController: type.vc)
-                    window.rootViewController = navigationController
-                } else {
-                    window.rootViewController = type.vc //그에 맞게 Rootview를 변경해준다
+                    if type == .joined {
+                        navigationController.setNavigationBarHidden(true, animated: false)
+                    }
+                    rootVC = navigationController
+                default:
+                    rootVC = type.vc
                 }
                 
-                if type == .joined {
-                    let navigationController = UINavigationController(rootViewController: type.vc)
-                    navigationController.setNavigationBarHidden(true, animated: false)
-                }
-                
+                window.rootViewController = rootVC
                 self.window = window
                 window.makeKeyAndVisible()
             }
-            
         }
     }
+    
     
     public class Storage {
         static func isFirstTime() -> Bool {

@@ -204,7 +204,7 @@ class AlarmTableViewCell : UITableViewCell, UISheetPresentationControllerDelegat
         view.delegate = self
         view.register(memberCollectioViewCell.self, forCellWithReuseIdentifier: "memberCollectioViewCell")
         view.isScrollEnabled = false
-        view.backgroundColor = .blue
+
         return view
     }()
     
@@ -555,7 +555,6 @@ class AlarmTableViewCell : UITableViewCell, UISheetPresentationControllerDelegat
         
         let userlistData = userData[indexPath.item]
         cell.configure(with: userlistData.nickname)
-        cell.backgroundColor = .red
         return cell
     }
     
@@ -614,7 +613,7 @@ class memberCollectioViewCell: UICollectionViewCell {
     lazy var memberImageView: UIImageView = {
         let view = UIImageView()
         view.backgroundColor = DesignSystemColor.Orange500.value
-        view.image = UIImage(systemName: "person.circle.fill")
+        view.image = UIImage(named: "profile")
         view.layer.cornerRadius = 31
         view.tintColor = .white
         view.contentMode = .scaleAspectFit
