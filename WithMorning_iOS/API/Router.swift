@@ -17,19 +17,22 @@ enum Router : URLRequestConvertible{
     
     case getmypage
     case getmainpage
+    case postgroup(data : MakeGroupMaindata)
+    
     
     // url가르기
     var endPoint: String {
         switch self {
         case .getmypage: return "/user/mypage"
         case .getmainpage: return "/home"
+        case .postgroup: return "/groups"
         }
     }
     
     //헤더
-    var headers: HTTPHeaders { 
+    var headers: HTTPHeaders {
         switch self {
-//        default: return HTTPHeaders(["accept":"application/json", "Authorization":"\(Authorization)"])
+            //        default: return HTTPHeaders(["accept":"application/json", "Authorization":"\(Authorization)"])
         default: return HTTPHeaders(["accept":"application/json", "Content-Type" : "application/json"])
         }
     }
@@ -40,7 +43,7 @@ enum Router : URLRequestConvertible{
         switch self {
         case .getmypage: return .get
         case .getmainpage: return .get
-            
+        case .postgroup: return .post
         }
     }
     
@@ -63,9 +66,12 @@ enum Router : URLRequestConvertible{
         request.headers = headers
         
         switch self {
-        case .getmypage: request = try URLEncoding.queryString.encode(request, with: parameters)
-        case .getmainpage: request = try URLEncoding.queryString.encode(request, with: parameters)
-            
+        case .getmypage:
+            request = try URLEncoding.queryString.encode(request, with: parameters)
+        case .getmainpage:
+            request = try URLEncoding.queryString.encode(request, with: parameters)
+        case .postgroup(let data):
+            request = try JSONParameterEncoder().encode(data, into: request)
         }
         //request = try URLEncoding.queryString.encode(request, with: parameters)
         //이 인코딩 방식은 GET 요청 또는 URL 쿼리 매개변수를 전송할 때 사용

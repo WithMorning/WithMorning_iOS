@@ -52,10 +52,9 @@ class MyPageViewController : UIViewController, UIScrollViewDelegate {
     
     private lazy var profileImage : UIImageView = {
         let image = UIImageView()
-        image.backgroundColor = .yellow
         image.contentMode = .scaleAspectFill
         image.clipsToBounds = true
-        image.image = UIImage(systemName: "person.circle")
+        image.image = UIImage(named: "profile")
         image.tintColor = .black
         return image
     }()
@@ -105,7 +104,7 @@ class MyPageViewController : UIViewController, UIScrollViewDelegate {
         let stackView = UIStackView()
         stackView.axis = .horizontal
         stackView.alignment = .fill
-        stackView.addSubviews(sleeptimeLabel,sleeptimeLabel2)
+        stackView.addSubviews(sleeptimeLabel,sleeptimeLabel2,sleeptimeLabel3)
         stackView.isUserInteractionEnabled = true
         let tapGestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(sleeptime))
         stackView.addGestureRecognizer(tapGestureRecognizer)
@@ -121,8 +120,15 @@ class MyPageViewController : UIViewController, UIScrollViewDelegate {
         return label
     }()
     
+    lazy var sleeptimeLabel3 : UILabel = {
+        let label = UILabel()
+        label.textColor = DesignSystemColor.Gray400.value
+        label.font = DesignSystemFont.Pretendard_Medium14.value
+        return label
+    }()
+    
     private lazy var sleeptimeLabel2 : UILabel = {
-        let attributedString1 = NSMutableAttributedString(string: "6:00 AM 평일     ")
+        let attributedString1 = NSMutableAttributedString(string: "")
         let imageAttachment1 = NSTextAttachment()
         imageAttachment1.image = UIImage(systemName: "greaterthan")
         imageAttachment1.bounds = CGRect(x: 0, y: -3, width: 10, height: 16)
@@ -478,6 +484,11 @@ class MyPageViewController : UIViewController, UIScrollViewDelegate {
         sleeptimeLabel2.snp.makeConstraints{
             $0.trailing.equalToSuperview()
         }
+        sleeptimeLabel3.snp.makeConstraints{
+            $0.centerY.equalTo(sleeptimeLabel)
+            $0.trailing.equalTo(sleeptimeLabel2.snp.leading).offset(-12)
+        }
+        
         pushnotiStackView.snp.makeConstraints{
             $0.leading.trailing.equalToSuperview().inset(16)
             $0.top.equalTo(sleeptimeStackView.snp.bottom).offset(20)
@@ -611,12 +622,29 @@ class MyPageViewController : UIViewController, UIScrollViewDelegate {
             switch result{
             case.success(let mypage):
                 self.nickNameLabel.text = mypage.nickname
+                self.updateSleepTimeLabel(with: mypage.bedtime, dayOfWeekList: mypage.dayOfWeekList)
                 print(mypage)
             case.failure(let error):
                 print(error)
             }
         }
     }
+    //MARK: - 시간 형식 수정
+
+    func updateSleepTimeLabel(with bedtime: String, dayOfWeekList: [String]) {
+        let dateFormatter = DateFormatter()
+        dateFormatter.dateFormat = "HH:mm"
+        
+        if let date = dateFormatter.date(from: bedtime) {
+            dateFormatter.dateFormat = "hh:mm a"
+            let formattedTime = dateFormatter.string(from: date)
+            
+            let weekdayString = dayOfWeekList.contains { $0 != "sat" && $0 != "sun" } ? "평일" : "주말"
+            
+            sleeptimeLabel3.text = "\(formattedTime) \(weekdayString)"
+        }
+    }
+    
 }
 
 //MARK: - extension

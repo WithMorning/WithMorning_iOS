@@ -260,12 +260,11 @@ class MainViewController: UIViewController, UISheetPresentationControllerDelegat
     var alarmData  : [GroupList] = []
     
     //MARK: - API
-    func getMainpage() {
-        APInetwork.getMainpage() { 
-            [weak self] result in
+  private func getMainpage() {
+        APInetwork.getMainpage() { result in
             switch result {
             case .success(let mainpage):
-                self?.MainpageUpdate(with: mainpage)
+                self.MainpageUpdate(with: mainpage)
             case .failure(let error):
                 print(error)
             }

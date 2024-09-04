@@ -31,7 +31,7 @@ class WeekChoiceViewController : UIViewController, UIScrollViewDelegate {
     }()
     
     //MARK: - 월요일
-
+    
     private lazy var MonstackView: UIStackView = {
         let stackView = UIStackView()
         stackView.axis = .horizontal
@@ -42,7 +42,7 @@ class WeekChoiceViewController : UIViewController, UIScrollViewDelegate {
         stackView.addGestureRecognizer(tapGestureRecognizer)
         return stackView
     }()
-
+    
     
     private lazy var MonLabel : UILabel = {
         let label = UILabel()
@@ -61,7 +61,7 @@ class WeekChoiceViewController : UIViewController, UIScrollViewDelegate {
     }()
     
     //MARK: - 화요일
-
+    
     private lazy var TuestackView: UIStackView = {
         let stackView = UIStackView()
         stackView.axis = .horizontal
@@ -70,7 +70,7 @@ class WeekChoiceViewController : UIViewController, UIScrollViewDelegate {
         stackView.isUserInteractionEnabled = true
         let tapGestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(tueuclick))
         stackView.addGestureRecognizer(tapGestureRecognizer)
-
+        
         return stackView
     }()
     
@@ -98,7 +98,7 @@ class WeekChoiceViewController : UIViewController, UIScrollViewDelegate {
         stackView.isUserInteractionEnabled = true
         let tapGestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(wedclick))
         stackView.addGestureRecognizer(tapGestureRecognizer)
-
+        
         return stackView
     }()
     
@@ -126,7 +126,7 @@ class WeekChoiceViewController : UIViewController, UIScrollViewDelegate {
         stackView.isUserInteractionEnabled = true
         let tapGestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(thrclick))
         stackView.addGestureRecognizer(tapGestureRecognizer)
-
+        
         return stackView
     }()
     
@@ -154,7 +154,7 @@ class WeekChoiceViewController : UIViewController, UIScrollViewDelegate {
         stackView.isUserInteractionEnabled = true
         let tapGestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(friclick))
         stackView.addGestureRecognizer(tapGestureRecognizer)
-
+        
         return stackView
     }()
     
@@ -182,7 +182,7 @@ class WeekChoiceViewController : UIViewController, UIScrollViewDelegate {
         stackView.isUserInteractionEnabled = true
         let tapGestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(satclick))
         stackView.addGestureRecognizer(tapGestureRecognizer)
-
+        
         return stackView
     }()
     
@@ -226,12 +226,12 @@ class WeekChoiceViewController : UIViewController, UIScrollViewDelegate {
         let view = UIImageView()
         view.image = UIImage(systemName: "checkmark.square.fill")
         view.tintColor = DesignSystemColor.Gray200.value
-
+        
         return view
     }()
     
     //MARK: - 주중
-
+    
     private lazy var weekdayButton : UIButton = {
         let button = UIButton()
         button.setTitle("주중", for: .normal)
@@ -254,7 +254,7 @@ class WeekChoiceViewController : UIViewController, UIScrollViewDelegate {
         button.addTarget(self, action: #selector(weekendclick), for: .touchUpInside)
         return button
     }()
-
+    
     //MARK: - 완료버튼
     private lazy var DoneButton : UIButton = {
         let button = UIButton()
@@ -271,10 +271,10 @@ class WeekChoiceViewController : UIViewController, UIScrollViewDelegate {
         label.font = DesignSystemFont.Pretendard_Bold16.value
         return label
     }()
-
-
+    
+    
     //MARK: - Life Cycle
-
+    
     override func viewDidLoad(){
         super.viewDidLoad()
         view.backgroundColor = .white
@@ -437,6 +437,24 @@ class WeekChoiceViewController : UIViewController, UIScrollViewDelegate {
     }
     
     
+    
+    //MARK: - 요일 이동 클로저
+    var selectedDayOfWeek: [String] = []
+    var weekClosure: (([String]) -> Void)?
+    
+    func updateSelectedDays() {
+        selectedDayOfWeek.removeAll()
+        if MonIMG.tintColor == DesignSystemColor.Orange500.value { selectedDayOfWeek.append("mon") }
+        if TueIMG.tintColor == DesignSystemColor.Orange500.value { selectedDayOfWeek.append("tue") }
+        if WedIMG.tintColor == DesignSystemColor.Orange500.value { selectedDayOfWeek.append("wed") }
+        if ThrIMG.tintColor == DesignSystemColor.Orange500.value { selectedDayOfWeek.append("thu") }
+        if FriIMG.tintColor == DesignSystemColor.Orange500.value { selectedDayOfWeek.append("fri") }
+        if SatIMG.tintColor == DesignSystemColor.Orange500.value { selectedDayOfWeek.append("sat") }
+        if SunIMG.tintColor == DesignSystemColor.Orange500.value { selectedDayOfWeek.append("sun") }
+        print(selectedDayOfWeek)
+    }
+    
+    
     //MARK: - objc func
     @objc func monclick(){
         if MonIMG.tintColor == DesignSystemColor.Gray200.value{
@@ -445,8 +463,9 @@ class WeekChoiceViewController : UIViewController, UIScrollViewDelegate {
             MonIMG.tintColor = DesignSystemColor.Gray200.value
         }
         updateweeklycolor()
-        
+        updateSelectedDays()
     }
+    
     @objc func tueuclick(){
         if TueIMG.tintColor == DesignSystemColor.Gray200.value{
             TueIMG.tintColor = DesignSystemColor.Orange500.value
@@ -454,7 +473,9 @@ class WeekChoiceViewController : UIViewController, UIScrollViewDelegate {
             TueIMG.tintColor = DesignSystemColor.Gray200.value
         }
         updateweeklycolor()
+        updateSelectedDays()
     }
+    
     @objc func wedclick(){
         if WedIMG.tintColor == DesignSystemColor.Gray200.value{
             WedIMG.tintColor = DesignSystemColor.Orange500.value
@@ -462,7 +483,9 @@ class WeekChoiceViewController : UIViewController, UIScrollViewDelegate {
             WedIMG.tintColor = DesignSystemColor.Gray200.value
         }
         updateweeklycolor()
+        updateSelectedDays()
     }
+    
     @objc func thrclick(){
         if ThrIMG.tintColor == DesignSystemColor.Gray200.value{
             ThrIMG.tintColor = DesignSystemColor.Orange500.value
@@ -470,7 +493,9 @@ class WeekChoiceViewController : UIViewController, UIScrollViewDelegate {
             ThrIMG.tintColor = DesignSystemColor.Gray200.value
         }
         updateweeklycolor()
+        updateSelectedDays()
     }
+    
     @objc func friclick(){
         if FriIMG.tintColor == DesignSystemColor.Gray200.value{
             FriIMG.tintColor = DesignSystemColor.Orange500.value
@@ -478,7 +503,9 @@ class WeekChoiceViewController : UIViewController, UIScrollViewDelegate {
             FriIMG.tintColor = DesignSystemColor.Gray200.value
         }
         updateweeklycolor()
+        updateSelectedDays()
     }
+    
     @objc func satclick(){
         if SatIMG.tintColor == DesignSystemColor.Gray200.value{
             SatIMG.tintColor = DesignSystemColor.Orange500.value
@@ -486,7 +513,9 @@ class WeekChoiceViewController : UIViewController, UIScrollViewDelegate {
             SatIMG.tintColor = DesignSystemColor.Gray200.value
         }
         updateweeklycolor()
+        updateSelectedDays()
     }
+    
     @objc func sunclick(){
         if SunIMG.tintColor == DesignSystemColor.Gray200.value{
             SunIMG.tintColor = DesignSystemColor.Orange500.value
@@ -494,8 +523,11 @@ class WeekChoiceViewController : UIViewController, UIScrollViewDelegate {
             SunIMG.tintColor = DesignSystemColor.Gray200.value
         }
         updateweeklycolor()
+        updateSelectedDays()
     }
+    
     @objc func doneclick(){
+        weekClosure?(selectedDayOfWeek)
         self.dismiss(animated: true)
     }
     
@@ -503,24 +535,26 @@ class WeekChoiceViewController : UIViewController, UIScrollViewDelegate {
         if weekdayButton.backgroundColor == DesignSystemColor.Gray200.value {
             weekdayButton.backgroundColor = DesignSystemColor.Orange500.value
             weekdayButton.setTitleColor(.white, for: .normal)
-               [MonIMG, TueIMG, WedIMG, ThrIMG, FriIMG].forEach { $0.tintColor = DesignSystemColor.Orange500.value }
+            [MonIMG, TueIMG, WedIMG, ThrIMG, FriIMG].forEach { $0.tintColor = DesignSystemColor.Orange500.value }
         }else{
             weekdayButton.backgroundColor = DesignSystemColor.Gray200.value
             weekdayButton.setTitleColor(DesignSystemColor.Gray500.value, for: .normal)
-               [MonIMG, TueIMG, WedIMG, ThrIMG, FriIMG].forEach { $0.tintColor = DesignSystemColor.Gray200.value }
+            [MonIMG, TueIMG, WedIMG, ThrIMG, FriIMG].forEach { $0.tintColor = DesignSystemColor.Gray200.value }
         }
+        updateSelectedDays()
     }
     @objc func weekendclick(){
         if weekendButton.backgroundColor == DesignSystemColor.Gray200.value {
             weekendButton.backgroundColor = DesignSystemColor.Orange500.value
             weekendButton.setTitleColor(.white, for: .normal)
-               [SatIMG,SunIMG].forEach { $0.tintColor = DesignSystemColor.Orange500.value }
+            [SatIMG,SunIMG].forEach { $0.tintColor = DesignSystemColor.Orange500.value }
         }else{
             weekendButton.backgroundColor = DesignSystemColor.Gray200.value
             weekendButton.setTitleColor(DesignSystemColor.Gray500.value, for: .normal)
             [SatIMG,SunIMG].forEach { $0.tintColor = DesignSystemColor.Gray200.value }
         }
-
+        updateSelectedDays()
+        
     }
 }
 

@@ -12,6 +12,7 @@ import Alamofire
 
 class MakeAlarmViewController : UIViewController, UIScrollViewDelegate, UISheetPresentationControllerDelegate{
     
+    let APInetwork = Network.shared
     
     //MARK: - 네비게이션 바
     private lazy var mainLabel : UILabel = {
@@ -79,7 +80,7 @@ class MakeAlarmViewController : UIViewController, UIScrollViewDelegate, UISheetP
         let stackView = UIStackView()
         stackView.axis = .horizontal
         stackView.alignment = .fill
-        stackView.addSubviews(repeatLabel,repeatDayLabel)
+        stackView.addSubviews(repeatLabel,repeatDayLabel,repeatDayLabel1)
         stackView.isUserInteractionEnabled = true
         let tapGestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(repeatDay))
         stackView.addGestureRecognizer(tapGestureRecognizer)
@@ -96,8 +97,9 @@ class MakeAlarmViewController : UIViewController, UIScrollViewDelegate, UISheetP
         return label
     }()
     
+    
     private lazy var repeatDayLabel : UILabel = {
-        let attributedString1 = NSMutableAttributedString(string: "없음   ")
+        let attributedString1 = NSMutableAttributedString(string: "")
         let imageAttachment1 = NSTextAttachment()
         imageAttachment1.image = UIImage(systemName: "greaterthan")
         imageAttachment1.bounds = CGRect(x: 0, y: -3, width: 10, height: 16)
@@ -110,6 +112,15 @@ class MakeAlarmViewController : UIViewController, UIScrollViewDelegate, UISheetP
         label.font = DesignSystemFont.Pretendard_Medium14.value
         return label
     }()
+    
+    private lazy var repeatDayLabel1 : UILabel = {
+        let label = UILabel()
+        label.text = "없음"
+        label.textColor = DesignSystemColor.Gray400.value
+        label.font = DesignSystemFont.Pretendard_Medium14.value
+        return label
+    }()
+
     
     
     
@@ -299,6 +310,10 @@ class MakeAlarmViewController : UIViewController, UIScrollViewDelegate, UISheetP
         repeatDayLabel.snp.makeConstraints {
             $0.trailing.centerY.equalToSuperview()
         }
+        repeatDayLabel1.snp.makeConstraints{
+            $0.centerY.equalTo(repeatDayLabel)
+            $0.trailing.equalTo(repeatDayLabel.snp.leading).offset(-12)
+        }
         
         groupView.snp.makeConstraints{
             $0.top.equalTo(timerView.snp.bottom).offset(8)
@@ -347,8 +362,28 @@ class MakeAlarmViewController : UIViewController, UIScrollViewDelegate, UISheetP
         }
         
     }
-    //MARK: - picker SET
+    //MARK: - API
+    var selectedTime24: String = ""
+    var selectedDayOfWeek: [String] = []
+    var isagree : Bool = true
     
+    private func makeGroup(){
+        let data = MakeGroupMaindata(name: groupLabel.text ?? "", wakeupTime: selectedTime24, dayOfWeekList: selectedDayOfWeek, isAgree: isagree, memo: memoTextView.text)
+        
+        APInetwork.postGroup(data: data){ result in
+            switch result {
+            case .success(let makeAlarm):
+                print("알람 생성 API",makeAlarm)
+            case .failure(let error):
+                print(error.localizedDescription)
+            }
+            
+        }
+    }
+    
+    
+    
+    //MARK: - picker SET
     func pickerviewUI(){
         timePicker.subviews[1].isHidden = true
         
@@ -397,9 +432,11 @@ class MakeAlarmViewController : UIViewController, UIScrollViewDelegate, UISheetP
     
     @objc func repeatDay(){
         let vc = WeekChoiceViewController()
+        vc.weekClosure = { [weak self] selectedDays in
+            self?.selectedDayOfWeek = selectedDays
+            self?.updateRepeatDayLabel()
+        }
         self.present(vc, animated: true)
-        
-        //  let height = view.bounds.height * 0.65
         
         if let sheet = vc.sheetPresentationController {
             if #available(iOS 16.0, *) {
@@ -413,6 +450,25 @@ class MakeAlarmViewController : UIViewController, UIScrollViewDelegate, UISheetP
             }
         }
     }
+    func updateRepeatDayLabel() {
+            if selectedDayOfWeek.isEmpty {
+                repeatDayLabel1.text = "없음"
+            } else {
+                let dayNames = selectedDayOfWeek.map { day -> String in
+                    switch day {
+                    case "mon": return "월"
+                    case "tue": return "화"
+                    case "wed": return "수"
+                    case "thu": return "목"
+                    case "fri": return "금"
+                    case "sat": return "토"
+                    case "sun": return "일"
+                    default: return ""
+                    }
+                }
+                repeatDayLabel1.text = dayNames.joined(separator: ", ")
+            }
+        }
     
     @objc func soundsetting(){
         print("알림설정")
@@ -468,7 +524,7 @@ extension MakeAlarmViewController : UITextFieldDelegate {
                 let offset = notiLabelFrame.maxY - keyboardFrame.minY + 10
                 self.alarmScrollVeiw.contentOffset.y += offset
                 self.saveButton.isHidden = true
-
+                
                 
             }
         }
@@ -557,6 +613,22 @@ extension MakeAlarmViewController : UIPickerViewDelegate, UIPickerViewDataSource
         default:
             return 45
         }
+    }
+    //MARK: - 현재 설정한 시간(24시간제) 출력
+    func pickerView(_ pickerView: UIPickerView, didSelectRow row: Int, inComponent component: Int) {
+        let selectedHour = hour[pickerView.selectedRow(inComponent: 0) % hour.count]
+        let selectedMinute = min[pickerView.selectedRow(inComponent: 1) % min.count]
+        let selectedAMPM = AMPM[pickerView.selectedRow(inComponent: 2)]
+        
+        var hour24 = selectedHour
+        if selectedAMPM == "PM" && selectedHour != 12 {
+            hour24 += 12
+        } else if selectedAMPM == "AM" && selectedHour == 12 {
+            hour24 = 0
+        }
+        
+        selectedTime24 = String(format: "%02d:%02d", hour24, selectedMinute)
+        print("설정된 시간 (24시간제): \(selectedTime24)")
     }
 }
 

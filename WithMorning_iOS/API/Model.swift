@@ -8,7 +8,48 @@
 import Foundation
 import Alamofire
 
-// MARK: - Mypage
+// MARK: - 메인페이지
+struct Mainpage: Codable {
+    let isSuccess: Bool
+    let code: Int
+    let message: String
+    let result: MainpageResponse?
+}
+
+struct MainpageResponse: Codable {
+    let connectorProfileURL: String?
+    let groupList: [GroupList]?
+    let listSize: Int
+}
+
+    // MARK: - GroupList
+struct GroupList: Codable {
+    let groupID: Int
+    let name, wakeupTime: String
+    let dayOfWeekList: [String]?
+    let userList: [UserList]?
+    let memo: String
+
+    enum CodingKeys: String, CodingKey {
+        case groupID = "groupId"
+        case name, wakeupTime, dayOfWeekList, userList, memo
+    }
+}
+
+    // MARK: - UserList
+struct UserList: Codable {
+    let userID: Int
+    let imageURL, nickname: String
+    let isWakeup, isDisturbBanMode: Bool
+    let phone: String
+
+    enum CodingKeys: String, CodingKey {
+        case userID = "userId"
+        case imageURL, nickname, isWakeup, isDisturbBanMode, phone
+    }
+}
+
+// MARK: - 마이페이지
 struct Mypage: Codable {
     let isSuccess: Bool
     let code: Int
@@ -28,43 +69,28 @@ struct MypageResponse: Codable {
     }
 }
 
-// MARK: - Mainpage
-struct Mainpage: Codable {
+//MARK: - 그룹 생성 request
+struct MakeGroupMaindata: Codable {
+    let name, wakeupTime: String
+    let dayOfWeekList: [String]
+    let isAgree: Bool
+    let memo: String
+}
+
+//MARK: - 그룹 생성
+struct Makegroup: Codable {
     let isSuccess: Bool
     let code: Int
     let message: String
-    let result: MainpageResponse?
+    let result: MakegroupResponse?
 }
 
-struct MainpageResponse: Codable {
-    let connectorProfileURL: String?
-    let groupList: [GroupList]?
-    let listSize: Int
-}
-
-// MARK: - GroupList
-struct GroupList: Codable {
+struct MakegroupResponse: Codable {
     let groupID: Int
-    let name, wakeupTime: String
-    let dayOfWeekList: [String]?
-    let userList: [UserList]?
-    let memo: String
+    let createdAt: String
 
     enum CodingKeys: String, CodingKey {
         case groupID = "groupId"
-        case name, wakeupTime, dayOfWeekList, userList, memo
-    }
-}
-
-// MARK: - UserList
-struct UserList: Codable {
-    let userID: Int
-    let imageURL, nickname: String
-    let isWakeup, isDisturbBanMode: Bool
-    let phone: String
-
-    enum CodingKeys: String, CodingKey {
-        case userID = "userId"
-        case imageURL, nickname, isWakeup, isDisturbBanMode, phone
+        case createdAt
     }
 }

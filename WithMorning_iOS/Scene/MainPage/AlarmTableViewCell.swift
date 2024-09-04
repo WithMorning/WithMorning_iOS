@@ -610,12 +610,21 @@ class AlarmTableViewCell : UITableViewCell, UISheetPresentationControllerDelegat
 //MARK: - memberCollectionViewCell
 
 class memberCollectioViewCell: UICollectionViewCell {
-    lazy var memberImageView: UIImageView = {
+    
+    lazy var memberView: UIView = {
         let view = UIImageView()
         view.backgroundColor = DesignSystemColor.Orange500.value
-        view.image = UIImage(named: "profile")
         view.layer.cornerRadius = 31
         view.tintColor = .white
+        view.contentMode = .scaleAspectFit
+        view.addSubview(memberIMG)
+        return view
+    }()
+    
+    lazy var memberIMG : UIImageView = {
+        let view = UIImageView()
+        view.backgroundColor = .clear
+        view.image = UIImage(named: "profile")
         view.contentMode = .scaleAspectFit
         return view
     }()
@@ -639,20 +648,26 @@ class memberCollectioViewCell: UICollectionViewCell {
     }
     
     func setUI() {
-        contentView.addSubviews(memberImageView, memberLabel)
+        contentView.addSubviews(memberView, memberLabel)
         
-        memberImageView.snp.makeConstraints {
+        memberView.snp.makeConstraints {
             $0.top.equalToSuperview().inset(1)
             $0.centerX.equalToSuperview()
             $0.height.width.equalTo(62)
         }
         
+        memberIMG.snp.makeConstraints{
+            $0.center.equalToSuperview()
+            $0.height.width.equalTo(58)
+        }
+        
         memberLabel.snp.makeConstraints {
-            $0.top.equalTo(memberImageView.snp.bottom).offset(8)
+            $0.top.equalTo(memberView.snp.bottom).offset(8)
             $0.leading.trailing.equalToSuperview()
             $0.bottom.lessThanOrEqualToSuperview()
         }
     }
+    
     //MARK: - 닉네임 설정
     func configure(with nickname: String) {
         memberLabel.text = nickname
