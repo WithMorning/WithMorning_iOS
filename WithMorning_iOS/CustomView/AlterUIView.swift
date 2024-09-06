@@ -10,6 +10,8 @@ import SnapKit
 import Then
 import Alamofire
 
+let APInetwork = Network.shared
+
 //MARK: - 취소,확인을 위한 델리게이트
 protocol AlterDelegate {
     func confirm()
@@ -186,6 +188,7 @@ class AlterUIView: UIViewController {
     
     @objc func confirmclicked() {
         switch alterType {
+            
         case .deleteAlarm:
             handleDeleteAlarm()
             
@@ -197,15 +200,15 @@ class AlterUIView: UIViewController {
         }
         
         self.dismiss(animated: true) {
-                self.delegate?.confirm()
-                print("확인버튼")
-            }
+            self.delegate?.confirm()
+            print("확인버튼")
+        }
     }
     
     private func handleDeleteAlarm() {
         // 알람 삭제에 대한 처리 로직
         print("알람 삭제 로직 실행")
-        // 예시: 서버에 요청 보내기, 로컬 데이터 삭제 등
+        
     }
 
     private func handleOutGroup() {
@@ -219,5 +222,6 @@ class AlterUIView: UIViewController {
         print("윗모닝 탈퇴 로직 실행")
         // 예시: 서버에 탈퇴 요청 보내기, 유저 정보 삭제 등
     }
+
     
 }

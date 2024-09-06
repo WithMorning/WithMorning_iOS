@@ -74,9 +74,6 @@ class CellMenuViewController: UIViewController,AlterDelegate {
     }()
     
     
-    
-    
-    
     //MARK: - LifeCycle
     override func viewDidLoad() {
         super.viewDidLoad()

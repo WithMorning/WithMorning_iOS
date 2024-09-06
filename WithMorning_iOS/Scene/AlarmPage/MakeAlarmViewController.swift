@@ -369,7 +369,7 @@ class MakeAlarmViewController : UIViewController, UIScrollViewDelegate, UISheetP
     private func makeGroup(completion: @escaping (Bool) -> Void){
         let data = MakeGroupMaindata(name: groupLabel.text ?? "모임명이 없습니다.", wakeupTime: selectedTime24, dayOfWeekList: selectedDayOfWeek, isAgree: true, memo: memoTextView.text)
         
-        APInetwork.postGroup(data: data){ result in
+        APInetwork.postGroup(groupdata: data){ result in
             switch result {
             case .success(let makeAlarm):
                 print("알람 생성 API",makeAlarm)

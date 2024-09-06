@@ -94,3 +94,10 @@ struct MakegroupResponse: Codable {
         case createdAt
     }
 }
+//MARK: - 그룹삭제
+struct Deletegroup: Codable {
+    let isSuccess: Bool
+    let code: Int
+    let message: String
+}
+
