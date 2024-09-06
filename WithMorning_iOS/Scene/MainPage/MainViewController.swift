@@ -91,23 +91,17 @@ class MainViewController: UIViewController, UISheetPresentationControllerDelegat
         return button
     }()
     
-    private lazy var floatingButton : UIButton = {
-        let button = UIButton()
-        button.setImage(UIImage(systemName: "chevron.up"), for: .normal)
-        button.tintColor = DesignSystemColor.Black.value
-        button.layer.cornerRadius = 25
-        button.backgroundColor = .white
-        button.layer.shadowColor = UIColor(red: 0, green: 0, blue: 0, alpha: 0.05).cgColor
-        button.layer.shadowOpacity = 1
-        button.layer.shadowRadius = 4
-        button.layer.shadowOffset = CGSize(width: 0, height: 4)
-        return button
-    }()
-    
     private lazy var AlarmTableView : UITableView = {
         let tableView = UITableView()
         tableView.layer.cornerRadius = 8
         return tableView
+    }()
+    
+    private lazy var tableViewRefresh : UIRefreshControl = {
+        let refresh = UIRefreshControl()
+        refresh.endRefreshing()
+        refresh.addTarget(self, action: #selector(refreshControl), for: .valueChanged)
+        return refresh
     }()
     
     //MARK: - LifeCycle
@@ -116,6 +110,9 @@ class MainViewController: UIViewController, UISheetPresentationControllerDelegat
         self.view.backgroundColor = DesignSystemColor.Gray150.value
         tableSetting()
         SetUI()
+    }
+    
+    override func viewWillAppear(_ animated: Bool) {
         getMainpage()
     }
     
@@ -188,8 +185,9 @@ class MainViewController: UIViewController, UISheetPresentationControllerDelegat
         AlarmTableView.tableHeaderView = headerView
         AlarmTableView.backgroundColor = DesignSystemColor.Gray150.value
         AlarmTableView.separatorStyle = .none
+        AlarmTableView.refreshControl = tableViewRefresh
         
-//        AlarmTableView.rowHeight = 108 //cell높이
+        //        AlarmTableView.rowHeight = 108 //cell높이
         AlarmTableView.estimatedRowHeight = UITableView.automaticDimension
         
         headerView.layoutIfNeeded()
@@ -209,6 +207,13 @@ class MainViewController: UIViewController, UISheetPresentationControllerDelegat
     }
     
     //MARK: - objc func
+    @objc func refreshControl(){
+        DispatchQueue.main.asyncAfter(deadline: .now() + 1.0) {
+            self.AlarmTableView.reloadData()
+            self.tableViewRefresh.endRefreshing()
+        }
+    }
+    
     @objc func clickedprofile(){ //프로필버튼
         let vc = MyPageViewController()
         self.navigationController?.pushViewController(vc, animated: true)
@@ -217,8 +222,6 @@ class MainViewController: UIViewController, UISheetPresentationControllerDelegat
     @objc func clickedmakeAlarm(){ //새로운 알람설정
         let vc = MakeAlarmViewController()
         self.navigationController?.pushViewController(vc, animated: true)
-        
-        AlarmTableView.reloadData()
     }
     
     @objc func clickedcode() { //참여코드입력
@@ -260,17 +263,17 @@ class MainViewController: UIViewController, UISheetPresentationControllerDelegat
     var alarmData  : [GroupList] = []
     
     //MARK: - API
-  private func getMainpage() {
+    private func getMainpage() {
         APInetwork.getMainpage() { result in
             switch result {
-            case .success(let mainpage):
-                self.MainpageUpdate(with: mainpage)
+            case .success(let mainpage):                self.MainpageUpdate(with: mainpage)
+                print(mainpage)
             case .failure(let error):
                 print(error)
             }
         }
     }
-
+    
     
     
     func MainpageUpdate(with mainpage: MainpageResponse){
@@ -304,7 +307,7 @@ extension MainViewController : UITableViewDelegate, UITableViewDataSource{
         cell.backgroundColor = .clear
         
         cell.topViewLabel.text = alarm.name
-        cell.setMemoText(alarm.memo + "아침에 하고 싶은 말 또는 패널티를 정해주세요.아침에 하고 싶은 말 또는 패널티를 정해주세요.")
+        cell.setMemoText(alarm.memo)
         
         cell.ConfigureMember(alarm.userList ?? [])
         cell.timeLabel.text = alarm.wakeupTime
@@ -315,21 +318,21 @@ extension MainViewController : UITableViewDelegate, UITableViewDataSource{
         
         cell.bottomView.isHidden = false
         
-//        cell.bottomView.subviews.forEach { $0.isHidden = isTurn }
+        //        cell.bottomView.subviews.forEach { $0.isHidden = isTurn }
         
         let dayLabels = [cell.MonLabel, cell.TueLabel, cell.WedLabel, cell.ThuLabel, cell.FriLabel, cell.SatLabel, cell.SunLabel]
         
-            let days = ["mon", "tue", "wed", "thu", "fri", "sat", "sun"]
-            
-            for (index, dayLabel) in dayLabels.enumerated() {
-                if (((alarm.dayOfWeekList?.contains(days[index]))) != nil) {
-                    dayLabel.backgroundColor = DesignSystemColor.Orange500.value
-                    dayLabel.textColor = .white
-                } else {
-                    dayLabel.backgroundColor = DesignSystemColor.Gray100.value
-                    dayLabel.textColor = DesignSystemColor.Gray300.value
-                }
+        let days = ["mon", "tue", "wed", "thu", "fri", "sat", "sun"]
+        
+        for (index, dayLabel) in dayLabels.enumerated() {
+            if let dayOfWeekList = alarm.dayOfWeekList, dayOfWeekList.contains(days[index]) {
+                dayLabel.backgroundColor = DesignSystemColor.Orange500.value
+                dayLabel.textColor = .white
+            } else {
+                dayLabel.backgroundColor = DesignSystemColor.Gray100.value
+                dayLabel.textColor = DesignSystemColor.Gray300.value
             }
+        }
         
         // togglebutton on,off closure
         cell.toggleclicked = {
@@ -337,14 +340,14 @@ extension MainViewController : UITableViewDelegate, UITableViewDataSource{
             self.AlarmTableView.reloadData()
             
             if cell.toggleButton.isOn == true{
-//                self.alarmData[indexPath.row].isTurn = true
+                //                self.alarmData[indexPath.row].isTurn = true
                 //                print(self.alarmData[indexPath.row])
                 cell.bottomView.isHidden = false
                 
             }else{
-//                self.alarmData[indexPath.row].isTurn = false
+                //                self.alarmData[indexPath.row].isTurn = false
                 //                print(self.alarmData[indexPath.row])
-//                cell.bottomView.isHidden = true
+                //                cell.bottomView.isHidden = true
                 
             }
         }

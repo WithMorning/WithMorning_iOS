@@ -365,17 +365,18 @@ class MakeAlarmViewController : UIViewController, UIScrollViewDelegate, UISheetP
     //MARK: - API
     var selectedTime24: String = ""
     var selectedDayOfWeek: [String] = []
-    var isagree : Bool = true
     
-    private func makeGroup(){
-        let data = MakeGroupMaindata(name: groupLabel.text ?? "", wakeupTime: selectedTime24, dayOfWeekList: selectedDayOfWeek, isAgree: isagree, memo: memoTextView.text)
+    private func makeGroup(completion: @escaping (Bool) -> Void){
+        let data = MakeGroupMaindata(name: groupLabel.text ?? "모임명이 없습니다.", wakeupTime: selectedTime24, dayOfWeekList: selectedDayOfWeek, isAgree: true, memo: memoTextView.text)
         
         APInetwork.postGroup(data: data){ result in
             switch result {
             case .success(let makeAlarm):
                 print("알람 생성 API",makeAlarm)
+                completion(true)
             case .failure(let error):
                 print(error.localizedDescription)
+                completion(false)
             }
             
         }
@@ -432,10 +433,12 @@ class MakeAlarmViewController : UIViewController, UIScrollViewDelegate, UISheetP
     
     @objc func repeatDay(){
         let vc = WeekChoiceViewController()
+        vc.selectedDays = selectedDayOfWeek
         vc.weekClosure = { [weak self] selectedDays in
             self?.selectedDayOfWeek = selectedDays
             self?.updateRepeatDayLabel()
         }
+        
         self.present(vc, animated: true)
         
         if let sheet = vc.sheetPresentationController {
@@ -450,6 +453,7 @@ class MakeAlarmViewController : UIViewController, UIScrollViewDelegate, UISheetP
             }
         }
     }
+    
     func updateRepeatDayLabel() {
             if selectedDayOfWeek.isEmpty {
                 repeatDayLabel1.text = "없음"
@@ -470,16 +474,23 @@ class MakeAlarmViewController : UIViewController, UIScrollViewDelegate, UISheetP
             }
         }
     
-    @objc func soundsetting(){
-        print("알림설정")
+    
+    @objc func saveclicked() {
+        makeGroup { [weak self] success in
+            DispatchQueue.main.async {
+                if success {
+                    self?.navigationController?.popViewController(animated: true)
+                } else {
+                    // API 호출 실패 시 사용자에게 알림
+                    let alert = UIAlertController(title: "오류", message: "알람 생성에 실패했습니다. 다시 시도해주세요.", preferredStyle: .alert)
+                    alert.addAction(UIAlertAction(title: "확인", style: .default, handler: nil))
+                    self?.present(alert, animated: true, completion: nil)
+                }
+            }
+        }
     }
-    
-    
-    @objc func saveclicked(){
-        self.navigationController?.popViewController(animated: true)
-    }
-    
 }
+
 //MARK: - 키보드 세팅, textfield세팅
 extension MakeAlarmViewController : UITextFieldDelegate {
     

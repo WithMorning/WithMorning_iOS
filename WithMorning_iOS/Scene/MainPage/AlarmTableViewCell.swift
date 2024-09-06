@@ -303,6 +303,7 @@ class AlarmTableViewCell : UITableViewCell, UISheetPresentationControllerDelegat
             $0.leading.equalToSuperview().offset(20)
             $0.width.equalTo(164)
         }
+        
         MonLabel.snp.makeConstraints{
             $0.height.width.equalTo(20)
         }

@@ -279,6 +279,7 @@ class WeekChoiceViewController : UIViewController, UIScrollViewDelegate {
         super.viewDidLoad()
         view.backgroundColor = .white
         setUI()
+        restoreSelectedDays()
     }
     
     func setUI(){
@@ -439,125 +440,108 @@ class WeekChoiceViewController : UIViewController, UIScrollViewDelegate {
     
     
     //MARK: - 요일 이동 클로저
+    let daysOrder = ["mon", "tue", "wed", "thu", "fri", "sat", "sun"]
+    
     var selectedDayOfWeek: [String] = []
     var weekClosure: (([String]) -> Void)?
+    var selectedDays: [String] = []
     
-    func updateSelectedDays() {
-        selectedDayOfWeek.removeAll()
-        if MonIMG.tintColor == DesignSystemColor.Orange500.value { selectedDayOfWeek.append("mon") }
-        if TueIMG.tintColor == DesignSystemColor.Orange500.value { selectedDayOfWeek.append("tue") }
-        if WedIMG.tintColor == DesignSystemColor.Orange500.value { selectedDayOfWeek.append("wed") }
-        if ThrIMG.tintColor == DesignSystemColor.Orange500.value { selectedDayOfWeek.append("thu") }
-        if FriIMG.tintColor == DesignSystemColor.Orange500.value { selectedDayOfWeek.append("fri") }
-        if SatIMG.tintColor == DesignSystemColor.Orange500.value { selectedDayOfWeek.append("sat") }
-        if SunIMG.tintColor == DesignSystemColor.Orange500.value { selectedDayOfWeek.append("sun") }
-        print(selectedDayOfWeek)
+    func updateDayUI(_ day: String, isSelected: Bool) {
+        let color = isSelected ? DesignSystemColor.Orange500.value : DesignSystemColor.Gray200.value
+        switch day {
+        case "mon": MonIMG.tintColor = color
+        case "tue": TueIMG.tintColor = color
+        case "wed": WedIMG.tintColor = color
+        case "thu": ThrIMG.tintColor = color
+        case "fri": FriIMG.tintColor = color
+        case "sat": SatIMG.tintColor = color
+        case "sun": SunIMG.tintColor = color
+        default: break
+        }
     }
+    
+    
+    func restoreSelectedDays() {
+        for day in daysOrder {
+            updateDayUI(day, isSelected: selectedDays.contains(day))
+        }
+        updateweeklycolor()
+    }
+    
+    //T/F 토글
+    func toggleDay(_ day: String, image: UIImageView) {
+        if let index = selectedDays.firstIndex(of: day) {
+            selectedDays.remove(at: index)
+            image.tintColor = DesignSystemColor.Gray200.value
+        } else {
+            selectedDays.append(day)
+            selectedDays.sort { daysOrder.firstIndex(of: $0)! < daysOrder.firstIndex(of: $1)! }
+            image.tintColor = DesignSystemColor.Orange500.value
+        }
+        updateweeklycolor()
+    }
+    
+    //월 ~ 일요일 정렬
+    func updateSelectedDays() {
+        selectedDayOfWeek = Array(selectedDays).sorted()
+    }
+    
     
     
     //MARK: - objc func
-    @objc func monclick(){
-        if MonIMG.tintColor == DesignSystemColor.Gray200.value{
-            MonIMG.tintColor = DesignSystemColor.Orange500.value
-        }else{
-            MonIMG.tintColor = DesignSystemColor.Gray200.value
-        }
-        updateweeklycolor()
-        updateSelectedDays()
-    }
     
-    @objc func tueuclick(){
-        if TueIMG.tintColor == DesignSystemColor.Gray200.value{
-            TueIMG.tintColor = DesignSystemColor.Orange500.value
-        }else{
-            TueIMG.tintColor = DesignSystemColor.Gray200.value
-        }
-        updateweeklycolor()
-        updateSelectedDays()
-    }
+    @objc func monclick() { toggleDay("mon", image: MonIMG) }
+    @objc func tueuclick() { toggleDay("tue", image: TueIMG) }
+    @objc func wedclick() { toggleDay("wed", image: WedIMG) }
+    @objc func thrclick() { toggleDay("thu", image: ThrIMG) }
+    @objc func friclick() { toggleDay("fri", image: FriIMG) }
+    @objc func satclick() { toggleDay("sat", image: SatIMG) }
+    @objc func sunclick() { toggleDay("sun", image: SunIMG) }
     
-    @objc func wedclick(){
-        if WedIMG.tintColor == DesignSystemColor.Gray200.value{
-            WedIMG.tintColor = DesignSystemColor.Orange500.value
-        }else{
-            WedIMG.tintColor = DesignSystemColor.Gray200.value
-        }
-        updateweeklycolor()
-        updateSelectedDays()
-    }
-    
-    @objc func thrclick(){
-        if ThrIMG.tintColor == DesignSystemColor.Gray200.value{
-            ThrIMG.tintColor = DesignSystemColor.Orange500.value
-        }else{
-            ThrIMG.tintColor = DesignSystemColor.Gray200.value
-        }
-        updateweeklycolor()
-        updateSelectedDays()
-    }
-    
-    @objc func friclick(){
-        if FriIMG.tintColor == DesignSystemColor.Gray200.value{
-            FriIMG.tintColor = DesignSystemColor.Orange500.value
-        }else{
-            FriIMG.tintColor = DesignSystemColor.Gray200.value
-        }
-        updateweeklycolor()
-        updateSelectedDays()
-    }
-    
-    @objc func satclick(){
-        if SatIMG.tintColor == DesignSystemColor.Gray200.value{
-            SatIMG.tintColor = DesignSystemColor.Orange500.value
-        }else{
-            SatIMG.tintColor = DesignSystemColor.Gray200.value
-        }
-        updateweeklycolor()
-        updateSelectedDays()
-    }
-    
-    @objc func sunclick(){
-        if SunIMG.tintColor == DesignSystemColor.Gray200.value{
-            SunIMG.tintColor = DesignSystemColor.Orange500.value
-        }else{
-            SunIMG.tintColor = DesignSystemColor.Gray200.value
-        }
-        updateweeklycolor()
-        updateSelectedDays()
-    }
-    
-    @objc func doneclick(){
-        weekClosure?(selectedDayOfWeek)
+    @objc func doneclick() {
+        weekClosure?(selectedDays)
         self.dismiss(animated: true)
     }
     
-    @objc func weekdayclick(){
-        if weekdayButton.backgroundColor == DesignSystemColor.Gray200.value {
-            weekdayButton.backgroundColor = DesignSystemColor.Orange500.value
-            weekdayButton.setTitleColor(.white, for: .normal)
-            [MonIMG, TueIMG, WedIMG, ThrIMG, FriIMG].forEach { $0.tintColor = DesignSystemColor.Orange500.value }
-        }else{
-            weekdayButton.backgroundColor = DesignSystemColor.Gray200.value
-            weekdayButton.setTitleColor(DesignSystemColor.Gray500.value, for: .normal)
-            [MonIMG, TueIMG, WedIMG, ThrIMG, FriIMG].forEach { $0.tintColor = DesignSystemColor.Gray200.value }
-        }
-        updateSelectedDays()
-    }
-    @objc func weekendclick(){
-        if weekendButton.backgroundColor == DesignSystemColor.Gray200.value {
-            weekendButton.backgroundColor = DesignSystemColor.Orange500.value
-            weekendButton.setTitleColor(.white, for: .normal)
-            [SatIMG,SunIMG].forEach { $0.tintColor = DesignSystemColor.Orange500.value }
-        }else{
-            weekendButton.backgroundColor = DesignSystemColor.Gray200.value
-            weekendButton.setTitleColor(DesignSystemColor.Gray500.value, for: .normal)
-            [SatIMG,SunIMG].forEach { $0.tintColor = DesignSystemColor.Gray200.value }
-        }
-        updateSelectedDays()
+    @objc func weekdayclick() {
+        let weekdays = ["mon", "tue", "wed", "thu", "fri"]
+        let allWeekdaysSelected = weekdays.allSatisfy { selectedDays.contains($0) }
         
+        if allWeekdaysSelected {
+            selectedDays.removeAll { weekdays.contains($0) }
+        } else {
+            selectedDays = (selectedDays + weekdays).uniqued().sorted { daysOrder.firstIndex(of: $0)! < daysOrder.firstIndex(of: $1)! }
+        }
+        
+        for day in weekdays {
+            updateDayUI(day, isSelected: selectedDays.contains(day))
+        }
+        updateweeklycolor()
+    }
+    
+    @objc func weekendclick() {
+        let weekends = ["sat", "sun"]
+        let allWeekendsSelected = weekends.allSatisfy { selectedDays.contains($0) }
+        
+        if allWeekendsSelected {
+            selectedDays.removeAll { weekends.contains($0) }
+        } else {
+            selectedDays = (selectedDays + weekends).uniqued().sorted { daysOrder.firstIndex(of: $0)! < daysOrder.firstIndex(of: $1)! }
+        }
+        
+        for day in weekends {
+            updateDayUI(day, isSelected: selectedDays.contains(day))
+        }
+        updateweeklycolor()
     }
 }
 
+extension Array where Element: Hashable {
+    func uniqued() -> [Element] {
+        var seen = Set<Element>()
+        return filter{ seen.insert($0).inserted }
+    }
+}
 
 //Preview code
 #if DEBUG

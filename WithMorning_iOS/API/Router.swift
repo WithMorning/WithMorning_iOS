@@ -10,8 +10,8 @@ import Alamofire
 
 private let BaseURL = "https://withmorning.site"
 
-//let Authorization =  "Bearer " +
-//"eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiI2IiwiaWF0IjoxNzI0ODE3NTQ5LCJleHAiOjE3MjQ4MTc3Mjl9.zCyQHWXXa5dxMb2rmYXgyqc3ofLmftUIK_4_qccXq9A"
+let Authorization =  "Bearer " +
+"eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiI2IiwiaWF0IjoxNzI1NTgzOTkxLCJleHAiOjE3MjYxODg3OTF9.Jm5bQtfiRisitsUVAo1FvwklRex7KO7XAplG9dN8nxo"
 
 enum Router : URLRequestConvertible{
     
@@ -32,8 +32,8 @@ enum Router : URLRequestConvertible{
     //헤더
     var headers: HTTPHeaders {
         switch self {
-            //        default: return HTTPHeaders(["accept":"application/json", "Authorization":"\(Authorization)"])
-        default: return HTTPHeaders(["accept":"application/json", "Content-Type" : "application/json"])
+                    default: return HTTPHeaders(["accept":"application/json","Content-Type" : "application/json" ,"Authorization":"\(Authorization)"])
+//        default: return HTTPHeaders(["accept":"application/json", "Content-Type" : "application/json"])
         }
     }
     
