@@ -250,13 +250,6 @@ class AlarmTableViewCell : UITableViewCell, UISheetPresentationControllerDelegat
         setCell()
     }
     
-    override func prepareForReuse() {
-        super.prepareForReuse()
-        isExpanded = false
-        memoLabel.numberOfLines = 1
-        updateMemoViewHeight()
-    }
-    
     required init?(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
@@ -363,7 +356,8 @@ class AlarmTableViewCell : UITableViewCell, UISheetPresentationControllerDelegat
             self.collectionViewHeightConstraint = $0.height.equalTo(collectionViewHeight).constraint
         }
         
-        memoView.snp.makeConstraints {                 $0.top.equalTo(memberCollectionView.snp.bottom).offset(12)
+        memoView.snp.makeConstraints {
+            $0.top.equalTo(memberCollectionView.snp.bottom).offset(12)
             $0.leading.trailing.equalToSuperview().inset(20)
             self.memoViewHeightConstraint = $0.height.equalTo(49).constraint
         }
@@ -378,8 +372,9 @@ class AlarmTableViewCell : UITableViewCell, UISheetPresentationControllerDelegat
     private var userData : [UserList] = [] //유저 데이터
     private var memberCount : Int = 0
     private var collectionViewHeight: CGFloat = 90
-    
     private var updateTask: DispatchWorkItem?
+    
+    //제약조건 업데이트를 위해 var로 설정
     private var collectionViewHeightConstraint: Constraint?
     private var memoViewHeightConstraint: Constraint?
     
@@ -428,8 +423,8 @@ class AlarmTableViewCell : UITableViewCell, UISheetPresentationControllerDelegat
         collectionViewHeightConstraint?.update(offset: collectionViewHeight)
         setNeedsLayout()
     }
-    
     //MARK: - collectionviewcell 높이계산
+    
     func calculateMaxCellHeight() -> CGFloat {
         var maxHeight: CGFloat = 0
         
@@ -456,19 +451,6 @@ class AlarmTableViewCell : UITableViewCell, UISheetPresentationControllerDelegat
         return maxHeight
     }
     
-    
-    
-    //MARK: - 메모LabelUI 높이계산
-    var fullText: String = ""
-    var isExpanded = false
-    
-    func setMemoText(_ text: String) {
-        fullText = text
-        isExpanded = false
-        updateMemoLabel()
-        updateMemoViewHeight()
-    }
-    
     //MARK: - 메모View 높이 계산
     func updateMemoViewHeight() {
         let baseHeight: CGFloat = 49
@@ -481,19 +463,29 @@ class AlarmTableViewCell : UITableViewCell, UISheetPresentationControllerDelegat
         setNeedsLayout()
     }
     
+    //MARK: - 메모LabelUI 높이계산
+    var fullText: String = ""
+    var isExpanded = false
+    
+    func setMemoText(_ text: String) {
+        fullText = text
+        isExpanded = false
+        updateMemoLabel()
+    }
+    
     func updateMemoLabel() {
-        let maxWidth = memoView.frame.width - 96
-        
-        let size = (fullText as NSString).boundingRect(
-            with: CGSize(width: maxWidth, height: .greatestFiniteMagnitude),
-            options: .usesLineFragmentOrigin,
-            attributes: [.font: memoLabel.font!],
-            context: nil
-        )
-        
-        let isMultiline = size.height > memoLabel.font.lineHeight
-        
         DispatchQueue.main.async {
+            let maxWidth = self.memoView.frame.width - 96
+            
+            let size = (self.fullText as NSString).boundingRect(
+                with: CGSize(width: maxWidth, height: .greatestFiniteMagnitude),
+                options: .usesLineFragmentOrigin,
+                attributes: [.font: self.memoLabel.font!],
+                context: nil
+            )
+            
+            let isMultiline = size.height > self.memoLabel.font.lineHeight
+            
             if isMultiline {
                 self.memoLabel.numberOfLines = self.isExpanded ? 0 : 1
             } else {
@@ -503,14 +495,11 @@ class AlarmTableViewCell : UITableViewCell, UISheetPresentationControllerDelegat
         }
     }
     
-    
     //MARK: - 더보기 탭
     @objc func memoLabelTapped() {
         isExpanded.toggle()
         updateMemoLabel()
     }
-    
-
     
     
     //MARK: - objc func
@@ -686,4 +675,3 @@ class memberCollectioViewCell: UICollectionViewCell {
         layoutIfNeeded()
     }
 }
-
