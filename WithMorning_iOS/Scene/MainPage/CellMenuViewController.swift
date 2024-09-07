@@ -10,11 +10,14 @@ import SnapKit
 import Then
 import Alamofire
 
-class CellMenuViewController: UIViewController,AlterDelegate {
+class CellMenuViewController: UIViewController, AlterDelegate {
     
 //MARK: - dismiss closure
     var Menuclicked : ( () -> Void )?
+    var groupId : Int?
     
+//MARK: - properties
+
     private lazy var copyButton : UIButton = {
         let button = UIButton()
         button.setTitle("초대코드 복사하기", for: .normal)
@@ -80,7 +83,7 @@ class CellMenuViewController: UIViewController,AlterDelegate {
         self.view.backgroundColor = .white
         SetUI()
     }
-    
+
     //MARK: - SetUI
     
     func SetUI(){
@@ -139,6 +142,7 @@ class CellMenuViewController: UIViewController,AlterDelegate {
         self.dismiss(animated: true){
             guard let Menuclicked = self.Menuclicked else { return }
             Menuclicked()
+            print("Cellmenu의 groupId",self.groupId as Any)
         }
         
     }
@@ -147,7 +151,7 @@ class CellMenuViewController: UIViewController,AlterDelegate {
         dismiss(animated: true)
     }
     
-    //MARK: - delegate Func <- 여기에 api넣어야댐
+    //MARK: - delegate Func
     
     func confirm() {
         self.dismiss(animated: true)

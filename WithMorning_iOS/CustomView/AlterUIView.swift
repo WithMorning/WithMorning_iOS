@@ -97,7 +97,7 @@ class AlterUIView: UIViewController {
     }()
     
     //MARK: - Life Cycle
-
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         view.backgroundColor = UIColor(red: 0, green: 0, blue: 0, alpha: 0.6)
@@ -106,7 +106,7 @@ class AlterUIView: UIViewController {
     }
     
     //MARK: - UI
-
+    
     func SetUI() {
         view.addSubview(AlterView)
         
@@ -136,7 +136,7 @@ class AlterUIView: UIViewController {
             
         }
     }
-
+    
     func types() {
         switch alterType {
             
@@ -177,7 +177,7 @@ class AlterUIView: UIViewController {
         }
     }
     //MARK: - objc func
-
+    
     @objc func cancelclicked(){
         self.dismiss(animated: true) {
             self.delegate?.cancel()
@@ -202,26 +202,63 @@ class AlterUIView: UIViewController {
         self.dismiss(animated: true) {
             self.delegate?.confirm()
             print("확인버튼")
+            print("AlterView의 groupId",self.groupId as Any)
+            self.deleteAlarm()
         }
     }
+    //MARK: - API handling
     
     private func handleDeleteAlarm() {
         // 알람 삭제에 대한 처리 로직
         print("알람 삭제 로직 실행")
         
     }
-
+    
     private func handleOutGroup() {
         // 모임 나가기 처리 로직
         print("모임 나가기 로직 실행")
         // 예시: 서버에 나가기 요청 보내기, UI 업데이트 등
     }
-
+    
     private func handleQuit() {
         // 윗모닝 탈퇴 처리 로직
         print("윗모닝 탈퇴 로직 실행")
         // 예시: 서버에 탈퇴 요청 보내기, 유저 정보 삭제 등
     }
-
+    
+    //MARK: - API
+    var groupId : Int?
+    
+    private func deleteAlarm(){
+        
+        guard let groupId = groupId else{return}
+        
+        APInetwork.deleteGroup(groupId: groupId){ result in
+            switch result {
+            case.success(let data):
+                DispatchQueue.main.async {
+                    self.dismiss(animated: true) {
+                        self.delegate?.confirm()
+                        
+                    }
+                    print(data)
+                    print("알람 삭제 성공")
+                }
+            case .failure(let error):
+                print("알람 삭제 실패: \(error.localizedDescription)")
+                DispatchQueue.main.async {
+                    // 에러 메시지를 사용자에게 표시
+                    let alert = UIAlertController(title: "오류", message: "알람 삭제에 실패했습니다.", preferredStyle: .alert)
+                    alert.addAction(UIAlertAction(title: "확인", style: .default, handler: nil))
+                    self.present(alert, animated: true, completion: nil)
+                }
+            }
+        }
+        
+    }
     
 }
+
+
+
+

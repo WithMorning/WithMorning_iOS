@@ -311,7 +311,7 @@ extension MainViewController : UITableViewDelegate, UITableViewDataSource{
         
         cell.ConfigureMember(alarm.userList ?? [])
         cell.timeLabel.text = alarm.wakeupTime
-        cell.groupID = alarm.groupID
+        cell.groupId = alarm.groupID
         
         // 토글의 상태를 데이터 모델로부터 가져와 설정
         cell.toggleButton.isOn = isTurn

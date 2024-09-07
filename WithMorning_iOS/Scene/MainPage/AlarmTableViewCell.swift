@@ -368,7 +368,7 @@ class AlarmTableViewCell : UITableViewCell, UISheetPresentationControllerDelegat
         
     }
     //MARK: - 멤버
-    var groupID : Int = 0 //그룹 아이디
+    var groupId : Int = 0 //그룹 아이디
     private var userData : [UserList] = [] //유저 데이터
     private var memberCount : Int = 0
     private var collectionViewHeight: CGFloat = 90
@@ -513,9 +513,10 @@ class AlarmTableViewCell : UITableViewCell, UISheetPresentationControllerDelegat
         }
         
         let vc = CellMenuViewController()
+        vc.groupId = self.groupId
         vc.modalPresentationStyle = .formSheet
         parentViewController.present(vc, animated: true)
-        print("groupID : ",groupID)
+        print("groupId : ",groupId)
         
         if let vc = vc.sheetPresentationController{
             if #available(iOS 16.0, *) {
@@ -533,6 +534,7 @@ class AlarmTableViewCell : UITableViewCell, UISheetPresentationControllerDelegat
         vc.Menuclicked = {
             vc.dismiss(animated: true) {
                 let alterVC = AlterUIView(alterType: .deleteAlarm)
+                alterVC.groupId = self.groupId
                 alterVC.modalPresentationStyle = .overFullScreen
                 alterVC.modalTransitionStyle = .crossDissolve
                 parentViewController.present(alterVC, animated: true, completion: nil)
