@@ -226,13 +226,12 @@ class AlterUIView: UIViewController {
         // 예시: 서버에 탈퇴 요청 보내기, 유저 정보 삭제 등
     }
     
-    //MARK: - API
+    //MARK: - 알람 삭제를 위한 groupId
     var groupId : Int?
     
+    //MARK: - 알람삭제 APO
     private func deleteAlarm(){
-        
         guard let groupId = groupId else{return}
-        
         APInetwork.deleteGroup(groupId: groupId){ result in
             switch result {
             case.success(let data):

@@ -19,6 +19,7 @@ enum Router : URLRequestConvertible{
     case getmainpage
     case postgroup(data : MakeGroupMaindata)
     case deletegrop(groupId : Int)
+    case joingroup(data : JoingroupMaindata)
     
     
     // url가르기
@@ -28,6 +29,7 @@ enum Router : URLRequestConvertible{
         case .getmainpage: return "/home"
         case .postgroup: return "/groups"
         case .deletegrop(let groupId): return "/groups/\(groupId)"
+        case .joingroup: return "/groups/join"
         }
     }
     
@@ -44,7 +46,7 @@ enum Router : URLRequestConvertible{
     var method: HTTPMethod {
         switch self {
         case .getmypage, .getmainpage: return .get
-        case .postgroup: return .post
+        case .postgroup, .joingroup: return .post
         case .deletegrop: return .delete
         }
     }
@@ -76,6 +78,8 @@ enum Router : URLRequestConvertible{
             request = try JSONParameterEncoder().encode(data, into: request)
         case .deletegrop:
             request = try URLEncoding.queryString.encode(request, with: parameters)
+        case .joingroup(let data):
+            request = try JSONParameterEncoder().encode(data, into: request)
         }
         //request = try URLEncoding.queryString.encode(request, with: parameters)
         //이 인코딩 방식은 GET 요청 또는 URL 쿼리 매개변수를 전송할 때 사용

@@ -101,3 +101,27 @@ struct Deletegroup: Codable {
     let message: String
 }
 
+//MARK: - 초대코드로 방 입장 request
+struct JoingroupMaindata: Codable {
+    let participationCode: String
+    let isAgree: Bool
+}
+
+//MARK: - 초대코드로 방 입장 response
+struct Joingroup: Codable {
+    let isSuccess: Bool
+    let code: Int
+    let message: String
+    let result: JoingroupResponse?
+}
+
+struct JoingroupResponse: Codable {
+    let groupID: Int
+    let joinUserNickname, joinAt: String
+
+    enum CodingKeys: String, CodingKey {
+        case groupID = "groupId"
+        case joinUserNickname, joinAt
+    }
+}
+
