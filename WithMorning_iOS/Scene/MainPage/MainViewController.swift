@@ -248,18 +248,18 @@ class MainViewController: UIViewController, UISheetPresentationControllerDelegat
         if value == 0 {
             soundButton.setImage(UIImage(named: "Volumeoff"), for: .normal)
         }
-        
     }
     
     
     //MARK: - Data Array
     var alarmData  : [GroupList] = []
     
+    
     //MARK: - API
     func getMainpage() {
         APInetwork.getMainpage() { result in
             switch result {
-            case .success(let mainpage):                
+            case .success(let mainpage):
                 self.MainpageUpdate(with: mainpage)
                 print(mainpage)
             case .failure(let error):
@@ -267,8 +267,6 @@ class MainViewController: UIViewController, UISheetPresentationControllerDelegat
             }
         }
     }
-    
-    
     
     func MainpageUpdate(with mainpage: MainpageResponse){
         guard let groupList = mainpage.groupList else {
@@ -358,8 +356,6 @@ extension MainViewController : UITableViewDelegate, UITableViewDataSource{
         return baseHeight + extraHeight + memoHeight
         
     }
-    
-    
 }
 
 //Preview code

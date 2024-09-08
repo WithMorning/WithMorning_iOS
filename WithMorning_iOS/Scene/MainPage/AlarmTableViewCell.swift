@@ -528,7 +528,6 @@ class AlarmTableViewCell : UITableViewCell, UISheetPresentationControllerDelegat
                 vc.prefersGrabberVisible = false
                 vc.preferredCornerRadius = 16
             }
-            
         }
         
         vc.Menuclicked = {
@@ -552,6 +551,7 @@ class AlarmTableViewCell : UITableViewCell, UISheetPresentationControllerDelegat
     
     //그룹내의 셀 재사용
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
+        
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "memberCollectioViewCell", for: indexPath) as! memberCollectioViewCell
         
         let userlistData = userData[indexPath.item]
@@ -564,8 +564,6 @@ class AlarmTableViewCell : UITableViewCell, UISheetPresentationControllerDelegat
         
         return CGSize(width: 62, height: collectionViewHeight)
     }
-    
-    
     
     
     //그룹내의 셀 중앙정렬

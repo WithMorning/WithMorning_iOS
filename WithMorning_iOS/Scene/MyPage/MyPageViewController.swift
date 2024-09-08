@@ -400,8 +400,6 @@ class MyPageViewController : UIViewController, UIScrollViewDelegate {
         return button
     }()
     
-    
-    
     //MARK: - Life Cycle
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -646,8 +644,10 @@ class MyPageViewController : UIViewController, UIScrollViewDelegate {
         APInetwork.getMypage(){ result in
             switch result{
             case.success(let mypage):
+                
                 self.nickNameLabel.text = mypage.nickname
                 self.updateSleepTimeLabel(with: mypage.bedtime, dayOfWeekList: mypage.dayOfWeekList)
+                
                 print(mypage)
             case.failure(let error):
                 print(error)

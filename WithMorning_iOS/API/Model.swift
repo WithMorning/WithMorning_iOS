@@ -107,7 +107,7 @@ struct JoingroupMaindata: Codable {
     let isAgree: Bool
 }
 
-//MARK: - 초대코드로 방 입장 response
+//MARK: - 초대코드로 방 입장
 struct Joingroup: Codable {
     let isSuccess: Bool
     let code: Int
@@ -125,3 +125,15 @@ struct JoingroupResponse: Codable {
     }
 }
 
+//MARK: - 취침알림 시간 및 요일 설정
+struct BedtimeMaindata: Codable { //request
+    let bedTime: String
+    let bedDayOfWeekList: [String]
+    let isAllowBedTimeAlarm: Bool
+}
+
+struct Bedtime: Codable { //response
+    let isSuccess: Bool
+    let code: Int
+    let message: String
+}

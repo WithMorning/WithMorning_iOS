@@ -127,7 +127,6 @@ class CellMenuViewController: UIViewController, AlterDelegate {
         }
     }
     
-    
     //MARK: - @objc func
     @objc func copyClicked(){
         print("초대코드 복사버튼")
