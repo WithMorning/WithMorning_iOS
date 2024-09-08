@@ -178,7 +178,6 @@ class AlterUIView: UIViewController {
         }
     }
     //MARK: - objc func
-    
     @objc func cancelclicked(){
         self.dismiss(animated: true) {
             self.delegate?.cancel()
@@ -207,6 +206,7 @@ class AlterUIView: UIViewController {
             self.deleteAlarm()
         }
     }
+    
     //MARK: - API handling
     
     private func handleDeleteAlarm() {
