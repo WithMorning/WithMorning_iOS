@@ -451,18 +451,6 @@ class AlarmTableViewCell : UITableViewCell, UISheetPresentationControllerDelegat
         return maxHeight
     }
     
-    //MARK: - 메모View 높이 계산
-    func updateMemoViewHeight() {
-        let baseHeight: CGFloat = 49
-        let maxWidth = memoView.frame.width - 96
-        
-        let size = memoLabel.sizeThatFits(CGSize(width: maxWidth, height: .greatestFiniteMagnitude))
-        let newHeight = isExpanded ? size.height + 32 : min(baseHeight, size.height + 32)
-        
-        memoViewHeightConstraint?.update(offset: max(newHeight, 49))
-        setNeedsLayout()
-    }
-    
     //MARK: - 메모LabelUI 높이계산
     var fullText: String = ""
     var isExpanded = false
@@ -495,7 +483,19 @@ class AlarmTableViewCell : UITableViewCell, UISheetPresentationControllerDelegat
         }
     }
     
-    //MARK: - 더보기 탭
+    //MARK: - 메모View 높이 계산
+    func updateMemoViewHeight() {
+        let baseHeight: CGFloat = 49
+        let maxWidth = memoView.frame.width - 96
+        
+        let size = memoLabel.sizeThatFits(CGSize(width: maxWidth, height: .greatestFiniteMagnitude))
+        let newHeight = isExpanded ? size.height + 32 : min(baseHeight, size.height + 32)
+        
+        memoViewHeightConstraint?.update(offset: max(newHeight, 49))
+        setNeedsLayout()
+    }
+    
+    //MARK: - 메모 더 보기
     @objc func memoLabelTapped() {
         isExpanded.toggle()
         updateMemoLabel()
@@ -544,7 +544,6 @@ class AlarmTableViewCell : UITableViewCell, UISheetPresentationControllerDelegat
     }
     
     //MARK: - collectionView delegate func
-    
     //그룹내의 멤버 숫자
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         

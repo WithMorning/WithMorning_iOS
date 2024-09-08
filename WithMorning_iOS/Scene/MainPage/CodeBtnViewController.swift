@@ -12,6 +12,8 @@ import Alamofire
 
 class CodeBtnViewController: UIViewController {
     
+    let APInetwork = Network.shared
+    
     //MARK: - properties
     private lazy var codeLabel : UILabel = {
         let label = UILabel()
@@ -59,8 +61,8 @@ class CodeBtnViewController: UIViewController {
         let button = UIButton()
         button.setImage(UIImage(systemName: "checkmark.square.fill"), for: .normal)
         button.backgroundColor = .white
-        button.tintColor = DesignSystemColor.Gray200.value
         button.layer.cornerRadius = 5
+        button.tintColor = DesignSystemColor.Gray200.value
         button.addTarget(self, action: #selector(numberclicked), for: .touchUpInside)
         return button
     }()
@@ -92,18 +94,14 @@ class CodeBtnViewController: UIViewController {
     
     
     
-    
-    
-    
     //MARK: - LifeCycle
     override func viewDidLoad() {
         super.viewDidLoad()
         self.view.backgroundColor = .white
         SetUI()
         hideKeyboardWhenTappedAround()
-        
-        
     }
+    
     //MARK: - SetUI
     
     func SetUI(){
@@ -148,18 +146,61 @@ class CodeBtnViewController: UIViewController {
             $0.top.equalToSuperview().offset(20)
         }
     }
+    
+    func Buttontintcolor(){
+        if numberBool == false{
+            openButton.tintColor = DesignSystemColor.Gray200.value
+        }
+        
+        if numberBool == true{
+            openButton.tintColor = DesignSystemColor.Orange500.value
+        }
+        
+    }
     //MARK: - @objc func
     @objc func buttonclicked(){
-        self.dismiss(animated: true, completion: nil)
+        codeButton { [weak self] success in
+            DispatchQueue.main.async {
+                if success {
+                    self?.dismiss(animated: true)
+                } else {
+                    // API 호출 실패 시 사용자에게 알림
+                    print("초대코드로 입장 실패")
+                }
+            }
+        }
     }
     
     @objc func numberclicked(){
-        if openButton.tintColor == DesignSystemColor.Gray200.value{
-            openButton.tintColor = DesignSystemColor.Orange500.value
+        if numberBool == false{
+            numberBool = true
+            Buttontintcolor()
+            print("numberbool",numberBool)
         }else{
-            openButton.tintColor = DesignSystemColor.Gray200.value
+            numberBool = false
+            Buttontintcolor()
+            print("numberbool",numberBool)
         }
     }
+    
+    //MARK: - API
+    var numberBool : Bool = false
+    
+    private func codeButton(completion: @escaping (Bool) -> Void){
+        let data = JoingroupMaindata(participationCode: codeTextfield.text ?? "", isAgree: numberBool)
+        APInetwork.joinGroup(joindata: data){ result in
+            switch result{
+            case.success(let data):
+                print(data)
+                completion(true)
+            case.failure(let error):
+                print(error.localizedDescription)
+                completion(false)
+                
+            }
+        }
+    }
+    
 }
 
 //MARK: - 키보드 내리기
@@ -167,6 +208,7 @@ extension CodeBtnViewController : UITextFieldDelegate {
     func hideKeyboardWhenTappedAround() {
         let tap = UITapGestureRecognizer(target: self, action: #selector(CodeBtnViewController.dismissKeyboard))
         tap.cancelsTouchesInView = false
+        tap.delegate = self
         view.addGestureRecognizer(tap)
     }
     
@@ -182,9 +224,19 @@ extension CodeBtnViewController : UITextFieldDelegate {
     }
     
     func textFieldDidEndEditing(_ textField: UITextField) {
-
+        
         textField.layer.borderWidth = 0
         
+    }
+}
+//MARK: - 번호 숨기기 버튼 클릭시 키보드 안내려가게 하기
+
+extension CodeBtnViewController : UIGestureRecognizerDelegate{
+    func gestureRecognizer(_ gestureRecognizer: UIGestureRecognizer, shouldReceive touch: UITouch) -> Bool {
+        if touch.view == openButton,touch.view == DoneButton {
+            return false
+        }
+        return true
     }
 }
 

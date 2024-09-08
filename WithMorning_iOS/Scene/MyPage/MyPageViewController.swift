@@ -10,11 +10,17 @@ import SnapKit
 import Then
 import Alamofire
 import Kingfisher
+import WebKit
+
+
+enum WebUrl: String{
+    case privacy = "https://withmorning-2024.tistory.com/2"
+    case perm = "https://withmorning-2024.tistory.com/1"
+}
 
 class MyPageViewController : UIViewController, UIScrollViewDelegate {
     
     let APInetwork = Network.shared
-    
     //MARK: - 네비게이션
     
     private lazy var myPageLabel : UILabel = {
@@ -231,8 +237,9 @@ class MyPageViewController : UIViewController, UIScrollViewDelegate {
         stackView.alignment = .fill
         stackView.addSubviews(serviceLabel,serviceLabel2)
         stackView.isUserInteractionEnabled = true
-        //        let tapGestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(repeatDay))
-        //        stackView.addGestureRecognizer(tapGestureRecognizer)
+        
+        let tapGestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(permTappedAction))
+        stackView.addGestureRecognizer(tapGestureRecognizer)
         return stackView
     }()
     
@@ -266,8 +273,8 @@ class MyPageViewController : UIViewController, UIScrollViewDelegate {
         stackView.alignment = .fill
         stackView.addSubviews(privacyLabel,privacyLabel2)
         stackView.isUserInteractionEnabled = true
-        //        let tapGestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(repeatDay))
-        //        stackView.addGestureRecognizer(tapGestureRecognizer)
+        let tapGestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(privacyTappedAction))
+        stackView.addGestureRecognizer(tapGestureRecognizer)
         return stackView
     }()
     
@@ -409,7 +416,7 @@ class MyPageViewController : UIViewController, UIScrollViewDelegate {
     }
     
     //MARK: - Autolayout
-
+    
     func SetUI(){
         view.addSubviews(myPageLabel,popButton,mypageScrollView)
         
@@ -605,10 +612,28 @@ class MyPageViewController : UIViewController, UIScrollViewDelegate {
         let vc = SleepTimeViewController()
         self.navigationController?.pushViewController(vc, animated: true)
     }
+    
+    //MARK: - 이용약관
+    @objc func permTappedAction(_ sender: UITapGestureRecognizer){
+        let webViewVC = MypageWebViewController()
+        webViewVC.url = .perm
+        self.navigationController?.pushViewController(webViewVC, animated: true)
+    }
+    
+    //MARK: - 개인정보처리방침
+    @objc func privacyTappedAction(_ sender: UITapGestureRecognizer){
+        let webViewVC = MypageWebViewController()
+        webViewVC.url = .privacy
+        self.navigationController?.pushViewController(webViewVC, animated: true)
+    }
+    
+    //MARK: - 로그아웃
+
     @objc func logout(){
         
     }
     
+    //MARK: - 회원 탈퇴
     @objc func quitclick(){
         let alterVC = AlterUIView(alterType: .quit)
         alterVC.modalPresentationStyle = .overFullScreen
@@ -630,7 +655,7 @@ class MyPageViewController : UIViewController, UIScrollViewDelegate {
         }
     }
     //MARK: - 시간 형식 수정
-
+    
     func updateSleepTimeLabel(with bedtime: String, dayOfWeekList: [String]) {
         let dateFormatter = DateFormatter()
         dateFormatter.dateFormat = "HH:mm"
@@ -648,7 +673,7 @@ class MyPageViewController : UIViewController, UIScrollViewDelegate {
 }
 
 //MARK: - extension
- 
+
 extension MyPageViewController : UIGestureRecognizerDelegate{
     
     func popGesture(){

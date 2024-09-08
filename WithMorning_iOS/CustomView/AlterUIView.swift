@@ -96,6 +96,7 @@ class AlterUIView: UIViewController {
         return button
     }()
     
+    
     //MARK: - Life Cycle
     
     override func viewDidLoad() {
@@ -229,7 +230,7 @@ class AlterUIView: UIViewController {
     //MARK: - 알람 삭제를 위한 groupId
     var groupId : Int?
     
-    //MARK: - 알람삭제 APO
+    //MARK: - 알람삭제 API
     private func deleteAlarm(){
         guard let groupId = groupId else{return}
         APInetwork.deleteGroup(groupId: groupId){ result in
@@ -238,7 +239,6 @@ class AlterUIView: UIViewController {
                 DispatchQueue.main.async {
                     self.dismiss(animated: true) {
                         self.delegate?.confirm()
-                        
                     }
                     print(data)
                     print("알람 삭제 성공")

@@ -367,6 +367,7 @@ class MakeAlarmViewController : UIViewController, UIScrollViewDelegate, UISheetP
     var selectedDayOfWeek: [String] = []
     
     private func makeGroup(completion: @escaping (Bool) -> Void){
+        
         let data = MakeGroupMaindata(name: groupLabel.text ?? "모임명이 없습니다.", wakeupTime: selectedTime24, dayOfWeekList: selectedDayOfWeek, isAgree: true, memo: memoTextView.text)
         
         APInetwork.postGroup(groupdata: data){ result in
@@ -482,9 +483,7 @@ class MakeAlarmViewController : UIViewController, UIScrollViewDelegate, UISheetP
                     self?.navigationController?.popViewController(animated: true)
                 } else {
                     // API 호출 실패 시 사용자에게 알림
-                    let alert = UIAlertController(title: "오류", message: "알람 생성에 실패했습니다. 다시 시도해주세요.", preferredStyle: .alert)
-                    alert.addAction(UIAlertAction(title: "확인", style: .default, handler: nil))
-                    self?.present(alert, animated: true, completion: nil)
+                    print("그룹 생성 실패")
                 }
             }
         }

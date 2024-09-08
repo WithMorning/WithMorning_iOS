@@ -166,12 +166,6 @@ class MainViewController: UIViewController, UISheetPresentationControllerDelegat
             $0.bottom.equalTo(view.safeAreaLayoutGuide)
         }
         
-        //        floatingButton.snp.makeConstraints{
-        //            $0.width.height.equalTo(50)
-        //            $0.bottom.equalTo(view.safeAreaLayoutGuide)
-        //            $0.trailing.equalToSuperview().inset(16)
-        //        }
-        
     }
     
     //MARK: - tableSetting
@@ -187,7 +181,6 @@ class MainViewController: UIViewController, UISheetPresentationControllerDelegat
         AlarmTableView.separatorStyle = .none
         AlarmTableView.refreshControl = tableViewRefresh
         
-        //        AlarmTableView.rowHeight = 108 //cell높이
         AlarmTableView.estimatedRowHeight = UITableView.automaticDimension
         
         headerView.layoutIfNeeded()
@@ -209,8 +202,8 @@ class MainViewController: UIViewController, UISheetPresentationControllerDelegat
     //MARK: - objc func
     @objc func refreshControl(){
         DispatchQueue.main.asyncAfter(deadline: .now() + 1.0) {
-            self.AlarmTableView.reloadData()
             self.tableViewRefresh.endRefreshing()
+            self.getMainpage()
         }
     }
     
@@ -263,10 +256,11 @@ class MainViewController: UIViewController, UISheetPresentationControllerDelegat
     var alarmData  : [GroupList] = []
     
     //MARK: - API
-    private func getMainpage() {
+    func getMainpage() {
         APInetwork.getMainpage() { result in
             switch result {
-            case .success(let mainpage):                self.MainpageUpdate(with: mainpage)
+            case .success(let mainpage):                
+                self.MainpageUpdate(with: mainpage)
                 print(mainpage)
             case .failure(let error):
                 print(error)
@@ -280,7 +274,6 @@ class MainViewController: UIViewController, UISheetPresentationControllerDelegat
         guard let groupList = mainpage.groupList else {
             return
         }
-        
         self.alarmData = groupList
         
         DispatchQueue.main.async {
