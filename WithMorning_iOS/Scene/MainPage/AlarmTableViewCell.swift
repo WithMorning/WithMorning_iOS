@@ -14,9 +14,12 @@ import Alamofire
 
 class AlarmTableViewCell : UITableViewCell, UISheetPresentationControllerDelegate, UICollectionViewDataSource, UICollectionViewDelegate,UICollectionViewDelegateFlowLayout{
     
+    
     //MARK: - closure
     var toggleclicked : ( () -> Void ) = {}
     var moreclicked : ( () -> Void) = {}
+    //알람삭제후 실행되는 클로저
+    var onAlarmDelete: (() -> Void)?
     
     lazy var AlarmStackView : UIStackView = {
         let view = UIStackView()
@@ -530,15 +533,23 @@ class AlarmTableViewCell : UITableViewCell, UISheetPresentationControllerDelegat
             }
         }
         
-        vc.Menuclicked = {
-            vc.dismiss(animated: true) {
-                let alterVC = AlterUIView(alterType: .deleteAlarm)
-                alterVC.groupId = self.groupId
-                alterVC.modalPresentationStyle = .overFullScreen
-                alterVC.modalTransitionStyle = .crossDissolve
-                parentViewController.present(alterVC, animated: true, completion: nil)
-            }
-        }
+        vc.Menuclicked = { [weak self] in
+                    guard let self = self else { return }
+                    vc.dismiss(animated: true) {
+                        let alterVC = AlterUIView(alterType: .deleteAlarm)
+                        alterVC.groupId = self.groupId
+                        alterVC.modalPresentationStyle = .overFullScreen
+                        alterVC.modalTransitionStyle = .crossDissolve
+                        
+                        // AlterUIView의 confirm 클로저 설정
+                        alterVC.confirmAction = { [weak self] in
+                            self?.onAlarmDelete?()
+                        }
+                        
+                        parentViewController.present(alterVC, animated: true, completion: nil)
+                    }
+                }
+            
         
     }
     
@@ -674,3 +685,4 @@ class memberCollectioViewCell: UICollectionViewCell {
         layoutIfNeeded()
     }
 }
+

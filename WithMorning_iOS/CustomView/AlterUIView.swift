@@ -19,8 +19,6 @@ protocol AlterDelegate {
 }
 
 //MARK: - 알림창의 타입을 위한 enum
-//let alterVC = AlterUIView(alterType: .outGroup)
-//let alterVC = AlterUIView(alterType: .deleteAlarm) 으로 사용
 
 enum Altertype {
     case deleteAlarm
@@ -32,6 +30,9 @@ class AlterUIView: UIViewController {
     
     var alterType : Altertype
     var delegate : AlterDelegate?
+    
+    
+    var confirmAction: (() -> Void)?
     
     
     init(alterType: Altertype) {
@@ -201,7 +202,7 @@ class AlterUIView: UIViewController {
         
         self.dismiss(animated: true) {
             self.delegate?.confirm()
-            print("확인버튼")
+            print("dismiss 후 확인버튼")
             print("AlterView의 groupId",self.groupId as Any)
             self.deleteAlarm()
         }
@@ -238,7 +239,7 @@ class AlterUIView: UIViewController {
             case.success(let data):
                 DispatchQueue.main.async {
                     self.dismiss(animated: true) {
-                        self.delegate?.confirm()
+                        self.confirmAction?()
                     }
                     print(data)
                     print("알람 삭제 성공")
