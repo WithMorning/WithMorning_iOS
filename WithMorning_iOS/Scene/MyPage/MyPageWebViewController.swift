@@ -36,7 +36,7 @@ class MypageWebViewController: UIViewController, WKUIDelegate {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        
+        view.backgroundColor = .white
         openWebPage()
     }
     

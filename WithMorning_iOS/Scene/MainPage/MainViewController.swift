@@ -325,8 +325,10 @@ extension MainViewController : UITableViewDelegate, UITableViewDataSource{
             }
         }
         
+        //알람 삭제 후 실행되는 클로저
         cell.onAlarmDelete = { [weak self] in
             self?.getMainpage()
+            
         }
         
         // togglebutton on,off closure
@@ -360,18 +362,6 @@ extension MainViewController : UITableViewDelegate, UITableViewDataSource{
         return baseHeight + extraHeight + memoHeight
         
     }
-}
-
-extension MainViewController : AlterDelegate{
-    func confirm() {
-        getMainpage()
-    }
-    
-    func cancel() {
-        getMainpage()
-    }
-    
-    
 }
 
 //Preview code
