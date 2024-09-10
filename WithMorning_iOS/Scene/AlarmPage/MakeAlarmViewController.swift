@@ -367,7 +367,6 @@ class MakeAlarmViewController : UIViewController, UIScrollViewDelegate, UISheetP
     var selectedDayOfWeek: [String] = []
     
     private func makeGroup(completion: @escaping (Bool) -> Void){
-        
         let data = MakeGroupMaindata(name: groupLabel.text ?? "모임명이 없습니다.", wakeupTime: selectedTime24, dayOfWeekList: selectedDayOfWeek, isAgree: true, memo: memoTextView.text)
         
         APInetwork.postGroup(groupdata: data){ result in

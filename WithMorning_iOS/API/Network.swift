@@ -231,7 +231,8 @@ class Network{
                 }
             }
     }
-    
+    //MARK: - 자는 시간 설정
+
     func postBedtime(bedtimedata : BedtimeMaindata, completionHandler: @escaping (Result<Bedtime, Error>) -> Void ){
         AF.request(Router.postbedtime(data: bedtimedata)).validate(statusCode: 200..<300).responseDecodable(of: Bedtime.self){(response: DataResponse<Bedtime, AFError>) in
             switch response.result {
