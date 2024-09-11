@@ -68,7 +68,7 @@ class WeekChoiceViewController : UIViewController, UIScrollViewDelegate {
         stackView.alignment = .fill
         stackView.addSubviews(TueLabel,TueIMG)
         stackView.isUserInteractionEnabled = true
-        let tapGestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(tueuclick))
+        let tapGestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(tueclick))
         stackView.addGestureRecognizer(tapGestureRecognizer)
         
         return stackView
@@ -441,10 +441,12 @@ class WeekChoiceViewController : UIViewController, UIScrollViewDelegate {
     
     //MARK: - 요일 이동 클로저
     let daysOrder = ["mon", "tue", "wed", "thu", "fri", "sat", "sun"]
-    
+    //알람설정부분
     var selectedDayOfWeek: [String] = []
     var weekClosure: (([String]) -> Void)?
-    var selectedDays: [String] = []
+    var AlarmSelectedDays: [String] = []
+    
+    //취침 시간 설정 부분
     
     func updateDayUI(_ day: String, isSelected: Bool) {
         let color = isSelected ? DesignSystemColor.Orange500.value : DesignSystemColor.Gray200.value
@@ -463,19 +465,19 @@ class WeekChoiceViewController : UIViewController, UIScrollViewDelegate {
     
     func restoreSelectedDays() {
         for day in daysOrder {
-            updateDayUI(day, isSelected: selectedDays.contains(day))
+            updateDayUI(day, isSelected: AlarmSelectedDays.contains(day))
         }
         updateweeklycolor()
     }
     
     //T/F 토글
     func toggleDay(_ day: String, image: UIImageView) {
-        if let index = selectedDays.firstIndex(of: day) {
-            selectedDays.remove(at: index)
+        if let index = AlarmSelectedDays.firstIndex(of: day) {
+            AlarmSelectedDays.remove(at: index)
             image.tintColor = DesignSystemColor.Gray200.value
         } else {
-            selectedDays.append(day)
-            selectedDays.sort { daysOrder.firstIndex(of: $0)! < daysOrder.firstIndex(of: $1)! }
+            AlarmSelectedDays.append(day)
+            AlarmSelectedDays.sort { daysOrder.firstIndex(of: $0)! < daysOrder.firstIndex(of: $1)! }
             image.tintColor = DesignSystemColor.Orange500.value
         }
         updateweeklycolor()
@@ -483,15 +485,14 @@ class WeekChoiceViewController : UIViewController, UIScrollViewDelegate {
     
     //월 ~ 일요일 정렬
     func updateSelectedDays() {
-        selectedDayOfWeek = Array(selectedDays).sorted()
+        selectedDayOfWeek = Array(AlarmSelectedDays).sorted()
     }
     
     
     
     //MARK: - objc func
-    
     @objc func monclick() { toggleDay("mon", image: MonIMG) }
-    @objc func tueuclick() { toggleDay("tue", image: TueIMG) }
+    @objc func tueclick() { toggleDay("tue", image: TueIMG) }
     @objc func wedclick() { toggleDay("wed", image: WedIMG) }
     @objc func thrclick() { toggleDay("thu", image: ThrIMG) }
     @objc func friclick() { toggleDay("fri", image: FriIMG) }
@@ -499,38 +500,39 @@ class WeekChoiceViewController : UIViewController, UIScrollViewDelegate {
     @objc func sunclick() { toggleDay("sun", image: SunIMG) }
     
     @objc func doneclick() {
-        weekClosure?(selectedDays)
+        weekClosure?(AlarmSelectedDays)
         self.dismiss(animated: true)
     }
     
     @objc func weekdayclick() {
+        
         let weekdays = ["mon", "tue", "wed", "thu", "fri"]
-        let allWeekdaysSelected = weekdays.allSatisfy { selectedDays.contains($0) }
+        let allWeekdaysSelected = weekdays.allSatisfy { AlarmSelectedDays.contains($0) }
         
         if allWeekdaysSelected {
-            selectedDays.removeAll { weekdays.contains($0) }
+            AlarmSelectedDays.removeAll { weekdays.contains($0) }
         } else {
-            selectedDays = (selectedDays + weekdays).uniqued().sorted { daysOrder.firstIndex(of: $0)! < daysOrder.firstIndex(of: $1)! }
+            AlarmSelectedDays = (AlarmSelectedDays + weekdays).uniqued().sorted { daysOrder.firstIndex(of: $0)! < daysOrder.firstIndex(of: $1)! }
         }
         
         for day in weekdays {
-            updateDayUI(day, isSelected: selectedDays.contains(day))
+            updateDayUI(day, isSelected: AlarmSelectedDays.contains(day))
         }
         updateweeklycolor()
     }
     
     @objc func weekendclick() {
         let weekends = ["sat", "sun"]
-        let allWeekendsSelected = weekends.allSatisfy { selectedDays.contains($0) }
+        let allWeekendsSelected = weekends.allSatisfy { AlarmSelectedDays.contains($0) }
         
         if allWeekendsSelected {
-            selectedDays.removeAll { weekends.contains($0) }
+            AlarmSelectedDays.removeAll { weekends.contains($0) }
         } else {
-            selectedDays = (selectedDays + weekends).uniqued().sorted { daysOrder.firstIndex(of: $0)! < daysOrder.firstIndex(of: $1)! }
+            AlarmSelectedDays = (AlarmSelectedDays + weekends).uniqued().sorted { daysOrder.firstIndex(of: $0)! < daysOrder.firstIndex(of: $1)! }
         }
         
         for day in weekends {
-            updateDayUI(day, isSelected: selectedDays.contains(day))
+            updateDayUI(day, isSelected: AlarmSelectedDays.contains(day))
         }
         updateweeklycolor()
     }

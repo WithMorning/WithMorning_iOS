@@ -65,7 +65,7 @@ class SleepTimeViewController : UIViewController, UISheetPresentationControllerD
         let stackView = UIStackView()
         stackView.axis = .horizontal
         stackView.alignment = .fill
-        stackView.addSubviews(repeatLabel,repeatDayLabel)
+        stackView.addSubviews(repeatLabel,repeatDayLabel,repeatDayLabel1)
         stackView.isUserInteractionEnabled = true
         let tapGestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(repeatDay))
         stackView.addGestureRecognizer(tapGestureRecognizer)
@@ -83,7 +83,7 @@ class SleepTimeViewController : UIViewController, UISheetPresentationControllerD
     }()
     
     private lazy var repeatDayLabel : UILabel = {
-        let attributedString1 = NSMutableAttributedString(string: "평일   ")
+        let attributedString1 = NSMutableAttributedString(string: "")
         let imageAttachment1 = NSTextAttachment()
         imageAttachment1.image = UIImage(systemName: "greaterthan")
         imageAttachment1.bounds = CGRect(x: 0, y: -3, width: 10, height: 16)
@@ -94,10 +94,14 @@ class SleepTimeViewController : UIViewController, UISheetPresentationControllerD
         label.textAlignment = .right
         label.textColor = DesignSystemColor.Gray400.value
         label.font = DesignSystemFont.Pretendard_Medium14.value
-        
-        label.isUserInteractionEnabled = true
-        let tapGestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(repeatDay))
-        label.addGestureRecognizer(tapGestureRecognizer)
+        return label
+    }()
+    
+    private lazy var repeatDayLabel1 : UILabel = {
+        let label = UILabel()
+        label.text = "없음"
+        label.textColor = DesignSystemColor.Gray400.value
+        label.font = DesignSystemFont.Pretendard_Medium14.value
         return label
     }()
     
@@ -125,8 +129,6 @@ class SleepTimeViewController : UIViewController, UISheetPresentationControllerD
         let imageConfig = UIImage.SymbolConfiguration(pointSize: 20, weight: .light)
         let image = UIImage(systemName: "checkmark.square.fill", withConfiguration: imageConfig)
         button.setImage(image, for: .normal)
-        button.tintColor = DesignSystemColor.Gray200.value
-        
         button.addTarget(self, action: #selector(notisetting), for: .touchUpInside)
         return button
     }()
@@ -156,6 +158,8 @@ class SleepTimeViewController : UIViewController, UISheetPresentationControllerD
         self.view.backgroundColor = DesignSystemColor.Gray150.value
         SetUI()
         setCurrentTimeOnPicker()
+        updateRepeatDayLabel()
+        allowAlarmTintColor()
     }
     
     override func viewDidLayoutSubviews() {
@@ -207,6 +211,10 @@ class SleepTimeViewController : UIViewController, UISheetPresentationControllerD
         repeatDayLabel.snp.makeConstraints {
             $0.trailing.centerY.equalToSuperview()
         }
+        repeatDayLabel1.snp.makeConstraints{
+            $0.centerY.equalTo(repeatDayLabel)
+            $0.trailing.equalTo(repeatDayLabel.snp.leading).offset(-12)
+        }
         
         
         baseView2.snp.makeConstraints{
@@ -236,7 +244,6 @@ class SleepTimeViewController : UIViewController, UISheetPresentationControllerD
     }
     
     //MARK: - picker set
-    
     func pickerviewUI(){
         timePicker.subviews[1].isHidden = true
         
@@ -278,21 +285,67 @@ class SleepTimeViewController : UIViewController, UISheetPresentationControllerD
         timePicker.selectRow(middleAMPM + ampm, inComponent: 2, animated: false)
     }
     
+    //MARK: - 요일 설정
+    func updateRepeatDayLabel() {
+        if selectedDayOfWeek.isEmpty {
+            repeatDayLabel1.text = "없음"
+        } else {
+            let dayNames = selectedDayOfWeek.map { day -> String in
+                switch day {
+                case "mon": return "월"
+                case "tue": return "화"
+                case "wed": return "수"
+                case "thu": return "목"
+                case "fri": return "금"
+                case "sat": return "토"
+                case "sun": return "일"
+                default: return ""
+                }
+            }
+            repeatDayLabel1.text = dayNames.joined(separator: ", ")
+        }
+    }
+    //MARK: - API
+    var bedtime : String = ""
+    var weekList : [String] = []
+    var allowAlarm : Bool = false
+    
+    func editBedtime(){
+        let bedtime = BedtimeMaindata(bedTime: bedtime, bedDayOfWeekList: weekList, isAllowBedTimeAlarm: allowAlarm)
+        
+        APInetwork.postBedtime(bedtimedata: bedtime){ result in
+            switch result {
+            case .success(let bed):
+                print("취침시간",bed)
+            case .failure(let error):
+                print(error.localizedDescription)
+            }
+            
+        }
+    }
+    
+    
     //MARK: - objc func
+    var selectedDayOfWeek: [String] = []
     
     @objc func popclicked(){
         self.navigationController?.popViewController(animated: true)
-        print("pop")
     }
     
-    @objc func repeatDay(){
+    @objc func repeatDay() {
         let vc = WeekChoiceViewController()
+        vc.AlarmSelectedDays = selectedDayOfWeek
+        vc.weekClosure = { [weak self] selectedDays in
+            self?.selectedDayOfWeek = selectedDays
+            self?.updateRepeatDayLabel()
+        }
+        
         self.present(vc, animated: true)
         
         if let sheet = vc.sheetPresentationController {
             if #available(iOS 16.0, *) {
                 sheet.detents = [.custom { context in
-                    return 452 //고정
+                    return 440
                 }]
                 
                 sheet.delegate = self
@@ -301,22 +354,55 @@ class SleepTimeViewController : UIViewController, UISheetPresentationControllerD
             }
         }
     }
-    
+    //MARK: - 알람받기
     @objc func notisetting(){
-        if notiImage.tintColor == DesignSystemColor.Gray200.value{
+        if allowAlarm == false{
+            notiImage.tintColor = DesignSystemColor.Gray200.value
+            allowAlarm = true
+            allowAlarmTintColor()
+        }else{
+            notiImage.tintColor = DesignSystemColor.Orange500.value
+            allowAlarm = false
+            allowAlarmTintColor()
+        }
+    }
+    
+    func allowAlarmTintColor(){
+        if allowAlarm == true{
             notiImage.tintColor = DesignSystemColor.Orange500.value
         }else{
             notiImage.tintColor = DesignSystemColor.Gray200.value
         }
     }
-    
-    @objc func saveclicked(){
+    //MARK: - 저장 버튼
+
+    @objc func saveclicked() {
         self.navigationController?.popViewController(animated: true)
         
-        //1일요일~ 7토요일
-//        self.sleepNoti.sleepTimeNotifications(title: "알람 테스트", body: "알람 테스트 입니다.", weekdays: [4], hour: 6, minute: 7, ampm: .pm, identifier: "SleepTimeNotification")
+        // 선택된 요일을 숫자로 변환 (1: 일요일, 2: 월요일, ..., 7: 토요일)
+        let weekdays = selectedDayOfWeek.compactMap { day -> Int? in
+            switch day {
+            case "sun": return 1
+            case "mon": return 2
+            case "tue": return 3
+            case "wed": return 4
+            case "thu": return 5
+            case "fri": return 6
+            case "sat": return 7
+            default: return nil
+            }
+        }
+        
+        // 선택된 시간 가져오기
+        let selectedHour = hour[timePicker.selectedRow(inComponent: 0) % hour.count]
+        let selectedMinute = min[timePicker.selectedRow(inComponent: 1) % min.count]
+        let selectedAMPM = AMPM[timePicker.selectedRow(inComponent: 2)]
+        
+        // AMPM을 고려하여 시간 조정
+        let adjustedHour = (selectedAMPM == "PM" && selectedHour != 12) ? selectedHour + 12 : (selectedAMPM == "AM" && selectedHour == 12) ? 0 : selectedHour
         
     }
+    
     
 }
 

@@ -288,6 +288,7 @@ extension MainViewController : UITableViewDelegate, UITableViewDataSource{
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        
         guard let cell = AlarmTableView.dequeueReusableCell(withIdentifier: "AlarmTableViewCell", for: indexPath) as? AlarmTableViewCell else {return UITableViewCell()}
         
         let alarm = alarmData[indexPath.row]
@@ -303,6 +304,7 @@ extension MainViewController : UITableViewDelegate, UITableViewDataSource{
         cell.ConfigureMember(alarm.userList ?? [])
         cell.timeLabel.text = alarm.wakeupTime
         cell.groupId = alarm.groupID
+        
         
         // 토글의 상태를 데이터 모델로부터 가져와 설정
         cell.toggleButton.isOn = isTurn

@@ -10,6 +10,7 @@ import Combine
 import UIKit
 
 class RegisterUserInfo {
+    
     static let shared = RegisterUserInfo()
     
 //MARK: - 로그인 후 기본적인 UserDefault 값

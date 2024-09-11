@@ -367,7 +367,7 @@ class MakeAlarmViewController : UIViewController, UIScrollViewDelegate, UISheetP
     var selectedDayOfWeek: [String] = []
     
     private func makeGroup(completion: @escaping (Bool) -> Void){
-        let data = MakeGroupMaindata(name: groupLabel.text ?? "모임명이 없습니다.", wakeupTime: selectedTime24, dayOfWeekList: selectedDayOfWeek, isAgree: true, memo: memoTextView.text)
+        let data = MakeGroupMaindata(name: groupTextfield.text ?? "모임명이 없습니다.", wakeupTime: selectedTime24, dayOfWeekList: selectedDayOfWeek, isAgree: true, memo: memoTextView.text)
         
         APInetwork.postGroup(groupdata: data){ result in
             switch result {
@@ -433,7 +433,7 @@ class MakeAlarmViewController : UIViewController, UIScrollViewDelegate, UISheetP
     
     @objc func repeatDay(){
         let vc = WeekChoiceViewController()
-        vc.selectedDays = selectedDayOfWeek
+        vc.AlarmSelectedDays = selectedDayOfWeek
         vc.weekClosure = { [weak self] selectedDays in
             self?.selectedDayOfWeek = selectedDays
             self?.updateRepeatDayLabel()
