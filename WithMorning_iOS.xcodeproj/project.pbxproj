@@ -66,6 +66,7 @@
 		D1DECB242BE54B37009AC667 /* Pretendard-Thin.otf in Resources */ = {isa = PBXBuildFile; fileRef = D1DECB1E2BE54B37009AC667 /* Pretendard-Thin.otf */; };
 		D1DECB252BE54B37009AC667 /* Pretendard-ExtraLight.otf in Resources */ = {isa = PBXBuildFile; fileRef = D1DECB1F2BE54B37009AC667 /* Pretendard-ExtraLight.otf */; };
 		D1DECB262BE54B37009AC667 /* Pretendard-Light.otf in Resources */ = {isa = PBXBuildFile; fileRef = D1DECB202BE54B37009AC667 /* Pretendard-Light.otf */; };
+		D1E0F9912C9176A100733DEC /* UserDefault_Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = D1E0F9902C9176A100733DEC /* UserDefault_Extension.swift */; };
 		D1E1DF822C3AD04F001A132F /* WeekChoiceViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D1E1DF812C3AD04F001A132F /* WeekChoiceViewController.swift */; };
 		D1E1FBDE2C65F23E001E5375 /* Toast_Message.swift in Sources */ = {isa = PBXBuildFile; fileRef = D1E1FBDD2C65F23E001E5375 /* Toast_Message.swift */; };
 		D1E672BB2BC4FD3300A32790 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = D1E672BA2BC4FD3300A32790 /* AppDelegate.swift */; };
@@ -133,6 +134,7 @@
 		D1DECB1E2BE54B37009AC667 /* Pretendard-Thin.otf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Pretendard-Thin.otf"; sourceTree = "<group>"; };
 		D1DECB1F2BE54B37009AC667 /* Pretendard-ExtraLight.otf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Pretendard-ExtraLight.otf"; sourceTree = "<group>"; };
 		D1DECB202BE54B37009AC667 /* Pretendard-Light.otf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Pretendard-Light.otf"; sourceTree = "<group>"; };
+		D1E0F9902C9176A100733DEC /* UserDefault_Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserDefault_Extension.swift; sourceTree = "<group>"; };
 		D1E1DF812C3AD04F001A132F /* WeekChoiceViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WeekChoiceViewController.swift; sourceTree = "<group>"; };
 		D1E1FBDD2C65F23E001E5375 /* Toast_Message.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Toast_Message.swift; sourceTree = "<group>"; };
 		D1E672B72BC4FD3300A32790 /* WithMorning_iOS.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = WithMorning_iOS.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -193,6 +195,7 @@
 				D16B609A2C65EF190039B99A /* UISlider_Extension.swift */,
 				D1B86A022C6D13D20052F528 /* UICell_Extension.swift */,
 				D1AD15AB2C7AF19F003EE342 /* UILabel_Extension.swift */,
+				D1E0F9902C9176A100733DEC /* UserDefault_Extension.swift */,
 			);
 			name = Extension;
 			sourceTree = "<group>";
@@ -587,6 +590,7 @@
 				D15AE73A2BC995B800024CE3 /* UIView_Extension.swift in Sources */,
 				D1E672BD2BC4FD3300A32790 /* SceneDelegate.swift in Sources */,
 				D12D512E2C60A28800D3F1A9 /* AlarmSoundViewController.swift in Sources */,
+				D1E0F9912C9176A100733DEC /* UserDefault_Extension.swift in Sources */,
 				D1AD15AC2C7AF19F003EE342 /* UILabel_Extension.swift in Sources */,
 				D1303A012C451B3F0071267A /* EditprofileViewController.swift in Sources */,
 			);
