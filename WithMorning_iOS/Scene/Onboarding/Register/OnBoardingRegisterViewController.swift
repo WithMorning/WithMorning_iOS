@@ -51,6 +51,7 @@ class OnBoardingRegisterViewController : UIViewController{
         textfield.textColor = .black
         textfield.layer.cornerRadius = 8
         textfield.textAlignment = .center
+        textfield.tintColor = DesignSystemColor.Orange500.value
         
         //텍스트 필드 교정 메서드
         textfield.delegate = self

@@ -48,6 +48,7 @@ class OnBoardingCertificateViewController : UIViewController{
         textfield.textColor = .black
         textfield.layer.cornerRadius = 8
         textfield.textAlignment = .center
+        textfield.tintColor = DesignSystemColor.Orange500.value
         
         //텍스트 필드 교정 메서드
         textfield.delegate = self
@@ -79,6 +80,12 @@ class OnBoardingCertificateViewController : UIViewController{
         self.navigationController?.isNavigationBarHidden = true
         setUI()
         hideKeyboardWhenTappedAround()
+    }
+    
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        //MARK: - 3분 타이머
+
     }
     
     func setUI(){

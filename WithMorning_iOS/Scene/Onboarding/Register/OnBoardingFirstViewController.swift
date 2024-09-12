@@ -23,7 +23,7 @@ class OnBoardingFirstViewController: UIViewController{
         let view = UIView()
         view.backgroundColor = .white
         view.layer.cornerRadius = 8
-        view.addSubviews(ageLabel,agecheckButton,serviceLabel,serviceButton,infoLabel,infoButton,maketingLabel,maketingButton)
+        view.addSubviews(ageLabel,agecheckButton,serviceLabel,serviceButton,infoLabel,infoButton)
         return view
     }()
     
@@ -175,7 +175,7 @@ class OnBoardingFirstViewController: UIViewController{
         view1.snp.makeConstraints{
             $0.top.equalTo(mainLabel.snp.bottom).offset(21)
             $0.leading.trailing.equalToSuperview().inset(16)
-            $0.height.equalTo(204)
+            $0.height.equalTo(164)
         }
         ageLabel.snp.makeConstraints{
             $0.top.leading.equalToSuperview().inset(26)
@@ -203,16 +203,16 @@ class OnBoardingFirstViewController: UIViewController{
             $0.centerY.equalTo(infoLabel)
             $0.trailing.equalToSuperview().inset(24)
         }
-        maketingLabel.snp.makeConstraints{
-            $0.top.equalTo(infoLabel.snp.bottom)
-                .offset(20)
-            $0.leading.equalToSuperview().offset(24)
-            $0.height.equalTo(26)
-        }
-        maketingButton.snp.makeConstraints{
-            $0.centerY.equalTo(maketingLabel)
-            $0.trailing.equalToSuperview().inset(24)
-        }
+//        maketingLabel.snp.makeConstraints{
+//            $0.top.equalTo(infoLabel.snp.bottom)
+//                .offset(20)
+//            $0.leading.equalToSuperview().offset(24)
+//            $0.height.equalTo(26)
+//        }
+//        maketingButton.snp.makeConstraints{
+//            $0.centerY.equalTo(maketingLabel)
+//            $0.trailing.equalToSuperview().inset(24)
+//        }
         
         view2.snp.makeConstraints{
             $0.leading.trailing.equalToSuperview().inset(16)
