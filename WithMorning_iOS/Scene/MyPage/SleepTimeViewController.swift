@@ -327,6 +327,7 @@ class SleepTimeViewController : UIViewController, UISheetPresentationControllerD
     
     //MARK: - objc func
     var selectedDayOfWeek: [String] = []
+    var selectedTime24: String = ""
     
     @objc func popclicked(){
         self.navigationController?.popViewController(animated: true)
@@ -375,7 +376,7 @@ class SleepTimeViewController : UIViewController, UISheetPresentationControllerD
         }
     }
     //MARK: - 저장 버튼
-
+    
     @objc func saveclicked() {
         self.navigationController?.popViewController(animated: true)
         
@@ -480,6 +481,22 @@ extension SleepTimeViewController : UIPickerViewDelegate, UIPickerViewDataSource
         default:
             return 45
         }
+    }
+    
+    func pickerView(_ pickerView: UIPickerView, didSelectRow row: Int, inComponent component: Int) {
+        let selectedHour = hour[pickerView.selectedRow(inComponent: 0) % hour.count]
+        let selectedMinute = min[pickerView.selectedRow(inComponent: 1) % min.count]
+        let selectedAMPM = AMPM[pickerView.selectedRow(inComponent: 2)]
+        
+        var hour24 = selectedHour
+        if selectedAMPM == "PM" && selectedHour != 12 {
+            hour24 += 12
+        } else if selectedAMPM == "AM" && selectedHour == 12 {
+            hour24 = 0
+        }
+        
+        selectedTime24 = String(format: "%02d:%02d", hour24, selectedMinute)
+        print("설정된 시간 (24시간제): \(selectedTime24)")
     }
     
     

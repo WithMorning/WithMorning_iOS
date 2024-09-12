@@ -8,8 +8,6 @@
 import Foundation
 import UIKit
 
-open class UserDefaults : NSObject{
-    
-    open class var standard : UserDefaults { get }
+extension UserDefaults{
     
 }
