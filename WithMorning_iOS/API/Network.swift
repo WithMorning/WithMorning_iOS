@@ -264,7 +264,7 @@ class Network{
                     }
                 }
             case .success(let data):
-                print(#fileID, #function, #line, "- ⭐️알람(그룹)삭제 완료!")
+                print(#fileID, #function, #line, "- ⭐️취침시간 수정 완료!")
                 // 성공 시, 데이터 처리
                 completionHandler(.success(data))
             }

@@ -120,7 +120,7 @@ class MakeAlarmViewController : UIViewController, UIScrollViewDelegate, UISheetP
         label.font = DesignSystemFont.Pretendard_Medium14.value
         return label
     }()
-
+    
     
     
     
@@ -433,6 +433,7 @@ class MakeAlarmViewController : UIViewController, UIScrollViewDelegate, UISheetP
     
     @objc func repeatDay(){
         let vc = WeekChoiceViewController()
+        vc.callerType = .makeAlarm
         vc.AlarmSelectedDays = selectedDayOfWeek
         vc.weekClosure = { [weak self] selectedDays in
             self?.selectedDayOfWeek = selectedDays
@@ -455,24 +456,24 @@ class MakeAlarmViewController : UIViewController, UIScrollViewDelegate, UISheetP
     }
     
     func updateRepeatDayLabel() {
-            if selectedDayOfWeek.isEmpty {
-                repeatDayLabel1.text = "없음"
-            } else {
-                let dayNames = selectedDayOfWeek.map { day -> String in
-                    switch day {
-                    case "mon": return "월"
-                    case "tue": return "화"
-                    case "wed": return "수"
-                    case "thu": return "목"
-                    case "fri": return "금"
-                    case "sat": return "토"
-                    case "sun": return "일"
-                    default: return ""
-                    }
+        if selectedDayOfWeek.isEmpty {
+            repeatDayLabel1.text = "없음"
+        } else {
+            let dayNames = selectedDayOfWeek.map { day -> String in
+                switch day {
+                case "mon": return "월"
+                case "tue": return "화"
+                case "wed": return "수"
+                case "thu": return "목"
+                case "fri": return "금"
+                case "sat": return "토"
+                case "sun": return "일"
+                default: return ""
                 }
-                repeatDayLabel1.text = dayNames.joined(separator: ", ")
             }
+            repeatDayLabel1.text = dayNames.joined(separator: ", ")
         }
+    }
     
     
     @objc func saveclicked() {

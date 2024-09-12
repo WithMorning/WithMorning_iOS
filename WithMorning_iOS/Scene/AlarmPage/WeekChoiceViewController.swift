@@ -12,7 +12,13 @@ import Alamofire
 
 class WeekChoiceViewController : UIViewController, UIScrollViewDelegate {
     
+    enum CallerType {
+        case sleepTime
+        case makeAlarm
+    }
+    
     //MARK: - properties
+    var callerType: CallerType = .makeAlarm
     
     private lazy var weekScrollVeiw : UIScrollView = {
         let scrollview = UIScrollView()
@@ -500,12 +506,19 @@ class WeekChoiceViewController : UIViewController, UIScrollViewDelegate {
     @objc func sunclick() { toggleDay("sun", image: SunIMG) }
     
     @objc func doneclick() {
-        weekClosure?(AlarmSelectedDays)
+        switch callerType {
+        case .sleepTime:
+            weekClosure?(AlarmSelectedDays)
+            print("알람요일설정 present")
+        case .makeAlarm:
+            weekClosure?(AlarmSelectedDays)
+            print("알람생성 present")
+        }
         self.dismiss(animated: true)
+        
     }
     
     @objc func weekdayclick() {
-        
         let weekdays = ["mon", "tue", "wed", "thu", "fri"]
         let allWeekdaysSelected = weekdays.allSatisfy { AlarmSelectedDays.contains($0) }
         

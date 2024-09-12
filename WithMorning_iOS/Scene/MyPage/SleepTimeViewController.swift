@@ -306,12 +306,12 @@ class SleepTimeViewController : UIViewController, UISheetPresentationControllerD
         }
     }
     //MARK: - API
-    var bedtime : String = ""
-    var weekList : [String] = []
+    var selectedDayOfWeek: [String] = []
+    var selectedTime24: String = ""
     var allowAlarm : Bool = false
     
-    func editBedtime(){
-        let bedtime = BedtimeMaindata(bedTime: bedtime, bedDayOfWeekList: weekList, isAllowBedTimeAlarm: allowAlarm)
+    func editBedtime(completion: @escaping (Bool) -> Void){
+        let bedtime = BedtimeMaindata(bedTime: selectedTime24, bedDayOfWeekList: selectedDayOfWeek, isAllowBedTimeAlarm: allowAlarm)
         
         APInetwork.postBedtime(bedtimedata: bedtime){ result in
             switch result {
@@ -326,8 +326,6 @@ class SleepTimeViewController : UIViewController, UISheetPresentationControllerD
     
     
     //MARK: - objc func
-    var selectedDayOfWeek: [String] = []
-    var selectedTime24: String = ""
     
     @objc func popclicked(){
         self.navigationController?.popViewController(animated: true)
@@ -336,6 +334,7 @@ class SleepTimeViewController : UIViewController, UISheetPresentationControllerD
     @objc func repeatDay() {
         let vc = WeekChoiceViewController()
         vc.AlarmSelectedDays = selectedDayOfWeek
+        vc.callerType = .sleepTime
         vc.weekClosure = { [weak self] selectedDays in
             self?.selectedDayOfWeek = selectedDays
             self?.updateRepeatDayLabel()
@@ -378,29 +377,16 @@ class SleepTimeViewController : UIViewController, UISheetPresentationControllerD
     //MARK: - 저장 버튼
     
     @objc func saveclicked() {
-        self.navigationController?.popViewController(animated: true)
-        
-        // 선택된 요일을 숫자로 변환 (1: 일요일, 2: 월요일, ..., 7: 토요일)
-        let weekdays = selectedDayOfWeek.compactMap { day -> Int? in
-            switch day {
-            case "sun": return 1
-            case "mon": return 2
-            case "tue": return 3
-            case "wed": return 4
-            case "thu": return 5
-            case "fri": return 6
-            case "sat": return 7
-            default: return nil
+        editBedtime{[weak self] success in
+            DispatchQueue.main.async {
+            if success {
+                self?.navigationController?.popViewController(animated: true)
+            } else {
+                // API 호출 실패 시 사용자에게 알림
+                print("그룹 생성 실패")
             }
         }
-        
-        // 선택된 시간 가져오기
-        let selectedHour = hour[timePicker.selectedRow(inComponent: 0) % hour.count]
-        let selectedMinute = min[timePicker.selectedRow(inComponent: 1) % min.count]
-        let selectedAMPM = AMPM[timePicker.selectedRow(inComponent: 2)]
-        
-        // AMPM을 고려하여 시간 조정
-        let adjustedHour = (selectedAMPM == "PM" && selectedHour != 12) ? selectedHour + 12 : (selectedAMPM == "AM" && selectedHour == 12) ? 0 : selectedHour
+        }
         
     }
     
@@ -496,6 +482,7 @@ extension SleepTimeViewController : UIPickerViewDelegate, UIPickerViewDataSource
         }
         
         selectedTime24 = String(format: "%02d:%02d", hour24, selectedMinute)
+        
         print("설정된 시간 (24시간제): \(selectedTime24)")
     }
     

@@ -41,7 +41,7 @@ class OnBoardingProfileViewController : UIViewController, UIImagePickerControlle
     
     private lazy var profileImage : UIImageView = {
         let image = UIImageView()
-
+        image.image = UIImage(named: "profile")
         image.clipsToBounds = true
         image.layer.cornerRadius = 75
         return image
