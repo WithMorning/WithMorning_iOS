@@ -20,7 +20,6 @@ class OnBoardingCertificateViewController : UIViewController{
         let button = UIButton()
         button.setImage(UIImage(systemName: "chevron.backward"), for: .normal)
         button.tintColor = .black
-        //        button.addTarget(self, action: #selector(popclicked), for: .touchUpInside)
         return button
     }()
     
@@ -64,6 +63,14 @@ class OnBoardingCertificateViewController : UIViewController{
         return textfield
     }()
     
+    private lazy var timerLabel : UILabel = {
+        let label = UILabel()
+        label.textColor = DesignSystemColor.Orange500.value
+        label.font = DesignSystemFont.Pretendard_Bold14.value
+        label.text = "3:00"
+        return label
+    }()
+
     private lazy var nextButton : UIButton = {
         let button = UIButton()
         button.setTitle("다음", for: .normal)
@@ -76,7 +83,8 @@ class OnBoardingCertificateViewController : UIViewController{
     }()
     
     
-    
+    //MARK: - life cycle
+
     override func viewDidLoad() {
         super.viewDidLoad()
         view.backgroundColor = DesignSystemColor.Gray150.value
@@ -87,12 +95,11 @@ class OnBoardingCertificateViewController : UIViewController{
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        //MARK: - 3분 타이머
-        
+        getsetTime()
     }
     
     func setUI(){
-        view.addSubviews(popButton,mainLabel,subLabel,numberTextfield,nextButton)
+        view.addSubviews(popButton,mainLabel,subLabel,numberTextfield,timerLabel,nextButton)
         
         mainLabel.snp.makeConstraints{
             $0.centerX.equalToSuperview()
@@ -112,6 +119,11 @@ class OnBoardingCertificateViewController : UIViewController{
             $0.top.equalTo(subLabel.snp.bottom).offset(16)
             $0.height.equalTo(65)
         }
+        timerLabel.snp.makeConstraints{
+            $0.centerY.equalTo(numberTextfield)
+            $0.trailing.equalTo(numberTextfield.snp.trailing).inset(24)
+        }
+        
         nextButton.snp.makeConstraints{
             $0.leading.trailing.equalToSuperview().inset(16)
             $0.top.equalTo(numberTextfield.snp.bottom).offset(16)
@@ -143,7 +155,35 @@ class OnBoardingCertificateViewController : UIViewController{
         
     }
     
+    //MARK: - 타이머
+    var limitTime : Int = 180
     
+    func getsetTime(){
+        secTotime(sec: limitTime)
+        limitTime = limitTime - 1
+    }
+    
+    func secTotime(sec : Int){
+        let minute = (sec % 3600) / 60
+        let second = (sec % 3600) % 60
+        
+        if second < 10 {
+            timerLabel.text = String(minute) + ":" + "0" + String(second)
+        }else{
+            timerLabel.text = String(minute) + ":" + String(second)
+        }
+        
+        if limitTime != 0 {
+            DispatchQueue.main.asyncAfter(deadline: .now() + 1.0) {
+                self.getsetTime()
+            }
+        }
+        
+        if limitTime == 0{
+            self.navigationController?.popViewController(animated: true)
+        }
+    }
+
     //MARK: - @objc func
     @objc func editchange(_ sender: Any){
         guard let txtfield = sender as? UITextField, let text = txtfield.text else {return}
@@ -159,7 +199,6 @@ class OnBoardingCertificateViewController : UIViewController{
             nextButton.backgroundColor = DesignSystemColor.Orange500.value
         }
         code = text
-        print(text)
     }
     
     @objc func nextclick(){
