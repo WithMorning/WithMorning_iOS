@@ -366,17 +366,16 @@ class MakeAlarmViewController : UIViewController, UIScrollViewDelegate, UISheetP
     var selectedTime24: String = ""
     var selectedDayOfWeek: [String] = []
     
-    private func makeGroup(completion: @escaping (Bool) -> Void){
+    private func makeGroup(){
         let data = MakeGroupMaindata(name: groupTextfield.text ?? "모임명이 없습니다.", wakeupTime: selectedTime24, dayOfWeekList: selectedDayOfWeek, isAgree: true, memo: memoTextView.text)
         
         APInetwork.postGroup(groupdata: data){ result in
             switch result {
             case .success(let makeAlarm):
                 print("알람 생성 API",makeAlarm)
-                completion(true)
+                self.navigationController?.popViewController(animated: true)
             case .failure(let error):
                 print(error.localizedDescription)
-                completion(false)
             }
             
         }
@@ -477,16 +476,7 @@ class MakeAlarmViewController : UIViewController, UIScrollViewDelegate, UISheetP
     
     
     @objc func saveclicked() {
-        makeGroup { [weak self] success in
-            DispatchQueue.main.async {
-                if success {
-                    self?.navigationController?.popViewController(animated: true)
-                } else {
-                    // API 호출 실패 시 사용자에게 알림
-                    print("그룹 생성 실패")
-                }
-            }
-        }
+        makeGroup()
     }
 }
 

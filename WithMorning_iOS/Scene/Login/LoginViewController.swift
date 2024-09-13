@@ -91,7 +91,7 @@ class LoginViewController: UIViewController{
         }
         
         guestButton.snp.makeConstraints{
-            $0.height.equalTo(64)
+            $0.height.equalTo(0)
             $0.leading.trailing.equalToSuperview().inset(16)
             $0.bottom.equalTo(view.safeAreaLayoutGuide).inset(80)
         }
@@ -106,6 +106,7 @@ class LoginViewController: UIViewController{
         let vc = MainViewController()
         self.navigationController?.pushViewController(vc, animated: true)
     }
+    
     @objc private func apple(){
         AppleLoginManager.shared.startSignInWithAppleFlow()
 //        let vc = OnBoardingProfileViewController()

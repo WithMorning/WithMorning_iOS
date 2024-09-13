@@ -8,8 +8,11 @@
 import UIKit
 import Then
 import SnapKit
+import Alamofire
 
 class OnBoardingCertificateViewController : UIViewController{
+    
+    let APInetwork = UserNetwork.shared
     
     //MARK: - properties
     
@@ -17,7 +20,7 @@ class OnBoardingCertificateViewController : UIViewController{
         let button = UIButton()
         button.setImage(UIImage(systemName: "chevron.backward"), for: .normal)
         button.tintColor = .black
-//        button.addTarget(self, action: #selector(popclicked), for: .touchUpInside)
+        //        button.addTarget(self, action: #selector(popclicked), for: .touchUpInside)
         return button
     }()
     
@@ -71,7 +74,7 @@ class OnBoardingCertificateViewController : UIViewController{
         button.addTarget(self, action: #selector(nextclick), for: .touchUpInside)
         return button
     }()
-
+    
     
     
     override func viewDidLoad() {
@@ -85,7 +88,7 @@ class OnBoardingCertificateViewController : UIViewController{
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         //MARK: - 3분 타이머
-
+        
     }
     
     func setUI(){
@@ -116,10 +119,35 @@ class OnBoardingCertificateViewController : UIViewController{
         }
     }
     
+    //MARK: - API
+    var phonenumber = ""
+    var code = ""
+    
+    private func responseSMS(){
+        print(phonenumber)
+        
+        let data = SMScodeResquest(phone: phonenumber, code: code)
+        let vc = OnBoardingProfileViewController()
+        
+        APInetwork.responseSMS(responsedata: data){ result in
+            switch result{
+            case .success(let data):
+                print(data)
+                self.navigationController?.pushViewController(vc, animated: true)
+                
+            case .failure(let error):
+                print(error.localizedDescription)
+            }
+            
+        }
+        
+    }
+    
+    
     //MARK: - @objc func
     @objc func editchange(_ sender: Any){
         guard let txtfield = sender as? UITextField, let text = txtfield.text else {return}
-
+        
         if text.count > 6{
             txtfield.deleteBackward()
             nextButton.backgroundColor = DesignSystemColor.Orange500.value
@@ -130,18 +158,16 @@ class OnBoardingCertificateViewController : UIViewController{
         if text.count == 6{
             nextButton.backgroundColor = DesignSystemColor.Orange500.value
         }
-    
+        code = text
+        print(text)
     }
     
     @objc func nextclick(){
         if nextButton.backgroundColor == DesignSystemColor.Orange500.value{
-            let vc = OnBoardingProfileViewController()
-            self.navigationController?.pushViewController(vc, animated: true)
-        }else{
-            print("비활성화")
+            responseSMS()
         }
     }
-
+    
 }
 
 

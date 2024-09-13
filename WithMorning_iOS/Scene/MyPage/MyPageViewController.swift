@@ -155,8 +155,8 @@ class MyPageViewController : UIViewController, UIScrollViewDelegate {
         stackView.alignment = .fill
         stackView.addSubviews(pushnotiLabel,pushnotiLabel2)
         stackView.isUserInteractionEnabled = true
-        //        let tapGestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(repeatDay))
-        //        stackView.addGestureRecognizer(tapGestureRecognizer)
+        let tapGestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(pushnoti))
+        stackView.addGestureRecognizer(tapGestureRecognizer)
         return stackView
     }()
     
@@ -405,8 +405,13 @@ class MyPageViewController : UIViewController, UIScrollViewDelegate {
         super.viewDidLoad()
         self.view.backgroundColor = DesignSystemColor.Gray150.value
         SetUI()
-        getMypage()
         popGesture()
+    }
+    
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        getMypage()
+        
     }
     
     override func viewDidLayoutSubviews() {
@@ -595,7 +600,6 @@ class MyPageViewController : UIViewController, UIScrollViewDelegate {
     }
     
     //MARK: - objc func
-    
     @objc func popclicked(){
         self.navigationController?.popViewController(animated: true)
         print("pop")
@@ -604,12 +608,27 @@ class MyPageViewController : UIViewController, UIScrollViewDelegate {
     @objc func editprofile(){
         let vc = EditprofileViewController()
         self.navigationController?.pushViewController(vc, animated: true)
+        
     }
     
     @objc func sleeptime(){
         let vc = SleepTimeViewController()
+        vc.selectedTime24 = self.bedtime // API에서 받은 bedtime
+        vc.selectedDayOfWeek = self.dayOfWeekList // API에서 받은 dayOfWeekList
+        vc.allowAlarm = self.noti //API에서 받은 isAllowBedTimeAlarm
         self.navigationController?.pushViewController(vc, animated: true)
+        
     }
+    
+    //MARK: - 설정으로 이동
+    @objc func pushnoti(){
+        if let url = URL(string: UIApplication.openSettingsURLString) {
+            if UIApplication.shared.canOpenURL(url) {
+                UIApplication.shared.open(url, options: [:], completionHandler: nil)
+            }
+        }
+    }
+    
     
     //MARK: - 이용약관
     @objc func permTappedAction(_ sender: UITapGestureRecognizer){
@@ -626,7 +645,6 @@ class MyPageViewController : UIViewController, UIScrollViewDelegate {
     }
     
     //MARK: - 로그아웃
-
     @objc func logout(){
         
     }
@@ -640,22 +658,26 @@ class MyPageViewController : UIViewController, UIScrollViewDelegate {
     }
     
     //MARK: - API
+    var bedtime : String = ""
+    var dayOfWeekList : [String] = []
+    var noti : Bool = false
+    
     func getMypage(){
         APInetwork.getMypage(){ result in
             switch result{
             case.success(let mypage):
-                
                 self.nickNameLabel.text = mypage.nickname
                 self.updateSleepTimeLabel(with: mypage.bedtime, dayOfWeekList: mypage.dayOfWeekList)
-                
-                print(mypage)
+                self.bedtime = mypage.bedtime
+                self.dayOfWeekList = mypage.dayOfWeekList
+                self.noti = mypage.isAllowBedTimeAlarm
             case.failure(let error):
                 print(error)
             }
         }
     }
-    //MARK: - 시간 형식 수정
     
+    //MARK: - 시간 형식 수정
     func updateSleepTimeLabel(with bedtime: String, dayOfWeekList: [String]) {
         let dateFormatter = DateFormatter()
         dateFormatter.dateFormat = "HH:mm"
@@ -664,12 +686,36 @@ class MyPageViewController : UIViewController, UIScrollViewDelegate {
             dateFormatter.dateFormat = "hh:mm a"
             let formattedTime = dateFormatter.string(from: date)
             
-            let weekdayString = dayOfWeekList.contains { $0 != "sat" && $0 != "sun" } ? "평일" : "주말"
+            let weekdaysSet: Set = ["mon", "tue", "wed", "thu", "fri"]
+            let weekendSet: Set = ["sat", "sun"]
+            let allDaysSet: Set = ["mon", "tue", "wed", "thu", "fri", "sat", "sun"]
+            let dayOfWeekSet = Set(dayOfWeekList)
             
-            sleeptimeLabel3.text = "\(formattedTime) \(weekdayString)"
+            // 한글로 요일 변환을 위한 딕셔너리
+            let dayOfWeekDict: [String: String] = [
+                "mon": "월", "tue": "화", "wed": "수", "thu": "목", "fri": "금",
+                "sat": "토", "sun": "일"
+            ]
+            
+            // 모든 요일이 포함된 경우 "매일" 출력
+            if dayOfWeekSet == allDaysSet {
+                sleeptimeLabel3.text = "\(formattedTime) 매일"
+            }
+            // 평일: 월화수목금이 모두 포함된 경우
+            else if weekdaysSet.isSubset(of: dayOfWeekSet) && dayOfWeekSet.intersection(weekendSet).isEmpty {
+                sleeptimeLabel3.text = "\(formattedTime) 평일"
+            }
+            // 주말: 토, 일만 포함된 경우
+            else if dayOfWeekSet.isSubset(of: weekendSet) {
+                sleeptimeLabel3.text = "\(formattedTime) 주말"
+            }
+            // 그 외: 모든 요일 출력
+            else {
+                let koreanDays = dayOfWeekList.compactMap { dayOfWeekDict[$0] }.joined(separator: ", ")
+                sleeptimeLabel3.text = "\(formattedTime) \(koreanDays)"
+            }
         }
     }
-    
 }
 
 //MARK: - extension

@@ -14,7 +14,6 @@
 		D129AAF12C2D4C0800F995D2 /* CellMenuViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D129AAF02C2D4C0800F995D2 /* CellMenuViewController.swift */; };
 		D129AC772C75A99C00C83DB9 /* PushNotificationHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = D129AC762C75A99C00C83DB9 /* PushNotificationHelper.swift */; };
 		D12D512E2C60A28800D3F1A9 /* AlarmSoundViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D12D512D2C60A28800D3F1A9 /* AlarmSoundViewController.swift */; };
-		D12D51312C60BBFF00D3F1A9 /* UserModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = D12D51302C60BBFF00D3F1A9 /* UserModel.swift */; };
 		D12D51332C60BC0900D3F1A9 /* UserRouter.swift in Sources */ = {isa = PBXBuildFile; fileRef = D12D51322C60BC0900D3F1A9 /* UserRouter.swift */; };
 		D12D51352C60BC1500D3F1A9 /* UserNetwork.swift in Sources */ = {isa = PBXBuildFile; fileRef = D12D51342C60BC1500D3F1A9 /* UserNetwork.swift */; };
 		D12D513A2C60BC6300D3F1A9 /* AppleLoginManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = D12D51392C60BC6300D3F1A9 /* AppleLoginManager.swift */; };
@@ -27,6 +26,7 @@
 		D14967F62C6FB3F5000E8C1B /* RegisterUserInfo.swift in Sources */ = {isa = PBXBuildFile; fileRef = D14967F52C6FB3F5000E8C1B /* RegisterUserInfo.swift */; };
 		D14967F92C70864D000E8C1B /* KeyChain.swift in Sources */ = {isa = PBXBuildFile; fileRef = D14967F82C70864D000E8C1B /* KeyChain.swift */; };
 		D14A2D6C2BC8EB810087E0CB /* DesignSystem.swift in Sources */ = {isa = PBXBuildFile; fileRef = D14A2D6B2BC8EB810087E0CB /* DesignSystem.swift */; };
+		D15534A32C943C8E0087AED7 /* UserModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = D12D51302C60BBFF00D3F1A9 /* UserModel.swift */; };
 		D15AE7342BC990DA00024CE3 /* Pretendard-Bold.otf in Resources */ = {isa = PBXBuildFile; fileRef = D15AE7332BC990DA00024CE3 /* Pretendard-Bold.otf */; };
 		D15AE7362BC990E200024CE3 /* Pretendard-Medium.otf in Resources */ = {isa = PBXBuildFile; fileRef = D15AE7352BC990E200024CE3 /* Pretendard-Medium.otf */; };
 		D15AE7382BC990E900024CE3 /* Pretendard-SemiBold.otf in Resources */ = {isa = PBXBuildFile; fileRef = D15AE7372BC990E900024CE3 /* Pretendard-SemiBold.otf */; };
@@ -545,6 +545,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				D1891F302C58F72500DFF89C /* UITextField_Extension.swift in Sources */,
+				D15534A32C943C8E0087AED7 /* UserModel.swift in Sources */,
 				D1E1FBDE2C65F23E001E5375 /* Toast_Message.swift in Sources */,
 				D16B609B2C65EF190039B99A /* UISlider_Extension.swift in Sources */,
 				D1ABF7942C5239D6008B5084 /* TutorialSecondViewController.swift in Sources */,
@@ -578,7 +579,6 @@
 				D109BC8C2C43B23A005E075F /* SleepTimeViewController.swift in Sources */,
 				D129AAF12C2D4C0800F995D2 /* CellMenuViewController.swift in Sources */,
 				D19A9CB22C26901100748CE8 /* MakeAlarmViewController.swift in Sources */,
-				D12D51312C60BBFF00D3F1A9 /* UserModel.swift in Sources */,
 				D135377D2C3285AD004B49BB /* AlterUIView.swift in Sources */,
 				D10F846F2BC7E7CF00F3A172 /* UIColor_Extension.swift in Sources */,
 				D1B86A032C6D13D20052F528 /* UICell_Extension.swift in Sources */,

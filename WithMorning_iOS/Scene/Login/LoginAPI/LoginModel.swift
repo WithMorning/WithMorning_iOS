@@ -47,3 +47,4 @@ struct getToken: Codable {
 struct getTokenResponse: Codable {
     let accessToken: String?
 }
+

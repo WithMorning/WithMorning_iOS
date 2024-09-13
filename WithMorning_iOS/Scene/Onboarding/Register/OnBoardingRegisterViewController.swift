@@ -12,13 +12,14 @@ import JSPhoneFormat
 
 class OnBoardingRegisterViewController : UIViewController{
     
+    let APInetwork = UserNetwork.shared
+    
     //MARK: - properties
     
     private lazy var popButton : UIButton = {
         let button = UIButton()
         button.setImage(UIImage(systemName: "chevron.backward"), for: .normal)
         button.tintColor = .black
-//        button.addTarget(self, action: #selector(popclicked), for: .touchUpInside)
         return button
     }()
     
@@ -91,11 +92,7 @@ class OnBoardingRegisterViewController : UIViewController{
             $0.centerX.equalToSuperview()
             $0.top.equalTo(view.safeAreaLayoutGuide).offset(20)
         }
-        popButton.snp.makeConstraints{
-            $0.centerY.equalTo(mainLabel)
-            $0.leading.equalToSuperview().offset(16)
-            $0.height.width.equalTo(24)
-        }
+
         subLabel.snp.makeConstraints{
             $0.top.equalTo(mainLabel.snp.bottom).offset(29)
             $0.centerX.equalToSuperview()
@@ -112,11 +109,34 @@ class OnBoardingRegisterViewController : UIViewController{
         }
     }
     
+    //MARK: - API
+    var phonenumber = ""
+    
+    private func requestSMS(){
+        
+        let data = SMSnumRequest(phone: phonenumber)
+        let vc = OnBoardingCertificateViewController()
+        
+        APInetwork.requestSMS(phoneNumber: data){result in
+            switch result{
+            case .success(let data):
+                print(data)
+                vc.phonenumber = self.phonenumber
+                self.navigationController?.pushViewController(vc, animated: true)
+            case .failure(let error):
+                print(error.localizedDescription)
+            }
+        
+        }
+    }
+
+    
     //MARK: - @objc func
     @objc func editchange(_ sender: Any){
         guard let txtfield = sender as? UITextField, let text = txtfield.text else {return}
         
         txtfield.text = phoneFormat.addCharacter(at: text)
+        
         if text.count > 13{
             txtfield.deleteBackward()
             nextButton.backgroundColor = DesignSystemColor.Orange500.value
@@ -128,13 +148,21 @@ class OnBoardingRegisterViewController : UIViewController{
         if text.count == 13{
             nextButton.backgroundColor = DesignSystemColor.Orange500.value
         }
+        
+        let phoneNumberWithoutDash = text.replacingOccurrences(of: "-", with: "")
+        
+        phonenumber = phoneNumberWithoutDash
+        
+            print("Phone number without dash: \(phonenumber)")
+        
     }
     
     @objc func nextclick(){
         if nextButton.backgroundColor == DesignSystemColor.Orange500.value{
             
-            let vc = OnBoardingCertificateViewController()
-            self.navigationController?.pushViewController(vc, animated: true)
+//            let vc = OnBoardingCertificateViewController()
+//            self.navigationController?.pushViewController(vc, animated: true)
+            requestSMS()
         }
     }
 

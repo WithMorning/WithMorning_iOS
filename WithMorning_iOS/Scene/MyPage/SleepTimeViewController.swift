@@ -157,7 +157,7 @@ class SleepTimeViewController : UIViewController, UISheetPresentationControllerD
         super.viewDidLoad()
         self.view.backgroundColor = DesignSystemColor.Gray150.value
         SetUI()
-        setCurrentTimeOnPicker()
+        setSelectedTimeOnPicker()
         updateRepeatDayLabel()
         allowAlarmTintColor()
     }
@@ -258,32 +258,35 @@ class SleepTimeViewController : UIViewController, UISheetPresentationControllerD
         }
     }
     
-    func setCurrentTimeOnPicker() {
-        let currentDate = Date()
-        let calendar = Calendar.current
-        
-        let hour = calendar.component(.hour, from: currentDate)
-        let minute = calendar.component(.minute, from: currentDate)
-        
-        let hourForPicker: Int
-        let ampm: Int
-        
-        if hour >= 12 {
-            hourForPicker = hour == 12 ? 12 : hour - 12
-            ampm = 1 // PM
-        } else {
-            hourForPicker = hour == 0 ? 12 : hour
-            ampm = 0 // AM
+    func setSelectedTimeOnPicker() {
+            let dateFormatter = DateFormatter()
+            dateFormatter.dateFormat = "HH:mm"
+            
+            guard let date = dateFormatter.date(from: selectedTime24) else { return }
+            
+            let calendar = Calendar.current
+            let hour = calendar.component(.hour, from: date)
+            let minute = calendar.component(.minute, from: date)
+            
+            let hourForPicker: Int
+            let ampm: Int
+            
+            if hour >= 12 {
+                hourForPicker = hour == 12 ? 12 : hour - 12
+                ampm = 1 // PM
+            } else {
+                hourForPicker = hour == 0 ? 12 : hour
+                ampm = 0 // AM
+            }
+            
+            let middleHour = self.hour.count * 50
+            let middleMinute = min.count * 50
+            let middleAMPM = AMPM.count * 50
+            
+            timePicker.selectRow(middleHour + hourForPicker - 1, inComponent: 0, animated: false)
+            timePicker.selectRow(middleMinute + minute, inComponent: 1, animated: false)
+            timePicker.selectRow(middleAMPM + ampm, inComponent: 2, animated: false)
         }
-        
-        let middleHour = self.hour.count * 50
-        let middleMinute = min.count * 50
-        let middleAMPM = AMPM.count * 50
-        
-        timePicker.selectRow(middleHour + hourForPicker - 1, inComponent: 0, animated: false)
-        timePicker.selectRow(middleMinute + minute, inComponent: 1, animated: false)
-        timePicker.selectRow(middleAMPM + ampm, inComponent: 2, animated: false)
-    }
     
     //MARK: - 요일 설정
     func updateRepeatDayLabel() {
@@ -305,18 +308,21 @@ class SleepTimeViewController : UIViewController, UISheetPresentationControllerD
             repeatDayLabel1.text = dayNames.joined(separator: ", ")
         }
     }
-    //MARK: - API
+
+    
+    //MARK: - 호출 API
     var selectedDayOfWeek: [String] = []
     var selectedTime24: String = ""
     var allowAlarm : Bool = false
     
-    func editBedtime(completion: @escaping (Bool) -> Void){
+    func editBedtime(){
         let bedtime = BedtimeMaindata(bedTime: selectedTime24, bedDayOfWeekList: selectedDayOfWeek, isAllowBedTimeAlarm: allowAlarm)
         
         APInetwork.postBedtime(bedtimedata: bedtime){ result in
             switch result {
             case .success(let bed):
                 print("취침시간",bed)
+                self.navigationController?.popViewController(animated: true)
             case .failure(let error):
                 print(error.localizedDescription)
             }
@@ -326,7 +332,6 @@ class SleepTimeViewController : UIViewController, UISheetPresentationControllerD
     
     
     //MARK: - objc func
-    
     @objc func popclicked(){
         self.navigationController?.popViewController(animated: true)
     }
@@ -374,23 +379,12 @@ class SleepTimeViewController : UIViewController, UISheetPresentationControllerD
             notiImage.tintColor = DesignSystemColor.Gray200.value
         }
     }
-    //MARK: - 저장 버튼
     
+    //MARK: - 저장 버튼
     @objc func saveclicked() {
-        editBedtime{[weak self] success in
-            DispatchQueue.main.async {
-            if success {
-                self?.navigationController?.popViewController(animated: true)
-            } else {
-                // API 호출 실패 시 사용자에게 알림
-                print("그룹 생성 실패")
-            }
-        }
-        }
+        editBedtime()
         
     }
-    
-    
 }
 
 extension SleepTimeViewController : UIPickerViewDelegate, UIPickerViewDataSource {
