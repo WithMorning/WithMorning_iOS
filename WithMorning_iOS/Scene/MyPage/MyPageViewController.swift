@@ -607,6 +607,7 @@ class MyPageViewController : UIViewController, UIScrollViewDelegate {
     
     @objc func editprofile(){
         let vc = EditprofileViewController()
+        vc.nickname = self.nickname
         self.navigationController?.pushViewController(vc, animated: true)
         
     }
@@ -661,6 +662,7 @@ class MyPageViewController : UIViewController, UIScrollViewDelegate {
     var bedtime : String = ""
     var dayOfWeekList : [String] = []
     var noti : Bool = false
+    var nickname : String = ""
     
     func getMypage(){
         APInetwork.getMypage(){ result in
@@ -671,6 +673,7 @@ class MyPageViewController : UIViewController, UIScrollViewDelegate {
                 self.bedtime = mypage.bedtime
                 self.dayOfWeekList = mypage.dayOfWeekList
                 self.noti = mypage.isAllowBedTimeAlarm
+                self.nickname = mypage.nickname
             case.failure(let error):
                 print(error)
             }

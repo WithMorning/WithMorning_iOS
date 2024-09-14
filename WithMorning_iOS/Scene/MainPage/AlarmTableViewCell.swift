@@ -223,7 +223,7 @@ class AlarmTableViewCell : UITableViewCell, UISheetPresentationControllerDelegat
         let label = UILabel()
         label.textColor = DesignSystemColor.Gray400.value
         label.font = DesignSystemFont.Pretendard_Medium12.value
-        label.textAlignment = .left
+        label.textAlignment = .center
         label.numberOfLines = 0
         label.isUserInteractionEnabled = true
         

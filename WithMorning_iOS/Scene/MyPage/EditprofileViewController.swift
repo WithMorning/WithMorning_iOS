@@ -61,10 +61,12 @@ class EditprofileViewController : UIViewController,UIImagePickerControllerDelega
         return button
     }()
     
+    var nickname : String = ""
+    
     private lazy var nicknameTextfield : UITextField = {
         let textfield = UITextField()
         textfield.translatesAutoresizingMaskIntoConstraints = false
-        textfield.placeholder = "일이삼사오육칠팔구십"
+        textfield.placeholder = nickname
         textfield.backgroundColor = .white
         textfield.font = DesignSystemFont.Pretendard_Medium14.value
         textfield.textColor = .black

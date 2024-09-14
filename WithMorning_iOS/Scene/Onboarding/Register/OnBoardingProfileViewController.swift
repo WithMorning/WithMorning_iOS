@@ -152,8 +152,7 @@ class OnBoardingProfileViewController : UIViewController, UIImagePickerControlle
     }
     
     @objc func doneclick(){
-        let vc = OnBoardingTutorialViewController()
-        self.navigationController?.pushViewController(vc, animated: true)
+        registerProfile()
     }
     
     @objc func galleryclick() {
@@ -175,11 +174,30 @@ class OnBoardingProfileViewController : UIViewController, UIImagePickerControlle
     }
     
     //MARK: - API
+    var nickname : String = ""
+//    var testimg : String = "asd"
     
     private func registerProfile(){
-        let data = profileRequest(nickname: "", image: "", fcmToken: KeyChain.read(key: "fcmToken") ?? "")
+        let data = profileRequest(nickname: nickname, fcmToken: KeyChain.read(key: "fcmToken") ?? "")
+        
+        print(nickname)
+        print(KeyChain.read(key: "fcmToken") ?? "")
+        
+        let vc = OnBoardingTutorialViewController()
+        print(nickname)
+        APInetwork.postProfile(profiledata: data){ result in
+            switch result{
+            case .success(let data):
+                self.navigationController?.pushViewController(vc, animated: true)
+                print(data)
+            case .failure(let error):
+                print(error.localizedDescription)
+                
+            }
+        }
+        
     }
-
+    
     
     //MARK: - Gallery Setting
     func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [UIImagePickerController.InfoKey : Any]) {
@@ -188,6 +206,7 @@ class OnBoardingProfileViewController : UIViewController, UIImagePickerControlle
             print(info)
             
         }
+        
         dismiss(animated: true, completion: nil)
     }
     
@@ -234,6 +253,7 @@ extension OnBoardingProfileViewController : UITextFieldDelegate {
             }
         }
         guard textField.text!.count < 10 else { return false } // 10 글자로 제한
+        nickname = textField.text!
         return true
     }
 }

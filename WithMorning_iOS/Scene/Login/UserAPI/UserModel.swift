@@ -32,7 +32,7 @@ struct SMScodeResponse: Codable {
 
 //MARK: - 프로필 등록
 struct profileRequest: Codable {
-    let nickname, image, fcmToken: String
+    let nickname, fcmToken: String
 }
 
 struct profileResponse: Codable {

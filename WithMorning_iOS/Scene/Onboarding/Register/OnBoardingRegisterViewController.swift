@@ -159,9 +159,6 @@ class OnBoardingRegisterViewController : UIViewController{
     
     @objc func nextclick(){
         if nextButton.backgroundColor == DesignSystemColor.Orange500.value{
-            
-//            let vc = OnBoardingCertificateViewController()
-//            self.navigationController?.pushViewController(vc, animated: true)
             requestSMS()
         }
     }

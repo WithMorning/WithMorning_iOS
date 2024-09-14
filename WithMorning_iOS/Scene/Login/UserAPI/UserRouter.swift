@@ -23,9 +23,10 @@ enum UserRouter : URLRequestConvertible{
         switch self {
         case .postSMSrequest : return "/user/send-code"
         case .postSMSresponsse : return "/user/verify-code"
+            
         case .RegisterProfile : return "/user/profile"
             
-        
+            
             
         }
     }
@@ -33,6 +34,11 @@ enum UserRouter : URLRequestConvertible{
     //헤더
     var headers: HTTPHeaders {
         switch self {
+        case .RegisterProfile:
+                return HTTPHeaders([
+                    "accept": "application/json",
+                    "Authorization": "\(Authorization1)"
+                ])
         default:
             return HTTPHeaders(["accept" : "application/json", "Content-Type" : "application/json","Authorization":"\(Authorization1)"])
         }
@@ -68,7 +74,12 @@ enum UserRouter : URLRequestConvertible{
         case .postSMSresponsse(let data):
             request = try JSONParameterEncoder().encode(data, into: request)
         case .RegisterProfile(let data):
-            request = try JSONParameterEncoder().encode(data, into: request)
+//            request = try JSONParameterEncoder().encode(data, into: request)
+            let formData = MultipartFormData()
+                formData.append(Data(data.nickname.utf8), withName: "nickname")
+                formData.append(Data(data.fcmToken.utf8), withName: "fcmToken")
+                request.httpBody = try formData.encode()
+                request.headers.update(.contentType("multipart/form-data"))
         }
         
         //request = try URLEncoding.queryString.encode(request, with: parameters)
@@ -76,6 +87,7 @@ enum UserRouter : URLRequestConvertible{
         
         //request = try JSONParameterEncoder().encode(data, into: request)
         //이 인코딩 방식은 주로 POST 요청에서 사용되며, HTTP 요청 바디에 JSON 데이터를 넣어 전송할 때 사용
+        
         return request
     }
 }

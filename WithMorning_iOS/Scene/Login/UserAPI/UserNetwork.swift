@@ -115,9 +115,8 @@ class UserNetwork{
                                 print("🚨 실패 - 엑세스 토큰 만료. 갱신 시도 중...")
                                 NewAccessToken.shared.newAccessToken { success in
                                     if success {
-                                        // 새 엑세스 토큰 발급 성공 시, 다시 메인페이지 요청
-//                                        self.responseSMS(responsedata: responsedata, completionHandler: completionHandler)
-                                        
+                                         //새 엑세스 토큰 발급 성공 시, 다시 API 요청
+                                        self.postProfile(profiledata: profiledata, completionHandler: completionHandler)
                                     } else {
                                         // 실패 시, completionHandler 호출
                                         completionHandler(.failure(NSError(domain: "NewAccessTokenErrorDomain", code: 0, userInfo: [NSLocalizedDescriptionKey: "새 엑세스 토큰 발급 실패"])))

@@ -36,14 +36,15 @@ class OnBoardingFirstViewController: UIViewController{
         label.textAlignment = .left
         return label
     }()
+    
     private lazy var agecheckButton : UIButton = {
         let button = UIButton()
         button.setImage(UIImage(systemName: "checkmark.square.fill"), for: .normal)
         button.tintColor = DesignSystemColor.Gray200.value
-        
         button.addTarget(self, action: #selector(agebtn), for: .touchUpInside)
         return button
     }()
+    
     //MARK: - (필수) 서비스 이용 약관
     private lazy var serviceLabel : UILabel = {
         let label = UILabel()
@@ -53,14 +54,15 @@ class OnBoardingFirstViewController: UIViewController{
         label.textAlignment = .left
         return label
     }()
+    
     private lazy var serviceButton : UIButton = {
         let button = UIButton()
         button.setImage(UIImage(systemName: "checkmark.square.fill"), for: .normal)
         button.tintColor = DesignSystemColor.Gray200.value
-        
         button.addTarget(self, action: #selector(servicebtn), for: .touchUpInside)
         return button
     }()
+    
     //MARK: - (필수) 개인정보 처리방침
     private lazy var infoLabel : UILabel = {
         let label = UILabel()
@@ -79,6 +81,7 @@ class OnBoardingFirstViewController: UIViewController{
         button.addTarget(self, action: #selector(infobtn), for: .touchUpInside)
         return button
     }()
+    
     //MARK: - (선택) 마케팅 정보 수신 동의
     private lazy var maketingLabel : UILabel = {
         let label = UILabel()
@@ -97,8 +100,8 @@ class OnBoardingFirstViewController: UIViewController{
         button.addTarget(self, action: #selector(maketingbtn), for: .touchUpInside)
         return button
     }()
-    //MARK: - 전체 동의
     
+    //MARK: - 전체 동의
     private lazy var view2 : UIView = {
         let view = UIView()
         view.backgroundColor = .white
