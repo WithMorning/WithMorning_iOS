@@ -16,12 +16,16 @@ enum UserRouter : URLRequestConvertible{
     
     case postSMSrequest(data : SMSnumRequest) //휴대폰 번호 인증
     case postSMSresponsse(data : SMScodeResquest) //번호 + 코드 인증
+    case RegisterProfile(data : profileRequest) //닉네임 + 이미지 + FCM토큰
     
     // url가르기
     var endPoint: String {
         switch self {
         case .postSMSrequest : return "/user/send-code"
         case .postSMSresponsse : return "/user/verify-code"
+        case .RegisterProfile : return "/user/profile"
+            
+        
             
         }
     }
@@ -62,6 +66,8 @@ enum UserRouter : URLRequestConvertible{
         case .postSMSrequest(let data):
             request = try JSONParameterEncoder().encode(data, into: request)
         case .postSMSresponsse(let data):
+            request = try JSONParameterEncoder().encode(data, into: request)
+        case .RegisterProfile(let data):
             request = try JSONParameterEncoder().encode(data, into: request)
         }
         

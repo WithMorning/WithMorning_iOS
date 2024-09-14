@@ -136,7 +136,6 @@ class OnBoardingCertificateViewController : UIViewController{
     var code = ""
     
     private func responseSMS(){
-        print(phonenumber)
         
         let data = SMScodeResquest(phone: phonenumber, code: code)
         let vc = OnBoardingProfileViewController()

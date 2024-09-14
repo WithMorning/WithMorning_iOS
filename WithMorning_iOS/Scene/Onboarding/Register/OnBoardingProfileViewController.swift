@@ -12,6 +12,8 @@ import Alamofire
 
 class OnBoardingProfileViewController : UIViewController, UIImagePickerControllerDelegate & UINavigationControllerDelegate {
     
+    let APInetwork = UserNetwork.shared
+    
     //MARK: - properties
     
     private lazy var mainLabel : UILabel = {
@@ -171,6 +173,13 @@ class OnBoardingProfileViewController : UIViewController, UIImagePickerControlle
         
         present(alert, animated: true, completion: nil)
     }
+    
+    //MARK: - API
+    
+    private func registerProfile(){
+        let data = profileRequest(nickname: "", image: "", fcmToken: KeyChain.read(key: "fcmToken") ?? "")
+    }
+
     
     //MARK: - Gallery Setting
     func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [UIImagePickerController.InfoKey : Any]) {

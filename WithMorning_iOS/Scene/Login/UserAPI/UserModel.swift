@@ -30,4 +30,14 @@ struct SMScodeResponse: Codable {
     let message: String
 }
 
+//MARK: - 프로필 등록
+struct profileRequest: Codable {
+    let nickname, image, fcmToken: String
+}
+
+struct profileResponse: Codable {
+    let isSuccess: Bool
+    let code: Int
+    let message: String
+}
 
