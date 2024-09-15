@@ -21,6 +21,7 @@ enum Router : URLRequestConvertible{
     case deletegrop(groupId : Int)
     case joingroup(data : JoingroupMaindata)
     case postbedtime(data : BedtimeMaindata)
+    case patchdisturb(data : DisturbMaindata)
     
     
     // url가르기
@@ -32,24 +33,31 @@ enum Router : URLRequestConvertible{
         case .deletegrop(let groupId): return "/groups/\(groupId)"
         case .joingroup: return "/groups/join"
         case .postbedtime: return "/user/bedtime/alarm"
+        case .patchdisturb(let groupId) : return "/groups/\(groupId)/disturb"
         }
     }
     
     //헤더
     var headers: HTTPHeaders {
         switch self {
-                    default: return HTTPHeaders(["accept":"application/json","Content-Type" : "application/json" ,"Authorization":"\(Authorization)"])
-//        default: return HTTPHeaders(["accept":"application/json", "Content-Type" : "application/json"])
+        case .patchdisturb(let groupId) : return HTTPHeaders(["accept":"application/json","Content-Type" : "application/json" ,"groupId":"\(groupId)","Authorization":"\(Authorization)"])
+            
+//            case .patchdisturb(let groupId) : return HTTPHeaders(["accept":"application/json","Content-Type" : "application/json" ,"groupId":"\(groupId)"])
+            
+        default: return HTTPHeaders(["accept":"application/json","Content-Type" : "application/json" ,"Authorization":"\(Authorization)"])
+            //        default: return HTTPHeaders(["accept":"application/json", "Content-Type" : "application/json"])
         }
     }
     
     
-    //어떤 방식(get, post, delete, update)
+    //어떤 방식(get, post, delete, update, patch)
     var method: HTTPMethod {
         switch self {
         case .getmypage, .getmainpage: return .get
         case .postgroup, .joingroup, .postbedtime: return .post
         case .deletegrop: return .delete
+        case .patchdisturb : return .patch
+            
         }
     }
     
@@ -84,6 +92,8 @@ enum Router : URLRequestConvertible{
             request = try JSONParameterEncoder().encode(data, into: request)
         case .postbedtime(let data):
             request = try JSONParameterEncoder().encode(data, into: request)
+        case .patchdisturb:
+            request = try URLEncoding.queryString.encode(request, with: parameters)
         }
         
         //request = try URLEncoding.queryString.encode(request, with: parameters)

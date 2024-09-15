@@ -137,3 +137,14 @@ struct Bedtime: Codable { //response
     let code: Int
     let message: String
 }
+
+//MARK: - 방해금지모드
+struct DisturbMaindata: Codable { //request
+    let isDisturbBanMode: Bool
+}
+
+struct DisturbResponse: Codable {
+    let isSuccess: Bool
+    let code: Int
+    let message: String
+}

@@ -22,6 +22,7 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
             let refreshToken = KeyChain.read(key: "refreshToken")
             
             print(#fileID, #function, #line, "- sceneDelegate refreshToken: \(refreshToken)")
+            
             if let loginState = loginState {
                 switch loginState {
                 case .login:
@@ -31,6 +32,7 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
                     // 로그인 상태이며 회원가입을 완료한 경우
                     self.setRootViewContrller(scene, type: .joined)
                 }
+                
             } else {
                 // loginState가 nil인 경우 (로그아웃 상태)
                 
@@ -122,6 +124,7 @@ extension SceneDelegate{
             setRootViewContrller(scene, type: .login)
         }
     }
+    
     //MARK: - 데이터 타입을 확인하고 문제가 뷰컨을 교체해줍니당
     private func setRootViewContrller(_ scene: UIScene, type: rootViewController) {
         if let windowScene = scene as? UIWindowScene {
