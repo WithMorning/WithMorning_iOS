@@ -98,7 +98,7 @@ enum rootViewController {
         case .login : return LoginViewController()
         case .joined: return MainViewController()
         case .mypage: return MyPageViewController()
-        case .termAgree: return FirstViewController()
+        case .termAgree: return TermsViewController()
             //        case .onBoarding: return OnBoardingTutorialViewController()
             
         //MARK: - test용

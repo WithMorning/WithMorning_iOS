@@ -274,6 +274,7 @@
 		D14A9DB42C2AD2BA00019B8B /* Onboarding */ = {
 			isa = PBXGroup;
 			children = (
+				D1A12AED2C97417C007EC867 /* Intro */,
 				D14AF09E2C64BBC700E390F7 /* Register */,
 				D1ABF7902C52399D008B5084 /* Tutorial */,
 			);
@@ -350,6 +351,13 @@
 				D1E672C32BC4FD3500A32790 /* Assets.xcassets */,
 			);
 			name = Resource;
+			sourceTree = "<group>";
+		};
+		D1A12AED2C97417C007EC867 /* Intro */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = Intro;
 			sourceTree = "<group>";
 		};
 		D1ABF7902C52399D008B5084 /* Tutorial */ = {

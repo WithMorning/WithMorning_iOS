@@ -109,8 +109,6 @@ class LoginViewController: UIViewController{
     
     @objc private func apple(){
         AppleLoginManager.shared.startSignInWithAppleFlow()
-//        let vc = OnBoardingProfileViewController()
-//        self.navigationController?.pushViewController(vc, animated: true)
         
     }
     

@@ -1,5 +1,5 @@
 //
-//  FirstViewController.swift
+//  TermsViewController.swift
 //  WithMorning_iOS
 //
 //  Created by 안세훈 on 7/17/24.
@@ -9,7 +9,7 @@ import UIKit
 import Then
 import SnapKit
 
-class FirstViewController: UIViewController{
+class TermsViewController: UIViewController{
     
     private lazy var mainLabel : UILabel = {
         let label = UILabel()
@@ -326,22 +326,22 @@ class FirstViewController: UIViewController{
 //Preview code
 #if DEBUG
 import SwiftUI
-struct FirstViewControllerRepresentable: UIViewControllerRepresentable {
+struct TermsViewControllerRepresentable: UIViewControllerRepresentable {
     
     func updateUIViewController(_ uiView: UIViewController,context: Context) {
         // leave this empty
     }
     @available(iOS 13.0.0, *)
     func makeUIViewController(context: Context) -> UIViewController{
-        FirstViewController()
+        TermsViewController()
     }
 }
 @available(iOS 13.0, *)
-struct FirstViewControllerRepresentable_PreviewProvider: PreviewProvider {
+struct TermsViewControllerRepresentable_PreviewProvider: PreviewProvider {
     static var previews: some View {
         Group {
             if #available(iOS 14.0, *) {
-                FirstViewControllerRepresentable()
+                TermsViewControllerRepresentable()
                     .ignoresSafeArea()
                     .previewDisplayName(/*@START_MENU_TOKEN@*/"Preview"/*@END_MENU_TOKEN@*/)
                     .previewDevice(PreviewDevice(rawValue: "iPhone se3"))
