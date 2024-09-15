@@ -32,7 +32,7 @@ class Network{
                                 print("🚨 실패 - 엑세스 토큰 만료. 갱신 시도 중...")
                                 NewAccessToken.shared.newAccessToken { success in
                                     if success {
-                                        // 새 엑세스 토큰 발급 성공 시, 다시 메인페이지 요청
+                                        // 새 엑세스 토큰 발급 성공 시, API 재호출
                                         self.getMypage(completionHandler: completionHandler)
                                     } else {
                                         // 실패 시, completionHandler 호출
@@ -75,7 +75,7 @@ class Network{
                                 print("🚨 실패 - 엑세스 토큰 만료. 갱신 시도 중...")
                                 NewAccessToken.shared.newAccessToken { success in
                                     if success {
-                                        // 새 엑세스 토큰 발급 성공 시, 다시 메인페이지 요청
+                                        // 새 엑세스 토큰 발급 성공 시,API 재호출
                                         self.getMainpage(completionHandler: completionHandler)
                                     } else {
                                         // 실패 시, completionHandler 호출
@@ -118,7 +118,7 @@ class Network{
                                 print("🚨 실패 - 엑세스 토큰 만료. 갱신 시도 중...")
                                 NewAccessToken.shared.newAccessToken { success in
                                     if success {
-                                        // 새 엑세스 토큰 발급 성공 시, 다시 메인페이지 요청
+                                        // 새 엑세스 토큰 발급 성공 시,API 재호출
                                         self.postGroup(groupdata: groupdata, completionHandler: completionHandler)
                                         
                                     } else {
@@ -164,7 +164,7 @@ class Network{
                                 print("🚨 실패 - 엑세스 토큰 만료. 갱신 시도 중...")
                                 NewAccessToken.shared.newAccessToken { success in
                                     if success {
-                                        // 새 엑세스 토큰 발급 성공 시, 다시 메인페이지 요청
+                                        // 새 엑세스 토큰 발급 성공 시,API 재호출
                                         self.deleteGroup(groupId: groupId, completionHandler: completionHandler)
                                         
                                     } else {
@@ -210,7 +210,7 @@ class Network{
                                 print("🚨 실패 - 엑세스 토큰 만료. 갱신 시도 중...")
                                 NewAccessToken.shared.newAccessToken { success in
                                     if success {
-                                        // 새 엑세스 토큰 발급 성공 시, 다시 메인페이지 요청
+                                        // 새 엑세스 토큰 발급 성공 시, API 재호출
                                         self.joinGroup(joindata: joindata, completionHandler: completionHandler)
                                         
                                     } else {
@@ -254,8 +254,8 @@ class Network{
                                 print("🚨 실패 - 엑세스 토큰 만료. 갱신 시도 중...")
                                 NewAccessToken.shared.newAccessToken { success in
                                     if success {
-                                        // 새 엑세스 토큰 발급 성공 시, 다시 메인페이지 요청
-                                        //                                    self.joinGroup(joindata: joindata, completionHandler: completionHandler)
+                                        // 새 엑세스 토큰 발급 성공 시, API 재호출
+                                        self.postBedtime(bedtimedata: bedtimedata, completionHandler: completionHandler)
                                         
                                     } else {
                                         // 실패 시, completionHandler 호출
@@ -297,8 +297,8 @@ class Network{
                                 print("🚨 실패 - 엑세스 토큰 만료. 갱신 시도 중...")
                                 NewAccessToken.shared.newAccessToken { success in
                                     if success {
-                                        // 새 엑세스 토큰 발급 성공 시, 다시 메인페이지 요청
-                                        //                                    self.joinGroup(joindata: joindata, completionHandler: completionHandler)
+                                        // 새 엑세스 토큰 발급 성공 시, API 재호출
+                                        self.patchDisturb(DisturbData: DisturbData, completionHandler: completionHandler)
                                         
                                     } else {
                                         // 실패 시, completionHandler 호출
@@ -312,7 +312,7 @@ class Network{
                         }
                     }
                 case .success(let data):
-                    print(#fileID, #function, #line, "- ⭐️취침시간 수정 완료!")
+                    print(#fileID, #function, #line, "- ⭐️방해금지 설정 완료!")
                     // 성공 시, 데이터 처리
                     completionHandler(.success(data))
                     

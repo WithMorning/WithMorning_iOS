@@ -98,11 +98,11 @@ enum rootViewController {
         case .login : return LoginViewController()
         case .joined: return MainViewController()
         case .mypage: return MyPageViewController()
-        case .termAgree: return OnBoardingFirstViewController()
+        case .termAgree: return FirstViewController()
             //        case .onBoarding: return OnBoardingTutorialViewController()
             
         //MARK: - test용
-        case .phone : return OnBoardingProfileViewController()
+        case .phone : return ProfileViewController()
         }
     }
 }

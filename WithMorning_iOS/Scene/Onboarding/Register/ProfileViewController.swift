@@ -1,5 +1,5 @@
 //
-//  OnBoardingProfileViewController.swift
+//  ProfileViewController.swift.swift
 //  WithMorning_iOS
 //
 //  Created by 안세훈 on 7/24/24.
@@ -10,7 +10,7 @@ import SnapKit
 import Then
 import Alamofire
 
-class OnBoardingProfileViewController : UIViewController, UIImagePickerControllerDelegate & UINavigationControllerDelegate {
+class ProfileViewController : UIViewController, UIImagePickerControllerDelegate & UINavigationControllerDelegate {
     
     let APInetwork = UserNetwork.shared
     
@@ -183,7 +183,7 @@ class OnBoardingProfileViewController : UIViewController, UIImagePickerControlle
         print(nickname)
         print(KeyChain.read(key: "fcmToken") ?? "")
         
-        let vc = OnBoardingTutorialViewController()
+        let vc = TutorialViewController()
         print(nickname)
         APInetwork.postProfile(profiledata: data){ result in
             switch result{
@@ -222,7 +222,7 @@ class OnBoardingProfileViewController : UIViewController, UIImagePickerControlle
 
 
 //MARK: - 키보드 세팅, textfield세팅
-extension OnBoardingProfileViewController : UITextFieldDelegate {
+extension ProfileViewController : UITextFieldDelegate {
     func hideKeyboardWhenTappedAround() {
         let tap = UITapGestureRecognizer(target: self, action: #selector(EditprofileViewController.dismissKeyboard))
         tap.cancelsTouchesInView = false
@@ -262,22 +262,22 @@ extension OnBoardingProfileViewController : UITextFieldDelegate {
 //Preview code
 #if DEBUG
 import SwiftUI
-struct OnBoardingProfileViewControllerRepresentable: UIViewControllerRepresentable {
+struct aProfileViewControllerRepresentable: UIViewControllerRepresentable {
     
     func updateUIViewController(_ uiView: UIViewController,context: Context) {
         // leave this empty
     }
     @available(iOS 13.0.0, *)
     func makeUIViewController(context: Context) -> UIViewController{
-        OnBoardingProfileViewController()
+        ProfileViewController()
     }
 }
 @available(iOS 13.0, *)
-struct OnBoardingProfileViewControllerRepresentable_PreviewProvider: PreviewProvider {
+struct aProfileViewControllerRepresentable_PreviewProvider: PreviewProvider {
     static var previews: some View {
         Group {
             if #available(iOS 14.0, *) {
-                OnBoardingProfileViewControllerRepresentable()
+                ProfileViewControllerRepresentable()
                     .ignoresSafeArea()
                     .previewDisplayName(/*@START_MENU_TOKEN@*/"Preview"/*@END_MENU_TOKEN@*/)
                     .previewDevice(PreviewDevice(rawValue: "iPhone se3"))

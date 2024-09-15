@@ -1,5 +1,5 @@
 //
-//  OnBoardingRegisterViewController.swift
+//  RegisterViewController.swift
 //  WithMorning_iOS
 //
 //  Created by 안세훈 on 7/20/24.
@@ -10,7 +10,7 @@ import Then
 import SnapKit
 import JSPhoneFormat
 
-class OnBoardingRegisterViewController : UIViewController{
+class RegisterViewController : UIViewController{
     
     let APInetwork = UserNetwork.shared
     
@@ -115,7 +115,7 @@ class OnBoardingRegisterViewController : UIViewController{
     private func requestSMS(){
         
         let data = SMSnumRequest(phone: phonenumber)
-        let vc = OnBoardingCertificateViewController()
+        let vc = CertificateViewController()
         
         APInetwork.requestSMS(phoneNumber: data){result in
             switch result{
@@ -167,9 +167,9 @@ class OnBoardingRegisterViewController : UIViewController{
 
 
 //MARK: - 키보드 세팅, textfield세팅
-extension OnBoardingRegisterViewController : UITextFieldDelegate {
+extension RegisterViewController : UITextFieldDelegate {
     func hideKeyboardWhenTappedAround() {
-        let tap = UITapGestureRecognizer(target: self, action: #selector(OnBoardingRegisterViewController.dismissKeyboard))
+        let tap = UITapGestureRecognizer(target: self, action: #selector(RegisterViewController.dismissKeyboard))
         tap.cancelsTouchesInView = false
         view.addGestureRecognizer(tap)
     }
@@ -196,14 +196,14 @@ extension OnBoardingRegisterViewController : UITextFieldDelegate {
 //Preview code
 #if DEBUG
 import SwiftUI
-struct OnBoardingRegisterViewControllerRepresentable: UIViewControllerRepresentable {
+struct RegisterViewControllerRepresentable: UIViewControllerRepresentable {
     
     func updateUIViewController(_ uiView: UIViewController,context: Context) {
         // leave this empty
     }
     @available(iOS 13.0.0, *)
     func makeUIViewController(context: Context) -> UIViewController{
-        OnBoardingRegisterViewController()
+       RegisterViewController()
     }
 }
 @available(iOS 13.0, *)
@@ -211,7 +211,7 @@ struct OnBoardingRegisterViewControllerRepresentable_PreviewProvider: PreviewPro
     static var previews: some View {
         Group {
             if #available(iOS 14.0, *) {
-                OnBoardingRegisterViewControllerRepresentable()
+                RegisterViewControllerRepresentable()
                     .ignoresSafeArea()
                     .previewDisplayName(/*@START_MENU_TOKEN@*/"Preview"/*@END_MENU_TOKEN@*/)
                     .previewDevice(PreviewDevice(rawValue: "iPhone se3"))

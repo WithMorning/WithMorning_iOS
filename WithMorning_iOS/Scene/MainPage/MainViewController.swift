@@ -114,6 +114,7 @@ class MainViewController: UIViewController, UISheetPresentationControllerDelegat
     
     override func viewWillAppear(_ animated: Bool) {
         getMainpage()
+        
     }
     
     //MARK: - UI
@@ -254,8 +255,8 @@ class MainViewController: UIViewController, UISheetPresentationControllerDelegat
     //MARK: - Data Array
     var alarmData  : [GroupList] = []
     
-    
     //MARK: - API
+    //메인페이지
     func getMainpage() {
         APInetwork.getMainpage() { result in
             switch result {
@@ -268,6 +269,7 @@ class MainViewController: UIViewController, UISheetPresentationControllerDelegat
         }
     }
     
+    //API뿌려주기.
     func MainpageUpdate(with mainpage: MainpageResponse){
         guard let groupList = mainpage.groupList else {
             return

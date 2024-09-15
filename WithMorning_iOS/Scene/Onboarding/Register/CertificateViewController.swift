@@ -1,5 +1,5 @@
 //
-//  OnBoardingCertificateViewController.swift
+//  CertificateViewController.swift
 //  WithMorning_iOS
 //
 //  Created by 안세훈 on 7/23/24.
@@ -10,7 +10,7 @@ import Then
 import SnapKit
 import Alamofire
 
-class OnBoardingCertificateViewController : UIViewController{
+class CertificateViewController : UIViewController{
     
     let APInetwork = UserNetwork.shared
     
@@ -138,7 +138,7 @@ class OnBoardingCertificateViewController : UIViewController{
     private func responseSMS(){
         
         let data = SMScodeResquest(phone: phonenumber, code: code)
-        let vc = OnBoardingProfileViewController()
+        let vc = ProfileViewController()
         
         APInetwork.responseSMS(responsedata: data){ result in
             switch result{
@@ -210,9 +210,9 @@ class OnBoardingCertificateViewController : UIViewController{
 
 
 //MARK: - 키보드 세팅, textfield세팅
-extension OnBoardingCertificateViewController : UITextFieldDelegate {
+extension CertificateViewController : UITextFieldDelegate {
     func hideKeyboardWhenTappedAround() {
-        let tap = UITapGestureRecognizer(target: self, action: #selector(OnBoardingCertificateViewController.dismissKeyboard))
+        let tap = UITapGestureRecognizer(target: self, action: #selector(CertificateViewController.dismissKeyboard))
         tap.cancelsTouchesInView = false
         view.addGestureRecognizer(tap)
     }
@@ -239,22 +239,22 @@ extension OnBoardingCertificateViewController : UITextFieldDelegate {
 //Preview code
 #if DEBUG
 import SwiftUI
-struct OnBoardingCertificateViewControllerRepresentable: UIViewControllerRepresentable {
+struct CertificateViewControllerRepresentable: UIViewControllerRepresentable {
     
     func updateUIViewController(_ uiView: UIViewController,context: Context) {
         // leave this empty
     }
     @available(iOS 13.0.0, *)
     func makeUIViewController(context: Context) -> UIViewController{
-        OnBoardingCertificateViewController()
+        CertificateViewController()
     }
 }
 @available(iOS 13.0, *)
-struct OnBoardingCertificateViewControllerRepresentable_PreviewProvider: PreviewProvider {
+struct CertificateViewControllerRepresentable_PreviewProvider: PreviewProvider {
     static var previews: some View {
         Group {
             if #available(iOS 14.0, *) {
-                OnBoardingCertificateViewControllerRepresentable()
+                CertificateViewControllerRepresentable()
                     .ignoresSafeArea()
                     .previewDisplayName(/*@START_MENU_TOKEN@*/"Preview"/*@END_MENU_TOKEN@*/)
                     .previewDevice(PreviewDevice(rawValue: "iPhone se3"))

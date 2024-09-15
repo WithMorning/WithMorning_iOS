@@ -21,6 +21,8 @@ class AlarmTableViewCell : UITableViewCell, UISheetPresentationControllerDelegat
     //알람삭제후 실행되는 클로저
     var onAlarmDelete: (() -> Void)?
     
+    var APInetwork = Network.shared
+    
     lazy var AlarmStackView : UIStackView = {
         let view = UIStackView()
         view.addSubviews(topView,bottomView)
@@ -370,8 +372,30 @@ class AlarmTableViewCell : UITableViewCell, UISheetPresentationControllerDelegat
         }
         
     }
+    //MARK: - API
+    //방해금지모드(알람 off)
+    func patchDisturb(){
+        
+        var disturb : Bool = false
+        let data = DisturbMaindata(isDisturbBanMode: disturb)
+        
+        APInetwork.patchDisturb(DisturbData: data){ result in
+            switch result {
+            case .success(let data):
+                print(data)
+            case .failure(let error):
+                print(error.localizedDescription)
+            
+            }
+            
+        }
+        
+        
+    }
+
     //MARK: - 멤버
-    var groupId : Int = 0 //그룹 아이디
+    var groupId : Int = 0 //그룹 아이디 (방해금지모드에도 사용)
+    
     private var userData : [UserList] = [] //유저 데이터
     private var memberCount : Int = 0
     private var collectionViewHeight: CGFloat = 90

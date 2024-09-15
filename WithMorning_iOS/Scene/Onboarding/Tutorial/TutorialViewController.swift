@@ -1,5 +1,5 @@
 //
-//  OnBoardingTutorialViewController.swift
+//  TutorialViewController.swift.swift
 //  WithMorning_iOS
 //
 //  Created by 안세훈 on 7/24/24.
@@ -9,7 +9,7 @@ import UIKit
 import SnapKit
 import Then
 
-class OnBoardingTutorialViewController : UIViewController{
+class TutorialViewController : UIViewController{
     
     
     //MARK: - properties
@@ -177,7 +177,7 @@ class OnBoardingTutorialViewController : UIViewController{
 
 //MARK: - 온보딩 페이지
 
-extension OnBoardingTutorialViewController : UIPageViewControllerDelegate, UIPageViewControllerDataSource{
+extension TutorialViewController : UIPageViewControllerDelegate, UIPageViewControllerDataSource{
     
     func pageViewController(_ pageViewController: UIPageViewController, viewControllerBefore viewController: UIViewController) -> UIViewController? {
         switch viewController {
@@ -246,22 +246,22 @@ extension OnBoardingTutorialViewController : UIPageViewControllerDelegate, UIPag
 //Preview code
 #if DEBUG
 import SwiftUI
-struct OnBoardingTutorialViewControllerRepresentable: UIViewControllerRepresentable {
+struct TutorialViewControllerRepresentable: UIViewControllerRepresentable {
     
     func updateUIViewController(_ uiView: UIViewController,context: Context) {
         // leave this empty
     }
     @available(iOS 13.0.0, *)
     func makeUIViewController(context: Context) -> UIViewController{
-        OnBoardingTutorialViewController()
+        TutorialViewController()
     }
 }
 @available(iOS 13.0, *)
-struct OnBoardingTutorialViewControllerRepresentable_PreviewProvider: PreviewProvider {
+struct TutorialViewControllerRepresentable_PreviewProvider: PreviewProvider {
     static var previews: some View {
         Group {
             if #available(iOS 14.0, *) {
-                OnBoardingTutorialViewControllerRepresentable()
+                TutorialViewControllerRepresentable()
                     .ignoresSafeArea()
                     .previewDisplayName(/*@START_MENU_TOKEN@*/"Preview"/*@END_MENU_TOKEN@*/)
                     .previewDevice(PreviewDevice(rawValue: "iPhone se3"))
