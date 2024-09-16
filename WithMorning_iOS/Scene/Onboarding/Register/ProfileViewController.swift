@@ -179,12 +179,9 @@ class ProfileViewController : UIViewController, UIImagePickerControllerDelegate 
     
     private func registerProfile(){
         let data = profileRequest(nickname: nickname, fcmToken: KeyChain.read(key: "fcmToken") ?? "")
+          
+        let vc = IntroFirstViewController()
         
-        print(nickname)
-        print(KeyChain.read(key: "fcmToken") ?? "")
-        
-        let vc = TutorialViewController()
-        print(nickname)
         APInetwork.postProfile(profiledata: data){ result in
             switch result{
             case .success(let data):
@@ -262,7 +259,7 @@ extension ProfileViewController : UITextFieldDelegate {
 //Preview code
 #if DEBUG
 import SwiftUI
-struct aProfileViewControllerRepresentable: UIViewControllerRepresentable {
+struct ProfileViewControllerRepresentable: UIViewControllerRepresentable {
     
     func updateUIViewController(_ uiView: UIViewController,context: Context) {
         // leave this empty

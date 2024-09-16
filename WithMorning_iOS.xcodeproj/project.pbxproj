@@ -37,6 +37,9 @@
 		D16F5FD32BC65679006640F9 /* Model.swift in Sources */ = {isa = PBXBuildFile; fileRef = D16F5FD22BC65679006640F9 /* Model.swift */; };
 		D16F5FD52BC65680006640F9 /* Router.swift in Sources */ = {isa = PBXBuildFile; fileRef = D16F5FD42BC65680006640F9 /* Router.swift */; };
 		D1773F892BC988AB005C82FA /* UIFont_Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = D1773F882BC988AB005C82FA /* UIFont_Extension.swift */; };
+		D17AC1A12C98019A007ADB3D /* IntroFirstViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D17AC1A02C98019A007ADB3D /* IntroFirstViewController.swift */; };
+		D17AC1A32C980BE1007ADB3D /* IntroSecondViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D17AC1A22C980BE1007ADB3D /* IntroSecondViewController.swift */; };
+		D17AC1A52C980BF6007ADB3D /* IntroThridViewContoller.swift in Sources */ = {isa = PBXBuildFile; fileRef = D17AC1A42C980BF6007ADB3D /* IntroThridViewContoller.swift */; };
 		D18288CB2C7EF45800BDAB3A /* Error.swift in Sources */ = {isa = PBXBuildFile; fileRef = D18288CA2C7EF45800BDAB3A /* Error.swift */; };
 		D1891F302C58F72500DFF89C /* UITextField_Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = D1891F2F2C58F72500DFF89C /* UITextField_Extension.swift */; };
 		D19589E02C6745C50000B77C /* CoreHaptics_Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = D19589DF2C6745C50000B77C /* CoreHaptics_Extension.swift */; };
@@ -111,6 +114,9 @@
 		D16F5FD22BC65679006640F9 /* Model.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Model.swift; sourceTree = "<group>"; };
 		D16F5FD42BC65680006640F9 /* Router.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Router.swift; sourceTree = "<group>"; };
 		D1773F882BC988AB005C82FA /* UIFont_Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIFont_Extension.swift; sourceTree = "<group>"; };
+		D17AC1A02C98019A007ADB3D /* IntroFirstViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IntroFirstViewController.swift; sourceTree = "<group>"; };
+		D17AC1A22C980BE1007ADB3D /* IntroSecondViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IntroSecondViewController.swift; sourceTree = "<group>"; };
+		D17AC1A42C980BF6007ADB3D /* IntroThridViewContoller.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IntroThridViewContoller.swift; sourceTree = "<group>"; };
 		D18288CA2C7EF45800BDAB3A /* Error.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Error.swift; sourceTree = "<group>"; };
 		D1891F2F2C58F72500DFF89C /* UITextField_Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UITextField_Extension.swift; sourceTree = "<group>"; };
 		D19589DF2C6745C50000B77C /* CoreHaptics_Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CoreHaptics_Extension.swift; sourceTree = "<group>"; };
@@ -274,8 +280,8 @@
 		D14A9DB42C2AD2BA00019B8B /* Onboarding */ = {
 			isa = PBXGroup;
 			children = (
-				D1A12AED2C97417C007EC867 /* Intro */,
 				D14AF09E2C64BBC700E390F7 /* Register */,
+				D1A12AED2C97417C007EC867 /* Intro */,
 				D1ABF7902C52399D008B5084 /* Tutorial */,
 			);
 			path = Onboarding;
@@ -356,6 +362,9 @@
 		D1A12AED2C97417C007EC867 /* Intro */ = {
 			isa = PBXGroup;
 			children = (
+				D17AC1A02C98019A007ADB3D /* IntroFirstViewController.swift */,
+				D17AC1A22C980BE1007ADB3D /* IntroSecondViewController.swift */,
+				D17AC1A42C980BF6007ADB3D /* IntroThridViewContoller.swift */,
 			);
 			path = Intro;
 			sourceTree = "<group>";
@@ -588,6 +597,8 @@
 				D129AAF12C2D4C0800F995D2 /* CellMenuViewController.swift in Sources */,
 				D19A9CB22C26901100748CE8 /* MakeAlarmViewController.swift in Sources */,
 				D135377D2C3285AD004B49BB /* AlterUIView.swift in Sources */,
+				D17AC1A12C98019A007ADB3D /* IntroFirstViewController.swift in Sources */,
+				D17AC1A32C980BE1007ADB3D /* IntroSecondViewController.swift in Sources */,
 				D10F846F2BC7E7CF00F3A172 /* UIColor_Extension.swift in Sources */,
 				D1B86A032C6D13D20052F528 /* UICell_Extension.swift in Sources */,
 				D1E1DF822C3AD04F001A132F /* WeekChoiceViewController.swift in Sources */,
@@ -598,6 +609,7 @@
 				D15AE73A2BC995B800024CE3 /* UIView_Extension.swift in Sources */,
 				D1E672BD2BC4FD3300A32790 /* SceneDelegate.swift in Sources */,
 				D12D512E2C60A28800D3F1A9 /* AlarmSoundViewController.swift in Sources */,
+				D17AC1A52C980BF6007ADB3D /* IntroThridViewContoller.swift in Sources */,
 				D1E0F9912C9176A100733DEC /* UserDefault_Extension.swift in Sources */,
 				D1AD15AC2C7AF19F003EE342 /* UILabel_Extension.swift in Sources */,
 				D1303A012C451B3F0071267A /* EditprofileViewController.swift in Sources */,
