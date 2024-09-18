@@ -12,194 +12,167 @@ import Alamofire
 
 class TutorialFirstViewController : UIViewController {
     
-    //MARK: - properties
-
     private lazy var tutorialLabel : UILabel = {
         let label = UILabel()
-        label.text = "기상하고 싶은 시간이 언제인가요?"
+        label.text = "마지막으로 진동과 알람음을 설정해 볼까요?"
         label.textAlignment = .center
         label.font = DesignSystemFont.Pretendard_Medium14.value
         label.textColor = DesignSystemColor.Gray500.value
         return label
     }()
     
-    private lazy var timerView : UIView = {
+    //MARK: - 알림음
+    private lazy var soundView : UIView = {
         let view = UIView()
         view.backgroundColor = .white
         view.layer.cornerRadius = 8
-        view.addSubview(timePicker)
+        view.addSubviews(alarmsoundLabel,sliderImage,volumeSlider,sliderLabel,vibrateLabel,vibrateImage)
         return view
     }()
     
-    private lazy var timePicker : UIPickerView = {
-        let picker = UIPickerView()
-        picker.delegate = self
-        picker.dataSource = self
-        picker.backgroundColor = .clear
-        picker.setContentCompressionResistancePriority(.defaultLow, for: .vertical)
-        return picker
+    private lazy var alarmsoundLabel : UILabel = {
+        let label = UILabel()
+        label.text = "볼륨"
+        label.font = DesignSystemFont.Pretendard_Bold14.value
+        label.textColor = .black
+        label.textAlignment = .left
+        return label
     }()
     
-    var hour = Array(1...12)
-    var min = Array(0...59)
-    var AMPM = ["AM","PM"]
+    //MARK: - 알림음 슬라이더
+    private lazy var sliderImage : UIImageView = {
+        let img = UIImageView()
+        img.tintColor = .black
+        img.image = UIImage(named: "Volumeon")
+        return img
+    }()
     
-    //MARK: - life cycle
+    private lazy var volumeSlider : CustomSlider = {
+        let slider = CustomSlider()
+        slider.minimumValue = 0
+        slider.maximumValue = 100
+        slider.tintColor = DesignSystemColor.Orange500.value
+        slider.isUserInteractionEnabled = true
+        slider.thumbTintColor = .white
+        slider.value = 50
+        slider.addTarget(self, action: #selector(sliderValueChanged), for: .valueChanged)
+        
+        return slider
+    }()
+    
+    private lazy var sliderLabel : UILabel = {
+        let label = UILabel()
+        label.text = "50%"
+        label.textColor = .black
+        label.textAlignment = .center
+        label.font = DesignSystemFont.Pretendard_Medium14.value
+        return label
+    }()
 
+    private lazy var vibrateLabel : UILabel = {
+        let label = UILabel()
+        label.text = "진동"
+        label.textAlignment = .right
+        label.textColor = .black
+        label.font = DesignSystemFont.Pretendard_Medium14.value
+        label.isUserInteractionEnabled = true
+        
+        let tapGestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(vibratesetting))
+        label.addGestureRecognizer(tapGestureRecognizer)
+        return label
+    }()
+    
+    private lazy var vibrateImage : UIButton = {
+        let button = UIButton()
+        button.setImage(UIImage(systemName: "checkmark.square.fill"), for: .normal)
+        button.tintColor = DesignSystemColor.Gray200.value
+        
+        button.addTarget(self, action: #selector(vibratesetting), for: .touchUpInside)
+        return button
+    }()
+    
+    private lazy var alarmView : UIView = {
+        let view = UIView()
+        view.backgroundColor = .white
+        view.layer.cornerRadius = 8
+        return view
+    }()
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         view.backgroundColor = .clear
         setUI()
-        setCurrentTimeOnPicker()
     }
     
-    override func viewDidLayoutSubviews() {
-        super.viewDidLayoutSubviews()
-        pickerviewUI()
-    }
-    
-    //MARK: - autolayout
-
     func setUI(){
-        view.addSubviews(tutorialLabel, timerView)
+        view.addSubviews(tutorialLabel,soundView,alarmView)
         
         tutorialLabel.snp.makeConstraints{
             $0.centerX.equalToSuperview()
             $0.top.equalToSuperview()
         }
-        timerView.snp.makeConstraints{
-            $0.leading.trailing.equalToSuperview().inset(16)
-            $0.top.equalTo(tutorialLabel.snp.bottom).offset(16)
-            $0.height.equalTo(152)
-        }
-        timePicker.snp.makeConstraints{
+        
+        soundView.snp.makeConstraints{
             $0.top.equalToSuperview()
-            $0.bottom.equalToSuperview()
-            $0.centerY.equalToSuperview()
-            $0.leading.trailing.equalToSuperview()
+            $0.leading.trailing.equalToSuperview().inset(16)
+            $0.height.equalTo(92)
         }
-    }
-    //MARK: - picker SET
-
-    func pickerviewUI(){
-        timePicker.subviews[1].isHidden = true
-        
-        let colonLabel = UILabel()
-        colonLabel.text = ":"
-        colonLabel.font = DesignSystemFont.Pretendard_Bold30.value
-        timePicker.addSubview(colonLabel)
-        
-        colonLabel.snp.makeConstraints{
-            $0.centerY.equalToSuperview().offset(-3)
-            $0.centerX.equalToSuperview().offset(-16.5)
-        }
-    }
-    
-    func setCurrentTimeOnPicker() {
-        let currentDate = Date()
-        let calendar = Calendar.current
-        
-        let hour = calendar.component(.hour, from: currentDate)
-        let minute = calendar.component(.minute, from: currentDate)
-        
-        let hourForPicker: Int
-        let ampm: Int
-        
-        if hour >= 12 {
-            hourForPicker = hour == 12 ? 12 : hour - 12
-            ampm = 1 // PM
-        } else {
-            hourForPicker = hour == 0 ? 12 : hour
-            ampm = 0 // AM
+        alarmsoundLabel.snp.makeConstraints{
+            $0.leading.top.equalToSuperview().offset(16)
         }
         
-        let middleHour = self.hour.count * 50
-        let middleMinute = min.count * 50
-        let middleAMPM = AMPM.count * 50
+        volumeSlider.snp.makeConstraints{
+            $0.centerY.equalTo(vibrateImage)
+            $0.leading.equalTo(sliderImage.snp.trailing).offset(4)
+            $0.trailing.equalTo(sliderLabel.snp.leading).offset(-8)
+        }
         
-        timePicker.selectRow(middleHour + hourForPicker - 1, inComponent: 0, animated: false)
-        timePicker.selectRow(middleMinute + minute, inComponent: 1, animated: false)
-        timePicker.selectRow(middleAMPM + ampm, inComponent: 2, animated: false)
-    }
-    
-}
-
-
-//MARK: - pickerView custom
-
-extension TutorialFirstViewController : UIPickerViewDelegate, UIPickerViewDataSource {
-    
-    //휠 개수
-    func numberOfComponents(in pickerView: UIPickerView) -> Int {
-        3
-    }
-    
-    //컴포넌트의 개수
-    func pickerView(_ pickerView: UIPickerView, numberOfRowsInComponent component: Int) -> Int {
-        switch component {
-        case 0:
-            return hour.count*100
-        case 1:
-            return min.count*100
-        case 2:
-            return AMPM.count
-        default:
-            return 0
+        vibrateLabel.snp.makeConstraints{
+            $0.centerY.equalTo(vibrateImage)
+            $0.trailing.equalTo(vibrateImage.snp.leading).offset(-4)
+        }
+        vibrateImage.snp.makeConstraints{
+            $0.trailing.bottom.equalToSuperview().inset(16)
+        }
+        
+        sliderLabel.snp.makeConstraints{
+            $0.centerY.equalTo(vibrateLabel)
+            $0.trailing.equalTo(vibrateLabel.snp.leading).offset(-40)
+        }
+        sliderImage.snp.makeConstraints{
+            $0.leading.bottom.equalToSuperview().inset(16)
+        }
+        
+        alarmView.snp.makeConstraints{
+            $0.top.equalTo(soundView.snp.bottom).offset(8)
+            $0.leading.trailing.equalToSuperview().inset(16)
+            $0.height.equalTo(332)
         }
     }
     
-    //컴포넌트 표시
-    func pickerView(_ pickerView: UIPickerView, titleForRow row: Int, forComponent component: Int) -> String? {
-        switch component {
-        case 0:
-            return String(format: "%02d", hour[row % hour.count])
-        case 1:
-            return String(format: "%02d", min[row % min.count])
-        case 2:
-            return "\(AMPM[row])"
-        default:
-            return ""
-        }
-    }
-    
-    //컴포넌트 표시
-    func pickerView(_ pickerView: UIPickerView, viewForRow row: Int, forComponent component: Int, reusing view: UIView?) -> UIView {
+    @objc func sliderValueChanged(_ sender: CustomSlider){
         
-        if component == 0 || component == 1 {
-            let timelabel = UILabel()
-            timelabel.textAlignment = .center
-            timelabel.font = DesignSystemFont.Pretendard_Bold30.value
+        let roundedValue = roundf(sender.value / 10) * 10
+        sender.value = roundedValue
+        
+        let value : Int = Int(sender.value)
+        
+        if value == 0 {
+            sliderImage.image = UIImage(named: "Volumeoff")
             
-            if component == 0 {
-                timelabel.text = String(format: "%02d", hour[row % hour.count])
-            } else {
-                timelabel.text = String(format: "%02d", min[row % min.count])
-            }
-            return timelabel
-            
-        } else {
-            let AMPMlabel = UILabel()
-            AMPMlabel.textAlignment = .center
-            AMPMlabel.font = DesignSystemFont.Pretendard_Bold18.value
-            AMPMlabel.text = String(AMPM[row])
-            
-            return AMPMlabel
+        }else{
+            sliderImage.image = UIImage(named: "Volumeon")
+        }
+        sliderLabel.text = "\(value)" + "%"
+        
+    }
+    
+    @objc func vibratesetting(){
+        if vibrateImage.tintColor == DesignSystemColor.Gray200.value{
+            vibrateImage.tintColor = DesignSystemColor.Orange500.value
+        }else{
+            vibrateImage.tintColor = DesignSystemColor.Gray200.value
         }
     }
     
-    //컴포넌트 위아래 간격
-    func pickerView(_ pickerView: UIPickerView, rowHeightForComponent component: Int) -> CGFloat {
-        return 46 // 각 행의 높이를 조절합니다. 필요에 따라 이 값을 조정하세요.
-    }
-    
-    func pickerView(_ pickerView: UIPickerView, widthForComponent component: Int) -> CGFloat {
-        switch component {
-        case 0, 1: // 시간과 분
-            return 75.5
-        case 2: // AM/PM
-            return 29
-        default:
-            return 45
-        }
-    }
 }

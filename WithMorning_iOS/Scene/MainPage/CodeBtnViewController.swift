@@ -79,7 +79,7 @@ class CodeBtnViewController: UIViewController {
     private lazy var DoneButton : UIButton = {
         let button = UIButton()
         button.addSubview(buttonLabel)
-        button.backgroundColor = .black
+        button.backgroundColor = DesignSystemColor.Black.value
         button.addTarget(self, action: #selector(buttonclicked), for: .touchUpInside)
         return button
     }()

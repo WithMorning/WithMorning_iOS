@@ -10,7 +10,7 @@ import Alamofire
 private let BaseURL = "https://withmorning.site"
 
 let Authorization1 =  "Bearer " +
-"eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiI2IiwiaWF0IjoxNzI1OTc1NDcyLCJleHAiOjE3MjY1ODAyNzJ9.G0CmS8CICPzPfWqkHhfOSro8hGhKiwm_fTko-2r9aN0"
+"eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiI2IiwiaWF0IjoxNzI2NjM0NTYxLCJleHAiOjE3MjcyMzkzNjF9.GpZ2ZBcLoDs4CBkRTHbzvPJ9tnsarE7FcyfFbTNoF80"
 
 enum UserRouter : URLRequestConvertible{
     
@@ -23,7 +23,6 @@ enum UserRouter : URLRequestConvertible{
         switch self {
         case .postSMSrequest : return "/user/send-code"
         case .postSMSresponsse : return "/user/verify-code"
-            
         case .RegisterProfile : return "/user/profile"
             
             
@@ -34,13 +33,8 @@ enum UserRouter : URLRequestConvertible{
     //헤더
     var headers: HTTPHeaders {
         switch self {
-        case .RegisterProfile:
-                return HTTPHeaders([
-                    "accept": "application/json",
-                    "Authorization": "\(Authorization1)"
-                ])
         default:
-            return HTTPHeaders(["accept" : "application/json", "Content-Type" : "application/json","Authorization":"\(Authorization1)"])
+            return HTTPHeaders(["accept" : "application/json", "Content-Type" : "application/json", "Authorization":"\(Authorization1)"])
         }
     }
     
@@ -74,12 +68,12 @@ enum UserRouter : URLRequestConvertible{
         case .postSMSresponsse(let data):
             request = try JSONParameterEncoder().encode(data, into: request)
         case .RegisterProfile(let data):
-//            request = try JSONParameterEncoder().encode(data, into: request)
+            //            request = try JSONParameterEncoder().encode(data, into: request)
             let formData = MultipartFormData()
-                formData.append(Data(data.nickname.utf8), withName: "nickname")
-                formData.append(Data(data.fcmToken.utf8), withName: "fcmToken")
-                request.httpBody = try formData.encode()
-                request.headers.update(.contentType("multipart/form-data"))
+            formData.append(Data(data.request.nickname.utf8), withName: "nickname")
+            formData.append(Data(data.request.fcmToken.utf8), withName: "fcmToken")
+            request.httpBody = try formData.encode()
+            request.headers.update(.contentType("multipart/form-data"))
         }
         
         //request = try URLEncoding.queryString.encode(request, with: parameters)

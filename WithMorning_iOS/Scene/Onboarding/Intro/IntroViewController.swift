@@ -1,24 +1,17 @@
 //
-//  TutorialViewController.swift.swift
+//  IntroViewController.swift
 //  WithMorning_iOS
 //
-//  Created by 안세훈 on 7/24/24.
+//  Created by 안세훈 on 9/17/24.
 //
 
 import UIKit
 import SnapKit
 import Then
 
-class TutorialViewController : UIViewController{
+class IntroViewController : UIViewController{
     
     //MARK: - properties
-    private lazy var mainLabel : UILabel = {
-        let label = UILabel()
-        label.text = "튜토리얼"
-        label.tintColor = DesignSystemColor.Black.value
-        label.font = DesignSystemFont.Pretendard_Bold16.value
-        return label
-    }()
     
     private lazy var popButton : UIButton = {
         let button = UIButton()
@@ -34,11 +27,8 @@ class TutorialViewController : UIViewController{
         button.titleLabel?.font = DesignSystemFont.Pretendard_Medium16.value
         button.setTitleColor(DesignSystemColor.Gray400.value, for: .normal)
         button.addTarget(self, action: #selector(skip), for: .touchUpInside)
-        button.isHidden = true
         return button
     }()
-    
-    //MARK: - 온보딩 페이지 컨트롤러
     
     lazy var pages = [UIViewController]()
     
@@ -46,26 +36,24 @@ class TutorialViewController : UIViewController{
         let page = UIPageControl()
         page.pageIndicatorTintColor = DesignSystemColor.Gray150.value
         page.currentPageIndicatorTintColor = DesignSystemColor.Gray150.value
-        page.numberOfPages = 2
+        page.numberOfPages = 3
         page.currentPage = 0
         page.isUserInteractionEnabled = false
         return page
     }()
     
-    
     private lazy var pageViewController : UIPageViewController = {
         let view = UIPageViewController(transitionStyle: .scroll, navigationOrientation: .horizontal, options: nil)
-        view.view.backgroundColor = .clear
+        view.view.backgroundColor = DesignSystemColor.Gray150.value
         view.delegate = self
         view.dataSource = self
         
-        let vc = [TutorialFirstViewController()]
+        let vc = [IntroFirstViewController()]
         
         view.setViewControllers(vc, direction: .reverse, animated: true)
         return view
     }()
     
-    //MARK: - 다음 버튼
     private lazy var nextButton : UIButton = {
         let button = UIButton()
         button.addSubview(buttonLabel)
@@ -86,34 +74,27 @@ class TutorialViewController : UIViewController{
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        self.view.backgroundColor = DesignSystemColor.Gray150.value
+        view.backgroundColor = DesignSystemColor.Gray150.value
+        self.navigationController?.navigationBar.isHidden = true
         setUI()
     }
-    override func viewWillAppear(_ animated: Bool) {
-        skiphidden()
-    }
-    
-    //MARK: - Autolayout
     
     func setUI(){
-        view.addSubviews(mainLabel,popButton,skipButton,pageControl,pageViewController.view,nextButton)
+        view.addSubviews(popButton,skipButton,pageViewController.view,nextButton)
         
-        mainLabel.snp.makeConstraints{
-            $0.centerX.equalToSuperview()
-            $0.top.equalTo(view.safeAreaLayoutGuide).offset(20)
-        }
         popButton.snp.makeConstraints{
-            $0.centerY.equalTo(mainLabel)
+            $0.top.equalTo(view.safeAreaLayoutGuide).offset(20)
             $0.leading.equalToSuperview().offset(16)
             $0.height.width.equalTo(24)
         }
+        
         skipButton.snp.makeConstraints{
+            $0.top.equalTo(view.safeAreaLayoutGuide).offset(20)
             $0.trailing.equalToSuperview().inset(16)
-            $0.centerY.equalTo(mainLabel)
         }
         
         pageViewController.view.snp.makeConstraints{
-            $0.top.equalTo(mainLabel.snp.bottom).offset(36)
+            $0.top.equalTo(skipButton.snp.bottom)
             $0.leading.trailing.equalToSuperview()
             $0.bottom.equalTo(nextButton.snp.top)
             
@@ -123,122 +104,126 @@ class TutorialViewController : UIViewController{
             $0.leading.trailing.bottom.equalToSuperview()
             $0.height.equalTo(92)
         }
+        
         buttonLabel.snp.makeConstraints{
             $0.centerX.equalToSuperview()
             $0.top.equalToSuperview().offset(20)
             $0.bottom.equalToSuperview().inset(50)
         }
+        
     }
-    
-    //MARK: - 건너뛰기 버튼 히든
-    func skiphidden(){
-        if pageControl.currentPage == 1{
-            skipButton.isHidden = true
-        }else{
-            skipButton.isHidden = false
-        }
-    }
-
     
     //MARK: - objc func
     
-    @objc func nextbtn(){
-        if pageControl.currentPage == 1{
-            let vc = MainViewController()
-            self.navigationController?.pushViewController(vc, animated: true)
+    @objc func skip() {
+        guard pageControl.currentPage != 2 else { return }
+        let vc = IntroThridViewContoller()
+        pageViewController.setViewControllers([vc], direction: .forward, animated: true) { [weak self] _ in
+            self?.pageControl.currentPage = 2
         }
+    }
+    
+    @objc func nextbtn() {
+        let currentPage = pageControl.currentPage
         
-        if pageControl.currentPage < 1 {
+        if currentPage == pageControl.numberOfPages - 1 {
+            // 현재 페이지가 IntroThridViewContoller일 때 새로운 뷰 컨트롤러로 푸시
+            let tutorialViewController = TutorialViewController()
+            navigationController?.pushViewController(tutorialViewController, animated: true)
+        } else {
+            // 마지막 페이지가 아니라면 다음 페이지로 이동
             pageControl.currentPage += 1
             
             let nextViewController: UIViewController?
             switch pageControl.currentPage {
             case 0:
-                nextViewController = TutorialFirstViewController()
+                nextViewController = IntroFirstViewController()
             case 1:
-                nextViewController = TutorialSecondViewController()
+                nextViewController = IntroSecondViewController()
+            case 2:
+                nextViewController = IntroThridViewContoller()
             default:
                 nextViewController = nil
             }
             
             if let nextViewController = nextViewController {
-                
                 pageViewController.setViewControllers([nextViewController], direction: .forward, animated: true, completion: nil)
             }
         }
-        
     }
-    
-    @objc func skip(){
-        print("skipButton.ishidden = false")
-    }
-    
-    
 }
 
-//MARK: - UIpageVC 메서드
 
-extension TutorialViewController : UIPageViewControllerDelegate, UIPageViewControllerDataSource{
+
+
+
+
+extension IntroViewController : UIPageViewControllerDelegate, UIPageViewControllerDataSource{
+    
+    func pageViewController(_ pageViewController: UIPageViewController, viewControllerAfter viewController: UIViewController) -> UIViewController? {
+        
+        switch viewController {
+        case is IntroFirstViewController:
+            return IntroSecondViewController()
+        case is IntroSecondViewController:
+            return IntroThridViewContoller()
+        case is IntroThridViewContoller:
+            return nil
+        default:
+            return nil
+        }
+    }
     
     func pageViewController(_ pageViewController: UIPageViewController, viewControllerBefore viewController: UIViewController) -> UIViewController? {
-            switch viewController {
-            case is TutorialSecondViewController:
-                return TutorialFirstViewController()
+        switch viewController {
+        case is IntroFirstViewController:
+            return nil
+        case is IntroSecondViewController:
+            return IntroFirstViewController()
+        case is IntroThridViewContoller:
+            return IntroSecondViewController()
+        default:
+            return nil
+        }
+    }
+    
+    func pageViewController(_ pageViewController: UIPageViewController, didFinishAnimating finished: Bool, previousViewControllers: [UIViewController], transitionCompleted completed: Bool) {
+        if completed,
+           let currentViewController = pageViewController.viewControllers?.first {
+            switch currentViewController {
+            case is IntroFirstViewController:
+                pageControl.currentPage = 0
+            case is IntroSecondViewController:
+                pageControl.currentPage = 1
+            case is IntroThridViewContoller:
+                pageControl.currentPage = 2
             default:
-                return nil
+                break
             }
         }
-        
-        func pageViewController(_ pageViewController: UIPageViewController, viewControllerAfter viewController: UIViewController) -> UIViewController? {
-            switch viewController {
-            case is TutorialFirstViewController:
-                return TutorialSecondViewController()
-            default:
-                return nil
-            }
-        }
-        
-        func pageViewController(_ pageViewController: UIPageViewController, didFinishAnimating finished: Bool, previousViewControllers: [UIViewController], transitionCompleted completed: Bool) {
-            if completed,
-               let currentViewController = pageViewController.viewControllers?.first {
-                switch currentViewController {
-                case is TutorialFirstViewController:
-                    pageControl.currentPage = 0
-                case is TutorialSecondViewController:
-                    pageControl.currentPage = 1
-                default:
-                    break
-                }
-            }
-        }
+    }
+    
     
 }
-
-
-
-
-
-
-
 //Preview code
 #if DEBUG
 import SwiftUI
-struct TutorialViewControllerRepresentable: UIViewControllerRepresentable {
+struct IntroViewControllerRepresentable: UIViewControllerRepresentable {
     
     func updateUIViewController(_ uiView: UIViewController,context: Context) {
         // leave this empty
     }
     @available(iOS 13.0.0, *)
     func makeUIViewController(context: Context) -> UIViewController{
-        TutorialViewController()
+        IntroViewController()
     }
 }
 @available(iOS 13.0, *)
-struct TutorialViewControllerRepresentable_PreviewProvider: PreviewProvider {
+struct IntroViewControllerRepresentable_PreviewProvider: PreviewProvider {
     static var previews: some View {
         Group {
             if #available(iOS 14.0, *) {
-                TutorialViewControllerRepresentable()
+                IntroViewControllerRepresentable()
                     .ignoresSafeArea()
                     .previewDisplayName(/*@START_MENU_TOKEN@*/"Preview"/*@END_MENU_TOKEN@*/)
                     .previewDevice(PreviewDevice(rawValue: "iPhone se3"))

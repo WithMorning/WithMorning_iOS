@@ -40,7 +40,8 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
                     print("🔥KeyChain에 저장된 accessToken : ", KeyChain.read(key: "accessToken") ?? "")
                     print("🔥KeyChain에 저장된 refreshToken : ",KeyChain.read(key: "refreshToken") ?? "")
                     
-                    self.setRootViewContrller(scene, type: .joined) //joined 바로 메인조회, login 토큰받고 메인
+                    #warning("test")
+                    self.setRootViewContrller(scene, type: .test) //joined 바로 메인조회, login 토큰받고 메인
                     
                 } else if Storage.isFirstTime() {
                     self.setRootViewContrller(scene, type: .termAgree)
@@ -91,7 +92,7 @@ enum rootViewController {
     case mypage
     //    case onBoarding
     //MARK: - test 용
-    case phone
+    case test
     
     var vc : UIViewController{
         switch self{
@@ -102,7 +103,7 @@ enum rootViewController {
             //        case .onBoarding: return OnBoardingTutorialViewController()
             
         //MARK: - test용
-        case .phone : return ProfileViewController()
+        case .test : return IntroViewController()
         }
     }
 }
@@ -135,7 +136,7 @@ extension SceneDelegate{
                 let rootVC: UIViewController
                 
                 switch type {
-                case .termAgree, .joined, .phone: //.phone수정
+                case .termAgree, .joined, .test: //.phone수정
                     let navigationController = UINavigationController(rootViewController: type.vc)
                     if type == .joined {
                         navigationController.setNavigationBarHidden(true, animated: false)

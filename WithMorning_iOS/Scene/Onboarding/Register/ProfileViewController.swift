@@ -175,14 +175,18 @@ class ProfileViewController : UIViewController, UIImagePickerControllerDelegate 
     
     //MARK: - API
     var nickname : String = ""
-//    var testimg : String = "asd"
-    
+
     private func registerProfile(){
-        let data = profileRequest(nickname: nickname, fcmToken: KeyChain.read(key: "fcmToken") ?? "")
-          
+        
+        let fcmToken = KeyChain.read(key: "fcmToken") ?? ""
+            
+            let request = Request(nickname: nickname, fcmToken: fcmToken)
+        
+            let profileRequest = profileRequest(request: request)
+        
         let vc = IntroFirstViewController()
         
-        APInetwork.postProfile(profiledata: data){ result in
+        APInetwork.postProfile(profiledata: profileRequest){ result in
             switch result{
             case .success(let data):
                 self.navigationController?.pushViewController(vc, animated: true)

@@ -32,9 +32,23 @@ struct SMScodeResponse: Codable {
 
 //MARK: - 프로필 등록
 struct profileRequest: Codable {
+    let request: Request
+}
+struct Request: Codable {
     let nickname, fcmToken: String
 }
 
+//struct ProfileRequest: Codable {
+//    let nickname: String
+//    let fcmToken: String
+//    
+//    enum CodingKeys: String, CodingKey {
+//        case nickname
+//        case fcmToken
+//    }
+//}
+
+//프로필 등록 리스폰
 struct profileResponse: Codable {
     let isSuccess: Bool
     let code: Int

@@ -14,23 +14,6 @@ class IntroFirstViewController : UIViewController {
     
     //MARK: - properties
     
-    private lazy var popButton : UIButton = {
-        let button = UIButton()
-        button.setImage(UIImage(systemName: "chevron.backward"), for: .normal)
-        button.tintColor = .black
-        //        button.addTarget(self, action: #selector(popclicked), for: .touchUpInside)
-        return button
-    }()
-    
-    private lazy var skipButton : UIButton = {
-        let button = UIButton()
-        button.setTitle("건너뛰기", for: .normal)
-        button.titleLabel?.font = DesignSystemFont.Pretendard_Medium16.value
-        button.setTitleColor(DesignSystemColor.Gray400.value, for: .normal)
-        //        button.addTarget(self, action: #selector(skip), for: .touchUpInside)
-        return button
-    }()
-    
     private lazy var logoView : UIImageView = {
         let view = UIImageView()
         view.image = UIImage(named: "logo")
@@ -47,31 +30,20 @@ class IntroFirstViewController : UIViewController {
         label.font = DesignSystemFont.Pretendard_Medium16.value
         return label
     }()
-
     
+    //MARK: - intro이미지
+    private lazy var introView : UIView = {
+        let view = UIView()
+        view.backgroundColor = DesignSystemColor.Gray150.value
+        view.addSubview(introImageView)
+        return view
+    }()
+
     private lazy var introImageView : UIImageView = {
         let view = UIImageView()
         view.image = UIImage(named: "intro1")
         view.backgroundColor = .clear
         return view
-    }()
-    
-    //MARK: - 다음 버튼
-    
-    private lazy var nextButton : UIButton = {
-        let button = UIButton()
-        button.addSubview(buttonLabel)
-        button.backgroundColor = .black
-        button.addTarget(self, action: #selector(nextbtn), for: .touchUpInside)
-        return button
-    }()
-    
-    private lazy var buttonLabel : UILabel = {
-        let label = UILabel()
-        label.text = "다음"
-        label.textColor = .white
-        label.font = DesignSystemFont.Pretendard_Bold16.value
-        return label
     }()
     
     //MARK: - life cycle
@@ -83,46 +55,31 @@ class IntroFirstViewController : UIViewController {
     
     //MARK: - auto layout
     func setUI(){
-        view.addSubviews(popButton,skipButton,logoView,mainLabel,introImageView,nextButton)
+        view.addSubviews(logoView,mainLabel,introView)
         
-        popButton.snp.makeConstraints{
-            $0.top.equalTo(view.safeAreaLayoutGuide).offset(20)
-            $0.leading.equalToSuperview().offset(16)
-            $0.height.width.equalTo(24)
-        }
-        skipButton.snp.makeConstraints{
-            $0.top.equalTo(view.safeAreaLayoutGuide).offset(20)
-            $0.trailing.equalToSuperview().inset(16)
-        }
         logoView.snp.makeConstraints{
             $0.width.equalTo(100)
             $0.height.equalTo(35)
             $0.centerX.equalToSuperview()
-            $0.top.equalTo(view.safeAreaLayoutGuide).offset(80)
+            $0.top.equalToSuperview().offset(36)
         }
         mainLabel.snp.makeConstraints{
             $0.centerX.equalToSuperview()
             $0.top.equalTo(logoView.snp.bottom).offset(24)
         }
         
+        introView.snp.makeConstraints{
+            $0.leading.trailing.equalToSuperview()
+            $0.bottom.equalToSuperview()
+            $0.height.equalTo(400)
+        }
         
         introImageView.snp.makeConstraints{
             $0.width.equalTo(257)
             $0.height.equalTo(280)
-            $0.centerX.equalToSuperview()
-            $0.centerY.equalToSuperview().offset(30) //수정 가능성 용이함ㅇㅇ
+            $0.center.equalToSuperview()
         }
         
-        nextButton.snp.makeConstraints{
-            $0.leading.trailing.bottom.equalToSuperview()
-            $0.height.equalTo(92)
-        }
-        
-        buttonLabel.snp.makeConstraints{
-            $0.centerX.equalToSuperview()
-            $0.top.equalToSuperview().offset(20)
-            $0.bottom.equalToSuperview().inset(50)
-        }
         
         
     }

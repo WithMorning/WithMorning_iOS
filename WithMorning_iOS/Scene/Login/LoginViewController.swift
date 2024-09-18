@@ -33,7 +33,7 @@ class LoginViewController: UIViewController{
     //MARK: - 애플로 로그인
     private lazy var appleButton : UIButton = {
         let button = UIButton()
-        button.backgroundColor = .black
+        button.backgroundColor = DesignSystemColor.Black.value
         button.setTitle("  Apple로 로그인", for: .normal)
         button.titleLabel?.font = DesignSystemFont.Pretendard_SemiBold16.value
         button.setTitleColor(.white, for: .normal)

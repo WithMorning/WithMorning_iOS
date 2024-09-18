@@ -13,491 +13,211 @@ import Alamofire
 class TutorialSecondViewController : UIViewController {
     
     //MARK: - properties
-
-    private lazy var tutorialLabel : UILabel = {
-        let label = UILabel()
-        label.text = "반복하고 싶은 요일을 선택해 주세요!"
-        label.textAlignment = .center
-        label.font = DesignSystemFont.Pretendard_Medium14.value
-        label.textColor = DesignSystemColor.Gray500.value
-        return label
-    }()
     
-    //MARK: - day
-    private lazy var contentView : UIView = {
+    private lazy var timerView : UIView = {
         let view = UIView()
-        view.addSubviews(MonstackView,TuestackView,WedstackView,ThrstackView,FristackView,SatstackView,SunstackView,weekdayButton,weekendButton)
         view.backgroundColor = .white
         view.layer.cornerRadius = 8
+        view.addSubview(timePicker)
         return view
     }()
     
-    //MARK: - 월요일
-
-    private lazy var MonstackView: UIStackView = {
-        let stackView = UIStackView()
-        stackView.axis = .horizontal
-        stackView.alignment = .fill
-        stackView.addSubviews(MonLabel,MonIMG)
-        stackView.isUserInteractionEnabled = true
-        let tapGestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(monclick))
-        stackView.addGestureRecognizer(tapGestureRecognizer)
-        return stackView
-    }()
-
-    
-    private lazy var MonLabel : UILabel = {
-        let label = UILabel()
-        label.text = "월요일"
-        label.textAlignment = .left
-        label.font = DesignSystemFont.Pretendard_Medium14.value
-        label.textColor = .black
-        return label
+    private lazy var timePicker : UIPickerView = {
+        let picker = UIPickerView()
+        picker.delegate = self
+        picker.dataSource = self
+        picker.backgroundColor = .clear
+        picker.setContentCompressionResistancePriority(.defaultLow, for: .vertical)
+        return picker
     }()
     
-    private lazy var MonIMG : UIImageView = {
-        let view = UIImageView()
-        view.image = UIImage(systemName: "checkmark.square.fill")
-        view.tintColor = DesignSystemColor.Gray200.value
-        return view
-    }()
+    var hour = Array(1...12)
+    var min = Array(0...59)
+    var AMPM = ["AM","PM"]
     
-    //MARK: - 화요일
-
-    private lazy var TuestackView: UIStackView = {
-        let stackView = UIStackView()
-        stackView.axis = .horizontal
-        stackView.alignment = .fill
-        stackView.addSubviews(TueLabel,TueIMG)
-        stackView.isUserInteractionEnabled = true
-        let tapGestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(tueuclick))
-        stackView.addGestureRecognizer(tapGestureRecognizer)
-
-        return stackView
-    }()
-    
-    private lazy var TueLabel : UILabel = {
-        let label = UILabel()
-        label.text = "화요일"
-        label.textAlignment = .left
-        label.font = DesignSystemFont.Pretendard_Medium14.value
-        label.textColor = .black
-        return label
-    }()
-    
-    private lazy var TueIMG : UIImageView = {
-        let view = UIImageView()
-        view.image = UIImage(systemName: "checkmark.square.fill")
-        view.tintColor = DesignSystemColor.Gray200.value
-        return view
-    }()
-    //MARK: - 수요일
-    private lazy var WedstackView: UIStackView = {
-        let stackView = UIStackView()
-        stackView.axis = .horizontal
-        stackView.alignment = .fill
-        stackView.addSubviews(WedLabel,WedIMG)
-        stackView.isUserInteractionEnabled = true
-        let tapGestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(wedclick))
-        stackView.addGestureRecognizer(tapGestureRecognizer)
-
-        return stackView
-    }()
-    
-    private lazy var WedLabel : UILabel = {
-        let label = UILabel()
-        label.text = "수요일"
-        label.textAlignment = .left
-        label.font = DesignSystemFont.Pretendard_Medium14.value
-        label.textColor = .black
-        return label
-    }()
-    
-    private lazy var WedIMG : UIImageView = {
-        let view = UIImageView()
-        view.image = UIImage(systemName: "checkmark.square.fill")
-        view.tintColor = DesignSystemColor.Gray200.value
-        return view
-    }()
-    //MARK: - 목요일
-    private lazy var ThrstackView: UIStackView = {
-        let stackView = UIStackView()
-        stackView.axis = .horizontal
-        stackView.alignment = .fill
-        stackView.addSubviews(ThrLabel,ThrIMG)
-        stackView.isUserInteractionEnabled = true
-        let tapGestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(thrclick))
-        stackView.addGestureRecognizer(tapGestureRecognizer)
-
-        return stackView
-    }()
-    
-    private lazy var ThrLabel : UILabel = {
-        let label = UILabel()
-        label.text = "목요일"
-        label.textAlignment = .left
-        label.font = DesignSystemFont.Pretendard_Medium14.value
-        label.textColor = .black
-        return label
-    }()
-    
-    private lazy var ThrIMG : UIImageView = {
-        let view = UIImageView()
-        view.image = UIImage(systemName: "checkmark.square.fill")
-        view.tintColor = DesignSystemColor.Gray200.value
-        return view
-    }()
-    //MARK: - 금요일
-    private lazy var FristackView: UIStackView = {
-        let stackView = UIStackView()
-        stackView.axis = .horizontal
-        stackView.alignment = .fill
-        stackView.addSubviews(FriLabel,FriIMG)
-        stackView.isUserInteractionEnabled = true
-        let tapGestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(friclick))
-        stackView.addGestureRecognizer(tapGestureRecognizer)
-
-        return stackView
-    }()
-    
-    private lazy var FriLabel : UILabel = {
-        let label = UILabel()
-        label.text = "금요일"
-        label.textAlignment = .left
-        label.font = DesignSystemFont.Pretendard_Medium14.value
-        label.textColor = .black
-        return label
-    }()
-    
-    private lazy var FriIMG : UIImageView = {
-        let view = UIImageView()
-        view.image = UIImage(systemName: "checkmark.square.fill")
-        view.tintColor = DesignSystemColor.Gray200.value
-        return view
-    }()
-    //MARK: - 토요일
-    private lazy var SatstackView: UIStackView = {
-        let stackView = UIStackView()
-        stackView.axis = .horizontal
-        stackView.alignment = .fill
-        stackView.addSubviews(SatLabel,SatIMG)
-        stackView.isUserInteractionEnabled = true
-        let tapGestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(satclick))
-        stackView.addGestureRecognizer(tapGestureRecognizer)
-
-        return stackView
-    }()
-    
-    private lazy var SatLabel : UILabel = {
-        let label = UILabel()
-        label.text = "토요일"
-        label.textAlignment = .left
-        label.font = DesignSystemFont.Pretendard_Medium14.value
-        label.textColor = .black
-        return label
-    }()
-    
-    private lazy var SatIMG : UIImageView = {
-        let view = UIImageView()
-        view.image = UIImage(systemName: "checkmark.square.fill")
-        view.tintColor = DesignSystemColor.Gray200.value
-        return view
-    }()
-    //MARK: - 일요일
-    private lazy var SunstackView: UIStackView = {
-        let stackView = UIStackView()
-        stackView.axis = .horizontal
-        stackView.alignment = .fill
-        stackView.addSubviews(SunLabel,SunIMG)
-        stackView.isUserInteractionEnabled = true
-        let tapGestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(sunclick))
-        stackView.addGestureRecognizer(tapGestureRecognizer)
-        return stackView
-    }()
-    
-    private lazy var SunLabel : UILabel = {
-        let label = UILabel()
-        label.text = "일요일"
-        label.textAlignment = .left
-        label.font = DesignSystemFont.Pretendard_Medium14.value
-        label.textColor = .black
-        return label
-    }()
-    
-    private lazy var SunIMG : UIImageView = {
-        let view = UIImageView()
-        view.image = UIImage(systemName: "checkmark.square.fill")
-        view.tintColor = DesignSystemColor.Gray200.value
-
-        return view
-    }()
-    
-    //MARK: - 주중
-
-    private lazy var weekdayButton : UIButton = {
-        let button = UIButton()
-        button.setTitle("주중", for: .normal)
-        button.setTitleColor(DesignSystemColor.Gray500.value, for: .normal)
-        button.backgroundColor = DesignSystemColor.Gray200.value
-        button.layer.cornerRadius = 8
-        button.titleLabel?.font = DesignSystemFont.Pretendard_Bold14.value
-        button.addTarget(self, action: #selector(weekdatclick), for: .touchUpInside)
-        return button
-    }()
-    
-    //MARK: - 주말
-    private lazy var weekendButton : UIButton = {
-        let button = UIButton()
-        button.setTitle("주말", for: .normal)
-        button.setTitleColor(DesignSystemColor.Gray500.value, for: .normal)
-        button.backgroundColor = DesignSystemColor.Gray200.value
-        button.layer.cornerRadius = 8
-        button.titleLabel?.font = DesignSystemFont.Pretendard_Bold14.value
-        button.addTarget(self, action: #selector(weekendclick), for: .touchUpInside)
-        return button
-    }()
     //MARK: - life cycle
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        view.backgroundColor = .clear
+        view.backgroundColor = DesignSystemColor.Gray150.value
         setUI()
+        setCurrentTimeOnPicker()
     }
     
-    //MARK: - Autolayout
+    override func viewDidLayoutSubviews() {
+        super.viewDidLayoutSubviews()
+        pickerviewUI()
+    }
+    
+    //MARK: - autolayout
+
     func setUI(){
-        view.addSubviews(tutorialLabel,contentView)
-        
-        tutorialLabel.snp.makeConstraints{
-            $0.centerX.equalToSuperview()
-            $0.top.equalToSuperview()
-        }
-        contentView.snp.makeConstraints{
+        view.addSubviews(timerView)
+
+        timerView.snp.makeConstraints{
             $0.leading.trailing.equalToSuperview().inset(16)
-            $0.top.equalTo(tutorialLabel.snp.bottom).offset(16)
-            $0.height.equalTo(380)
+            $0.top.equalToSuperview()
+            $0.height.equalTo(152)
         }
-        
-        //월요일
-        MonstackView.snp.makeConstraints{
-            $0.top.equalToSuperview().inset(24)
-            $0.leading.trailing.equalToSuperview().inset(24)
-            $0.height.equalTo(24)
-        }
-        MonLabel.snp.makeConstraints{
-            $0.leading.centerY.equalToSuperview()
-        }
-        MonIMG.snp.makeConstraints{
-            $0.trailing.equalToSuperview()
-            $0.height.equalTo(24)
-            $0.width.equalTo(24)
-        }
-        //화요일
-        TuestackView.snp.makeConstraints{
-            $0.top.equalTo(MonstackView.snp.bottom).offset(16)
-            $0.leading.trailing.equalToSuperview().inset(24)
-            $0.height.equalTo(24)
-        }
-        TueLabel.snp.makeConstraints{
-            $0.leading.centerY.equalToSuperview()
-        }
-        TueIMG.snp.makeConstraints{
-            $0.trailing.equalToSuperview()
-            $0.height.equalTo(24)
-            $0.width.equalTo(24)
-        }
-        //수요일
-        WedstackView.snp.makeConstraints{
-            $0.top.equalTo(TuestackView.snp.bottom).offset(16)
-            $0.leading.trailing.equalToSuperview().inset(24)
-            $0.height.equalTo(24)
-        }
-        WedLabel.snp.makeConstraints{
-            $0.leading.centerY.equalToSuperview()
-        }
-        WedIMG.snp.makeConstraints{
-            $0.trailing.equalToSuperview()
-            $0.height.equalTo(24)
-            $0.width.equalTo(24)
-        }
-        //목요일
-        ThrstackView.snp.makeConstraints{
-            $0.top.equalTo(WedstackView.snp.bottom).offset(16)
-            $0.leading.trailing.equalToSuperview().inset(24)
-            $0.height.equalTo(24)
-        }
-        ThrLabel.snp.makeConstraints{
-            $0.leading.centerY.equalToSuperview()
-        }
-        ThrIMG.snp.makeConstraints{
-            $0.trailing.equalToSuperview()
-            $0.height.equalTo(24)
-            $0.width.equalTo(24)
-        }
-        //금요일
-        FristackView.snp.makeConstraints{
-            $0.top.equalTo(ThrstackView.snp.bottom).offset(16)
-            $0.leading.trailing.equalToSuperview().inset(24)
-            $0.height.equalTo(24)
-        }
-        FriLabel.snp.makeConstraints{
-            $0.leading.centerY.equalToSuperview()
-        }
-        FriIMG.snp.makeConstraints{
-            $0.trailing.equalToSuperview()
-            $0.height.equalTo(24)
-            $0.width.equalTo(24)
-        }
-        //토요일
-        SatstackView.snp.makeConstraints{
-            $0.top.equalTo(FristackView.snp.bottom).offset(16)
-            $0.leading.trailing.equalToSuperview().inset(24)
-            $0.height.equalTo(24)
-        }
-        SatLabel.snp.makeConstraints{
-            $0.leading.centerY.equalToSuperview()
-        }
-        SatIMG.snp.makeConstraints{
-            $0.trailing.equalToSuperview()
-            $0.height.equalTo(24)
-            $0.width.equalTo(24)
-        }
-        //일요일
-        SunstackView.snp.makeConstraints{
-            $0.top.equalTo(SatstackView.snp.bottom).offset(16)
-            $0.leading.trailing.equalToSuperview().inset(24)
-            $0.height.equalTo(24)
-        }
-        SunLabel.snp.makeConstraints{
-            $0.leading.centerY.equalToSuperview()
-        }
-        SunIMG.snp.makeConstraints{
-            $0.trailing.equalToSuperview()
-            $0.height.equalTo(24)
-            $0.width.equalTo(24)
-        }
-        //주중
-        weekdayButton.snp.makeConstraints{
-            $0.leading.equalToSuperview().inset(24)
-            $0.top.equalTo(SunstackView.snp.bottom).offset(16)
-            $0.height.equalTo(52)
-            $0.trailing.equalTo(view.snp.centerX).offset(-5)
-        }
-        //주말
-        weekendButton.snp.makeConstraints{
-            $0.trailing.equalToSuperview().inset(24)
-            $0.top.equalTo(SunstackView.snp.bottom).offset(16)
-            $0.height.equalTo(52)
-            $0.leading.equalTo(view.snp.centerX).offset(5)
+        timePicker.snp.makeConstraints{
+            $0.top.equalToSuperview()
+            $0.bottom.equalToSuperview()
+            $0.centerY.equalToSuperview()
+            $0.leading.trailing.equalToSuperview()
         }
     }
-    
-    //MARK: - 주중, 주말 색 변화
-    func updateweeklycolor(){
-        if [MonIMG, TueIMG, WedIMG, ThrIMG, FriIMG].allSatisfy({ $0.tintColor == DesignSystemColor.Orange500.value }) {
-            weekdayButton.backgroundColor = DesignSystemColor.Orange500.value
-            weekdayButton.setTitleColor(.white, for: .normal)
-        }else{
-            weekdayButton.setTitleColor(DesignSystemColor.Gray500.value, for: .normal)
-            weekdayButton.backgroundColor = DesignSystemColor.Gray200.value
-        }
-        
-        if [SatIMG,SunIMG].allSatisfy({$0.tintColor == DesignSystemColor.Orange500.value}) {
-            weekendButton.backgroundColor = DesignSystemColor.Orange500.value
-            weekendButton.setTitleColor(.white, for: .normal)
-        }else{
-            weekendButton.setTitleColor(DesignSystemColor.Gray500.value, for: .normal)
-            weekendButton.backgroundColor = DesignSystemColor.Gray200.value
-        }
-        
-        
-    }
-    
-    //MARK: - objc func
-    
-    @objc func monclick(){
-        if MonIMG.tintColor == DesignSystemColor.Gray200.value{
-            MonIMG.tintColor = DesignSystemColor.Orange500.value
-        }else{
-            MonIMG.tintColor = DesignSystemColor.Gray200.value
-        }
-        updateweeklycolor()
-        
-    }
-    @objc func tueuclick(){
-        if TueIMG.tintColor == DesignSystemColor.Gray200.value{
-            TueIMG.tintColor = DesignSystemColor.Orange500.value
-        }else{
-            TueIMG.tintColor = DesignSystemColor.Gray200.value
-        }
-        updateweeklycolor()
-    }
-    @objc func wedclick(){
-        if WedIMG.tintColor == DesignSystemColor.Gray200.value{
-            WedIMG.tintColor = DesignSystemColor.Orange500.value
-        }else{
-            WedIMG.tintColor = DesignSystemColor.Gray200.value
-        }
-        updateweeklycolor()
-    }
-    @objc func thrclick(){
-        if ThrIMG.tintColor == DesignSystemColor.Gray200.value{
-            ThrIMG.tintColor = DesignSystemColor.Orange500.value
-        }else{
-            ThrIMG.tintColor = DesignSystemColor.Gray200.value
-        }
-        updateweeklycolor()
-    }
-    @objc func friclick(){
-        if FriIMG.tintColor == DesignSystemColor.Gray200.value{
-            FriIMG.tintColor = DesignSystemColor.Orange500.value
-        }else{
-            FriIMG.tintColor = DesignSystemColor.Gray200.value
-        }
-        updateweeklycolor()
-    }
-    @objc func satclick(){
-        if SatIMG.tintColor == DesignSystemColor.Gray200.value{
-            SatIMG.tintColor = DesignSystemColor.Orange500.value
-        }else{
-            SatIMG.tintColor = DesignSystemColor.Gray200.value
-        }
-        updateweeklycolor()
-    }
-    @objc func sunclick(){
-        if SunIMG.tintColor == DesignSystemColor.Gray200.value{
-            SunIMG.tintColor = DesignSystemColor.Orange500.value
-        }else{
-            SunIMG.tintColor = DesignSystemColor.Gray200.value
-        }
-        updateweeklycolor()
-    }
-    @objc func doneclick(){
-        self.dismiss(animated: true)
-    }
-    
-    @objc func weekdatclick(){
-        if weekdayButton.backgroundColor == DesignSystemColor.Gray200.value {
-            weekdayButton.backgroundColor = DesignSystemColor.Orange500.value
-            weekdayButton.setTitleColor(.white, for: .normal)
-               [MonIMG, TueIMG, WedIMG, ThrIMG, FriIMG].forEach { $0.tintColor = DesignSystemColor.Orange500.value }
-        }else{
-            weekdayButton.backgroundColor = DesignSystemColor.Gray200.value
-            weekdayButton.setTitleColor(DesignSystemColor.Gray500.value, for: .normal)
-               [MonIMG, TueIMG, WedIMG, ThrIMG, FriIMG].forEach { $0.tintColor = DesignSystemColor.Gray200.value }
-        }
-    }
-    @objc func weekendclick(){
-        if weekendButton.backgroundColor == DesignSystemColor.Gray200.value {
-            weekendButton.backgroundColor = DesignSystemColor.Orange500.value
-            weekendButton.setTitleColor(.white, for: .normal)
-               [SatIMG,SunIMG].forEach { $0.tintColor = DesignSystemColor.Orange500.value }
-        }else{
-            weekendButton.backgroundColor = DesignSystemColor.Gray200.value
-            weekendButton.setTitleColor(DesignSystemColor.Gray500.value, for: .normal)
-            [SatIMG,SunIMG].forEach { $0.tintColor = DesignSystemColor.Gray200.value }
-        }
+    //MARK: - picker SET
 
+    func pickerviewUI(){
+        timePicker.subviews[1].isHidden = true
+        
+        let colonLabel = UILabel()
+        colonLabel.text = ":"
+        colonLabel.font = DesignSystemFont.Pretendard_Bold30.value
+        timePicker.addSubview(colonLabel)
+        
+        colonLabel.snp.makeConstraints{
+            $0.centerY.equalToSuperview().offset(-3)
+            $0.centerX.equalToSuperview().offset(-16.5)
+        }
     }
-
+    
+    func setCurrentTimeOnPicker() {
+        let currentDate = Date()
+        let calendar = Calendar.current
+        
+        let hour = calendar.component(.hour, from: currentDate)
+        let minute = calendar.component(.minute, from: currentDate)
+        
+        let hourForPicker: Int
+        let ampm: Int
+        
+        if hour >= 12 {
+            hourForPicker = hour == 12 ? 12 : hour - 12
+            ampm = 1 // PM
+        } else {
+            hourForPicker = hour == 0 ? 12 : hour
+            ampm = 0 // AM
+        }
+        
+        let middleHour = self.hour.count * 50
+        let middleMinute = min.count * 50
+        let middleAMPM = AMPM.count * 50
+        
+        timePicker.selectRow(middleHour + hourForPicker - 1, inComponent: 0, animated: false)
+        timePicker.selectRow(middleMinute + minute, inComponent: 1, animated: false)
+        timePicker.selectRow(middleAMPM + ampm, inComponent: 2, animated: false)
+    }
+    
 }
+
+
+//MARK: - pickerView custom
+
+extension TutorialSecondViewController : UIPickerViewDelegate, UIPickerViewDataSource {
+    
+    //휠 개수
+    func numberOfComponents(in pickerView: UIPickerView) -> Int {
+        3
+    }
+    
+    //컴포넌트의 개수
+    func pickerView(_ pickerView: UIPickerView, numberOfRowsInComponent component: Int) -> Int {
+        switch component {
+        case 0:
+            return hour.count*100
+        case 1:
+            return min.count*100
+        case 2:
+            return AMPM.count
+        default:
+            return 0
+        }
+    }
+    
+    //컴포넌트 표시
+    func pickerView(_ pickerView: UIPickerView, titleForRow row: Int, forComponent component: Int) -> String? {
+        switch component {
+        case 0:
+            return String(format: "%02d", hour[row % hour.count])
+        case 1:
+            return String(format: "%02d", min[row % min.count])
+        case 2:
+            return "\(AMPM[row])"
+        default:
+            return ""
+        }
+    }
+    
+    //컴포넌트 표시
+    func pickerView(_ pickerView: UIPickerView, viewForRow row: Int, forComponent component: Int, reusing view: UIView?) -> UIView {
+        
+        if component == 0 || component == 1 {
+            let timelabel = UILabel()
+            timelabel.textAlignment = .center
+            timelabel.font = DesignSystemFont.Pretendard_Bold30.value
+            
+            if component == 0 {
+                timelabel.text = String(format: "%02d", hour[row % hour.count])
+            } else {
+                timelabel.text = String(format: "%02d", min[row % min.count])
+            }
+            return timelabel
+            
+        } else {
+            let AMPMlabel = UILabel()
+            AMPMlabel.textAlignment = .center
+            AMPMlabel.font = DesignSystemFont.Pretendard_Bold18.value
+            AMPMlabel.text = String(AMPM[row])
+            
+            return AMPMlabel
+        }
+    }
+    
+    //컴포넌트 위아래 간격
+    func pickerView(_ pickerView: UIPickerView, rowHeightForComponent component: Int) -> CGFloat {
+        return 46 // 각 행의 높이를 조절합니다. 필요에 따라 이 값을 조정하세요.
+    }
+    
+    func pickerView(_ pickerView: UIPickerView, widthForComponent component: Int) -> CGFloat {
+        switch component {
+        case 0, 1: // 시간과 분
+            return 75.5
+        case 2: // AM/PM
+            return 29
+        default:
+            return 45
+        }
+    }
+}
+
+
+//Preview code
+#if DEBUG
+import SwiftUI
+struct TutorialSecondViewControllerRepresentable: UIViewControllerRepresentable {
+    
+    func updateUIViewController(_ uiView: UIViewController,context: Context) {
+        // leave this empty
+    }
+    @available(iOS 13.0.0, *)
+    func makeUIViewController(context: Context) -> UIViewController{
+        TutorialSecondViewController()
+    }
+}
+@available(iOS 13.0, *)
+struct TutorialSecondViewControllerRepresentable_PreviewProvider: PreviewProvider {
+    static var previews: some View {
+        Group {
+            if #available(iOS 14.0, *) {
+                TutorialSecondViewControllerRepresentable()
+                    .ignoresSafeArea()
+                    .previewDisplayName(/*@START_MENU_TOKEN@*/"Preview"/*@END_MENU_TOKEN@*/)
+                    .previewDevice(PreviewDevice(rawValue: "iPhone se3"))
+            } else {
+                // Fallback on earlier versions
+            }
+        }
+        
+    }
+} #endif

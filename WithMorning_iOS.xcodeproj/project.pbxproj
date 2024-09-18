@@ -46,15 +46,15 @@
 		D19A9CB22C26901100748CE8 /* MakeAlarmViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D19A9CB12C26901100748CE8 /* MakeAlarmViewController.swift */; };
 		D19E7FAA2C4A47C10053ACA8 /* LoginViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D19E7FA92C4A47C10053ACA8 /* LoginViewController.swift */; };
 		D1AA9A442C429965001A26B4 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = D1AA9A432C429965001A26B4 /* GoogleService-Info.plist */; };
-		D1ABF7922C5239C7008B5084 /* TutorialFirstViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D1ABF7912C5239C7008B5084 /* TutorialFirstViewController.swift */; };
-		D1ABF7942C5239D6008B5084 /* TutorialSecondViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D1ABF7932C5239D6008B5084 /* TutorialSecondViewController.swift */; };
-		D1ABF7962C5239E4008B5084 /* TutorialThirdViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D1ABF7952C5239E4008B5084 /* TutorialThirdViewController.swift */; };
+		D1ABF7922C5239C7008B5084 /* TutorialSecondViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D1ABF7912C5239C7008B5084 /* TutorialSecondViewController.swift */; };
+		D1ABF7962C5239E4008B5084 /* TutorialFirstViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D1ABF7952C5239E4008B5084 /* TutorialFirstViewController.swift */; };
 		D1AD15AC2C7AF19F003EE342 /* UILabel_Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = D1AD15AB2C7AF19F003EE342 /* UILabel_Extension.swift */; };
 		D1B12F2F2C50E7770041288C /* TutorialViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D1B12F2E2C50E7770041288C /* TutorialViewController.swift */; };
 		D1B86A012C6D12710052F528 /* UserStateViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D1B86A002C6D12710052F528 /* UserStateViewController.swift */; };
 		D1B86A032C6D13D20052F528 /* UICell_Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = D1B86A022C6D13D20052F528 /* UICell_Extension.swift */; };
 		D1B86A052C6F2EAC0052F528 /* LoginModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = D1B86A042C6F2EAC0052F528 /* LoginModel.swift */; };
 		D1B86A072C6F2EB40052F528 /* LoginRouter.swift in Sources */ = {isa = PBXBuildFile; fileRef = D1B86A062C6F2EB40052F528 /* LoginRouter.swift */; };
+		D1BCF7D22C99752800FC4FD5 /* IntroViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D1BCF7D12C99752800FC4FD5 /* IntroViewController.swift */; };
 		D1C823642C77363F00787CB4 /* AuthInterceptor.swift in Sources */ = {isa = PBXBuildFile; fileRef = D1C823632C77363F00787CB4 /* AuthInterceptor.swift */; };
 		D1D891EE2C42684B00ED8092 /* FirebaseAnalytics in Frameworks */ = {isa = PBXBuildFile; productRef = D1D891ED2C42684B00ED8092 /* FirebaseAnalytics */; };
 		D1D891F02C42684B00ED8092 /* FirebaseAnalyticsOnDeviceConversion in Frameworks */ = {isa = PBXBuildFile; productRef = D1D891EF2C42684B00ED8092 /* FirebaseAnalyticsOnDeviceConversion */; };
@@ -123,15 +123,15 @@
 		D19A9CB12C26901100748CE8 /* MakeAlarmViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MakeAlarmViewController.swift; sourceTree = "<group>"; };
 		D19E7FA92C4A47C10053ACA8 /* LoginViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginViewController.swift; sourceTree = "<group>"; };
 		D1AA9A432C429965001A26B4 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
-		D1ABF7912C5239C7008B5084 /* TutorialFirstViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TutorialFirstViewController.swift; sourceTree = "<group>"; };
-		D1ABF7932C5239D6008B5084 /* TutorialSecondViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TutorialSecondViewController.swift; sourceTree = "<group>"; };
-		D1ABF7952C5239E4008B5084 /* TutorialThirdViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TutorialThirdViewController.swift; sourceTree = "<group>"; };
+		D1ABF7912C5239C7008B5084 /* TutorialSecondViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TutorialSecondViewController.swift; sourceTree = "<group>"; };
+		D1ABF7952C5239E4008B5084 /* TutorialFirstViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TutorialFirstViewController.swift; sourceTree = "<group>"; };
 		D1AD15AB2C7AF19F003EE342 /* UILabel_Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UILabel_Extension.swift; sourceTree = "<group>"; };
 		D1B12F2E2C50E7770041288C /* TutorialViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TutorialViewController.swift; sourceTree = "<group>"; };
 		D1B86A002C6D12710052F528 /* UserStateViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserStateViewController.swift; sourceTree = "<group>"; };
 		D1B86A022C6D13D20052F528 /* UICell_Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UICell_Extension.swift; sourceTree = "<group>"; };
 		D1B86A042C6F2EAC0052F528 /* LoginModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginModel.swift; sourceTree = "<group>"; };
 		D1B86A062C6F2EB40052F528 /* LoginRouter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginRouter.swift; sourceTree = "<group>"; };
+		D1BCF7D12C99752800FC4FD5 /* IntroViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IntroViewController.swift; sourceTree = "<group>"; };
 		D1C823632C77363F00787CB4 /* AuthInterceptor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthInterceptor.swift; sourceTree = "<group>"; };
 		D1DB46E22C4BA10C00BDC3D8 /* RegisterViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RegisterViewController.swift; sourceTree = "<group>"; };
 		D1DECB1B2BE54B37009AC667 /* Pretendard-Regular.otf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Pretendard-Regular.otf"; sourceTree = "<group>"; };
@@ -362,6 +362,7 @@
 		D1A12AED2C97417C007EC867 /* Intro */ = {
 			isa = PBXGroup;
 			children = (
+				D1BCF7D12C99752800FC4FD5 /* IntroViewController.swift */,
 				D17AC1A02C98019A007ADB3D /* IntroFirstViewController.swift */,
 				D17AC1A22C980BE1007ADB3D /* IntroSecondViewController.swift */,
 				D17AC1A42C980BF6007ADB3D /* IntroThridViewContoller.swift */,
@@ -373,9 +374,8 @@
 			isa = PBXGroup;
 			children = (
 				D1B12F2E2C50E7770041288C /* TutorialViewController.swift */,
-				D1ABF7912C5239C7008B5084 /* TutorialFirstViewController.swift */,
-				D1ABF7932C5239D6008B5084 /* TutorialSecondViewController.swift */,
-				D1ABF7952C5239E4008B5084 /* TutorialThirdViewController.swift */,
+				D1ABF7952C5239E4008B5084 /* TutorialFirstViewController.swift */,
+				D1ABF7912C5239C7008B5084 /* TutorialSecondViewController.swift */,
 			);
 			path = Tutorial;
 			sourceTree = "<group>";
@@ -565,12 +565,12 @@
 				D15534A32C943C8E0087AED7 /* UserModel.swift in Sources */,
 				D1E1FBDE2C65F23E001E5375 /* Toast_Message.swift in Sources */,
 				D16B609B2C65EF190039B99A /* UISlider_Extension.swift in Sources */,
-				D1ABF7942C5239D6008B5084 /* TutorialSecondViewController.swift in Sources */,
 				D19E7FAA2C4A47C10053ACA8 /* LoginViewController.swift in Sources */,
 				D1B86A052C6F2EAC0052F528 /* LoginModel.swift in Sources */,
 				D14967F92C70864D000E8C1B /* KeyChain.swift in Sources */,
 				D1B86A012C6D12710052F528 /* UserStateViewController.swift in Sources */,
 				D19589E02C6745C50000B77C /* CoreHaptics_Extension.swift in Sources */,
+				D1BCF7D22C99752800FC4FD5 /* IntroViewController.swift in Sources */,
 				D1773F892BC988AB005C82FA /* UIFont_Extension.swift in Sources */,
 				D14967F62C6FB3F5000E8C1B /* RegisterUserInfo.swift in Sources */,
 				D1E672BF2BC4FD3300A32790 /* MainViewController.swift in Sources */,
@@ -586,8 +586,8 @@
 				D16F5FD32BC65679006640F9 /* Model.swift in Sources */,
 				D14A2D6C2BC8EB810087E0CB /* DesignSystem.swift in Sources */,
 				D12D51332C60BC0900D3F1A9 /* UserRouter.swift in Sources */,
-				D1ABF7962C5239E4008B5084 /* TutorialThirdViewController.swift in Sources */,
-				D1ABF7922C5239C7008B5084 /* TutorialFirstViewController.swift in Sources */,
+				D1ABF7962C5239E4008B5084 /* TutorialFirstViewController.swift in Sources */,
+				D1ABF7922C5239C7008B5084 /* TutorialSecondViewController.swift in Sources */,
 				D1B12F2F2C50E7770041288C /* TutorialViewController.swift in Sources */,
 				D129AC772C75A99C00C83DB9 /* PushNotificationHelper.swift in Sources */,
 				D16F5FD52BC65680006640F9 /* Router.swift in Sources */,

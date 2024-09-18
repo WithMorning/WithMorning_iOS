@@ -63,7 +63,7 @@ class CellMenuViewController: UIViewController, AlterDelegate {
     private lazy var closeButton : UIButton = {
         let button = UIButton()
         button.addSubview(buttonLabel)
-        button.backgroundColor = .black
+        button.backgroundColor = DesignSystemColor.Black.value
         button.addTarget(self, action: #selector(closeClicked), for: .touchUpInside)
         return button
     }()

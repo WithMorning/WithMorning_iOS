@@ -385,14 +385,14 @@ class AlarmTableViewCell : UITableViewCell, UISheetPresentationControllerDelegat
                 print(data)
             case .failure(let error):
                 print(error.localizedDescription)
-            
+                
             }
             
         }
         
         
     }
-
+    
     //MARK: - 멤버
     var groupId : Int = 0 //그룹 아이디 (방해금지모드에도 사용)
     
@@ -558,22 +558,22 @@ class AlarmTableViewCell : UITableViewCell, UISheetPresentationControllerDelegat
         }
         
         vc.Menuclicked = { [weak self] in
-                    guard let self = self else { return }
-                    vc.dismiss(animated: true) {
-                        let alterVC = AlterUIView(alterType: .deleteAlarm)
-                        alterVC.groupId = self.groupId
-                        alterVC.modalPresentationStyle = .overFullScreen
-                        alterVC.modalTransitionStyle = .crossDissolve
-                        
-                        // AlterUIView의 confirm 클로저 설정
-                        alterVC.confirmAction = { [weak self] in
-                            self?.onAlarmDelete?()
-                        }
-                        
-                        parentViewController.present(alterVC, animated: true, completion: nil)
-                    }
+            guard let self = self else { return }
+            vc.dismiss(animated: true) {
+                let alterVC = AlterUIView(alterType: .deleteAlarm)
+                alterVC.groupId = self.groupId
+                alterVC.modalPresentationStyle = .overFullScreen
+                alterVC.modalTransitionStyle = .crossDissolve
+                
+                // AlterUIView의 confirm 클로저 설정
+                alterVC.confirmAction = { [weak self] in
+                    self?.onAlarmDelete?()
                 }
-            
+                
+                parentViewController.present(alterVC, animated: true, completion: nil)
+            }
+        }
+        
         
     }
     
@@ -590,7 +590,7 @@ class AlarmTableViewCell : UITableViewCell, UISheetPresentationControllerDelegat
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "memberCollectioViewCell", for: indexPath) as! memberCollectioViewCell
         
         let userlistData = userData[indexPath.item]
-        cell.configure(with: userlistData.nickname)
+        cell.configureMember(with: userlistData.nickname,imageURL: userlistData.imageURL,isDisturbBanMode: userlistData.isDisturbBanMode,isWakeup: userlistData.isWakeup)
         return cell
     }
     
@@ -663,6 +663,13 @@ class memberCollectioViewCell: UICollectionViewCell {
         return view
     }()
     
+    private lazy var sleepLabel : UILabel = {
+        let label = UILabel()
+        label.text = "자는중맨"
+        return label
+    }()
+    
+    
     lazy var memberLabel: UILabel = {
         let label = UILabel()
         label.textColor = .black
@@ -700,11 +707,30 @@ class memberCollectioViewCell: UICollectionViewCell {
             $0.leading.trailing.equalToSuperview()
             $0.bottom.lessThanOrEqualToSuperview()
         }
+        
+//        sleepLabel.snp.makeConstraints{
+//            $0.center.equalTo(memberIMG)
+//        }
     }
     
     //MARK: - 닉네임 설정
-    func configure(with nickname: String) {
+    func configureMember(with nickname: String, imageURL: String, isDisturbBanMode: Bool, isWakeup: Bool) {
         memberLabel.text = nickname
+        
+        if isDisturbBanMode == true{
+            memberView.backgroundColor = DesignSystemColor.Gray150.value
+        }else{
+            memberView.backgroundColor = DesignSystemColor.Orange500.value
+        }
+        
+        if isWakeup {
+            sleepLabel.isHidden = false
+        } else {
+            sleepLabel.isHidden = true
+        }
+        
+        
+        
         setNeedsLayout()
         layoutIfNeeded()
     }
