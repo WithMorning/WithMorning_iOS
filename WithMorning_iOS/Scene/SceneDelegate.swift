@@ -103,7 +103,7 @@ enum rootViewController {
             //        case .onBoarding: return OnBoardingTutorialViewController()
             
         //MARK: - test용
-        case .test : return IntroViewController()
+        case .test : return ProfileViewController()
         }
     }
 }

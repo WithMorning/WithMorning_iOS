@@ -9,6 +9,7 @@ import Foundation
 import Alamofire
 
 //MARK: - 휴대폰인증
+
 struct SMSnumRequest: Codable {
     let phone: String
 }
@@ -20,6 +21,7 @@ struct SMSnumResponse: Codable {
 }
 
 //MARK: - 인증코드 입력
+
 struct SMScodeResquest: Codable {
     let phone, code: String
 }
@@ -31,12 +33,17 @@ struct SMScodeResponse: Codable {
 }
 
 //MARK: - 프로필 등록
-struct profileRequest: Codable {
-    let request: Request
+
+struct profileRequest: Encodable {
+    let request: Requestprofile
+    let imageData: Data
 }
-struct Request: Codable {
-    let nickname, fcmToken: String
+
+struct Requestprofile: Codable {
+    let nickname: String
+    let fcmToken: String
 }
+
 
 //struct ProfileRequest: Codable {
 //    let nickname: String

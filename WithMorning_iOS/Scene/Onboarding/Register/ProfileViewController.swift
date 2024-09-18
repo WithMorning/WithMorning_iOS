@@ -9,6 +9,7 @@ import UIKit
 import SnapKit
 import Then
 import Alamofire
+import Kingfisher
 
 class ProfileViewController : UIViewController, UIImagePickerControllerDelegate & UINavigationControllerDelegate {
     
@@ -173,31 +174,46 @@ class ProfileViewController : UIViewController, UIImagePickerControllerDelegate 
         present(alert, animated: true, completion: nil)
     }
     
-    //MARK: - API
-    var nickname : String = ""
+    // MARK: - API
+    private func registerProfile() {
+        guard let image = profileImage.image else {
+            return
+        }
 
-    private func registerProfile(){
-        
+        // FCM 토큰과 닉네임 읽기
         let fcmToken = KeyChain.read(key: "fcmToken") ?? ""
-            
-            let request = Request(nickname: nickname, fcmToken: fcmToken)
+        guard let nickname = nicknameTextfield.text, !nickname.isEmpty else {
+            print("닉네임을 입력해야 합니다.")
+            return
+        }
+
+        // 이미지를 Data로 변환 (압축 품질 0.8 정도로 설정)
+        guard let imageData = image.jpegData(compressionQuality: 0.8) else {
+            print("이미지를 JPEG 데이터로 변환하는 데 실패했습니다.")
+            return
+        }
+
+        // Requestprofile 인스턴스 생성
+        let requestProfile = Requestprofile(nickname: nickname, fcmToken: fcmToken)
         
-            let profileRequest = profileRequest(request: request)
+        // profileRequest 인스턴스 생성 (UIImage 대신 imageData 사용)
+        let registerData = profileRequest(request: requestProfile, imageData: imageData)
         
-        let vc = IntroFirstViewController()
+        let vc = IntroViewController()
         
-        APInetwork.postProfile(profiledata: profileRequest){ result in
-            switch result{
+        // 네트워크 통신을 통해 프로필 데이터 업로드
+        APInetwork.postProfile(profileData: registerData) { result in
+            switch result {
             case .success(let data):
                 self.navigationController?.pushViewController(vc, animated: true)
-                print(data)
-            case .failure(let error):
-                print(error.localizedDescription)
                 
+            case .failure(let error):
+                print("프로필 등록 실패: \(error.localizedDescription)")
+                // 실패 시 에러 처리
             }
         }
-        
     }
+    
     
     
     //MARK: - Gallery Setting
@@ -254,7 +270,7 @@ extension ProfileViewController : UITextFieldDelegate {
             }
         }
         guard textField.text!.count < 10 else { return false } // 10 글자로 제한
-        nickname = textField.text!
+        //        nickname = textField.text!
         return true
     }
 }

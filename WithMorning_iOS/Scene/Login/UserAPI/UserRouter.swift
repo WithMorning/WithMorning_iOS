@@ -25,8 +25,6 @@ enum UserRouter : URLRequestConvertible{
         case .postSMSresponsse : return "/user/verify-code"
         case .RegisterProfile : return "/user/profile"
             
-            
-            
         }
     }
     
@@ -68,12 +66,13 @@ enum UserRouter : URLRequestConvertible{
         case .postSMSresponsse(let data):
             request = try JSONParameterEncoder().encode(data, into: request)
         case .RegisterProfile(let data):
-            //            request = try JSONParameterEncoder().encode(data, into: request)
-            let formData = MultipartFormData()
-            formData.append(Data(data.request.nickname.utf8), withName: "nickname")
-            formData.append(Data(data.request.fcmToken.utf8), withName: "fcmToken")
-            request.httpBody = try formData.encode()
-            request.headers.update(.contentType("multipart/form-data"))
+            request = try JSONParameterEncoder().encode(data, into: request)
+            
+//            let formData = MultipartFormData()
+//            formData.append(Data(data.request.nickname.utf8), withName: "nickname")
+//            formData.append(Data(data.request.fcmToken.utf8), withName: "fcmToken")
+//            request.httpBody = try formData.encode()
+//            request.headers.update(.contentType("multipart/form-data"))
         }
         
         //request = try URLEncoding.queryString.encode(request, with: parameters)
