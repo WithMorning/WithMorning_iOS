@@ -24,6 +24,7 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
             print(#fileID, #function, #line, "- sceneDelegate refreshToken: \(refreshToken)")
             
             if let loginState = loginState {
+                
                 switch loginState {
                 case .login:
                     // 로그인 상태이지만 아직 회원가입을 완료하지 않은 경우

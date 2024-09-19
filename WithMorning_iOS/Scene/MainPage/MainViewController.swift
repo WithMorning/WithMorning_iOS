@@ -252,10 +252,8 @@ class MainViewController: UIViewController, UISheetPresentationControllerDelegat
     }
     
     
-    //MARK: - Data Array
-    var alarmData  : [GroupList] = []
-    
     //MARK: - API
+    
     //메인페이지
     func getMainpage() {
         APInetwork.getMainpage() { result in
@@ -263,11 +261,15 @@ class MainViewController: UIViewController, UISheetPresentationControllerDelegat
             case .success(let mainpage):
                 self.MainpageUpdate(with: mainpage)
                 print(mainpage)
+                self.nameLabel.text = "HI \(mainpage.connectorNickname)"
             case .failure(let error):
                 print(error)
             }
         }
     }
+    
+    //MARK: - Data Array
+    var alarmData  : [GroupList] = []
     
     //API뿌려주기.
     func MainpageUpdate(with mainpage: MainpageResponse){
@@ -275,7 +277,6 @@ class MainViewController: UIViewController, UISheetPresentationControllerDelegat
             return
         }
         self.alarmData = groupList
-        
         DispatchQueue.main.async {
             self.AlarmTableView.reloadData()
         }
