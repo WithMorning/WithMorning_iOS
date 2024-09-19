@@ -187,8 +187,8 @@ class ProfileViewController : UIViewController, UIImagePickerControllerDelegate 
             return
         }
 
-        // 이미지를 Data로 변환 (압축 품질 0.8 정도로 설정)
-        guard let imageData = image.jpegData(compressionQuality: 0.8) else {
+        // 이미지를 Data로 변환 (압축 품질 0.2 정도로 설정)
+        guard let imageData = image.jpegData(compressionQuality: 0.2) else {
             print("이미지를 JPEG 데이터로 변환하는 데 실패했습니다.")
             return
         }
@@ -205,11 +205,11 @@ class ProfileViewController : UIViewController, UIImagePickerControllerDelegate 
         APInetwork.postProfile(profileData: registerData) { result in
             switch result {
             case .success(let data):
+                print(data)
                 self.navigationController?.pushViewController(vc, animated: true)
-                
             case .failure(let error):
                 print("프로필 등록 실패: \(error.localizedDescription)")
-                // 실패 시 에러 처리
+                
             }
         }
     }
