@@ -18,7 +18,6 @@ class MainViewController: UIViewController, UISheetPresentationControllerDelegat
     
     private lazy var nameLabel : UILabel = {
         let label = UILabel()
-        label.text = "HI, WithMorning"
         label.font = DesignSystemFont.Pretendard_Bold20.value
         label.textColor = DesignSystemColor.Black.value
         return label
@@ -261,7 +260,7 @@ class MainViewController: UIViewController, UISheetPresentationControllerDelegat
             case .success(let mainpage):
                 self.MainpageUpdate(with: mainpage)
                 print(mainpage)
-                self.nameLabel.text = "HI \(mainpage.connectorNickname)"
+                self.nameLabel.text = "HI, \(mainpage.connectorNickname)"
             case .failure(let error):
                 print(error)
             }

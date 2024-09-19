@@ -665,7 +665,7 @@ class memberCollectioViewCell: UICollectionViewCell {
     
     private lazy var sleepLabel : UILabel = {
         let label = UILabel()
-        label.text = "자는중맨"
+        label.text = "자는 중..."
         return label
     }()
     
@@ -689,7 +689,7 @@ class memberCollectioViewCell: UICollectionViewCell {
     }
     
     func setUI() {
-        contentView.addSubviews(memberView, memberLabel)
+        contentView.addSubviews(memberView, memberLabel, sleepLabel)
         
         memberView.snp.makeConstraints {
             $0.top.equalToSuperview().inset(1)
@@ -708,22 +708,24 @@ class memberCollectioViewCell: UICollectionViewCell {
             $0.bottom.lessThanOrEqualToSuperview()
         }
         
-//        sleepLabel.snp.makeConstraints{
-//            $0.center.equalTo(memberIMG)
-//        }
+        sleepLabel.snp.makeConstraints{
+            $0.center.equalTo(memberIMG)
+        }
     }
     
     //MARK: - 닉네임 설정
     func configureMember(with nickname: String, imageURL: String, isDisturbBanMode: Bool, isWakeup: Bool) {
+        
         memberLabel.text = nickname
         
         if isDisturbBanMode == true{
             memberView.backgroundColor = DesignSystemColor.Gray150.value
+            memberLabel.textColor = DesignSystemColor.Gray500.value
         }else{
             memberView.backgroundColor = DesignSystemColor.Orange500.value
         }
         
-        if isWakeup {
+        if isWakeup == true {
             sleepLabel.isHidden = false
         } else {
             sleepLabel.isHidden = true
