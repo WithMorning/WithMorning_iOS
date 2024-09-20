@@ -9,6 +9,7 @@ import UIKit
 import SnapKit
 import Then
 import Alamofire
+import Kingfisher
 
 class MainViewController: UIViewController, UISheetPresentationControllerDelegate {
     
@@ -23,14 +24,15 @@ class MainViewController: UIViewController, UISheetPresentationControllerDelegat
         return label
     }()
     
-    private lazy var profileButton : UIButton = {
-        let button = UIButton()
-        button.setImage(UIImage(systemName: "person.fill"), for: .normal)
-        button.layer.cornerRadius = 18
-        button.tintColor = .white
-        button.backgroundColor = .gray
-        button.addTarget(self, action: #selector(clickedprofile), for: .touchUpInside)
-        return button
+    private lazy var profileButton : UIImageView = {
+        let view = UIImageView()
+        view.backgroundColor = .clear
+        view.layer.cornerRadius = 18
+        
+        let tapGestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(clickedprofile))
+        view.addGestureRecognizer(tapGestureRecognizer)
+        
+        return view
     }()
     
     private lazy var soundButton : UIButton = {
@@ -201,6 +203,7 @@ class MainViewController: UIViewController, UISheetPresentationControllerDelegat
     
     //MARK: - objc func
     @objc func refreshControl(){
+        
         DispatchQueue.main.asyncAfter(deadline: .now() + 1.0) {
             self.tableViewRefresh.endRefreshing()
             self.getMainpage()
@@ -260,7 +263,28 @@ class MainViewController: UIViewController, UISheetPresentationControllerDelegat
             case .success(let mainpage):
                 self.MainpageUpdate(with: mainpage)
                 print(mainpage)
+                
                 self.nameLabel.text = "HI, \(mainpage.connectorNickname)"
+                
+//                if ((mainpage.connectorProfileURL?.isEmpty) == nil) {
+//                    // 이미지 URL이 유효한 경우: 이미지 다운로드 처리
+//                    let url = URL(string: mainpage.connectorProfileURL ?? "")
+//                    let placeholderImage = UIImage(named: "profile")
+//                    let processor = DownsamplingImageProcessor(size: self.profileButton.bounds.size) |> RoundCornerImageProcessor(cornerRadius: 29)
+//                    
+//                    self.profileButton.kf.setImage(with: url, placeholder: placeholderImage, options: [.processor(processor)])
+//                } else {
+//                    // imageURL이 nil 이거나 빈 문자열일 경우 기본 이미지 설정
+//                    self.profileButton.image = UIImage(named: "profile") // 기본 이미지로 설정
+//                }
+                
+                let url = URL(string: mainpage.connectorProfileURL ?? "")
+                let placeholderImage = UIImage(named: "profile")
+                let processor = DownsamplingImageProcessor(size: self.profileButton.bounds.size) |> RoundCornerImageProcessor(cornerRadius: 18)
+                
+                self.profileButton.kf.setImage(with: url, placeholder: placeholderImage, options: [.processor(processor)])
+                
+                
             case .failure(let error):
                 print(error)
             }

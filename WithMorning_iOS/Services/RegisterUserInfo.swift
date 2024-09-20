@@ -14,9 +14,12 @@ class RegisterUserInfo {
     static let shared = RegisterUserInfo()
     
 //MARK: - 로그인 후 기본적인 UserDefault 값
+    
     @Published var loginState: LoginStatus? = nil
     @Published var nickName : String? = ""
+    
 //    @Published var userVibrate : Bool? = false
+//    @Published var userVolum : Int? = 50
 //    @Published var profileImage : UIImage? = nil
 //    @Published var userName : String? = ""
 //    @Published var userEmail : String? = ""

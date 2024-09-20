@@ -9,6 +9,7 @@ import UIKit
 import SnapKit
 import Then
 import Alamofire
+import Kingfisher
 
 //MARK: - AlarmTableViewCell
 
@@ -375,8 +376,7 @@ class AlarmTableViewCell : UITableViewCell, UISheetPresentationControllerDelegat
     //MARK: - API
     //방해금지모드(알람 off)
     func patchDisturb(){
-        
-        var disturb : Bool = false
+        let disturb : Bool = false
         let data = DisturbMaindata(isDisturbBanMode: disturb)
         
         APInetwork.patchDisturb(DisturbData: data){ result in
@@ -450,8 +450,8 @@ class AlarmTableViewCell : UITableViewCell, UISheetPresentationControllerDelegat
         collectionViewHeightConstraint?.update(offset: collectionViewHeight)
         setNeedsLayout()
     }
-    //MARK: - collectionviewcell 높이계산
     
+    //MARK: - collectionviewcell 높이계산
     func calculateMaxCellHeight() -> CGFloat {
         var maxHeight: CGFloat = 0
         
@@ -590,7 +590,9 @@ class AlarmTableViewCell : UITableViewCell, UISheetPresentationControllerDelegat
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "memberCollectioViewCell", for: indexPath) as! memberCollectioViewCell
         
         let userlistData = userData[indexPath.item]
+        
         cell.configureMember(with: userlistData.nickname,imageURL: userlistData.imageURL,isDisturbBanMode: userlistData.isDisturbBanMode,isWakeup: userlistData.isWakeup)
+        
         return cell
     }
     
@@ -659,13 +661,19 @@ class memberCollectioViewCell: UICollectionViewCell {
         let view = UIImageView()
         view.backgroundColor = .clear
         view.image = UIImage(named: "profile")
+        view.layer.cornerRadius = 29
         view.contentMode = .scaleAspectFit
         return view
     }()
     
+    //MARK: - 자는중 일 경우 view
+    
+    
     private lazy var sleepLabel : UILabel = {
         let label = UILabel()
         label.text = "자는 중..."
+        label.font = DesignSystemFont.Pretendard_SemiBold10.value
+        label.textColor = .white
         return label
     }()
     
@@ -713,10 +721,29 @@ class memberCollectioViewCell: UICollectionViewCell {
         }
     }
     
-    //MARK: - 닉네임 설정
+    //MARK: - 닉네임, 유저 스테이트 설정
     func configureMember(with nickname: String, imageURL: String, isDisturbBanMode: Bool, isWakeup: Bool) {
         
         memberLabel.text = nickname
+        
+                let url = URL(string: imageURL)
+                let placeholderImage = UIImage(named: "profile")
+                let processor = DownsamplingImageProcessor(size: memberIMG.bounds.size) |> RoundCornerImageProcessor(cornerRadius: 29)
+        
+                memberIMG.kf.setImage(with: url, placeholder: placeholderImage, options: [.processor(processor)])
+        
+//        if imageURL == imageURL, !imageURL.isEmpty {
+//            // 이미지 URL이 유효한 경우: 이미지 다운로드 처리
+//            let url = URL(string: imageURL)
+//            let placeholderImage = UIImage(named: "profile")
+//            let processor = DownsamplingImageProcessor(size: memberIMG.bounds.size) |> RoundCornerImageProcessor(cornerRadius: 29)
+//            
+//            memberIMG.kf.setImage(with: url, placeholder: placeholderImage, options: [.processor(processor)])
+//        } else {
+//            // imageURL이 nil 이거나 빈 문자열일 경우 기본 이미지 설정
+//            memberIMG.image = UIImage(named: "profile") // 기본 이미지로 설정
+//        }
+        
         
         if isDisturbBanMode == true{
             memberView.backgroundColor = DesignSystemColor.Gray150.value
@@ -727,10 +754,10 @@ class memberCollectioViewCell: UICollectionViewCell {
         
         if isWakeup == true {
             sleepLabel.isHidden = false
+            
         } else {
             sleepLabel.isHidden = true
         }
-        
         
         
         setNeedsLayout()

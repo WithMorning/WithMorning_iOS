@@ -7,7 +7,7 @@
 
 import Alamofire
 
-private let BaseURL = "https://withmorning.site"
+private let BaseURL = "https://withmorning.site/api"
 
 let Authorization1 =  "Bearer " +
 "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiI2IiwiaWF0IjoxNzI2NjM0NTYxLCJleHAiOjE3MjcyMzkzNjF9.GpZ2ZBcLoDs4CBkRTHbzvPJ9tnsarE7FcyfFbTNoF80"

@@ -206,6 +206,9 @@ class ProfileViewController : UIViewController, UIImagePickerControllerDelegate 
             switch result {
             case .success(let data):
                 print(data)
+                
+                RegisterUserInfo.shared.nickName = nickname
+                
                 self.navigationController?.pushViewController(vc, animated: true)
             case .failure(let error):
                 print("프로필 등록 실패: \(error.localizedDescription)")

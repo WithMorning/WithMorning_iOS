@@ -17,7 +17,7 @@ struct Mainpage: Codable {
 
 struct MainpageResponse: Codable {
     let connectorProfileURL: String?
-    let connectorNickname: String // 추가된 필드
+    let connectorNickname: String
     let groupList: [GroupList]?
     let listSize: Int
 }
@@ -25,18 +25,18 @@ struct MainpageResponse: Codable {
 // MARK: - GroupList
 struct GroupList: Codable {
     let groupID: Int
-    let isDisturbBanGroup: Bool // 추가된 필드
+    let isDisturbBanGroup: Bool
     let name, wakeupTime: String
     let dayOfWeekList: [String]?
     let userList: [UserList]?
     let memo: String
-    let participationCode: String // 추가된 필드
+    let participationCode: String
 
     enum CodingKeys: String, CodingKey {
         case groupID = "groupId"
-        case isDisturbBanGroup // 추가된 필드
+        case isDisturbBanGroup
         case name, wakeupTime, dayOfWeekList, userList, memo
-        case participationCode // 추가된 필드
+        case participationCode
     }
 }
 
@@ -45,57 +45,16 @@ struct UserList: Codable {
     let userID: Int
     let imageURL, nickname: String
     let isWakeup, isDisturbBanMode: Bool
-    let isAgree: Bool // 추가된 필드
+    let isAgree: Bool
     let phone: String
 
     enum CodingKeys: String, CodingKey {
         case userID = "userId"
         case imageURL, nickname, isWakeup, isDisturbBanMode
-        case isAgree // 추가된 필드
+        case isAgree
         case phone
     }
 }
-
-//// MARK: - 메인페이지
-//struct Mainpage: Codable {
-//    let isSuccess: Bool
-//    let code: Int
-//    let message: String
-//    let result: MainpageResponse?
-//}
-//
-//struct MainpageResponse: Codable {
-//    let connectorProfileURL: String?
-//    let groupList: [GroupList]?
-//    let listSize: Int
-//}
-//
-//    // MARK: - GroupList
-//struct GroupList: Codable {
-//    let groupID: Int
-//    let name, wakeupTime: String
-//    let dayOfWeekList: [String]?
-//    let userList: [UserList]?
-//    let memo: String
-//
-//    enum CodingKeys: String, CodingKey {
-//        case groupID = "groupId"
-//        case name, wakeupTime, dayOfWeekList, userList, memo
-//    }
-//}
-//
-//    // MARK: - UserList
-//struct UserList: Codable {
-//    let userID: Int
-//    let imageURL, nickname: String
-//    let isWakeup, isDisturbBanMode: Bool
-//    let phone: String
-//
-//    enum CodingKeys: String, CodingKey {
-//        case userID = "userId"
-//        case imageURL, nickname, isWakeup, isDisturbBanMode, phone
-//    }
-//}
 
 // MARK: - 마이페이지
 struct Mypage: Codable {

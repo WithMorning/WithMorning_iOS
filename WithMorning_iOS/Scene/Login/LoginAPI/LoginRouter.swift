@@ -8,7 +8,7 @@
 import Foundation
 import Alamofire
 
-private let BaseURL = "https://withmorning.site"
+private let BaseURL = "https://withmorning.site/api"
 
 
 enum LoginRouter : URLRequestConvertible{
