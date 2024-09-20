@@ -99,151 +99,87 @@ class UserNetwork{
     }
     
     //MARK: - 프로필 등록
-//    func postProfile(profileData: profileRequest, completionHandler: @escaping (Result<profileResponse, Error>) -> Void) {
-//        let url = "https://withmorning.site/api/user/profile"
-//        
-//        let headers: HTTPHeaders = [
-//            "Accept": "application/json, application/javascript, text/javascript, text/json",
-//            "Content-Type": "multipart/form-data",
-//            "Authorization": Authorization1
-//        ]
-//        
-//        // 멀티파트 데이터 업로드
-//        AF.upload(
-//            multipartFormData: { multipartFormData in
-//                // JSON 포맷으로 닉네임과 FCM 토큰 준비
-//                let requestProfileDict: [String: String] = [
-//                    "nickname": profileData.request.nickname,
-//                    "fcmToken": profileData.request.fcmToken
-//                ]
-//                
-//                // JSON 데이터 인코딩
-//                if let jsonData = try? JSONSerialization.data(withJSONObject: requestProfileDict, options: []) {
-//                    multipartFormData.append(jsonData, withName: "request", mimeType: "application/json")
-//                }
-//
-//                // 이미지 파일 데이터 전송 (profile_image라는 키로 추가)
-//                multipartFormData.append(profileData.imageData, withName: "profile_image", fileName: "profile.jpg", mimeType: "image/jpeg")
-//            },
-//            to: url,
-//            method: .post,
-//            headers: headers
-//        )
-//        .validate(statusCode: 200..<300)
-//        .responseDecodable(of: profileResponse.self) { response in
-//            switch response.result {
-//            case .success(let data):
-//                print("프로필 업로드 성공: \(data)")
-//                completionHandler(.success(data))
-//                
-//            case .failure(let error):
-//                if let data = response.data, let statusCode = response.response?.statusCode {
-//                    print("응답 상태 코드: \(statusCode)")
-//                    do {
-//                        // 실패 시 JSON 데이터 파싱
-//                        let json = try JSONSerialization.jsonObject(with: data, options: []) as? [String: Any]
-//                        print("실패 JSON 데이터: \(json ?? [:])")
-//                        
-//                        // 'code'가 9104일 경우 토큰 갱신 시도
-//                        if let errorCode = json?["code"] as? Int, errorCode == 9104 {
-//                            print("엑세스 토큰 만료. 갱신 시도 중...")
-//                            NewAccessToken.shared.newAccessToken { success in
-//                                if success {
-//                                    // 토큰 갱신 성공 시, 다시 요청
-//                                    self.postProfile(profileData: profileData, completionHandler: completionHandler)
-//                                } else {
-//                                    // 토큰 갱신 실패 시 에러 처리
-//                                    completionHandler(.failure(NSError(domain: "NewAccessTokenErrorDomain", code: 0, userInfo: [NSLocalizedDescriptionKey: "새 엑세스 토큰 발급 실패"])))
-//                                }
-//                            }
-//                            return
-//                        }
-//                    } catch {
-//                        print("JSON 파싱 실패: \(error.localizedDescription)")
-//                    }
-//                }
-//                print("프로필 업로드 실패: \(error.localizedDescription)")
-//                completionHandler(.failure(error))
-//            }
-//        }
-//    }
     func postProfile(profileData: profileRequest, completionHandler: @escaping (Result<profileResponse, Error>) -> Void) {
-        
         let url = "https://withmorning.site/api/user/profile"
         
         let headers: HTTPHeaders = [
             "Accept": "application/json, application/javascript, text/javascript, text/json",
             "Content-Type": "multipart/form-data",
-            "Authorization": Authorization1,
-            "Cache-Control": "no-cache, no-store, must-revalidate" // 캐시 방지
+            "Authorization": Authorization1
         ]
-        
-        // 현재 시간을 파일 이름에 추가하여 고유성 보장
-        let dateFormatter = DateFormatter()
-        dateFormatter.dateFormat = "yyyyMMddHHmmss"
-        let timestamp = dateFormatter.string(from: Date())
-        let fileName = "profile_\(timestamp).jpg"
         
         AF.upload(
             multipartFormData: { multipartFormData in
+                // JSON 포맷으로 닉네임과 FCM 토큰 준비
                 let requestProfileDict: [String: String] = [
                     "nickname": profileData.request.nickname,
                     "fcmToken": profileData.request.fcmToken
                 ]
                 
+                // JSON 데이터 인코딩
                 if let jsonData = try? JSONSerialization.data(withJSONObject: requestProfileDict, options: []) {
                     multipartFormData.append(jsonData, withName: "request", mimeType: "application/json")
-                    print("Request JSON: \(String(data: jsonData, encoding: .utf8) ?? "")")
                 }
                 
-                // 이미지 파일 데이터 전송 (고유한 파일 이름 사용)
-                multipartFormData.append(profileData.imageData, withName: "profile_image", fileName: fileName, mimeType: "image/jpeg")
-                
-                print("Image file name: \(fileName)")
-                print("Image data size: \(profileData.imageData.count) bytes")
+                // 이미지 파일 데이터 전송
+                if let imageDataURL = profileData.imageData {
+                    do {
+                        // "imageDataURL"에서 데이터 읽기
+                        let imageData = try Data(contentsOf: imageDataURL)
+                        print("이미지 데이터 크기: \(imageData.count) 바이트")
+                        
+                        // "multipartFormData"에 이미지 데이터를 추가
+                        multipartFormData.append(imageData, withName: "profile_image", fileName: "profile.jpg", mimeType: "image/jpeg")
+                        
+                    } catch {
+                        print("이미지 데이터를 로드하는 데 실패했습니다: \(error)")
+                        completionHandler(.failure(error))
+                    }
+                } else {
+                    print("이미지 파일 URL이 유효하지 않습니다.")
+                }
             },
             to: url,
             method: .post,
             headers: headers
         )
-        .uploadProgress { progress in
-            print("Upload progress: \(progress.fractionCompleted)")
-        }
-        .responseData { response in
+        .validate(statusCode: 200..<300)
+        .responseDecodable(of: profileResponse.self) { response in
             switch response.result {
             case .success(let data):
-                if let httpResponse = response.response {
-                    print("Response status code: \(httpResponse.statusCode)")
-                }
-                print("Raw response data: \(String(data: data, encoding: .utf8) ?? "")")
-                
-                do {
-                    let decodedResponse = try JSONDecoder().decode(profileResponse.self, from: data)
-                    print("프로필 업로드 성공: \(decodedResponse)")
-                    
-//                    // 이미지 URL이 응답에 포함되어 있다면 출력
-//                    if let imageUrl = decodedResponse.imageUrl {
-//                        print("Updated image URL: \(imageUrl)")
-//                    } else {
-//                        print("Warning: Image URL not found in the response")
-//                    }
-                    
-                    completionHandler(.success(decodedResponse))
-                } catch {
-                    print("Decoding error: \(error)")
-                    completionHandler(.failure(error))
-                }
+                print("프로필 업로드 성공: \(data)")
+                completionHandler(.success(data))
                 
             case .failure(let error):
-                print("프로필 업로드 실패: \(error.localizedDescription)")
-                if let data = response.data {
-                    print("Error response data: \(String(data: data, encoding: .utf8) ?? "")")
+                if let data = response.data, let statusCode = response.response?.statusCode {
+                    print("응답 상태 코드: \(statusCode)")
+                    do {
+                        let json = try JSONSerialization.jsonObject(with: data, options: []) as? [String: Any]
+                        print("실패 JSON 데이터: \(json ?? [:])")
+                        
+                        if let errorCode = json?["code"] as? Int, errorCode == 9104 {
+                            print("엑세스 토큰 만료. 갱신 시도 중...")
+                            NewAccessToken.shared.newAccessToken { success in
+                                if success {
+                                    self.postProfile(profileData: profileData, completionHandler: completionHandler)
+                                } else {
+                                    completionHandler(.failure(NSError(domain: "NewAccessTokenErrorDomain", code: 0, userInfo: [NSLocalizedDescriptionKey: "새 엑세스 토큰 발급 실패"])))
+                                }
+                            }
+                            return
+                        }
+                    } catch {
+                        print("JSON 파싱 실패: \(error.localizedDescription)")
+                    }
                 }
+                print("프로필 업로드 실패: \(error.localizedDescription)")
                 completionHandler(.failure(error))
             }
         }
     }
 }
+
+
 
 
 

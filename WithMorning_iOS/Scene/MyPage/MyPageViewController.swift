@@ -21,6 +21,7 @@ enum WebUrl: String{
 class MyPageViewController : UIViewController, UIScrollViewDelegate {
     
     let APInetwork = Network.shared
+    
     //MARK: - 네비게이션
     
     private lazy var myPageLabel : UILabel = {
@@ -353,8 +354,6 @@ class MyPageViewController : UIViewController, UIScrollViewDelegate {
         stackView.alignment = .fill
         stackView.addSubviews(versionLabel,versionLabel2)
         stackView.isUserInteractionEnabled = true
-        //        let tapGestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(repeatDay))
-        //        stackView.addGestureRecognizer(tapGestureRecognizer)
         return stackView
     }()
     
@@ -446,7 +445,7 @@ class MyPageViewController : UIViewController, UIScrollViewDelegate {
         }
         
         profileImage.snp.makeConstraints{
-            //            $0.bottom.equalTo(topView.snp.top).offset(-24) 여기
+
             $0.height.equalTo(profileImage.snp.width)
             $0.centerY.equalTo(editProfileButton.snp.top) //여기
             
@@ -674,6 +673,20 @@ class MyPageViewController : UIViewController, UIScrollViewDelegate {
                 self.dayOfWeekList = mypage.dayOfWeekList
                 self.noti = mypage.isAllowBedTimeAlarm
                 self.nickname = mypage.nickname
+                
+                
+                if ((mypage.imageURL?.isEmpty) == nil) {
+                    // 이미지 URL이 유효한 경우: 이미지 다운로드 처리
+                    let url = URL(string: mypage.imageURL ?? "")
+                    let placeholderImage = UIImage(named: "profile")
+                    let processor = DownsamplingImageProcessor(size: self.profileImage.bounds.size) |> RoundCornerImageProcessor(cornerRadius: 29)
+                    
+                    self.profileImage.kf.setImage(with: url, placeholder: placeholderImage, options: [.processor(processor)])
+                } else {
+                    // imageURL이 nil 이거나 빈 문자열일 경우 기본 이미지 설정
+                    self.profileImage.image = UIImage(named: "profile") // 기본 이미지로 설정
+                }
+                
             case.failure(let error):
                 print(error)
             }

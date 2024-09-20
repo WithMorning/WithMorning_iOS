@@ -43,7 +43,8 @@ struct GroupList: Codable {
 // MARK: - UserList
 struct UserList: Codable {
     let userID: Int
-    let imageURL, nickname: String
+    let imageURL: String?
+    let nickname: String
     let isWakeup, isDisturbBanMode: Bool
     let isAgree: Bool
     let phone: String
@@ -66,7 +67,8 @@ struct Mypage: Codable {
 
 struct MypageResponse: Codable {
     let userID: Int
-    let imageURL, nickname, bedtime: String
+    let imageURL: String?
+    let nickname, bedtime: String
     let isAllowBedTimeAlarm: Bool
     let dayOfWeekList: [String]
     

@@ -36,7 +36,7 @@ struct SMScodeResponse: Codable {
 
 struct profileRequest: Encodable {
     let request: Requestprofile
-    let imageData: Data
+    let imageData: URL?
 }
 
 struct Requestprofile: Codable {

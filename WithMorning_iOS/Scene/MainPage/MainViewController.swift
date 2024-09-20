@@ -28,6 +28,7 @@ class MainViewController: UIViewController, UISheetPresentationControllerDelegat
         let view = UIImageView()
         view.backgroundColor = .clear
         view.layer.cornerRadius = 18
+        view.isUserInteractionEnabled = true
         
         let tapGestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(clickedprofile))
         view.addGestureRecognizer(tapGestureRecognizer)
@@ -210,7 +211,7 @@ class MainViewController: UIViewController, UISheetPresentationControllerDelegat
         }
     }
     
-    @objc func clickedprofile(){ //프로필버튼
+    @objc func clickedprofile(_ sender: UITapGestureRecognizer){ 
         let vc = MyPageViewController()
         self.navigationController?.pushViewController(vc, animated: true)
     }
@@ -266,27 +267,29 @@ class MainViewController: UIViewController, UISheetPresentationControllerDelegat
                 
                 self.nameLabel.text = "HI, \(mainpage.connectorNickname)"
                 
-//                if ((mainpage.connectorProfileURL?.isEmpty) == nil) {
-//                    // 이미지 URL이 유효한 경우: 이미지 다운로드 처리
-//                    let url = URL(string: mainpage.connectorProfileURL ?? "")
-//                    let placeholderImage = UIImage(named: "profile")
-//                    let processor = DownsamplingImageProcessor(size: self.profileButton.bounds.size) |> RoundCornerImageProcessor(cornerRadius: 29)
-//                    
-//                    self.profileButton.kf.setImage(with: url, placeholder: placeholderImage, options: [.processor(processor)])
-//                } else {
-//                    // imageURL이 nil 이거나 빈 문자열일 경우 기본 이미지 설정
-//                    self.profileButton.image = UIImage(named: "profile") // 기본 이미지로 설정
-//                }
                 
-                let url = URL(string: mainpage.connectorProfileURL ?? "")
-                let placeholderImage = UIImage(named: "profile")
-                let processor = DownsamplingImageProcessor(size: self.profileButton.bounds.size) |> RoundCornerImageProcessor(cornerRadius: 18)
+                if ((mainpage.connectorProfileURL?.isEmpty) == nil) {
+                    // 이미지 URL이 유효한 경우: 이미지 다운로드 처리
+                    let url = URL(string: mainpage.connectorProfileURL ?? "")
+                    let placeholderImage = UIImage(named: "profile")
+                    let processor = DownsamplingImageProcessor(size: self.profileButton.bounds.size) |> RoundCornerImageProcessor(cornerRadius: 29)
+                    
+                    self.profileButton.kf.setImage(with: url, placeholder: placeholderImage, options: [.processor(processor)])
+                } else {
+                    // imageURL이 nil 이거나 빈 문자열일 경우 기본 이미지 설정
+                    self.profileButton.image = UIImage(named: "profile") // 기본 이미지로 설정
+                }
                 
-                self.profileButton.kf.setImage(with: url, placeholder: placeholderImage, options: [.processor(processor)])
+//                let url = URL(string: mainpage.connectorProfileURL ?? "")
+//                let placeholderImage = UIImage(named: "profile")
+//                let processor = DownsamplingImageProcessor(size: self.profileButton.bounds.size) |> RoundCornerImageProcessor(cornerRadius: 18)
+//                
+//                self.profileButton.kf.setImage(with: url, placeholder: placeholderImage, options: [.processor(processor)])
                 
                 
             case .failure(let error):
                 print(error)
+                
             }
         }
     }

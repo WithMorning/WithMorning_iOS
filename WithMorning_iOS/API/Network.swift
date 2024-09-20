@@ -68,7 +68,6 @@ class Network{
                             // JSON 데이터 파싱
                             let json = try JSONSerialization.jsonObject(with: data, options: []) as? [String: Any]
                             print(#fileID, #function, #line, "- 실패 JSON 데이터: \(json ?? [:])")
-                            
                             // JSON 응답에서 코드 확인
                             if let errorCode = json?["code"] as? Int, errorCode == 9104 {
                                 // 새로운 엑세스 토큰 발급

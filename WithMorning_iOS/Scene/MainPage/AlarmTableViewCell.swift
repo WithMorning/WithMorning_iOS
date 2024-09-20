@@ -591,7 +591,7 @@ class AlarmTableViewCell : UITableViewCell, UISheetPresentationControllerDelegat
         
         let userlistData = userData[indexPath.item]
         
-        cell.configureMember(with: userlistData.nickname,imageURL: userlistData.imageURL,isDisturbBanMode: userlistData.isDisturbBanMode,isWakeup: userlistData.isWakeup)
+        cell.configureMember(with: userlistData.nickname,imageURL: userlistData.imageURL ?? "",isDisturbBanMode: userlistData.isDisturbBanMode,isWakeup: userlistData.isWakeup)
         
         return cell
     }
@@ -726,23 +726,23 @@ class memberCollectioViewCell: UICollectionViewCell {
         
         memberLabel.text = nickname
         
-                let url = URL(string: imageURL)
-                let placeholderImage = UIImage(named: "profile")
-                let processor = DownsamplingImageProcessor(size: memberIMG.bounds.size) |> RoundCornerImageProcessor(cornerRadius: 29)
+//                let url = URL(string: imageURL)
+//                let placeholderImage = UIImage(named: "profile")
+//                let processor = DownsamplingImageProcessor(size: memberIMG.bounds.size) |> RoundCornerImageProcessor(cornerRadius: 29)
+//        
+//                memberIMG.kf.setImage(with: url, placeholder: placeholderImage, options: [.processor(processor)])
         
-                memberIMG.kf.setImage(with: url, placeholder: placeholderImage, options: [.processor(processor)])
-        
-//        if imageURL == imageURL, !imageURL.isEmpty {
-//            // 이미지 URL이 유효한 경우: 이미지 다운로드 처리
-//            let url = URL(string: imageURL)
-//            let placeholderImage = UIImage(named: "profile")
-//            let processor = DownsamplingImageProcessor(size: memberIMG.bounds.size) |> RoundCornerImageProcessor(cornerRadius: 29)
-//            
-//            memberIMG.kf.setImage(with: url, placeholder: placeholderImage, options: [.processor(processor)])
-//        } else {
-//            // imageURL이 nil 이거나 빈 문자열일 경우 기본 이미지 설정
-//            memberIMG.image = UIImage(named: "profile") // 기본 이미지로 설정
-//        }
+        if imageURL == imageURL, !imageURL.isEmpty {
+            // 이미지 URL이 유효한 경우: 이미지 다운로드 처리
+            let url = URL(string: imageURL)
+            let placeholderImage = UIImage(named: "profile")
+            let processor = DownsamplingImageProcessor(size: memberIMG.bounds.size) |> RoundCornerImageProcessor(cornerRadius: 29)
+            
+            memberIMG.kf.setImage(with: url, placeholder: placeholderImage, options: [.processor(processor)])
+        } else {
+            // imageURL이 nil 이거나 빈 문자열일 경우 기본 이미지 설정
+            memberIMG.image = UIImage(named: "profile") // 기본 이미지로 설정
+        }
         
         
         if isDisturbBanMode == true{

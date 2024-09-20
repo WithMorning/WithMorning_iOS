@@ -177,57 +177,64 @@ class ProfileViewController : UIViewController, UIImagePickerControllerDelegate 
     // MARK: - API
     private func registerProfile() {
         guard let image = profileImage.image else {
+            print("프로필 이미지를 선택하세요.")
             return
         }
 
-        // FCM 토큰과 닉네임 읽기
         let fcmToken = KeyChain.read(key: "fcmToken") ?? ""
         guard let nickname = nicknameTextfield.text, !nickname.isEmpty else {
             print("닉네임을 입력해야 합니다.")
             return
         }
 
-        // 이미지를 Data로 변환 (압축 품질 0.2 정도로 설정)
         guard let imageData = image.jpegData(compressionQuality: 0.2) else {
             print("이미지를 JPEG 데이터로 변환하는 데 실패했습니다.")
             return
         }
 
-        // Requestprofile 인스턴스 생성
+        let tempDirectory = FileManager.default.temporaryDirectory
+        let fileName = "profile_\(UUID().uuidString).jpg"
+        let fileURL = tempDirectory.appendingPathComponent(fileName)
+        
+        do {
+            try imageData.write(to: fileURL)
+        } catch {
+            print("이미지 파일을 저장하는 데 실패했습니다: \(error)")
+            return
+        }
+
         let requestProfile = Requestprofile(nickname: nickname, fcmToken: fcmToken)
-        
-        // profileRequest 인스턴스 생성 (UIImage 대신 imageData 사용)
-        let registerData = profileRequest(request: requestProfile, imageData: imageData)
-        
+        let registerData = profileRequest(request: requestProfile, imageData: fileURL)
+
         let vc = IntroViewController()
-        
-        // 네트워크 통신을 통해 프로필 데이터 업로드
+
         APInetwork.postProfile(profileData: registerData) { result in
             switch result {
             case .success(let data):
-                print(data)
-                
+                print("프로필 업로드 성공: \(data)")
                 RegisterUserInfo.shared.nickName = nickname
-                
+                print("fileURL",fileURL)
                 self.navigationController?.pushViewController(vc, animated: true)
             case .failure(let error):
                 print("프로필 등록 실패: \(error.localizedDescription)")
-                
             }
         }
     }
+
     
     
     
     //MARK: - Gallery Setting
     func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [UIImagePickerController.InfoKey : Any]) {
         if let image = info[UIImagePickerController.InfoKey.originalImage] as? UIImage{
-            profileImage.image = image
-            print(info)
             
+            DispatchQueue.main.async {
+                self.profileImage.image = image
+            }
+            print(info)
         }
         
-        dismiss(animated: true, completion: nil)
+        self.dismiss(animated: true, completion: nil)
     }
     
     func openGallery(){
