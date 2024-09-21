@@ -180,41 +180,38 @@ class ProfileViewController : UIViewController, UIImagePickerControllerDelegate 
             print("프로필 이미지를 선택하세요.")
             return
         }
-
+        
         let fcmToken = KeyChain.read(key: "fcmToken") ?? ""
+        
         guard let nickname = nicknameTextfield.text, !nickname.isEmpty else {
             print("닉네임을 입력해야 합니다.")
             return
         }
-
+        
         guard let imageData = image.jpegData(compressionQuality: 0.2) else {
             print("이미지를 JPEG 데이터로 변환하는 데 실패했습니다.")
             return
         }
-
-        let tempDirectory = FileManager.default.temporaryDirectory
-        let fileName = "profile_\(UUID().uuidString).jpg"
-        let fileURL = tempDirectory.appendingPathComponent(fileName)
         
-        do {
-            try imageData.write(to: fileURL)
-        } catch {
-            print("이미지 파일을 저장하는 데 실패했습니다: \(error)")
-            return
-        }
-
+        // 5. 프로필 데이터 설정
         let requestProfile = Requestprofile(nickname: nickname, fcmToken: fcmToken)
-        let registerData = profileRequest(request: requestProfile, imageData: fileURL)
+        let registerData = profileRequest(request: requestProfile, image: imageData)
 
+        // 6. 다음 화면 준비
         let vc = IntroViewController()
 
+        // 7. API 호출
         APInetwork.postProfile(profileData: registerData) { result in
             switch result {
             case .success(let data):
                 print("프로필 업로드 성공: \(data)")
+                
                 RegisterUserInfo.shared.nickName = nickname
-                print("fileURL",fileURL)
-                self.navigationController?.pushViewController(vc, animated: true)
+                
+                DispatchQueue.main.async {
+                    self.navigationController?.pushViewController(vc, animated: true)
+                }
+                
             case .failure(let error):
                 print("프로필 등록 실패: \(error.localizedDescription)")
             }
@@ -225,13 +222,13 @@ class ProfileViewController : UIViewController, UIImagePickerControllerDelegate 
     
     
     //MARK: - Gallery Setting
+    
     func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [UIImagePickerController.InfoKey : Any]) {
         if let image = info[UIImagePickerController.InfoKey.originalImage] as? UIImage{
             
             DispatchQueue.main.async {
                 self.profileImage.image = image
             }
-            print(info)
         }
         
         self.dismiss(animated: true, completion: nil)
@@ -241,6 +238,7 @@ class ProfileViewController : UIViewController, UIImagePickerControllerDelegate 
         imgPicker.sourceType = .photoLibrary
         present(imgPicker, animated: true, completion: nil)
     }
+    
     func deletephoto(){
         profileImage.image = UIImage(named: "profile")
     }

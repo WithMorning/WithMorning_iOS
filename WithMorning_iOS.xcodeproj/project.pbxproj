@@ -243,9 +243,9 @@
 		D12D51372C60BC4700D3F1A9 /* UserAPI */ = {
 			isa = PBXGroup;
 			children = (
+				D12D51342C60BC1500D3F1A9 /* UserNetwork.swift */,
 				D12D51302C60BBFF00D3F1A9 /* UserModel.swift */,
 				D12D51322C60BC0900D3F1A9 /* UserRouter.swift */,
-				D12D51342C60BC1500D3F1A9 /* UserNetwork.swift */,
 			);
 			path = UserAPI;
 			sourceTree = "<group>";

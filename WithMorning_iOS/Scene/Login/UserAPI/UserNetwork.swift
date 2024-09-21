@@ -99,50 +99,38 @@ class UserNetwork{
     }
     
     //MARK: - 프로필 등록
+    
     func postProfile(profileData: profileRequest, completionHandler: @escaping (Result<profileResponse, Error>) -> Void) {
         let url = "https://withmorning.site/api/user/profile"
         
         let headers: HTTPHeaders = [
-            "Accept": "application/json, application/javascript, text/javascript, text/json",
+            "Accept": "application/json",
             "Content-Type": "multipart/form-data",
             "Authorization": Authorization1
         ]
         
         AF.upload(
             multipartFormData: { multipartFormData in
-                // JSON 포맷으로 닉네임과 FCM 토큰 준비
-                let requestProfileDict: [String: String] = [
-                    "nickname": profileData.request.nickname,
-                    "fcmToken": profileData.request.fcmToken
-                ]
-                
-                // JSON 데이터 인코딩
-                if let jsonData = try? JSONSerialization.data(withJSONObject: requestProfileDict, options: []) {
+                // JSON 데이터 추가
+                do {
+                    let jsonData = try JSONEncoder().encode(profileData.request)
                     multipartFormData.append(jsonData, withName: "request", mimeType: "application/json")
+                } catch {
+                    print("프로필 데이터 인코딩 실패")
+                    completionHandler(.failure(error))
+                    return
                 }
                 
-                // 이미지 파일 데이터 전송
-                if let imageDataURL = profileData.imageData {
-                    do {
-                        // "imageDataURL"에서 데이터 읽기
-                        let imageData = try Data(contentsOf: imageDataURL)
-                        print("이미지 데이터 크기: \(imageData.count) 바이트")
-                        
-                        // "multipartFormData"에 이미지 데이터를 추가
-                        multipartFormData.append(imageData, withName: "profile_image", fileName: "profile.jpg", mimeType: "image/jpeg")
-                        
-                    } catch {
-                        print("이미지 데이터를 로드하는 데 실패했습니다: \(error)")
-                        completionHandler(.failure(error))
-                    }
-                } else {
-                    print("이미지 파일 URL이 유효하지 않습니다.")
+                // 이미지 데이터 추가
+                if let imageData = profileData.image {
+                    multipartFormData.append(imageData, withName: "image", fileName: "profile_image.jpg", mimeType: "image/jpeg")
                 }
             },
             to: url,
             method: .post,
             headers: headers
         )
+        
         .validate(statusCode: 200..<300)
         .responseDecodable(of: profileResponse.self) { response in
             switch response.result {
@@ -151,6 +139,7 @@ class UserNetwork{
                 completionHandler(.success(data))
                 
             case .failure(let error):
+                print("프로필 업로드 실패: \(error.localizedDescription)")
                 if let data = response.data, let statusCode = response.response?.statusCode {
                     print("응답 상태 코드: \(statusCode)")
                     do {
@@ -172,7 +161,6 @@ class UserNetwork{
                         print("JSON 파싱 실패: \(error.localizedDescription)")
                     }
                 }
-                print("프로필 업로드 실패: \(error.localizedDescription)")
                 completionHandler(.failure(error))
             }
         }
