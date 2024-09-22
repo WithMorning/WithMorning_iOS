@@ -50,7 +50,11 @@ class ProfileViewController : UIViewController, UIImagePickerControllerDelegate 
         return image
     }()
     
-    let imgPicker = UIImagePickerController()
+    private lazy var imgPicker : UIImagePickerController = {
+        let picker = UIImagePickerController()
+        picker.allowsEditing = true
+        return picker
+    }()
     
     private lazy var galleryButton : UIButton = {
         let button = UIButton()
@@ -188,7 +192,7 @@ class ProfileViewController : UIViewController, UIImagePickerControllerDelegate 
             return
         }
         
-        guard let imageData = image.jpegData(compressionQuality: 0.2) else {
+        guard let imageData = image.jpegData(compressionQuality: 1) else {
             print("이미지를 JPEG 데이터로 변환하는 데 실패했습니다.")
             return
         }
@@ -207,6 +211,7 @@ class ProfileViewController : UIViewController, UIImagePickerControllerDelegate 
                 print("프로필 업로드 성공: \(data)")
                 
                 RegisterUserInfo.shared.nickName = nickname
+                RegisterUserInfo.shared.profileImage = image
                 
                 DispatchQueue.main.async {
                     self.navigationController?.pushViewController(vc, animated: true)
@@ -224,12 +229,17 @@ class ProfileViewController : UIViewController, UIImagePickerControllerDelegate 
     //MARK: - Gallery Setting
     
     func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [UIImagePickerController.InfoKey : Any]) {
-        if let image = info[UIImagePickerController.InfoKey.originalImage] as? UIImage{
-            
-            DispatchQueue.main.async {
-                self.profileImage.image = image
+        
+        if let editedImage = info[UIImagePickerController.InfoKey.editedImage] as? UIImage {
+                DispatchQueue.main.async {
+                    self.profileImage.image = editedImage
+                }
+        } else if info[UIImagePickerController.InfoKey.originalImage] is UIImage {
+                // 만약 편집된 이미지가 존재하지 않으면 원본 이미지를 사용합니다.
+                DispatchQueue.main.async {
+                    self.profileImage.image = UIImage(named: "profile")
+                }
             }
-        }
         
         self.dismiss(animated: true, completion: nil)
     }

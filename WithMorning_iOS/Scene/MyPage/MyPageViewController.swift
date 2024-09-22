@@ -61,7 +61,7 @@ class MyPageViewController : UIViewController, UIScrollViewDelegate {
         let image = UIImageView()
         image.contentMode = .scaleAspectFill
         image.clipsToBounds = true
-        image.image = UIImage(named: "profile")
+        //        image.image = UIImage(named: "profile")
         image.tintColor = .black
         return image
     }()
@@ -445,7 +445,7 @@ class MyPageViewController : UIViewController, UIScrollViewDelegate {
         }
         
         profileImage.snp.makeConstraints{
-
+            
             $0.height.equalTo(profileImage.snp.width)
             $0.centerY.equalTo(editProfileButton.snp.top) //여기
             
@@ -674,12 +674,11 @@ class MyPageViewController : UIViewController, UIScrollViewDelegate {
                 self.noti = mypage.isAllowBedTimeAlarm
                 self.nickname = mypage.nickname
                 
-                
-                if ((mypage.imageURL?.isEmpty) == nil) {
+                if ((mypage.imageURL?.isEmpty) != nil) {
                     // 이미지 URL이 유효한 경우: 이미지 다운로드 처리
                     let url = URL(string: mypage.imageURL ?? "")
                     let placeholderImage = UIImage(named: "profile")
-                    let processor = DownsamplingImageProcessor(size: self.profileImage.bounds.size) |> RoundCornerImageProcessor(cornerRadius: 29)
+                    let processor = RoundCornerImageProcessor(cornerRadius: 29)
                     
                     self.profileImage.kf.setImage(with: url, placeholder: placeholderImage, options: [.processor(processor)])
                 } else {

@@ -12,7 +12,9 @@ import Alamofire
 
 class EditprofileViewController : UIViewController,UIImagePickerControllerDelegate & UINavigationControllerDelegate {
     
-//MARK: - properties
+    let APInetwork = UserNetwork.shared
+    
+    //MARK: - properties
     
     private lazy var mainLabel : UILabel = {
         let label = UILabel()
@@ -39,11 +41,15 @@ class EditprofileViewController : UIViewController,UIImagePickerControllerDelega
         return label
     }()
     
-    let imgPicker = UIImagePickerController()
+    private lazy var imgPicker : UIImagePickerController = {
+        let picker = UIImagePickerController()
+        picker.allowsEditing = true
+        return picker
+    }()
     
     private lazy var profileImage : UIImageView = {
         let image = UIImageView()
-        image.image = UIImage(named: "profile")
+        image.image = RegisterUserInfo.shared.profileImage
         image.clipsToBounds = true
         image.layer.cornerRadius = 75
         return image
@@ -143,13 +149,59 @@ class EditprofileViewController : UIViewController,UIImagePickerControllerDelega
         }
         
     }
+    
+    // MARK: - API
+    private func registerProfile() {
+        guard let image = profileImage.image else {
+            print("프로필 이미지를 선택하세요.")
+            return
+        }
+        
+        let fcmToken = KeyChain.read(key: "fcmToken") ?? ""
+        
+        if let inputNickname = nicknameTextfield.text, !inputNickname.isEmpty {
+            nickname = inputNickname
+        } else {
+            nickname = RegisterUserInfo.shared.nickName ?? "오류"
+        }
+        
+        guard let imageData = image.jpegData(compressionQuality: 1) else {
+            print("이미지를 JPEG 데이터로 변환하는 데 실패했습니다.")
+            return
+        }
+        
+        // 5. 프로필 데이터 설정
+        let requestProfile = Requestprofile(nickname: nickname, fcmToken: fcmToken)
+        let registerData = profileRequest(request: requestProfile, image: imageData)
+        
+        // 6. API 호출
+        APInetwork.postProfile(profileData: registerData) { result in
+            switch result {
+            case .success(let data):
+                print("프로필 업로드 성공: \(data)")
+                
+                RegisterUserInfo.shared.nickName = self.nickname
+                RegisterUserInfo.shared.profileImage = image
+                
+                DispatchQueue.main.async {
+                    self.navigationController?.popViewController(animated: true)
+                }
+                
+            case .failure(let error):
+                print("프로필 등록 실패: \(error.localizedDescription)")
+            }
+        }
+    }
+    
     //MARK: - objc func
     
     @objc func popclicked(){
         self.navigationController?.popViewController(animated: true)
-        print("pop")
+        
     }
+    
     @objc func doneclick(){
+        registerProfile()
         
     }
     
@@ -174,12 +226,19 @@ class EditprofileViewController : UIViewController,UIImagePickerControllerDelega
     
     //MARK: - Gallery Setting
     func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [UIImagePickerController.InfoKey : Any]) {
-        if let image = info[UIImagePickerController.InfoKey.originalImage] as? UIImage{
-            profileImage.image = image
-            print(info)
-            
+        
+        if let editedImage = info[UIImagePickerController.InfoKey.editedImage] as? UIImage {
+            DispatchQueue.main.async {
+                self.profileImage.image = editedImage
+            }
+        } else if info[UIImagePickerController.InfoKey.originalImage] is UIImage {
+            // 만약 편집된 이미지가 존재하지 않으면 원본 이미지를 사용합니다.
+            DispatchQueue.main.async {
+                self.profileImage.image = UIImage(named: "profile")
+            }
         }
-        dismiss(animated: true, completion: nil)
+        
+        self.dismiss(animated: true, completion: nil)
     }
     
     func openGallery(){

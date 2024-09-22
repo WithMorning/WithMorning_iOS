@@ -254,6 +254,7 @@ class AlarmTableViewCell : UITableViewCell, UISheetPresentationControllerDelegat
     override func layoutSubviews() {
         super.layoutSubviews()
         setCell()
+        
     }
     
     required init?(coder aDecoder: NSCoder) {
@@ -624,10 +625,33 @@ class AlarmTableViewCell : UITableViewCell, UISheetPresentationControllerDelegat
         vc.modalPresentationStyle = .formSheet
         parentViewController.present(vc, animated: true)
         
-        vc.nicknameLabel.text = userData[indexPath.item].nickname
-        vc.userphoneNum = userData[indexPath.item].phone
+        let selectedUser = userData[indexPath.item]
+        vc.nicknameLabel.text = selectedUser.nickname
+        vc.userphoneNum = selectedUser.phone
         
-        print(userData[indexPath.item])
+        // 유저 이미지 설정
+        if let imageURLString = selectedUser.imageURL, !imageURLString.isEmpty, let url = URL(string: imageURLString) {
+            // Kingfisher를 사용하여 이미지 다운로드 및 둥근 모서리 적용 처리
+            let placeholderImage = UIImage(named: "profile")
+            let processor = RoundCornerImageProcessor(cornerRadius: 50) // 둥근 모서리
+            
+            // Kingfisher 이미지 설정
+            vc.userImage.kf.setImage(with: url, placeholder: placeholderImage, options: [.processor(processor)]) {
+                result in
+                switch result {
+                case .success(let value):
+                    print("이미지 로드 성공: \(value.source.url?.absoluteString ?? "")")
+                case .failure(let error):
+                    print("이미지 로드 실패: \(error.localizedDescription)")
+                    vc.userImage.image = placeholderImage
+                }
+            }
+        } else {
+            // imageURL이 nil이거나 빈 문자열일 경우 기본 이미지 설정
+            vc.userImage.image = UIImage(named: "profile")
+        }
+        
+        
         if let vc = vc.sheetPresentationController{
             if #available(iOS 16.0, *) {
                 vc.detents = [.custom { context in
@@ -663,6 +687,7 @@ class memberCollectioViewCell: UICollectionViewCell {
         view.image = UIImage(named: "profile")
         view.layer.cornerRadius = 29
         view.contentMode = .scaleAspectFit
+        view.clipsToBounds = true
         return view
     }()
     
@@ -726,17 +751,11 @@ class memberCollectioViewCell: UICollectionViewCell {
         
         memberLabel.text = nickname
         
-//                let url = URL(string: imageURL)
-//                let placeholderImage = UIImage(named: "profile")
-//                let processor = DownsamplingImageProcessor(size: memberIMG.bounds.size) |> RoundCornerImageProcessor(cornerRadius: 29)
-//        
-//                memberIMG.kf.setImage(with: url, placeholder: placeholderImage, options: [.processor(processor)])
-        
         if imageURL == imageURL, !imageURL.isEmpty {
             // 이미지 URL이 유효한 경우: 이미지 다운로드 처리
             let url = URL(string: imageURL)
             let placeholderImage = UIImage(named: "profile")
-            let processor = DownsamplingImageProcessor(size: memberIMG.bounds.size) |> RoundCornerImageProcessor(cornerRadius: 29)
+            let processor = RoundCornerImageProcessor(cornerRadius: 29)
             
             memberIMG.kf.setImage(with: url, placeholder: placeholderImage, options: [.processor(processor)])
         } else {

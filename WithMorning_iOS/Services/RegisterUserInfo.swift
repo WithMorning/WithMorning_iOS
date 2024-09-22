@@ -17,10 +17,10 @@ class RegisterUserInfo {
     
     @Published var loginState: LoginStatus? = nil
     @Published var nickName : String? = ""
+    @Published var profileImage : UIImage? = nil
     
 //    @Published var userVibrate : Bool? = false
 //    @Published var userVolum : Int? = 50
-//    @Published var profileImage : UIImage? = nil
 //    @Published var userName : String? = ""
 //    @Published var userEmail : String? = ""
 //    @Published var userId: String? = ""

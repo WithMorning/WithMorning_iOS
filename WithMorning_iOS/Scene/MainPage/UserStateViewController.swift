@@ -9,6 +9,7 @@ import UIKit
 import SnapKit
 import Then
 import Alamofire
+import Kingfisher
 
 class UserStateViewController : UIViewController{
     
@@ -17,6 +18,7 @@ class UserStateViewController : UIViewController{
         let view = UIImageView()
         view.layer.cornerRadius = 50
         view.backgroundColor = .gray
+        view.clipsToBounds = true
         return view
     }()
     
@@ -131,7 +133,6 @@ class UserStateViewController : UIViewController{
     
     //MARK: - @objc func
     @objc func callclick() {
-        print(userphoneNum)
         self.dismiss(animated: true, completion: {
             if let phoneURL = URL(string: "tel://\(self.userphoneNum)"), UIApplication.shared.canOpenURL(phoneURL) {
                 UIApplication.shared.open(phoneURL, options: [:], completionHandler: nil)

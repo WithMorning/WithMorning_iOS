@@ -46,9 +46,6 @@ class MypageWebViewController: UIViewController, WKUIDelegate {
         
         webView.load(request)
     }
-    
 
-    
-    
     
 }
