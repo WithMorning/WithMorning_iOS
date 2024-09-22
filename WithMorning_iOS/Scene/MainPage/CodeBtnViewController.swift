@@ -62,7 +62,6 @@ class CodeBtnViewController: UIViewController {
         button.setImage(UIImage(systemName: "checkmark.square.fill"), for: .normal)
         button.backgroundColor = .white
         button.layer.cornerRadius = 5
-        button.tintColor = DesignSystemColor.Gray200.value
         button.addTarget(self, action: #selector(numberclicked), for: .touchUpInside)
         return button
     }()
@@ -100,6 +99,7 @@ class CodeBtnViewController: UIViewController {
         self.view.backgroundColor = .white
         SetUI()
         hideKeyboardWhenTappedAround()
+        buttoncolor()
     }
     
     //MARK: - SetUI
@@ -146,17 +146,28 @@ class CodeBtnViewController: UIViewController {
             $0.top.equalToSuperview().offset(20)
         }
     }
-    
-    func Buttontintcolor(){
-        if numberBool == false{
-            openButton.tintColor = DesignSystemColor.Gray200.value
+    func buttoncolor(){
+        if RegisterUserInfo.shared.privateNumber == false{
+            self.openButton.tintColor = DesignSystemColor.Gray200.value
+        }else{self.openButton.tintColor = DesignSystemColor.Orange500.value
+            
         }
-        
-        if numberBool == true{
-            openButton.tintColor = DesignSystemColor.Orange500.value
-        }
-        
     }
+    
+    func Buttontintcolor() {
+        DispatchQueue.main.async {
+            if RegisterUserInfo.shared.privateNumber == true {
+                RegisterUserInfo.shared.privateNumber = false
+                self.openButton.tintColor = DesignSystemColor.Gray200.value
+                print(RegisterUserInfo.shared.privateNumber)
+            } else {
+                RegisterUserInfo.shared.privateNumber = true
+                self.openButton.tintColor = DesignSystemColor.Orange500.value
+                print(RegisterUserInfo.shared.privateNumber)
+            }
+        }
+    }
+    
     //MARK: - @objc func
     @objc func buttonclicked(){
         codeButton { [weak self] success in
@@ -164,7 +175,6 @@ class CodeBtnViewController: UIViewController {
                 if success {
                     self?.dismiss(animated: true)
                 } else {
-                    // API 호출 실패 시 사용자에게 알림
                     print("초대코드로 입장 실패")
                 }
             }
@@ -172,22 +182,13 @@ class CodeBtnViewController: UIViewController {
     }
     
     @objc func numberclicked(){
-        if numberBool == false{
-            numberBool = true
-            Buttontintcolor()
-            print("numberbool",numberBool)
-        }else{
-            numberBool = false
-            Buttontintcolor()
-            print("numberbool",numberBool)
-        }
+        Buttontintcolor()
     }
     
     //MARK: - API
-    var numberBool : Bool = false
-    
     private func codeButton(completion: @escaping (Bool) -> Void){
-        let data = JoingroupMaindata(participationCode: codeTextfield.text ?? "", isAgree: numberBool)
+        
+        let data = JoingroupMaindata(participationCode: codeTextfield.text ?? "", isAgree: RegisterUserInfo.shared.privateNumber)
         APInetwork.joinGroup(joindata: data){ result in
             switch result{
             case.success(let data):

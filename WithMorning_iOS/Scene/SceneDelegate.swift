@@ -42,7 +42,7 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
                     print("🔥KeyChain에 저장된 refreshToken : ",KeyChain.read(key: "refreshToken") ?? "")
                     
                     #warning("test")
-                    self.setRootViewContrller(scene, type: .test) //joined 바로 메인조회, login 토큰받고 메인
+                    self.setRootViewContrller(scene, type: .joined) //joined 바로 메인조회, login 토큰받고 메인
                     
                 } else if Storage.isFirstTime() {
                     self.setRootViewContrller(scene, type: .termAgree)

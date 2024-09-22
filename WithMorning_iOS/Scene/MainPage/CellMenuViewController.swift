@@ -15,6 +15,7 @@ class CellMenuViewController: UIViewController, AlterDelegate {
 //MARK: - dismiss closure
     var Menuclicked : ( () -> Void )?
     var groupId : Int?
+    var participantCode : String?
     
 //MARK: - properties
 
@@ -82,6 +83,8 @@ class CellMenuViewController: UIViewController, AlterDelegate {
         super.viewDidLoad()
         self.view.backgroundColor = .white
         SetUI()
+        
+        print("그룹아이디 : \(String(describing: groupId)),참여코드 :\(String(describing: participantCode))")
     }
 
     //MARK: - SetUI
@@ -129,7 +132,9 @@ class CellMenuViewController: UIViewController, AlterDelegate {
     
     //MARK: - @objc func
     @objc func copyClicked(){
-        print("초대코드 복사버튼")
+        self.dismiss(animated: true){
+            UIPasteboard.general.string = self.participantCode
+        }
     }
     
     @objc func editClicked(){

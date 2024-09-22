@@ -47,7 +47,7 @@ class AlarmTableViewCell : UITableViewCell, UISheetPresentationControllerDelegat
     
     let toggleButton : UISwitch = {
         let toggle = UISwitch()
-        toggle.isOn = false
+        toggle.isOn = true
         toggle.onTintColor = DesignSystemColor.Orange500.value
         toggle.addTarget(self, action: #selector(clicktoggle(sender:)), for: .touchUpInside)
         return toggle
@@ -63,14 +63,12 @@ class AlarmTableViewCell : UITableViewCell, UISheetPresentationControllerDelegat
     
     lazy var timeLabel : UILabel = {
         let label = UILabel()
-        label.text = "07:30"
         label.font = DesignSystemFont.Pretendard_Bold30.value
         return label
     }()
     
     lazy var noonLabel : UILabel = {
         let label = UILabel()
-        label.text = "AM"
         label.font = DesignSystemFont.Pretendard_Bold18.value
         return label
     }()
@@ -181,7 +179,6 @@ class AlarmTableViewCell : UITableViewCell, UISheetPresentationControllerDelegat
     lazy var bottomView : UIView = {
         let view = UIView()
         view.addSubviews(borderLine,bottomViewLabel,memberCollectionView,memoView)
-        view.isHidden = true
         return view
     }()
     
@@ -366,24 +363,26 @@ class AlarmTableViewCell : UITableViewCell, UISheetPresentationControllerDelegat
         memoView.snp.makeConstraints {
             $0.top.equalTo(memberCollectionView.snp.bottom).offset(12)
             $0.leading.trailing.equalToSuperview().inset(20)
-            self.memoViewHeightConstraint = $0.height.equalTo(49).constraint
         }
+        
         
         memoLabel.snp.makeConstraints{
             $0.edges.equalToSuperview().inset(UIEdgeInsets(top: 16, left: 48, bottom: 16, right: 48))
         }
         
     }
+    //지금 방해금지 모드 인지 아닌지 
+    var disturb : Bool = false
+    
     //MARK: - API
-    //방해금지모드(알람 off)
     func patchDisturb(){
-        let disturb : Bool = false
         let data = DisturbMaindata(isDisturbBanMode: disturb)
         
-        APInetwork.patchDisturb(DisturbData: data){ result in
+        APInetwork.patchDisturb(groupId: self.groupId, DisturbData: data){ result in
             switch result {
             case .success(let data):
-                print(data)
+                print("\(self.groupId)방해금지모드는 \(self.disturb)")
+                
             case .failure(let error):
                 print(error.localizedDescription)
                 
@@ -391,11 +390,12 @@ class AlarmTableViewCell : UITableViewCell, UISheetPresentationControllerDelegat
             
         }
         
-        
     }
     
     //MARK: - 멤버
     var groupId : Int = 0 //그룹 아이디 (방해금지모드에도 사용)
+    
+    var participantcode : String = ""
     
     private var userData : [UserList] = [] //유저 데이터
     private var memberCount : Int = 0
@@ -404,49 +404,27 @@ class AlarmTableViewCell : UITableViewCell, UISheetPresentationControllerDelegat
     
     //제약조건 업데이트를 위해 var로 설정
     private var collectionViewHeightConstraint: Constraint?
-    private var memoViewHeightConstraint: Constraint?
     
     func ConfigureMember(_ userList: [UserList]) {
         self.memberCount = userList.count
         userData = userList
         
-        // 기존 업데이트 작업 취소
-        updateTask?.cancel()
+        let maxHeight = calculateMaxCellHeight()
+        self.collectionViewHeight = maxHeight
         
-        // 새로운 업데이트 작업 생성
-        let newTask = DispatchWorkItem { [weak self] in
-            guard let self = self else { return }
+        DispatchQueue.main.async {
+            self.memberCollectionView.reloadData()
+            self.updateCollectionViewHeight()
+            self.layoutIfNeeded()
             
-            // 컬렉션 뷰 높이 계산
-            let maxHeight = self.calculateMaxCellHeight()
-            self.collectionViewHeight = maxHeight
-            
-            // 메모 뷰 높이 계산
-            self.updateMemoLabel()
-            
-            DispatchQueue.main.async {
-                self.memberCollectionView.reloadData()
-                self.updateCollectionViewHeight()
-                self.updateMemoViewHeight()
-                self.layoutIfNeeded()
-                
-                // 테이블 뷰 업데이트
-                if let tableView = self.superview as? UITableView {
-                    CATransaction.begin()
-                    CATransaction.setDisableActions(true)
-                    tableView.beginUpdates()
-                    tableView.endUpdates()
-                    CATransaction.commit()
-                }
+            if let tableView = self.superview as? UITableView {
+                tableView.beginUpdates()
+                tableView.endUpdates()
             }
         }
-        
-        // 새 작업 저장 및 실행
-        updateTask = newTask
-        DispatchQueue.global(qos: .userInitiated).async(execute: newTask)
     }
     
-    //MARK: - collectionview 높이 계산
+    //MARK: - collectionview 높이계산
     func updateCollectionViewHeight() {
         collectionViewHeightConstraint?.update(offset: collectionViewHeight)
         setNeedsLayout()
@@ -472,7 +450,15 @@ class AlarmTableViewCell : UITableViewCell, UISheetPresentationControllerDelegat
             let imageHeight: CGFloat = 64
             let spacing: CGFloat = 8
             
-            let cellHeight = imageHeight + spacing + labelHeight
+            let cellHeight: CGFloat
+            if labelHeight > font.lineHeight {
+                // 2줄 이상일 경우
+                cellHeight = imageHeight + spacing + (font.lineHeight * 2)
+            } else {
+                // 1줄일 경우
+                cellHeight = imageHeight + spacing + font.lineHeight
+            }
+            
             maxHeight = max(maxHeight, cellHeight)
         }
         
@@ -480,19 +466,39 @@ class AlarmTableViewCell : UITableViewCell, UISheetPresentationControllerDelegat
     }
     
     //MARK: - 메모LabelUI 높이계산
+    // 메모라벨의 텍스트와 상태를 저장할 변수
+    
+    private var memoViewHeightConstraint: Constraint?
     var fullText: String = ""
     var isExpanded = false
     
+    // 메모 라벨 초기 설정
     func setMemoText(_ text: String) {
         fullText = text
         isExpanded = false
         updateMemoLabel()
     }
     
+    func setupMemoView() {
+        memoView.snp.makeConstraints { make in
+            make.top.equalTo(memberCollectionView.snp.bottom).offset(12)
+            make.leading.trailing.equalToSuperview().inset(20)
+            self.memoViewHeightConstraint = make.height.equalTo(49).constraint // 초기 높이 설정
+        }
+    }
+    
+    func calculateMemoViewHeight() -> CGFloat {
+        let maxWidth = contentView.frame.width - 96
+        let size = memoLabel.sizeThatFits(CGSize(width: maxWidth, height: CGFloat.greatestFiniteMagnitude))
+        return size.height + 32  // 텍스트 높이에 여백 추가
+    }
+    
+    
+    // 메모라벨 업데이트를 위한 함수
     func updateMemoLabel() {
         DispatchQueue.main.async {
-            let maxWidth = self.memoView.frame.width - 96
-            
+            // 메모 라벨의 가용 너비를 기준으로 텍스트 크기를 계산
+            let maxWidth = self.contentView.frame.width - 96  // memoView의 좌우 패딩을 고려한 너비
             let size = (self.fullText as NSString).boundingRect(
                 with: CGSize(width: maxWidth, height: .greatestFiniteMagnitude),
                 options: .usesLineFragmentOrigin,
@@ -500,28 +506,40 @@ class AlarmTableViewCell : UITableViewCell, UISheetPresentationControllerDelegat
                 context: nil
             )
             
+            // 텍스트가 한 줄을 넘는지 여부를 체크
             let isMultiline = size.height > self.memoLabel.font.lineHeight
             
+            // 한 줄만 보이거나, 전체 텍스트를 보이도록 결정 (isExpanded에 따라)
             if isMultiline {
                 self.memoLabel.numberOfLines = self.isExpanded ? 0 : 1
             } else {
                 self.memoLabel.numberOfLines = 1
             }
             self.memoLabel.text = self.fullText
+            
+            // 메모 뷰 업데이트
+            self.updateMemoViewHeight()
+            
+            // 테이블 뷰 레이아웃 업데이트
+            if let tableView = self.superview as? UITableView {
+                tableView.beginUpdates()
+                tableView.endUpdates()
+            }
         }
     }
     
     //MARK: - 메모View 높이 계산
     func updateMemoViewHeight() {
+        let calculatedHeight = calculateMemoViewHeight()
         let baseHeight: CGFloat = 49
-        let maxWidth = memoView.frame.width - 96
         
-        let size = memoLabel.sizeThatFits(CGSize(width: maxWidth, height: .greatestFiniteMagnitude))
-        let newHeight = isExpanded ? size.height + 32 : min(baseHeight, size.height + 32)
-        
-        memoViewHeightConstraint?.update(offset: max(newHeight, 49))
-        setNeedsLayout()
+        // 여기서 .updateConstraints를 사용하여 기존의 제약 조건을 업데이트합니다.
+        memoView.snp.updateConstraints { make in
+            self.memoViewHeightConstraint?.update(offset: max(calculatedHeight, baseHeight))
+        }
     }
+    
+    
     
     //MARK: - 메모 더 보기
     @objc func memoLabelTapped() {
@@ -531,7 +549,9 @@ class AlarmTableViewCell : UITableViewCell, UISheetPresentationControllerDelegat
     
     
     //MARK: - objc func
+    
     @objc func clicktoggle(sender : UISwitch){
+        patchDisturb()
         toggleclicked()
     }
     
@@ -542,9 +562,10 @@ class AlarmTableViewCell : UITableViewCell, UISheetPresentationControllerDelegat
         
         let vc = CellMenuViewController()
         vc.groupId = self.groupId
+        vc.participantCode = self.participantcode
+        
         vc.modalPresentationStyle = .formSheet
         parentViewController.present(vc, animated: true)
-        print("groupId : ",groupId)
         
         if let vc = vc.sheetPresentationController{
             if #available(iOS 16.0, *) {
@@ -642,7 +663,6 @@ class AlarmTableViewCell : UITableViewCell, UISheetPresentationControllerDelegat
                 case .success(let value):
                     print("이미지 로드 성공: \(value.source.url?.absoluteString ?? "")")
                 case .failure(let error):
-                    print("이미지 로드 실패: \(error.localizedDescription)")
                     vc.userImage.image = placeholderImage
                 }
             }
@@ -650,6 +670,7 @@ class AlarmTableViewCell : UITableViewCell, UISheetPresentationControllerDelegat
             // imageURL이 nil이거나 빈 문자열일 경우 기본 이미지 설정
             vc.userImage.image = UIImage(named: "profile")
         }
+        
         
         
         if let vc = vc.sheetPresentationController{
@@ -691,8 +712,26 @@ class memberCollectioViewCell: UICollectionViewCell {
         return view
     }()
     
-    //MARK: - 자는중 일 경우 view
+    private lazy var meView : UIView = {
+        let view = UIView()
+        view.backgroundColor = DesignSystemColor.Orange500.value
+        view.clipsToBounds = true
+        view.layer.cornerRadius = 4
+        view.addSubview(meLabel)
+        return view
+    }()
     
+    private lazy var meLabel : UILabel = {
+        let label = UILabel()
+        label.text = "ME"
+        label.font = DesignSystemFont.Pretendard_Bold8.value
+        label.textColor = .white
+        return label
+    }()
+    
+    
+    
+    //MARK: - 자는중 일 경우 view
     
     private lazy var sleepLabel : UILabel = {
         let label = UILabel()
@@ -722,7 +761,7 @@ class memberCollectioViewCell: UICollectionViewCell {
     }
     
     func setUI() {
-        contentView.addSubviews(memberView, memberLabel, sleepLabel)
+        contentView.addSubviews(memberView, memberLabel, meView, sleepLabel)
         
         memberView.snp.makeConstraints {
             $0.top.equalToSuperview().inset(1)
@@ -744,6 +783,16 @@ class memberCollectioViewCell: UICollectionViewCell {
         sleepLabel.snp.makeConstraints{
             $0.center.equalTo(memberIMG)
         }
+        
+        meView.snp.makeConstraints{
+            $0.height.equalTo(14)
+            $0.width.equalTo(20)
+            $0.centerX.equalToSuperview()
+            $0.bottom.equalTo(memberView.snp.bottom).offset(4)
+        }
+        meLabel.snp.makeConstraints{
+            $0.center.equalToSuperview()
+        }
     }
     
     //MARK: - 닉네임, 유저 스테이트 설정
@@ -751,26 +800,36 @@ class memberCollectioViewCell: UICollectionViewCell {
         
         memberLabel.text = nickname
         
+        //이미지URL 다운
         if imageURL == imageURL, !imageURL.isEmpty {
-            // 이미지 URL이 유효한 경우: 이미지 다운로드 처리
             let url = URL(string: imageURL)
             let placeholderImage = UIImage(named: "profile")
             let processor = RoundCornerImageProcessor(cornerRadius: 29)
             
             memberIMG.kf.setImage(with: url, placeholder: placeholderImage, options: [.processor(processor)])
         } else {
-            // imageURL이 nil 이거나 빈 문자열일 경우 기본 이미지 설정
-            memberIMG.image = UIImage(named: "profile") // 기본 이미지로 설정
+            memberIMG.image = UIImage(named: "profile")
+        }
+        
+        //meView
+        if nickname == RegisterUserInfo.shared.nickName {
+            meView.isHidden = false
+        } else {
+            meView.isHidden = true
         }
         
         
+        //방해금지모드
         if isDisturbBanMode == true{
             memberView.backgroundColor = DesignSystemColor.Gray150.value
             memberLabel.textColor = DesignSystemColor.Gray500.value
+            meView.backgroundColor = DesignSystemColor.Gray150.value
         }else{
             memberView.backgroundColor = DesignSystemColor.Orange500.value
+            meView.backgroundColor = DesignSystemColor.Orange500.value
         }
         
+        //일어났나
         if isWakeup == true {
             sleepLabel.isHidden = false
             

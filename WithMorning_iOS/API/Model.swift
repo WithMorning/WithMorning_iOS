@@ -148,7 +148,7 @@ struct Bedtime: Codable { //response
 }
 
 //MARK: - 방해금지모드
-struct DisturbMaindata: Codable { //request
+struct DisturbMaindata: Codable { 
     let isDisturbBanMode: Bool
 }
 

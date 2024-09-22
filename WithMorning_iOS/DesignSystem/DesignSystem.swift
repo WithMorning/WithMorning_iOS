@@ -99,6 +99,7 @@ extension DesignSystemColor {
 
 // MARK: - 폰트
 enum DesignSystemFont {
+    case Pretendard_Bold8
     case Pretendard_Bold12
     case Pretendard_Bold20
     case Pretendard_Bold14
@@ -118,6 +119,8 @@ enum DesignSystemFont {
 extension DesignSystemFont {
     var value: UIFont {
         switch self {
+        case .Pretendard_Bold8:
+            return UIFont.pretendard(.bold, size: 8)
         case .Pretendard_Bold12:
             return UIFont.pretendard(.bold, size: 12)
         case .Pretendard_Bold20:
@@ -151,6 +154,8 @@ extension DesignSystemFont {
     
     var lineHeightMultiple: CGFloat {
         switch self {
+        case .Pretendard_Bold8:
+            return 1.17
         case .Pretendard_Bold12:
             return 1.19
         case .Pretendard_Bold20:

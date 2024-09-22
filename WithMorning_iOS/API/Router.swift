@@ -21,7 +21,7 @@ enum Router : URLRequestConvertible{
     case deletegrop(groupId : Int)
     case joingroup(data : JoingroupMaindata)
     case postbedtime(data : BedtimeMaindata)
-    case patchdisturb(data : DisturbMaindata)
+    case patchdisturb(groupId: Int, data: DisturbMaindata)
     
     
     // url가르기
@@ -33,19 +33,16 @@ enum Router : URLRequestConvertible{
         case .deletegrop(let groupId): return "/groups/\(groupId)"
         case .joingroup: return "/groups/join"
         case .postbedtime: return "/user/bedtime/alarm"
-        case .patchdisturb(let groupId) : return "/groups/\(groupId)/disturb"
+        case .patchdisturb(let groupId, _): return "/groups/\(groupId)/disturb"
         }
     }
     
     //헤더
     var headers: HTTPHeaders {
         switch self {
-        case .patchdisturb(let groupId) : return HTTPHeaders(["accept":"application/json","Content-Type" : "application/json" ,"groupId":"\(groupId)","Authorization":"\(Authorization)"])
-            
-//            case .patchdisturb(let groupId) : return HTTPHeaders(["accept":"application/json","Content-Type" : "application/json" ,"groupId":"\(groupId)"])
+        case .patchdisturb(let groupId, _) : return HTTPHeaders(["accept":"application/json","Content-Type" : "application/json" ,"groupId":"\(groupId)","Authorization":"\(Authorization)"])
             
         default: return HTTPHeaders(["accept":"application/json","Content-Type" : "application/json" ,"Authorization":"\(Authorization)"])
-            //        default: return HTTPHeaders(["accept":"application/json", "Content-Type" : "application/json"])
         }
     }
     
@@ -92,8 +89,8 @@ enum Router : URLRequestConvertible{
             request = try JSONParameterEncoder().encode(data, into: request)
         case .postbedtime(let data):
             request = try JSONParameterEncoder().encode(data, into: request)
-        case .patchdisturb:
-            request = try URLEncoding.queryString.encode(request, with: parameters)
+        case .patchdisturb(_, let data):
+            request = try JSONParameterEncoder().encode(data, into: request)
         }
         
         //request = try URLEncoding.queryString.encode(request, with: parameters)

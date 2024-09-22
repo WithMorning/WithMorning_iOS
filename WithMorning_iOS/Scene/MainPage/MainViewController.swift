@@ -211,7 +211,7 @@ class MainViewController: UIViewController, UISheetPresentationControllerDelegat
         }
     }
     
-    @objc func clickedprofile(_ sender: UITapGestureRecognizer){ 
+    @objc func clickedprofile(_ sender: UITapGestureRecognizer){
         let vc = MyPageViewController()
         self.navigationController?.pushViewController(vc, animated: true)
     }
@@ -279,7 +279,6 @@ class MainViewController: UIViewController, UISheetPresentationControllerDelegat
                     self.profileButton.image = UIImage(named: "profile") // 기본 이미지로 설정
                 }
                 
-                
             case .failure(let error):
                 print(error)
                 
@@ -315,8 +314,6 @@ extension MainViewController : UITableViewDelegate, UITableViewDataSource{
         
         let alarm = alarmData[indexPath.row]
         
-        let isTurn = true
-        
         cell.selectionStyle = .none
         cell.backgroundColor = .clear
         
@@ -324,16 +321,12 @@ extension MainViewController : UITableViewDelegate, UITableViewDataSource{
         cell.setMemoText(alarm.memo)
         
         cell.ConfigureMember(alarm.userList ?? [])
+        
         cell.timeLabel.text = alarm.wakeupTime
         cell.groupId = alarm.groupID
         
-        
-        // 토글의 상태를 데이터 모델로부터 가져와 설정
-        cell.toggleButton.isOn = isTurn
-        
-        cell.bottomView.isHidden = false
-        
-        //        cell.bottomView.subviews.forEach { $0.isHidden = isTurn }
+        cell.participantcode = alarm.participationCode
+
         
         let dayLabels = [cell.MonLabel, cell.TueLabel, cell.WedLabel, cell.ThuLabel, cell.FriLabel, cell.SatLabel, cell.SunLabel]
         
@@ -355,22 +348,35 @@ extension MainViewController : UITableViewDelegate, UITableViewDataSource{
             
         }
         
-        // togglebutton on,off closure
-        cell.toggleclicked = {
-            
-            self.AlarmTableView.reloadData()
-            
-            if cell.toggleButton.isOn == true{
-                //                self.alarmData[indexPath.row].isTurn = true
-                //                print(self.alarmData[indexPath.row])
-                cell.bottomView.isHidden = false
-                
-            }else{
-                //                self.alarmData[indexPath.row].isTurn = false
-                //                print(self.alarmData[indexPath.row])
-                //                cell.bottomView.isHidden = true
-                
+        // 현재 사용자를 찾고, 방해금지 모드 여부에 따라 토글 설정
+        if let userList = alarm.userList {
+            if let currentUser = userList.first(where: { $0.nickname == RegisterUserInfo.shared.nickName }) {
+                cell.bottomView.isHidden = currentUser.isDisturbBanMode
+                if currentUser.isDisturbBanMode {
+                    // 방해금지 모드일 경우
+                    print("Group ID: \(cell.groupId), 방해금지모드: ON")
+                    cell.toggleButton.isOn = false
+                    
+                    for dayLabel in dayLabels {
+                        dayLabel.backgroundColor = DesignSystemColor.Gray100.value
+                        dayLabel.textColor = DesignSystemColor.Gray300.value
+                    }
+                    cell.disturb = true
+
+                    
+                } else {
+                    // 방해금지 모드가 아닐 경우
+                    print("Group ID: \(cell.groupId), 방해금지모드: OFF")
+                    cell.toggleButton.isOn = true
+                    cell.disturb = false
+                    
+                }
             }
+        }
+        
+        cell.toggleclicked = {
+            self.AlarmTableView.reloadRows(at: [indexPath], with: .automatic)
+            cell.bottomView.isHidden = !cell.toggleButton.isOn
         }
         
         return cell
@@ -379,13 +385,28 @@ extension MainViewController : UITableViewDelegate, UITableViewDataSource{
     //cell의 높이
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
         
-        let baseHeight: CGFloat = 132
+        let alarm = alarmData[indexPath.row]
+        
         let extraHeight: CGFloat = 217
-        let memoHeight : CGFloat = 100
+        let memoHeight: CGFloat = 100
+        let baseHeight: CGFloat = 129  // 기본 높이
         
+        if let userList = alarm.userList {
+            let isDisturbModeOn = userList.contains(where: { $0.nickname == RegisterUserInfo.shared.nickName && $0.isDisturbBanMode })
+            
+            // 방해금지 모드일 때
+            if isDisturbModeOn {
+                return baseHeight
+            } else {
+                // 방해금지 모드가 아닐 때
+                return baseHeight + extraHeight + memoHeight
+            }
+        }
+        
+        // 사용자 목록이 없거나 조건에 맞는 사용자가 없을 경우 기본 설정
         return baseHeight + extraHeight + memoHeight
-        
     }
+    
 }
 
 //Preview code
