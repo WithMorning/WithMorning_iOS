@@ -319,11 +319,14 @@ class SleepTimeViewController : UIViewController, UISheetPresentationControllerD
         let bedtime = BedtimeMaindata(bedTime: selectedTime24, bedDayOfWeekList: selectedDayOfWeek, isAllowBedTimeAlarm: allowAlarm)
         
         APInetwork.postBedtime(bedtimedata: bedtime){ result in
+            LoadingIndicator.showLoading()
             switch result {
             case .success(let bed):
                 print("취침시간",bed)
                 self.navigationController?.popViewController(animated: true)
+                LoadingIndicator.hideLoading()
             case .failure(let error):
+                LoadingIndicator.hideLoading()
                 print(error.localizedDescription)
             }
             

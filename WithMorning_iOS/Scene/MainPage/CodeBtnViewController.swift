@@ -190,14 +190,16 @@ class CodeBtnViewController: UIViewController {
         
         let data = JoingroupMaindata(participationCode: codeTextfield.text ?? "", isAgree: RegisterUserInfo.shared.privateNumber)
         APInetwork.joinGroup(joindata: data){ result in
+            LoadingIndicator.showLoading()
             switch result{
             case.success(let data):
                 print(data)
                 completion(true)
+                LoadingIndicator.hideLoading()
             case.failure(let error):
                 print(error.localizedDescription)
                 completion(false)
-                
+                LoadingIndicator.hideLoading()
             }
         }
     }

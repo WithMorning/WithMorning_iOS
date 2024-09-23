@@ -141,12 +141,14 @@ class CertificateViewController : UIViewController{
         let vc = ProfileViewController()
         
         APInetwork.responseSMS(responsedata: data){ result in
+            LoadingIndicator.showLoading()
             switch result{
             case .success(let data):
                 print(data)
                 self.navigationController?.pushViewController(vc, animated: true)
-                
+                LoadingIndicator.hideLoading()
             case .failure(let error):
+                LoadingIndicator.hideLoading()
                 print(error.localizedDescription)
             }
             

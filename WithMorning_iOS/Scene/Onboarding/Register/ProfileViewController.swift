@@ -207,6 +207,7 @@ class ProfileViewController : UIViewController, UIImagePickerControllerDelegate 
 
         // 7. API 호출
         APInetwork.postProfile(profileData: registerData) { result in
+            LoadingIndicator.showLoading()
             switch result {
             case .success(let data):
                 print("프로필 업로드 성공: \(data)")
@@ -216,8 +217,10 @@ class ProfileViewController : UIViewController, UIImagePickerControllerDelegate 
                 DispatchQueue.main.async {
                     self.navigationController?.pushViewController(vc, animated: true)
                 }
+                LoadingIndicator.hideLoading()
                 
             case .failure(let error):
+                LoadingIndicator.hideLoading()
                 print("프로필 등록 실패: \(error.localizedDescription)")
             }
         }

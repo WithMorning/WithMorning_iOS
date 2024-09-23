@@ -270,6 +270,7 @@ class MainViewController: UIViewController, UISheetPresentationControllerDelegat
     //메인페이지
     func getMainpage() {
         APInetwork.getMainpage() { result in
+            LoadingIndicator.showLoading()
             switch result {
             case .success(let mainpage):
                 self.MainpageUpdate(with: mainpage)
@@ -289,8 +290,9 @@ class MainViewController: UIViewController, UISheetPresentationControllerDelegat
                     
                     self.profileButton.image = UIImage(named: "profile") // 기본 이미지로 설정
                 }
-                
+                LoadingIndicator.hideLoading()
             case .failure(let error):
+                LoadingIndicator.hideLoading()
                 print(error)
                 
             }

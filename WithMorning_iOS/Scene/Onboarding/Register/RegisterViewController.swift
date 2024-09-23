@@ -118,13 +118,17 @@ class RegisterViewController : UIViewController{
         let vc = CertificateViewController()
         
         APInetwork.requestSMS(phoneNumber: data){result in
+            LoadingIndicator.showLoading()
             switch result{
             case .success(let data):
                 print(data)
                 vc.phonenumber = self.phonenumber
                 self.navigationController?.pushViewController(vc, animated: true)
+                LoadingIndicator.hideLoading()
             case .failure(let error):
+                LoadingIndicator.hideLoading()
                 print(error.localizedDescription)
+                
             }
         
         }

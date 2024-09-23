@@ -379,11 +379,13 @@ class AlarmTableViewCell : UITableViewCell, UISheetPresentationControllerDelegat
         let data = DisturbMaindata(isDisturbBanMode: disturb)
         
         APInetwork.patchDisturb(groupId: self.groupId, DisturbData: data){ result in
+            LoadingIndicator.showLoading()
             switch result {
             case .success(let data):
                 print("\(self.groupId)방해금지모드는 \(self.disturb)")
-                
+                LoadingIndicator.hideLoading()
             case .failure(let error):
+                LoadingIndicator.hideLoading()
                 print(error.localizedDescription)
                 
             }

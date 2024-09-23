@@ -235,6 +235,7 @@ class AlterUIView: UIViewController {
     private func deleteAlarm(){
         guard let groupId = groupId else{return}
         APInetwork.deleteGroup(groupId: groupId){ result in
+            LoadingIndicator.showLoading()
             switch result {
             case.success(let data):
                 DispatchQueue.main.async {
@@ -244,7 +245,9 @@ class AlterUIView: UIViewController {
                     print(data)
                     print("알람 삭제 성공")
                 }
+                LoadingIndicator.hideLoading()
             case .failure(let error):
+                LoadingIndicator.hideLoading()
                 print("알람 삭제 실패: \(error.localizedDescription)")
                 DispatchQueue.main.async {
                     // 에러 메시지를 사용자에게 표시

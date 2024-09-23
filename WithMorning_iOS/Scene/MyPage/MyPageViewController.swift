@@ -613,9 +613,9 @@ class MyPageViewController : UIViewController, UIScrollViewDelegate {
     
     @objc func sleeptime(){
         let vc = SleepTimeViewController()
-        vc.selectedTime24 = self.bedtime // API에서 받은 bedtime
-        vc.selectedDayOfWeek = self.dayOfWeekList // API에서 받은 dayOfWeekList
-        vc.allowAlarm = self.noti //API에서 받은 isAllowBedTimeAlarm
+        vc.selectedTime24 = self.bedtime
+        vc.selectedDayOfWeek = self.dayOfWeekList
+        vc.allowAlarm = self.noti
         self.navigationController?.pushViewController(vc, animated: true)
         
     }
@@ -665,6 +665,7 @@ class MyPageViewController : UIViewController, UIScrollViewDelegate {
     
     func getMypage(){
         APInetwork.getMypage(){ result in
+            LoadingIndicator.showLoading()
             switch result{
             case.success(let mypage):
                 
@@ -688,8 +689,9 @@ class MyPageViewController : UIViewController, UIScrollViewDelegate {
                     self.profileImage.image = UIImage(named: "profile") // 기본 이미지로 설정
                 }
                 RegisterUserInfo.shared.profileImage = self.profileImage.image
-                
+                LoadingIndicator.hideLoading()
             case.failure(let error):
+                LoadingIndicator.hideLoading()
                 print(error)
             }
         }

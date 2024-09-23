@@ -366,11 +366,14 @@ class MakeAlarmViewController : UIViewController, UIScrollViewDelegate, UISheetP
         let data = MakeGroupMaindata(name: groupTextfield.text ?? "모임명이 없습니다.", wakeupTime: selectedTime24, dayOfWeekList: selectedDayOfWeek, isAgree: true, memo: memoTextView.text)
         
         APInetwork.postGroup(groupdata: data){ result in
+            LoadingIndicator.showLoading()
             switch result {
             case .success(let makeAlarm):
                 print("알람 생성 API",makeAlarm)
                 self.navigationController?.popViewController(animated: true)
+                LoadingIndicator.hideLoading()
             case .failure(let error):
+                LoadingIndicator.hideLoading()
                 print(error.localizedDescription)
             }
             
@@ -412,6 +415,12 @@ class MakeAlarmViewController : UIViewController, UIScrollViewDelegate, UISheetP
             ampm = 0 // AM
         }
         
+        let hour24 = ampm == 1 ? (hourForPicker == 12 ? 12 : hourForPicker + 12) : (hourForPicker == 12 ? 0 : hourForPicker)
+        
+        selectedTime24 = String(format: "%02d:%02d", hour24, minute)
+        print("초기화 시 설정된 시간 (24시간제): \(selectedTime24)")
+        
+        // PickerView의 값을 현재 시각으로 설정
         let middleHour = self.hour.count * 50
         let middleMinute = min.count * 50
         let middleAMPM = AMPM.count * 50
@@ -583,6 +592,7 @@ extension MakeAlarmViewController : UIPickerViewDelegate, UIPickerViewDataSource
             } else {
                 timelabel.text = String(format: "%02d", min[row % min.count])
             }
+            
             return timelabel
             
         } else {
@@ -612,6 +622,7 @@ extension MakeAlarmViewController : UIPickerViewDelegate, UIPickerViewDataSource
     }
     //MARK: - 현재 설정한 시간(24시간제) 출력
     func pickerView(_ pickerView: UIPickerView, didSelectRow row: Int, inComponent component: Int) {
+        
         let selectedHour = hour[pickerView.selectedRow(inComponent: 0) % hour.count]
         let selectedMinute = min[pickerView.selectedRow(inComponent: 1) % min.count]
         let selectedAMPM = AMPM[pickerView.selectedRow(inComponent: 2)]
@@ -623,8 +634,11 @@ extension MakeAlarmViewController : UIPickerViewDelegate, UIPickerViewDataSource
             hour24 = 0
         }
         
+        
         selectedTime24 = String(format: "%02d:%02d", hour24, selectedMinute)
+        
         print("설정된 시간 (24시간제): \(selectedTime24)")
+        
     }
 }
 
