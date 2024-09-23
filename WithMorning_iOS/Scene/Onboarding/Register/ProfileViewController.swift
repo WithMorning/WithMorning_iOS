@@ -104,6 +104,7 @@ class ProfileViewController : UIViewController, UIImagePickerControllerDelegate 
         self.view.backgroundColor = DesignSystemColor.Gray150.value
         setUI()
         hideKeyboardWhenTappedAround()
+
         
     }
     
@@ -211,7 +212,6 @@ class ProfileViewController : UIViewController, UIImagePickerControllerDelegate 
                 print("프로필 업로드 성공: \(data)")
                 
                 UserDefaults.standard.set(nickname, forKey: "nickname")
-                UserDefaults.standard.set(image, forKey: "image")
                 
                 DispatchQueue.main.async {
                     self.navigationController?.pushViewController(vc, animated: true)

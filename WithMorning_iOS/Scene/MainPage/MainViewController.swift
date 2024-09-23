@@ -307,7 +307,6 @@ class MainViewController: UIViewController, UISheetPresentationControllerDelegat
         }
         self.alarmData = groupList
         DispatchQueue.main.async {
-            RegisterUserInfo.shared.profileImage = self.profileButton.image
             self.AlarmTableView.reloadData()
         }
         

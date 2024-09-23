@@ -121,10 +121,6 @@ class MakeAlarmViewController : UIViewController, UIScrollViewDelegate, UISheetP
         return label
     }()
     
-    
-    
-    
-    
     //MARK: - 모임명
     private lazy var groupView : UIView = {
         let view = UIView()

@@ -667,6 +667,7 @@ class MyPageViewController : UIViewController, UIScrollViewDelegate {
         APInetwork.getMypage(){ result in
             switch result{
             case.success(let mypage):
+                
                 self.nickNameLabel.text = mypage.nickname
                 self.updateSleepTimeLabel(with: mypage.bedtime, dayOfWeekList: mypage.dayOfWeekList)
                 self.bedtime = mypage.bedtime
@@ -681,10 +682,12 @@ class MyPageViewController : UIViewController, UIScrollViewDelegate {
                     let processor = RoundCornerImageProcessor(cornerRadius: 29)
                     
                     self.profileImage.kf.setImage(with: url, placeholder: placeholderImage, options: [.processor(processor)])
+                    
                 } else {
                     // imageURL이 nil 이거나 빈 문자열일 경우 기본 이미지 설정
                     self.profileImage.image = UIImage(named: "profile") // 기본 이미지로 설정
                 }
+                RegisterUserInfo.shared.profileImage = self.profileImage.image
                 
             case.failure(let error):
                 print(error)
