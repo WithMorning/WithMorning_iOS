@@ -14,6 +14,7 @@ import Alamofire
 final class AppleLoginManager : NSObject {
     
     let registerUserInfo = RegisterUserInfo.shared
+    
     static let shared = AppleLoginManager()
     
     //MARK: - ID토큰이 명시적으로 부여되었는지 확인

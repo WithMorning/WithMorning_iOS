@@ -99,7 +99,8 @@ class CodeBtnViewController: UIViewController {
         self.view.backgroundColor = .white
         SetUI()
         hideKeyboardWhenTappedAround()
-        buttoncolor()
+        updateButtonColor()
+        
     }
     
     //MARK: - SetUI
@@ -146,27 +147,24 @@ class CodeBtnViewController: UIViewController {
             $0.top.equalToSuperview().offset(20)
         }
     }
-    func buttoncolor(){
-        if RegisterUserInfo.shared.privateNumber == false{
-            self.openButton.tintColor = DesignSystemColor.Gray200.value
-        }else{self.openButton.tintColor = DesignSystemColor.Orange500.value
-            
-        }
+    func updateButtonColor() {
+        let isPrivate = UserDefaults.getPrivateNumber()
+        openButton.tintColor = isPrivate ? DesignSystemColor.Orange500.value : DesignSystemColor.Gray200.value
     }
     
-    func Buttontintcolor() {
-        DispatchQueue.main.async {
-            if RegisterUserInfo.shared.privateNumber == true {
-                RegisterUserInfo.shared.privateNumber = false
-                self.openButton.tintColor = DesignSystemColor.Gray200.value
-                print(RegisterUserInfo.shared.privateNumber)
-            } else {
-                RegisterUserInfo.shared.privateNumber = true
-                self.openButton.tintColor = DesignSystemColor.Orange500.value
-                print(RegisterUserInfo.shared.privateNumber)
-            }
-        }
-    }
+    //    func Buttontintcolor() {
+    //        DispatchQueue.main.async {
+    //            if RegisterUserInfo.shared.privateNumber == true {
+    //                RegisterUserInfo.shared.privateNumber = false
+    //                self.openButton.tintColor = DesignSystemColor.Gray200.value
+    //                print(RegisterUserInfo.shared.privateNumber)
+    //            } else {
+    //                RegisterUserInfo.shared.privateNumber = true
+    //                self.openButton.tintColor = DesignSystemColor.Orange500.value
+    //                print(RegisterUserInfo.shared.privateNumber)
+    //            }
+    //        }
+    //    }
     
     //MARK: - @objc func
     @objc func buttonclicked(){
@@ -181,8 +179,10 @@ class CodeBtnViewController: UIViewController {
         }
     }
     
-    @objc func numberclicked(){
-        Buttontintcolor()
+    @objc func numberclicked() {
+        let currentSetting = UserDefaults.getPrivateNumber()
+        UserDefaults.setPrivateNumber(!currentSetting)
+        updateButtonColor()
     }
     
     //MARK: - API

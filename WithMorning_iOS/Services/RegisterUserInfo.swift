@@ -13,7 +13,7 @@ class RegisterUserInfo {
     
     static let shared = RegisterUserInfo()
     
-//MARK: - 로그인 후 기본적인 UserDefault 값
+//MARK: - 로그인 후
     
     @Published var loginState: LoginStatus? = nil
     @Published var nickName : String? = ""
@@ -27,3 +27,10 @@ class RegisterUserInfo {
 
     private init() {}
 }
+
+//1.set
+//UserDefaults.standard.set(userName, forKey: "name")
+//2. get
+//UserDefaults.standard.string(forKey: "name")
+//3. remove
+//UserDefaults.standard.removeObject(forKey: "name")

@@ -210,8 +210,8 @@ class ProfileViewController : UIViewController, UIImagePickerControllerDelegate 
             case .success(let data):
                 print("프로필 업로드 성공: \(data)")
                 
-                RegisterUserInfo.shared.nickName = nickname
-                RegisterUserInfo.shared.profileImage = image
+                UserDefaults.standard.set(nickname, forKey: "nickname")
+                UserDefaults.standard.set(image, forKey: "image")
                 
                 DispatchQueue.main.async {
                     self.navigationController?.pushViewController(vc, animated: true)

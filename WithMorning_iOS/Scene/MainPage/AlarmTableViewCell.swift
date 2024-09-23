@@ -812,7 +812,7 @@ class memberCollectioViewCell: UICollectionViewCell {
         }
         
         //meView
-        if nickname == RegisterUserInfo.shared.nickName {
+        if nickname == UserDefaults.standard.string(forKey: "nickname"){
             meView.isHidden = false
         } else {
             meView.isHidden = true

@@ -181,6 +181,7 @@ class EditprofileViewController : UIViewController,UIImagePickerControllerDelega
                 print("프로필 업로드 성공: \(data)")
                 
                 RegisterUserInfo.shared.nickName = self.nickname
+                UserDefaults.standard.set(self.nickname, forKey: "nickname")
                 RegisterUserInfo.shared.profileImage = image
                 
                 DispatchQueue.main.async {

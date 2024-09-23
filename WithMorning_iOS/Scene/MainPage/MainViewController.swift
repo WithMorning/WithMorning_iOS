@@ -249,7 +249,7 @@ class MainViewController: UIViewController, UISheetPresentationControllerDelegat
     }
     
     func handleVolumeChange(_ value: Int) {
-        if value == 0 {
+        if UserDefaults.standard.float(forKey: "volume") == 0 {
             soundButton.setImage(UIImage(named: "Volumeoff"), for: .normal)
         }
     }
@@ -274,6 +274,7 @@ class MainViewController: UIViewController, UISheetPresentationControllerDelegat
                     let processor = RoundCornerImageProcessor(cornerRadius: 29)
                     
                     self.profileButton.kf.setImage(with: url, placeholder: placeholderImage, options: [.processor(processor)])
+                    
                 } else {
                     
                     self.profileButton.image = UIImage(named: "profile") // 기본 이미지로 설정
@@ -296,6 +297,7 @@ class MainViewController: UIViewController, UISheetPresentationControllerDelegat
         }
         self.alarmData = groupList
         DispatchQueue.main.async {
+            RegisterUserInfo.shared.profileImage = self.profileButton.image
             self.AlarmTableView.reloadData()
         }
         
@@ -350,7 +352,7 @@ extension MainViewController : UITableViewDelegate, UITableViewDataSource{
         
         // 현재 사용자를 찾고, 방해금지 모드 여부에 따라 토글 설정
         if let userList = alarm.userList {
-            if let currentUser = userList.first(where: { $0.nickname == RegisterUserInfo.shared.nickName }) {
+            if let currentUser = userList.first(where: { $0.nickname == UserDefaults.standard.string(forKey: "nickname") }) {
                 cell.bottomView.isHidden = currentUser.isDisturbBanMode
                 if currentUser.isDisturbBanMode {
                     // 방해금지 모드일 경우
@@ -392,7 +394,7 @@ extension MainViewController : UITableViewDelegate, UITableViewDataSource{
         let baseHeight: CGFloat = 129  // 기본 높이
         
         if let userList = alarm.userList {
-            let isDisturbModeOn = userList.contains(where: { $0.nickname == RegisterUserInfo.shared.nickName && $0.isDisturbBanMode })
+            let isDisturbModeOn = userList.contains(where: { $0.nickname == UserDefaults.standard.string(forKey: "nickname") && $0.isDisturbBanMode })
             
             // 방해금지 모드일 때
             if isDisturbModeOn {
