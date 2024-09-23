@@ -37,9 +37,10 @@ class MainViewController: UIViewController, UISheetPresentationControllerDelegat
         return view
     }()
     
-    private lazy var soundButton : UIButton = {
+    private lazy var soundButton: UIButton = {
         let button = UIButton()
-        button.setImage(UIImage(named: "Volumeon"), for: .normal)
+        let volume = UserDefaults.standard.float(forKey: "volume", default: 50.0)
+        button.setImage(UIImage(named: volume == 0 ? "Volumeoff" : "Volumeon"), for: .normal)
         button.tintColor = .black
         button.backgroundColor = .white
         button.layer.cornerRadius = 18
@@ -116,6 +117,8 @@ class MainViewController: UIViewController, UISheetPresentationControllerDelegat
     }
     
     override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        updateSoundButtonImage()
         getMainpage()
         
     }
@@ -240,17 +243,24 @@ class MainViewController: UIViewController, UISheetPresentationControllerDelegat
         }
     }
     
-    @objc func soundclick(){
+    func updateSoundButtonImage() {
+        let volume = UserDefaults.standard.float(forKey: "volume", default: 50.0)
+        soundButton.setImage(UIImage(named: volume == 0 ? "Volumeoff" : "Volumeon"), for: .normal)
+    }
+    
+    @objc func soundclick() {
         let vc = AlarmSoundViewController()
         vc.volume = { [weak self] value in
-            self?.handleVolumeChange(value)
+            self?.handleVolumeChange(UserDefaults.standard.float(forKey: "volume"))
         }
         self.navigationController?.pushViewController(vc, animated: true)
     }
     
-    func handleVolumeChange(_ value: Int) {
-        if UserDefaults.standard.float(forKey: "volume") == 0 {
+    func handleVolumeChange(_ value: Float) {
+        if value == 0 {
             soundButton.setImage(UIImage(named: "Volumeoff"), for: .normal)
+        } else {
+            soundButton.setImage(UIImage(named: "Volumeon"), for: .normal)
         }
     }
     
@@ -328,7 +338,7 @@ extension MainViewController : UITableViewDelegate, UITableViewDataSource{
         cell.groupId = alarm.groupID
         
         cell.participantcode = alarm.participationCode
-
+        
         
         let dayLabels = [cell.MonLabel, cell.TueLabel, cell.WedLabel, cell.ThuLabel, cell.FriLabel, cell.SatLabel, cell.SunLabel]
         
@@ -364,7 +374,7 @@ extension MainViewController : UITableViewDelegate, UITableViewDataSource{
                         dayLabel.textColor = DesignSystemColor.Gray300.value
                     }
                     cell.disturb = true
-
+                    
                     
                 } else {
                     // 방해금지 모드가 아닐 경우
