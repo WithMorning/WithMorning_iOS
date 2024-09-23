@@ -209,15 +209,14 @@ class ProfileViewController : UIViewController, UIImagePickerControllerDelegate 
         APInetwork.postProfile(profileData: registerData) { result in
             LoadingIndicator.showLoading()
             switch result {
-            case .success(let data):
-                print("프로필 업로드 성공: \(data)")
-                
+            case .success(_):
                 UserDefaults.standard.set(nickname, forKey: "nickname")
                 
-                DispatchQueue.main.async {
-                    self.navigationController?.pushViewController(vc, animated: true)
-                }
                 LoadingIndicator.hideLoading()
+                
+                self.showToast(message: "회원가입이 완료되었습니다.")
+                
+                self.navigationController?.pushViewController(vc, animated: true)
                 
             case .failure(let error):
                 LoadingIndicator.hideLoading()
@@ -290,8 +289,10 @@ extension ProfileViewController : UITextFieldDelegate {
                 return true
             }
         }
-        guard textField.text!.count < 10 else { return false } // 10 글자로 제한
-        //        nickname = textField.text!
+        guard textField.text!.count < 10 else {
+            self.showToast(message: "최대 10자까지 입력해 주세요.")
+            return false } // 10 글자로 제한
+        
         return true
     }
 }

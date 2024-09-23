@@ -123,8 +123,12 @@ class RegisterViewController : UIViewController{
             case .success(let data):
                 print(data)
                 vc.phonenumber = self.phonenumber
-                self.navigationController?.pushViewController(vc, animated: true)
                 LoadingIndicator.hideLoading()
+                
+                self.showToast(message: "인증번호를 전송했습니다.")
+                
+                self.navigationController?.pushViewController(vc, animated: true)
+                
             case .failure(let error):
                 LoadingIndicator.hideLoading()
                 print(error.localizedDescription)

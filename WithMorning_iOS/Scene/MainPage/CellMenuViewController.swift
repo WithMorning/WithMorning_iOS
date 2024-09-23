@@ -135,6 +135,7 @@ class CellMenuViewController: UIViewController, AlterDelegate {
         self.dismiss(animated: true){
             UIPasteboard.general.string = self.participantCode
         }
+        showToast(message: "참여코드를 복사했습니다.")
     }
     
     @objc func editClicked(){

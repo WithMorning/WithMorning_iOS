@@ -145,8 +145,11 @@ class CertificateViewController : UIViewController{
             switch result{
             case .success(let data):
                 print(data)
-                self.navigationController?.pushViewController(vc, animated: true)
                 LoadingIndicator.hideLoading()
+                
+                self.showToast(message: "인증번호가 확인되었습니다.")
+                
+                self.navigationController?.pushViewController(vc, animated: true)
             case .failure(let error):
                 LoadingIndicator.hideLoading()
                 print(error.localizedDescription)

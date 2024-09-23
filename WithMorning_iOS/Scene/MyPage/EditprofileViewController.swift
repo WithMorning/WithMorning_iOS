@@ -185,13 +185,17 @@ class EditprofileViewController : UIViewController,UIImagePickerControllerDelega
                 UserDefaults.standard.set(self.nickname, forKey: "nickname")
                 RegisterUserInfo.shared.profileImage = image
                 
+                self.showToast(message: "프로필 수정이 완료되었습니다.")
+                
                 DispatchQueue.main.async {
                     self.navigationController?.popViewController(animated: true)
                 }
                 LoadingIndicator.hideLoading()
+                
             case .failure(let error):
                 LoadingIndicator.hideLoading()
-                print("프로필 등록 실패: \(error.localizedDescription)")    
+                self.showToast(message: "프로필 수정에 실패하였습니다.")
+                print("프로필 등록 실패: \(error.localizedDescription)")
             }
         }
     }

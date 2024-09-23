@@ -642,7 +642,7 @@ extension MakeAlarmViewController : UIPickerViewDelegate, UIPickerViewDataSource
     }
 }
 
-extension MakeAlarmViewController : UITextViewDelegate,UIGestureRecognizerDelegate{
+extension MakeAlarmViewController: UITextViewDelegate, UIGestureRecognizerDelegate {
     
     func textViewDidBeginEditing(_ textView: UITextView) {
         memoTextView.layer.borderWidth = 1
@@ -658,12 +658,25 @@ extension MakeAlarmViewController : UITextViewDelegate,UIGestureRecognizerDelega
         memoTextView.layer.borderWidth = 0
     }
     
-    func popGesture(){
+    func popGesture() {
         navigationController?.interactivePopGestureRecognizer?.delegate = self
         navigationController?.interactivePopGestureRecognizer?.isEnabled = true
     }
     
-    
+    func textView(_ textView: UITextView,
+                  shouldChangeTextIn range: NSRange,
+                  replacementText text: String) -> Bool {
+        
+        let currentText = memoTextView.text ?? ""
+        let newLength = currentText.count + text.count - range.length
+        
+        if newLength > 48 {
+            showToast(message: "메모는 48자 이하로 작성해주세요.")
+        }
+        
+        
+        return newLength <= 48
+    }
 }
 
 
