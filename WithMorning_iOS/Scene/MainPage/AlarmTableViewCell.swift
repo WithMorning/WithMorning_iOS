@@ -376,7 +376,7 @@ class AlarmTableViewCell : UITableViewCell, UISheetPresentationControllerDelegat
     
     //MARK: - API
     func patchDisturb(){
-        let data = DisturbMaindata(isDisturbBanMode: disturb)
+        let data = DisturbMaindata(isDisturbBanMode: !disturb)
         
         APInetwork.patchDisturb(groupId: self.groupId, DisturbData: data){ result in
             LoadingIndicator.showLoading()

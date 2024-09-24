@@ -33,7 +33,7 @@ enum Router : URLRequestConvertible{
         case .deletegrop(let groupId): return "/groups/\(groupId)"
         case .joingroup: return "/groups/join"
         case .postbedtime: return "/user/bedtime/alarm"
-        case .patchdisturb(let groupId, _): return "/groups/\(groupId)/disturb"
+        case .patchdisturb(let groupId, _): return "/user/\(groupId)/disturb"
         }
     }
     
