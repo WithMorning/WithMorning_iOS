@@ -157,3 +157,18 @@ struct DisturbResponse: Codable {
     let code: Int
     let message: String
 }
+
+//MARK: - 콕 찌르기
+struct prickRequest: Codable {
+    let userID: Int
+
+    enum CodingKeys: String, CodingKey {
+        case userID = "userId"
+    }
+}
+struct prickResponse: Codable {
+    let isSuccess: Bool
+    let code: Int
+    let message: String
+}
+

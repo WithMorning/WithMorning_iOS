@@ -131,6 +131,32 @@ class UserStateViewController : UIViewController{
     
     var userphoneNum: String = ""
     
+    func configureUserState(){
+        //여기에 전화번호 off일때 표시할거.
+    }
+    
+    var userId : Int = 0
+    
+    func prickUser(){
+        
+        let useridData = prickRequest(userID: userId)
+        
+        APInetwork.postprick(userId: useridData){ result in
+            LoadingIndicator.showLoading()
+            switch result{
+            case .success(let data):
+                print(data)
+                
+                LoadingIndicator.hideLoading()
+                self.showToast(message: "\(self.nicknameLabel.text ?? "") 콕찌르기성공")
+                
+            case .failure(let error):
+                print(error.localizedDescription)
+                LoadingIndicator.hideLoading()
+            }
+        }
+    }
+    
     //MARK: - @objc func
     @objc func callclick() {
         self.dismiss(animated: true, completion: {
@@ -143,8 +169,7 @@ class UserStateViewController : UIViewController{
     
     
     @objc func pickup(){
-        print(nicknameLabel.text ?? "","를 콕 찔찔러 깨움")
-        showToast(message:"번 클릭" )
+        prickUser()
     }
     
     @objc func doneclick(){

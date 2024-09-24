@@ -322,4 +322,50 @@ class Network{
             }
     }
     
+    //MARK: - 콕찌르기
+    func postprick(userId: prickRequest, completionHandler: @escaping (Result<prickResponse, Error>) -> Void){
+        
+        print("보내는 userId: \(userId)")
+
+        //        AF.request(Router.postprick(userId: userId), interceptor: AuthInterceptor())
+        
+        AF.request(Router.postprick(userId: userId))
+            .validate(statusCode: 200..<300)
+            .responseDecodable(of: prickResponse.self){ response in
+                switch response.result{
+                case .success(let data):
+                    print("⭐️\(userId)의 아이디를 가진 유저를 콕찔러버림ㅋㅋ")
+                    completionHandler(.success(data))
+                case .failure:
+                    if let data = response.data {
+                        do {
+                            let json = try JSONSerialization.jsonObject(with: data, options: []) as? [String: Any]
+                            print("- 실패 JSON 데이터: \(json ?? [:])")
+                            
+                            if let errorCode = json?["code"] as? Int, errorCode == 9104 {
+                                print("🚨 실패 - 엑세스 토큰 만료. 갱신 시도 중...")
+                                
+                                NewAccessToken.shared.newAccessToken { success in
+                                    if success {
+                                        // 엑세스 토큰 갱신 후 API 재시도
+                                        self.postprick(userId: userId, completionHandler: completionHandler)
+                                    } else {
+                                        completionHandler(.failure(NSError(domain: "NewAccessTokenErrorDomain", code: 0, userInfo: [NSLocalizedDescriptionKey: "새 엑세스 토큰 발급 실패"])))
+                                    }
+                                }
+                            } else {
+                                completionHandler(.failure(NSError(domain: "ServerErrorDomain", code: 0, userInfo: [NSLocalizedDescriptionKey: "서버에서 정의되지 않은 오류 발생"])))
+                            }
+                        } catch {
+                            print("- JSON 데이터 파싱 오류: \(error.localizedDescription)")
+                            completionHandler(.failure(error))
+                        }
+                    } else {
+                        completionHandler(.failure(NSError(domain: "ResponseErrorDomain", code: 0, userInfo: [NSLocalizedDescriptionKey: "응답 데이터 없음"])))
+                    }
+                }
+            }
+        
+    }
+    
 }

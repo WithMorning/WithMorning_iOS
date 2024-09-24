@@ -663,6 +663,7 @@ class AlarmTableViewCell : UITableViewCell, UISheetPresentationControllerDelegat
         let selectedUser = userData[indexPath.item]
         vc.nicknameLabel.text = selectedUser.nickname
         vc.userphoneNum = selectedUser.phone
+        vc.userId = selectedUser.userID
         
         // 유저 이미지 설정
         if let imageURLString = selectedUser.imageURL, !imageURLString.isEmpty, let url = URL(string: imageURLString) {
