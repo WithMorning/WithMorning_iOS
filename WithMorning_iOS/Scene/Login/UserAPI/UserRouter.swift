@@ -10,7 +10,7 @@ import Alamofire
 private let BaseURL = "https://withmorning.site/api"
 
 let Authorization1 =  "Bearer " +
-"eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiI2IiwiaWF0IjoxNzI2NjM0NTYxLCJleHAiOjE3MjcyMzkzNjF9.GpZ2ZBcLoDs4CBkRTHbzvPJ9tnsarE7FcyfFbTNoF80"
+"eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiI2IiwiaWF0IjoxNzI3MTUzODQzLCJleHAiOjE3Mjc3NTg2NDN9.orFXuQCBz3e3SaTSqXB9fDMXvh0C0QOWsCAxuDvpFwA"
 
 enum UserRouter : URLRequestConvertible{
     

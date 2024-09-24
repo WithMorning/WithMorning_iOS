@@ -47,9 +47,8 @@ class AlarmTableViewCell : UITableViewCell, UISheetPresentationControllerDelegat
     
     let toggleButton : UISwitch = {
         let toggle = UISwitch()
-        toggle.isOn = true
         toggle.onTintColor = DesignSystemColor.Orange500.value
-        toggle.addTarget(self, action: #selector(clicktoggle(sender:)), for: .touchUpInside)
+        toggle.addTarget(self, action: #selector(clicktoggle), for: .touchUpInside)
         return toggle
     }()
     
@@ -371,27 +370,32 @@ class AlarmTableViewCell : UITableViewCell, UISheetPresentationControllerDelegat
         }
         
     }
-    //지금 방해금지 모드 인지 아닌지 
+    //지금 방해금지 모드 인지 아닌지
     var disturb : Bool = false
     
     //MARK: - API
-    func patchDisturb(){
-        let data = DisturbMaindata(isDisturbBanMode: !disturb)
+    func patchDisturb(newDisturbMode: Bool) {
+        let data = DisturbMaindata(isDisturbBanMode: newDisturbMode)
         
-        APInetwork.patchDisturb(groupId: self.groupId, DisturbData: data){ result in
+        APInetwork.patchDisturb(groupId: self.groupId, DisturbData: data) { result in
             LoadingIndicator.showLoading()
             switch result {
-            case .success(let data):
-                print("\(self.groupId)방해금지모드는 \(self.disturb)")
+            case .success(_):
+                self.disturb = newDisturbMode
                 LoadingIndicator.hideLoading()
             case .failure(let error):
                 LoadingIndicator.hideLoading()
                 print(error.localizedDescription)
-                
             }
-            
         }
-        
+    }
+    
+    func configureCell(with alarm: GroupList, currentUserNickname: String) {
+        if let currentUser = alarm.userList?.first(where: { $0.nickname == currentUserNickname }) {
+            disturb = currentUser.isDisturbBanMode
+            toggleButton.isOn = !disturb
+            bottomView.isHidden = disturb
+        }
     }
     
     //MARK: - 멤버
@@ -552,9 +556,9 @@ class AlarmTableViewCell : UITableViewCell, UISheetPresentationControllerDelegat
     
     //MARK: - objc func
     
-    @objc func clicktoggle(sender : UISwitch){
-        patchDisturb()
-        toggleclicked()
+    @objc func clicktoggle() {
+        patchDisturb(newDisturbMode: !disturb)
+//        toggleclicked()
     }
     
     @objc func clickSetting(){
@@ -664,7 +668,7 @@ class AlarmTableViewCell : UITableViewCell, UISheetPresentationControllerDelegat
                 switch result {
                 case .success(let value):
                     print("이미지 로드 성공: \(value.source.url?.absoluteString ?? "")")
-                case .failure(let error):
+                case .failure( _):
                     vc.userImage.image = placeholderImage
                 }
             }

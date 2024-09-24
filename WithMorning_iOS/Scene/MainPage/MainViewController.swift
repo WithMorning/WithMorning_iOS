@@ -357,44 +357,46 @@ extension MainViewController : UITableViewDelegate, UITableViewDataSource{
         
         //알람 삭제 후 실행되는 클로저
         cell.onAlarmDelete = { [weak self] in
-            self?.getMainpage()
+//            self?.getMainpage()
+            self?.AlarmTableView.reloadData()
             
         }
         
+        cell.configureCell(with: alarm, currentUserNickname: UserDefaults.standard.string(forKey: "nickname") ?? "")
+        
         // 현재 사용자를 찾고, 방해금지 모드 여부에 따라 토글 설정
-        if let userList = alarm.userList {
-            if let currentUser = userList.first(where: { $0.nickname == UserDefaults.standard.string(forKey: "nickname") }) {
-                
-                cell.bottomView.isHidden = currentUser.isDisturbBanMode
-                
-                if currentUser.isDisturbBanMode == true {
-                    // 방해금지 모드일 경우
-                    print("Group ID: \(cell.groupId),\(currentUser.nickname), 방해금지모드: \(currentUser.isDisturbBanMode)")
-                    
-                    cell.toggleButton.isOn = false
-                    
-                    for dayLabel in dayLabels {
-                        dayLabel.backgroundColor = DesignSystemColor.Gray100.value
-                        dayLabel.textColor = DesignSystemColor.Gray300.value
-                    }
-                    
-                    cell.disturb = currentUser.isDisturbBanMode
-                    
-                    
-                } else {
-                    // 방해금지 모드가 아닐 경우
-                    print("Group ID: \(cell.groupId),\(currentUser.nickname), 방해금지모드: \(currentUser.isDisturbBanMode)")
-                    cell.toggleButton.isOn = true
-                    cell.disturb = false
-                    
-                }
-            }
-        }
+//        if let userList = alarm.userList {
+//            if let currentUser = userList.first(where: { $0.nickname == UserDefaults.standard.string(forKey: "nickname") }) {
+//                
+//                cell.bottomView.isHidden = currentUser.isDisturbBanMode
+//                
+//                if currentUser.isDisturbBanMode == true {
+//                    // 방해금지 모드일 경우
+//                    print("Group ID: \(cell.groupId),\(currentUser.nickname), 방해금지모드: \(currentUser.isDisturbBanMode)")
+//                    
+//                    cell.toggleButton.isOn = false
+//                    
+//                    for dayLabel in dayLabels {
+//                        dayLabel.backgroundColor = DesignSystemColor.Gray100.value
+//                        dayLabel.textColor = DesignSystemColor.Gray300.value
+//                    }
+//                    
+//                    cell.disturb = currentUser.isDisturbBanMode
+//                    
+//                    
+//                } else {
+//                    // 방해금지 모드가 아닐 경우
+//                    print("Group ID: \(cell.groupId),\(currentUser.nickname), 방해금지모드: \(currentUser.isDisturbBanMode)")
+//                    cell.toggleButton.isOn = true
+//                    cell.disturb = false
+//                    
+//                }
+//            }
+//        }
         
         cell.toggleclicked = {
             self.getMainpage()
             self.AlarmTableView.reloadRows(at: [indexPath], with: .automatic)
-            cell.bottomView.isHidden = !cell.toggleButton.isOn
         }
         
         return cell
