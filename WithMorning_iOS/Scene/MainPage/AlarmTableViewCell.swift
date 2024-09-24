@@ -360,7 +360,7 @@ class AlarmTableViewCell : UITableViewCell, UISheetPresentationControllerDelegat
         }
         
         memoView.snp.makeConstraints {
-            $0.top.equalTo(memberCollectionView.snp.bottom).offset(12)
+            $0.top.equalTo(memberCollectionView.snp.bottom)
             $0.leading.trailing.equalToSuperview().inset(20)
         }
         
@@ -370,10 +370,11 @@ class AlarmTableViewCell : UITableViewCell, UISheetPresentationControllerDelegat
         }
         
     }
-    //지금 방해금지 모드 인지 아닌지
+    
+    //MARK: - 방해금지 모드 API
+    
     var disturb : Bool = false
     
-    //MARK: - API
     func patchDisturb(newDisturbMode: Bool) {
         let data = DisturbMaindata(isDisturbBanMode: newDisturbMode)
         
@@ -382,7 +383,9 @@ class AlarmTableViewCell : UITableViewCell, UISheetPresentationControllerDelegat
             switch result {
             case .success(_):
                 self.disturb = newDisturbMode
+                self.toggleclicked()
                 LoadingIndicator.hideLoading()
+                
             case .failure(let error):
                 LoadingIndicator.hideLoading()
                 print(error.localizedDescription)
@@ -392,9 +395,15 @@ class AlarmTableViewCell : UITableViewCell, UISheetPresentationControllerDelegat
     
     func configureCell(with alarm: GroupList, currentUserNickname: String) {
         if let currentUser = alarm.userList?.first(where: { $0.nickname == currentUserNickname }) {
+            
             disturb = currentUser.isDisturbBanMode
             toggleButton.isOn = !disturb
-            bottomView.isHidden = disturb
+            self.bottomView.isHidden = self.disturb
+            
+            DispatchQueue.main.async {
+                self.bottomView.isHidden = self.disturb
+            }
+            
         }
     }
     
@@ -558,7 +567,6 @@ class AlarmTableViewCell : UITableViewCell, UISheetPresentationControllerDelegat
     
     @objc func clicktoggle() {
         patchDisturb(newDisturbMode: !disturb)
-//        toggleclicked()
     }
     
     @objc func clickSetting(){
@@ -718,6 +726,15 @@ class memberCollectioViewCell: UICollectionViewCell {
         return view
     }()
     
+    lazy var memberLabel: UILabel = {
+        let label = UILabel()
+        label.textColor = .black
+        label.font = DesignSystemFont.Pretendard_SemiBold12.value
+        label.numberOfLines = 0
+        label.textAlignment = .center
+        return label
+    }()
+    
     private lazy var meView : UIView = {
         let view = UIView()
         view.backgroundColor = DesignSystemColor.Orange500.value
@@ -736,8 +753,16 @@ class memberCollectioViewCell: UICollectionViewCell {
     }()
     
     
-    
     //MARK: - 자는중 일 경우 view
+    
+    private lazy var sleepView : UIView = {
+        let view = UIView()
+        view.backgroundColor = UIColor(red: 0, green: 0, blue: 0, alpha: 0.4)
+        view.clipsToBounds = true
+        view.layer.cornerRadius = 31
+        view.addSubview(sleepLabel)
+        return view
+    }()
     
     private lazy var sleepLabel : UILabel = {
         let label = UILabel()
@@ -748,14 +773,6 @@ class memberCollectioViewCell: UICollectionViewCell {
     }()
     
     
-    lazy var memberLabel: UILabel = {
-        let label = UILabel()
-        label.textColor = .black
-        label.font = DesignSystemFont.Pretendard_SemiBold12.value
-        label.numberOfLines = 0
-        label.textAlignment = .center
-        return label
-    }()
     
     override init(frame: CGRect) {
         super.init(frame: frame)
@@ -767,7 +784,7 @@ class memberCollectioViewCell: UICollectionViewCell {
     }
     
     func setUI() {
-        contentView.addSubviews(memberView, memberLabel, meView, sleepLabel)
+        contentView.addSubviews(memberView, memberLabel, meView, sleepView)
         
         memberView.snp.makeConstraints {
             $0.top.equalToSuperview().inset(1)
@@ -786,10 +803,6 @@ class memberCollectioViewCell: UICollectionViewCell {
             $0.bottom.lessThanOrEqualToSuperview()
         }
         
-        sleepLabel.snp.makeConstraints{
-            $0.center.equalTo(memberIMG)
-        }
-        
         meView.snp.makeConstraints{
             $0.height.equalTo(14)
             $0.width.equalTo(20)
@@ -799,6 +812,17 @@ class memberCollectioViewCell: UICollectionViewCell {
         meLabel.snp.makeConstraints{
             $0.center.equalToSuperview()
         }
+        
+        sleepView.snp.makeConstraints{
+            $0.height.width.equalTo(62)
+            $0.center.equalTo(memberView)
+        }
+        
+        sleepLabel.snp.makeConstraints{
+            $0.center.equalToSuperview()
+        }
+        
+        
     }
     
     //MARK: - 닉네임, 유저 스테이트 설정
@@ -830,6 +854,8 @@ class memberCollectioViewCell: UICollectionViewCell {
             memberView.backgroundColor = DesignSystemColor.Gray150.value
             memberLabel.textColor = DesignSystemColor.Gray500.value
             meView.backgroundColor = DesignSystemColor.Gray150.value
+            
+            
         }else{
             memberView.backgroundColor = DesignSystemColor.Orange500.value
             meView.backgroundColor = DesignSystemColor.Orange500.value
@@ -837,10 +863,10 @@ class memberCollectioViewCell: UICollectionViewCell {
         
         //일어났나
         if isWakeup == true {
-            sleepLabel.isHidden = false
+            sleepView.isHidden = false
             
         } else {
-            sleepLabel.isHidden = true
+            sleepView.isHidden = true
         }
         
         
