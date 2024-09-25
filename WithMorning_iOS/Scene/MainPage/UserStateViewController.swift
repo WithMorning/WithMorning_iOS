@@ -32,7 +32,6 @@ class UserStateViewController : UIViewController{
     
     lazy var subLabel : UILabel = {
         let label = UILabel()
-        label.text = "전화를 걸든 콕찔러 깨우기를 하던"
         label.font = DesignSystemFont.Pretendard_Medium12.value
         return label
     }()
@@ -86,6 +85,7 @@ class UserStateViewController : UIViewController{
         super.viewDidLoad()
         super.view.backgroundColor = .white
         SetUI()
+        configureUserState()
     }
     
     func SetUI(){
@@ -134,10 +134,11 @@ class UserStateViewController : UIViewController{
     
     func configureUserState(){
         
-        if userphoneNum != "" {
+        if isagree == true {
             subLabel.text = "전화를 걸어 친구를 깨워주세요."
         }else{
             subLabel.text = "콕 찔러 깨우기를 선호하는 유저입니다."
+            callButton.backgroundColor = DesignSystemColor.Gray300.value
         }
     }
     
@@ -165,13 +166,17 @@ class UserStateViewController : UIViewController{
     
     //MARK: - @objc func
     @objc func callclick() {
-        self.dismiss(animated: true, completion: {
-            if let phoneURL = URL(string: "tel://\(self.userphoneNum)"), UIApplication.shared.canOpenURL(phoneURL) {
-                UIApplication.shared.open(phoneURL, options: [:], completionHandler: nil)
-            }
-        })
+        if isagree == true{
+            self.dismiss(animated: true, completion: {
+                if let phoneURL = URL(string: "tel://\(self.userphoneNum)"), UIApplication.shared.canOpenURL(phoneURL) {
+                    UIApplication.shared.open(phoneURL, options: [:], completionHandler: nil)
+                }
+            })
+        }else{
+            return
+        }
     }
-
+    
     
     
     @objc func pickup(){

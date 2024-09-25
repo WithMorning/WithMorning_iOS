@@ -664,7 +664,7 @@ class AlarmTableViewCell : UITableViewCell, UISheetPresentationControllerDelegat
         vc.nicknameLabel.text = selectedUser.nickname
         vc.userphoneNum = selectedUser.phone
         vc.userId = selectedUser.userID
-        
+        vc.isagree = selectedUser.isAgree
         // 유저 이미지 설정
         if let imageURLString = selectedUser.imageURL, !imageURLString.isEmpty, let url = URL(string: imageURLString) {
             // Kingfisher를 사용하여 이미지 다운로드 및 둥근 모서리 적용 처리
