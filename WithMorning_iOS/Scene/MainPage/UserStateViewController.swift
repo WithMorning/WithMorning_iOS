@@ -130,9 +130,9 @@ class UserStateViewController : UIViewController{
     }
     
     var userphoneNum: String = ""
+    var isagree : Bool = false
     
     func configureUserState(){
-        
         
         if userphoneNum != "" {
             subLabel.text = "전화를 걸어 친구를 깨워주세요."

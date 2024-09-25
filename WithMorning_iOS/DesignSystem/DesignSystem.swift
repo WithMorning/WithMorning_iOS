@@ -104,6 +104,7 @@ enum DesignSystemFont {
     case Pretendard_Bold20
     case Pretendard_Bold14
     case Pretendard_Bold16
+    case Pretendard_Bold70
     case Pretendard_SemiBold10
     case Pretendard_SemiBold12
     case Pretendard_SemiBold14
@@ -127,6 +128,8 @@ extension DesignSystemFont {
             return UIFont.pretendard(.bold, size: 20)
         case .Pretendard_Bold14:
             return UIFont.pretendard(.bold, size: 14)
+        case .Pretendard_Bold70:
+            return UIFont.pretendard(.bold, size: 70)
         case .Pretendard_SemiBold10:
             return UIFont.pretendard(.semiBold, size: 10)
         case .Pretendard_SemiBold12:
@@ -162,6 +165,8 @@ extension DesignSystemFont {
             return 1.19
         case .Pretendard_Bold14:
             return 1.19
+        case .Pretendard_Bold70:
+            return 1.17
         case .Pretendard_SemiBold10:
             return 1.17
         case .Pretendard_SemiBold12:
