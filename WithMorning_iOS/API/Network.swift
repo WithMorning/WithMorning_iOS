@@ -327,7 +327,7 @@ class Network{
         
         print("보내는 userId: \(userId)")
 
-        //        AF.request(Router.postprick(userId: userId), interceptor: AuthInterceptor())
+        //AF.request(Router.postprick(userId: userId), interceptor: AuthInterceptor())
         
         AF.request(Router.postprick(userId: userId))
             .validate(statusCode: 200..<300)

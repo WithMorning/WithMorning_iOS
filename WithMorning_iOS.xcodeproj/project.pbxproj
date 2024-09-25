@@ -36,6 +36,7 @@
 		D16F5FD12BC65671006640F9 /* Network.swift in Sources */ = {isa = PBXBuildFile; fileRef = D16F5FD02BC65671006640F9 /* Network.swift */; };
 		D16F5FD32BC65679006640F9 /* Model.swift in Sources */ = {isa = PBXBuildFile; fileRef = D16F5FD22BC65679006640F9 /* Model.swift */; };
 		D16F5FD52BC65680006640F9 /* Router.swift in Sources */ = {isa = PBXBuildFile; fileRef = D16F5FD42BC65680006640F9 /* Router.swift */; };
+		D175A2142CA3C83E0001F99C /* AlarmViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D175A2132CA3C8300001F99C /* AlarmViewController.swift */; };
 		D1773F892BC988AB005C82FA /* UIFont_Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = D1773F882BC988AB005C82FA /* UIFont_Extension.swift */; };
 		D179E6332CA104C500800FEC /* LoadingIndicator.swift in Sources */ = {isa = PBXBuildFile; fileRef = D179E6322CA104C500800FEC /* LoadingIndicator.swift */; };
 		D17AC1A12C98019A007ADB3D /* IntroFirstViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D17AC1A02C98019A007ADB3D /* IntroFirstViewController.swift */; };
@@ -114,6 +115,7 @@
 		D16F5FD02BC65671006640F9 /* Network.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Network.swift; sourceTree = "<group>"; };
 		D16F5FD22BC65679006640F9 /* Model.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Model.swift; sourceTree = "<group>"; };
 		D16F5FD42BC65680006640F9 /* Router.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Router.swift; sourceTree = "<group>"; };
+		D175A2132CA3C8300001F99C /* AlarmViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AlarmViewController.swift; sourceTree = "<group>"; };
 		D1773F882BC988AB005C82FA /* UIFont_Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIFont_Extension.swift; sourceTree = "<group>"; };
 		D179E6322CA104C500800FEC /* LoadingIndicator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoadingIndicator.swift; sourceTree = "<group>"; };
 		D17AC1A02C98019A007ADB3D /* IntroFirstViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IntroFirstViewController.swift; sourceTree = "<group>"; };
@@ -386,6 +388,7 @@
 		D1E1DF802C3ACFE7001A132F /* AlarmPage */ = {
 			isa = PBXGroup;
 			children = (
+				D175A2132CA3C8300001F99C /* AlarmViewController.swift */,
 				D19A9CB12C26901100748CE8 /* MakeAlarmViewController.swift */,
 				D1E1DF812C3AD04F001A132F /* WeekChoiceViewController.swift */,
 			);
@@ -596,6 +599,7 @@
 				D129AC772C75A99C00C83DB9 /* PushNotificationHelper.swift in Sources */,
 				D16F5FD52BC65680006640F9 /* Router.swift in Sources */,
 				D13B6B802C4FAB2B00D963DC /* CertificateViewController.swift in Sources */,
+				D175A2142CA3C83E0001F99C /* AlarmViewController.swift in Sources */,
 				D15D60C72BCA8BC3009C0874 /* AlarmTableViewCell.swift in Sources */,
 				D109BC8C2C43B23A005E075F /* SleepTimeViewController.swift in Sources */,
 				D129AAF12C2D4C0800F995D2 /* CellMenuViewController.swift in Sources */,

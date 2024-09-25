@@ -132,7 +132,13 @@ class UserStateViewController : UIViewController{
     var userphoneNum: String = ""
     
     func configureUserState(){
-        //여기에 전화번호 off일때 표시할거.
+        
+        
+        if userphoneNum != "" {
+            subLabel.text = "전화를 걸어 친구를 깨워주세요."
+        }else{
+            subLabel.text = "콕 찔러 깨우기를 선호하는 유저입니다."
+        }
     }
     
     var userId : Int = 0
@@ -148,7 +154,7 @@ class UserStateViewController : UIViewController{
                 print(data)
                 
                 LoadingIndicator.hideLoading()
-                self.showToast(message: "\(self.nicknameLabel.text ?? "") 콕찌르기성공")
+                self.showToast(message: "\(self.nicknameLabel.text ?? "") 님을 콕! 찔렀어요.")
                 
             case .failure(let error):
                 print(error.localizedDescription)
