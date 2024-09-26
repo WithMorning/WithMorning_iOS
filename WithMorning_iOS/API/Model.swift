@@ -171,4 +171,9 @@ struct prickResponse: Codable {
     let code: Int
     let message: String
 }
-
+//MARK: - 기상상태로 변경
+struct wakeupResponse: Codable {
+    let isSuccess: Bool
+    let code: Int
+    let message: String
+}

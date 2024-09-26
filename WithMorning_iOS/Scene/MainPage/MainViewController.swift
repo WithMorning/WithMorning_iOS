@@ -317,6 +317,12 @@ class MainViewController: UIViewController, UISheetPresentationControllerDelegat
         }
         
     }
+    
+    func checkIfCurrentUserIsLeader(userList: [UserList], currentUserNickname: String) -> Bool {
+        // UserList에서 첫 번째 유저의 닉네임과 현재 유저의 닉네임을 비교
+        guard let leader = userList.first else { return false }
+        return leader.nickname == currentUserNickname
+    }
 }
 
 extension MainViewController : UITableViewDelegate, UITableViewDataSource{
@@ -371,6 +377,16 @@ extension MainViewController : UITableViewDelegate, UITableViewDataSource{
         }
         
         cell.configureCell(with: alarm, currentUserNickname: UserDefaults.standard.string(forKey: "nickname") ?? "")
+        
+        let currentUserNickname = UserDefaults.standard.string(forKey: "nickname") ?? ""
+        
+        let isLeader = checkIfCurrentUserIsLeader(userList: alarm.userList ?? [], currentUserNickname: currentUserNickname)
+           
+           if isLeader {
+               cell.isLeader = true
+           } else {
+               cell.isLeader = false
+           }
         
         
         

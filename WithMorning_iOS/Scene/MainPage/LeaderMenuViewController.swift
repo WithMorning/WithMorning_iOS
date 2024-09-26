@@ -1,5 +1,5 @@
 //
-//  CellMenuViewController.swift
+//  LeaderMenuViewController.swift
 //  WithMorning_iOS
 //
 //  Created by 안세훈 on 6/27/24.
@@ -10,10 +10,10 @@ import SnapKit
 import Then
 import Alamofire
 
-class CellMenuViewController: UIViewController, AlterDelegate {
+class LeaderMenuViewController: UIViewController, AlterDelegate {
     
 //MARK: - dismiss closure
-    var Menuclicked : ( () -> Void )?
+    var menuClicked: (() -> Void)?
     var groupId : Int?
     var participantCode : String?
     
@@ -145,8 +145,8 @@ class CellMenuViewController: UIViewController, AlterDelegate {
     @objc func deleteClicked(){
         print("삭제하기 버튼")
         self.dismiss(animated: true){
-            guard let Menuclicked = self.Menuclicked else { return }
-            Menuclicked()
+            guard let menuClicked = self.menuClicked else { return }
+            menuClicked()
             print("Cellmenu의 groupId",self.groupId as Any)
         }
         
@@ -177,22 +177,22 @@ class CellMenuViewController: UIViewController, AlterDelegate {
 //Preview code
 #if DEBUG
 import SwiftUI
-struct CellMenuViewControllerRepresentable: UIViewControllerRepresentable {
+struct LeaderMenuViewControllerRepresentable: UIViewControllerRepresentable {
     
     func updateUIViewController(_ uiView: UIViewController,context: Context) {
         // leave this empty
     }
     @available(iOS 13.0.0, *)
     func makeUIViewController(context: Context) -> UIViewController{
-        CellMenuViewController()
+        LeaderMenuViewController()
     }
 }
 @available(iOS 13.0, *)
-struct CellMenuViewControllerRepresentable_PreviewProvider: PreviewProvider {
+struct LeaderMenuViewControllerRepresentable_PreviewProvider: PreviewProvider {
     static var previews: some View {
         Group {
             if #available(iOS 14.0, *) {
-                CellMenuViewControllerRepresentable()
+                LeaderMenuViewControllerRepresentable()
                     .ignoresSafeArea()
                     .previewDisplayName(/*@START_MENU_TOKEN@*/"Preview"/*@END_MENU_TOKEN@*/)
                     .previewDevice(PreviewDevice(rawValue: "iPhone se3"))

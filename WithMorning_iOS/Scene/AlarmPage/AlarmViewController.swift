@@ -12,6 +12,8 @@ import Then
 
 class AlarmViewController: UIViewController {
     
+    let APInetwork = Network.shared
+    
     //MARK: - 스택뷰
     private lazy var timeStackView: UIStackView = {
         let stackView = UIStackView()
@@ -150,6 +152,23 @@ class AlarmViewController: UIViewController {
         dayLabel.text = dateFormatter.string(from: date)
         
     }
+    
+    //MARK: - 일어나기 API
+    var groupId : Int = 0
+    
+    func Wakeup(){
+        APInetwork.patchWakeup(groupId: groupId){ result in
+            switch result{
+            case .success(let data):
+                print(data)
+            case .failure(let error):
+                print(error.localizedDescription)
+            }
+        }
+    }
+    
+    
+
     
     //MARK: - @objc func
     @objc func turnoffalarm(){

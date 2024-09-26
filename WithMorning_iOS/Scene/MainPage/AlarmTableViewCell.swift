@@ -569,47 +569,77 @@ class AlarmTableViewCell : UITableViewCell, UISheetPresentationControllerDelegat
         patchDisturb(newDisturbMode: !disturb)
     }
     
-    @objc func clickSetting(){
+    var isLeader : Bool = false
+    
+    @objc func clickSetting() {
         guard let parentViewController = self.parentVC else {
             return
         }
         
-        let vc = CellMenuViewController()
-        vc.groupId = self.groupId
-        vc.participantCode = self.participantcode
+        var vc: UIViewController
         
-        vc.modalPresentationStyle = .formSheet
-        parentViewController.present(vc, animated: true)
-        
-        if let vc = vc.sheetPresentationController{
-            if #available(iOS 16.0, *) {
-                vc.detents = [.custom { context in
-                    return 260
-                }]
-                
-                vc.delegate = self
-                vc.prefersGrabberVisible = false
-                vc.preferredCornerRadius = 16
-            }
-        }
-        
-        vc.Menuclicked = { [weak self] in
-            guard let self = self else { return }
-            vc.dismiss(animated: true) {
-                let alterVC = AlterUIView(alterType: .deleteAlarm)
-                alterVC.groupId = self.groupId
-                alterVC.modalPresentationStyle = .overFullScreen
-                alterVC.modalTransitionStyle = .crossDissolve
-                
-                // AlterUIView의 confirm 클로저 설정
-                alterVC.confirmAction = { [weak self] in
-                    self?.onAlarmDelete?()
+        if isLeader {
+            
+            let leaderVC = LeaderMenuViewController()
+            leaderVC.groupId = self.groupId
+            leaderVC.participantCode = self.participantcode
+            vc = leaderVC
+            print("리더 메뉴")
+            
+            leaderVC.menuClicked = { [weak self] in
+                guard let self = self else { return }
+                vc.dismiss(animated: true) {
+                    // AlterUIView 알람 삭제 설정
+                    let alterVC = AlterUIView(alterType: .deleteAlarm)
+                    alterVC.groupId = self.groupId
+                    alterVC.modalPresentationStyle = .overFullScreen
+                    alterVC.modalTransitionStyle = .crossDissolve
+                    
+                    alterVC.confirmAction = { [weak self] in
+                        self?.onAlarmDelete?()
+                    }
+                    
+                    parentViewController.present(alterVC, animated: true, completion: nil)
                 }
-                
-                parentViewController.present(alterVC, animated: true, completion: nil)
             }
+            
+            leaderVC.modalPresentationStyle = .formSheet
+            parentViewController.present(vc, animated: true)
+            
+            if let sheetVC = leaderVC.sheetPresentationController {
+                if #available(iOS 16.0, *) {
+                    sheetVC.detents = [.custom { context in return 260 }]
+                    sheetVC.delegate = self
+                    sheetVC.prefersGrabberVisible = false
+                    sheetVC.preferredCornerRadius = 16
+                }
+            }
+            
+        } else {
+            // 방장이 아닐 때 FollowerMenuViewController 생성
+            let followerVC = FollowerMenuViewController()
+            followerVC.groupId = self.groupId
+            followerVC.participantCode = self.participantcode
+            vc = followerVC
+            print("팔로워 메뉴")
+            
+            followerVC.menuClicked = { [weak self] in
+                
+            }
+            
+            followerVC.modalPresentationStyle = .formSheet
+            parentViewController.present(vc, animated: true)
+            
+            if let sheetVC = followerVC.sheetPresentationController {
+                if #available(iOS 16.0, *) {
+                    sheetVC.detents = [.custom { context in return 232 }]
+                    sheetVC.delegate = self
+                    sheetVC.prefersGrabberVisible = false
+                    sheetVC.preferredCornerRadius = 16
+                }
+            }
+
         }
-        
         
     }
     
