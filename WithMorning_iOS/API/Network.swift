@@ -144,9 +144,9 @@ class Network{
     }
     
     //MARK: - 알람(그룹)삭제
-    func deleteGroup(groupId : Int,completionHandler: @escaping (Result<Deletegroup, Error>) -> Void){
+    func deleteGroup(groupId : Int, completionHandler: @escaping (Result<Deletegroup, Error>) -> Void){
         //        AF.request(Router.deletegrop(groupId: groupId), interceptor: AuthInterceptor())
-        AF.request(Router.deletegrop(groupId: groupId))
+        AF.request(Router.deletegroup(groupId: groupId))
             .validate(statusCode: 200..<300)
             .responseDecodable(of: Deletegroup.self){(response: DataResponse<Deletegroup, AFError>) in
                 switch response.result {
@@ -366,7 +366,7 @@ class Network{
             }
     }
     
-    
+    //MARK: - 기상
     func patchWakeup(groupId: Int, completionHandler: @escaping (Result<wakeupResponse, Error>) -> Void){
         
         print("보내는 groupId: \(groupId)")
@@ -406,8 +406,93 @@ class Network{
                     }
                 }
             }
+    }
+    //MARK: - 알람 나가기
+    func deleteleaveGroup(groupId: Int, completionHandler: @escaping (Result<leavegroupResponse, Error>) -> Void) {
         
+        print("보내는 groupId: \(groupId)")
         
+        AF.request(Router.deleteleavegroup(groupId: groupId)).validate(statusCode: 200..<300)
+            .responseDecodable(of: leavegroupResponse.self){response in
+                switch response.result{
+                case .success(let data):
+                    completionHandler(.success(data))
+                    
+                case .failure:
+                    if let data = response.data {
+                        do {
+                            let json = try JSONSerialization.jsonObject(with: data, options: []) as? [String: Any]
+                            print("- 실패 JSON 데이터: \(json ?? [:])")
+                            
+                            if let errorCode = json?["code"] as? Int, errorCode == 9104 {
+                                print("🚨 실패 - 엑세스 토큰 만료. 갱신 시도 중...")
+                                
+                                NewAccessToken.shared.newAccessToken { success in
+                                    if success {
+                                        // 엑세스 토큰 갱신 후 API 재시도
+                                        self.deleteleaveGroup(groupId: groupId, completionHandler: completionHandler)
+                                        
+                                    } else {
+                                        completionHandler(.failure(NSError(domain: "NewAccessTokenErrorDomain", code: 0, userInfo: [NSLocalizedDescriptionKey: "새 엑세스 토큰 발급 실패"])))
+                                    }
+                                }
+                            } else {
+                                completionHandler(.failure(NSError(domain: "ServerErrorDomain", code: 0, userInfo: [NSLocalizedDescriptionKey: "서버에서 정의되지 않은 오류 발생"])))
+                            }
+                        } catch {
+                            print("- JSON 데이터 파싱 오류: \(error.localizedDescription)")
+                            completionHandler(.failure(error))
+                        }
+                    } else {
+                        completionHandler(.failure(NSError(domain: "ResponseErrorDomain", code: 0, userInfo: [NSLocalizedDescriptionKey: "응답 데이터 없음"])))
+                    }
+                }
+                
+            }
         
     }
+    
+    //MARK: - 그룹 수정
+    func patcheditGroup(groupId: Int, completionHandler: @escaping (Result<editgroupResponse, Error>) -> Void){
+        print("보내는 groupId: \(groupId)")
+        AF.request(Router.patcheditgroup(groupId: groupId)).validate(statusCode: 200..<300)
+            .responseDecodable(of: editgroupResponse.self){response in
+                switch response.result{
+                case .success(let data):
+                    completionHandler(.success(data))
+                case .failure:
+                    if let data = response.data {
+                        do {
+                            let json = try JSONSerialization.jsonObject(with: data, options: []) as? [String: Any]
+                            print("- 실패 JSON 데이터: \(json ?? [:])")
+                            
+                            if let errorCode = json?["code"] as? Int, errorCode == 9104 {
+                                print("🚨 실패 - 엑세스 토큰 만료. 갱신 시도 중...")
+                                
+                                NewAccessToken.shared.newAccessToken { success in
+                                    if success {
+                                        // 엑세스 토큰 갱신 후 API 재시도
+                                        self.patcheditGroup(groupId: groupId, completionHandler: completionHandler)
+                                        
+                                    } else {
+                                        completionHandler(.failure(NSError(domain: "NewAccessTokenErrorDomain", code: 0, userInfo: [NSLocalizedDescriptionKey: "새 엑세스 토큰 발급 실패"])))
+                                    }
+                                }
+                            } else {
+                                completionHandler(.failure(NSError(domain: "ServerErrorDomain", code: 0, userInfo: [NSLocalizedDescriptionKey: "서버에서 정의되지 않은 오류 발생"])))
+                            }
+                        } catch {
+                            print("- JSON 데이터 파싱 오류: \(error.localizedDescription)")
+                            completionHandler(.failure(error))
+                        }
+                    } else {
+                        completionHandler(.failure(NSError(domain: "ResponseErrorDomain", code: 0, userInfo: [NSLocalizedDescriptionKey: "응답 데이터 없음"])))
+                    }
+                    
+                }
+                
+            }
+    }
+    
+    
 }

@@ -41,7 +41,7 @@ class FollowerMenuViewController: UIViewController, AlterDelegate {
         button.titleLabel?.font = DesignSystemFont.Pretendard_SemiBold16.value
         button.setTitleColor(.black, for: .normal)
         button.titleLabel?.textAlignment = .center
-        button.addTarget(self, action: #selector(deleteClicked), for: .touchUpInside)
+        button.addTarget(self, action: #selector(leavegroup), for: .touchUpInside)
         return button
     }()
     
@@ -111,18 +111,13 @@ class FollowerMenuViewController: UIViewController, AlterDelegate {
         showToast(message: "참여코드를 복사했습니다.")
     }
     
-    @objc func editClicked(){
-        print("수정하기 버튼")
-    }
-    
-    @objc func deleteClicked(){
-        print("삭제하기 버튼")
-        self.dismiss(animated: true){
+    @objc func leavegroup() {
+        print("그룹 나가기 버튼 클릭")
+        self.dismiss(animated: true) {
             guard let menuClicked = self.menuClicked else { return }
             menuClicked()
-            print("Cellmenu의 groupId",self.groupId as Any)
+            print("Cellmenu의 groupId", self.groupId as Any)
         }
-        
     }
     
     @objc func closeClicked(){

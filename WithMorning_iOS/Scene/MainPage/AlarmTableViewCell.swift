@@ -19,8 +19,12 @@ class AlarmTableViewCell : UITableViewCell, UISheetPresentationControllerDelegat
     //MARK: - closure
     var toggleclicked : ( () -> Void ) = {}
     var moreclicked : ( () -> Void) = {}
+    var onEditAlarm: ((Int) -> Void)?
+    
     //알람삭제후 실행되는 클로저
     var onAlarmDelete: (() -> Void)?
+    //알람나가기 누른 후 실행되는 클로저
+    var onAlarmLeave: (()->Void)?
     
     var APInetwork = Network.shared
     
@@ -579,7 +583,6 @@ class AlarmTableViewCell : UITableViewCell, UISheetPresentationControllerDelegat
         var vc: UIViewController
         
         if isLeader {
-            
             let leaderVC = LeaderMenuViewController()
             leaderVC.groupId = self.groupId
             leaderVC.participantCode = self.participantcode
@@ -603,6 +606,17 @@ class AlarmTableViewCell : UITableViewCell, UISheetPresentationControllerDelegat
                 }
             }
             
+            leaderVC.onEdit = { [weak self] in
+                guard let self = self else { return }
+                vc.dismiss(animated: true) {
+                    let makeVC = MakeAlarmViewController()
+                    makeVC.groupId = self.groupId
+                    
+                    parentViewController.navigationController?.pushViewController(makeVC, animated: true)
+                }
+            }
+            
+            
             leaderVC.modalPresentationStyle = .formSheet
             parentViewController.present(vc, animated: true)
             
@@ -624,7 +638,19 @@ class AlarmTableViewCell : UITableViewCell, UISheetPresentationControllerDelegat
             print("팔로워 메뉴")
             
             followerVC.menuClicked = { [weak self] in
-                
+                guard let self = self else { return }
+                vc.dismiss(animated: true) {
+                    let alterVC = AlterUIView(alterType: .outGroup)
+                    alterVC.groupId = self.groupId
+                    alterVC.modalPresentationStyle = .overFullScreen
+                    alterVC.modalTransitionStyle = .crossDissolve
+                    
+                    alterVC.confirmAction = { [weak self] in
+                        self?.onAlarmLeave?()
+                    }
+                    
+                    parentViewController.present(alterVC, animated: true, completion: nil)
+                }
             }
             
             followerVC.modalPresentationStyle = .formSheet
@@ -632,13 +658,13 @@ class AlarmTableViewCell : UITableViewCell, UISheetPresentationControllerDelegat
             
             if let sheetVC = followerVC.sheetPresentationController {
                 if #available(iOS 16.0, *) {
-                    sheetVC.detents = [.custom { context in return 232 }]
+                    sheetVC.detents = [.custom { context in return 200 }]
                     sheetVC.delegate = self
                     sheetVC.prefersGrabberVisible = false
                     sheetVC.preferredCornerRadius = 16
                 }
             }
-
+            
         }
         
     }

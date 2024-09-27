@@ -18,12 +18,15 @@ enum Router : URLRequestConvertible{
     case getmypage //마이페이지
     case getmainpage //메인페이지
     case postgroup(data : MakeGroupMaindata) //그룹 생성
-    case deletegrop(groupId : Int) //그룹 삭제
+    case deletegroup(groupId : Int) //그룹 삭제
+    case deleteleavegroup(groupId : Int) // 그룹 나가기
     case joingroup(data : JoingroupMaindata) //그룹 참여
     case postbedtime(data : BedtimeMaindata) //자는 시간
     case patchdisturb(groupId: Int, data: DisturbMaindata) //방해금지모드
     case postprick(userId : prickRequest) //콕찌르기
     case patchwakeup(groupId : Int) //기상 상태로 변경
+    case patcheditgroup(groupId : Int)
+    
     
     
     // url가르기
@@ -32,12 +35,14 @@ enum Router : URLRequestConvertible{
         case .getmypage: return "/user/mypage"
         case .getmainpage: return "/home"
         case .postgroup: return "/groups"
-        case .deletegrop(let groupId): return "/groups/\(groupId)"
+        case .deletegroup(let groupId): return "/groups/\(groupId)"
         case .joingroup: return "/groups/join"
         case .postbedtime: return "/user/bedtime/alarm"
         case .patchdisturb(let groupId, _): return "/user/\(groupId)/disturb"
         case .postprick: return "/user/prick"
-        case .patchwakeup(let groupId): return "/api/user/\(groupId)/wake-status"
+        case .patchwakeup(let groupId): return "/user/\(groupId)/wake-status"
+        case .deleteleavegroup(let groupId): return "/groups/\(groupId)/leave"
+        case .patcheditgroup(let groupId): return "/groups/\(groupId)"
         }
     }
     
@@ -56,8 +61,8 @@ enum Router : URLRequestConvertible{
         switch self {
         case .getmypage, .getmainpage: return .get
         case .postgroup, .joingroup, .postbedtime, .postprick: return .post
-        case .deletegrop: return .delete
-        case .patchdisturb,.patchwakeup : return .patch
+        case .deletegroup, .deleteleavegroup: return .delete
+        case .patchdisturb,.patchwakeup,.patcheditgroup : return .patch
         }
     }
     
@@ -86,7 +91,7 @@ enum Router : URLRequestConvertible{
             request = try URLEncoding.queryString.encode(request, with: parameters)
         case .postgroup(let data):
             request = try JSONParameterEncoder().encode(data, into: request)
-        case .deletegrop:
+        case .deletegroup:
             request = try URLEncoding.queryString.encode(request, with: parameters)
         case .joingroup(let data):
             request = try JSONParameterEncoder().encode(data, into: request)
@@ -97,6 +102,10 @@ enum Router : URLRequestConvertible{
         case .postprick(let data):
             request = try JSONParameterEncoder().encode(data, into: request)
         case .patchwakeup(let data):
+            request = try JSONParameterEncoder().encode(data, into: request)
+        case .deleteleavegroup:
+            request = try URLEncoding.queryString.encode(request, with: parameters)
+        case .patcheditgroup(let data):
             request = try JSONParameterEncoder().encode(data, into: request)
         }
         

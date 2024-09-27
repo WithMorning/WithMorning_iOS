@@ -171,9 +171,30 @@ struct prickResponse: Codable {
     let code: Int
     let message: String
 }
+
 //MARK: - 기상상태로 변경
 struct wakeupResponse: Codable {
     let isSuccess: Bool
     let code: Int
     let message: String
 }
+
+//MARK: - 알람 나가기
+struct leavegroupResponse: Codable {
+    let isSuccess: Bool
+    let code: Int
+    let message: String
+}
+//MARK: - 그룹 수정
+struct editgroupRequest: Codable {
+    let name, wakeupTime: String
+    let dayOfWeekList: [String]
+    let isAgree: Bool
+    let memo: String
+}
+struct editgroupResponse: Codable {
+    let isSuccess: Bool
+    let code: Int
+    let message: String
+}
+

@@ -10,9 +10,16 @@ import SnapKit
 import Then
 import Alamofire
 
+enum vcMode{
+    case createMode
+    case editMode
+}
+
 class MakeAlarmViewController : UIViewController, UIScrollViewDelegate, UISheetPresentationControllerDelegate{
     
     let APInetwork = Network.shared
+    
+    var mode : vcMode = .createMode
     
     //MARK: - 네비게이션 바
     private lazy var mainLabel : UILabel = {
@@ -240,6 +247,7 @@ class MakeAlarmViewController : UIViewController, UIScrollViewDelegate, UISheetP
         setUpKeyboard()
         setCurrentTimeOnPicker()
         popGesture()
+        configureMode()
     }
     
     override func viewDidLayoutSubviews() {
@@ -358,10 +366,23 @@ class MakeAlarmViewController : UIViewController, UIScrollViewDelegate, UISheetP
         }
         
     }
+    
+    func configureMode(){
+        if mode == .editMode{
+            print("수정모드",groupId)
+        }else{
+            print("생성모드",groupId)
+        }
+    }
+    
+    
+    
+    
     //MARK: - API
     var selectedTime24: String = ""
     var selectedDayOfWeek: [String] = []
     
+    //그룹 생성
     private func makeGroup(){
         let data = MakeGroupMaindata(name: groupTextfield.text ?? "모임명이 없습니다.", wakeupTime: selectedTime24, dayOfWeekList: selectedDayOfWeek, isAgree: true, memo: memoTextView.text)
         
@@ -377,6 +398,16 @@ class MakeAlarmViewController : UIViewController, UIScrollViewDelegate, UISheetP
                 print(error.localizedDescription)
             }
             
+        }
+    }
+    
+    
+    //그룹 수정
+    var groupId : Int = 0
+    private func editGroup(){
+        
+        APInetwork.patcheditGroup(groupId: groupId){ result in
+            LoadingIndicator.showLoading()
         }
     }
     
@@ -481,7 +512,13 @@ class MakeAlarmViewController : UIViewController, UIScrollViewDelegate, UISheetP
     
     
     @objc func saveclicked() {
-        makeGroup()
+        if mode == .editMode {
+            print("editmode")
+        }else{
+            print("makemode")
+            makeGroup()
+        }
+        
     }
 }
 

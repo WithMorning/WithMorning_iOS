@@ -14,6 +14,9 @@ class LeaderMenuViewController: UIViewController, AlterDelegate {
     
 //MARK: - dismiss closure
     var menuClicked: (() -> Void)?
+    
+    var onEdit: (() -> Void)?
+    
     var groupId : Int?
     var participantCode : String?
     
@@ -140,6 +143,11 @@ class LeaderMenuViewController: UIViewController, AlterDelegate {
     
     @objc func editClicked(){
         print("수정하기 버튼")
+        self.dismiss(animated: true){
+            guard let onEdit = self.onEdit else { return }
+            onEdit()
+            print("Cellmenu의 groupId",self.groupId as Any)
+        }
     }
     
     @objc func deleteClicked(){

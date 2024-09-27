@@ -221,6 +221,7 @@ class MainViewController: UIViewController, UISheetPresentationControllerDelegat
     
     @objc func clickedmakeAlarm(){ //새로운 알람설정
         let vc = MakeAlarmViewController()
+        vc.mode = .createMode
         self.navigationController?.pushViewController(vc, animated: true)
     }
     
@@ -376,19 +377,18 @@ extension MainViewController : UITableViewDelegate, UITableViewDataSource{
             self?.getMainpage()
         }
         
+        //내가 리더인지 아닌지 체크
         cell.configureCell(with: alarm, currentUserNickname: UserDefaults.standard.string(forKey: "nickname") ?? "")
         
         let currentUserNickname = UserDefaults.standard.string(forKey: "nickname") ?? ""
         
         let isLeader = checkIfCurrentUserIsLeader(userList: alarm.userList ?? [], currentUserNickname: currentUserNickname)
-           
-           if isLeader {
-               cell.isLeader = true
-           } else {
-               cell.isLeader = false
-           }
         
-        
+        if isLeader {
+            cell.isLeader = true
+        } else {
+            cell.isLeader = false
+        }
         
         return cell
     }

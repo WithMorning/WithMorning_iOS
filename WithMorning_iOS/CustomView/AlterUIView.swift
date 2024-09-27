@@ -188,25 +188,33 @@ class AlterUIView: UIViewController {
     
     
     @objc func confirmclicked() {
-        switch alterType {
+            switch alterType {
+            case .deleteAlarm:
+                handleDeleteAlarm()
+            case .outGroup:
+                handleOutGroup()
+            case .quit:
+                handleQuit()
+            }
             
-        case .deleteAlarm:
-            handleDeleteAlarm()
-            
-        case .outGroup:
-            handleOutGroup()
-            
-        case .quit:
-            handleQuit()
+            self.dismiss(animated: true) {
+                self.delegate?.confirm()
+                print("dismiss 후 확인버튼")
+                print("AlterView의 groupId", self.groupId as Any)
+                
+                switch self.alterType {
+                    
+                case .deleteAlarm:
+                    self.deleteAlarm()
+                case .outGroup:
+//                    self.leaveAlarm()
+                    print("방장아니니까 그냥나가기")
+                case .quit:
+                    // 기존 탈퇴 로직 유지
+                    break
+                }
+            }
         }
-        
-        self.dismiss(animated: true) {
-            self.delegate?.confirm()
-            print("dismiss 후 확인버튼")
-            print("AlterView의 groupId",self.groupId as Any)
-            self.deleteAlarm()
-        }
-    }
     
     //MARK: - API handling
     
@@ -255,6 +263,27 @@ class AlterUIView: UIViewController {
                     alert.addAction(UIAlertAction(title: "확인", style: .default, handler: nil))
                     self.present(alert, animated: true, completion: nil)
                 }
+            }
+        }
+    }
+    //MARK: - 그룹 나가기
+    private func leaveAlarm(){
+        guard let groupId = groupId else{return}
+        APInetwork.deleteleaveGroup(groupId: groupId){ result in
+            LoadingIndicator.showLoading()
+            switch result{
+            case .success(let data):
+                DispatchQueue.main.async {
+                    self.dismiss(animated: true) {
+                        self.confirmAction?()
+                    }
+                    print(data)
+                    print("알람 삭제 성공")
+                }
+                LoadingIndicator.hideLoading()
+            case .failure(let error):
+                print("알람 나가기 실패: \(error.localizedDescription)")
+                LoadingIndicator.hideLoading()
             }
         }
         
