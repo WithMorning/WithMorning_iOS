@@ -145,7 +145,7 @@ class MakeAlarmViewController : UIViewController, UIScrollViewDelegate, UISheetP
         return label
     }()
     
-    private lazy var groupTextfield : UITextField = {
+    lazy var groupTextfield : UITextField = {
         let textfield = UITextField()
         textfield.translatesAutoresizingMaskIntoConstraints = false
         textfield.attributedPlaceholder = NSAttributedString(string: "윗모닝 모임명을 적어주세요.", attributes: [NSAttributedString.Key.foregroundColor : DesignSystemColor.Gray400.value])
@@ -181,7 +181,7 @@ class MakeAlarmViewController : UIViewController, UIScrollViewDelegate, UISheetP
         return label
     }()
     
-    private lazy var memoPlaceholder : UILabel = {
+    lazy var memoPlaceholder : UILabel = {
         let label = UILabel()
         label.text = "아침에 하고 싶은 말 또는 패널티를 정해주세요."
         label.font = DesignSystemFont.Pretendard_Medium14.value
@@ -190,7 +190,7 @@ class MakeAlarmViewController : UIViewController, UIScrollViewDelegate, UISheetP
     }()
     
     
-    private lazy var memoTextView : UITextView = {
+    lazy var memoTextView : UITextView = {
         let view = UITextView()
         view.backgroundColor = DesignSystemColor.Gray150.value
         view.font = DesignSystemFont.Pretendard_Medium14.value
@@ -245,7 +245,6 @@ class MakeAlarmViewController : UIViewController, UIScrollViewDelegate, UISheetP
         SetUI()
         hideKeyboardWhenTappedAround()
         setUpKeyboard()
-        setCurrentTimeOnPicker()
         popGesture()
         configureMode()
     }
@@ -367,11 +366,17 @@ class MakeAlarmViewController : UIViewController, UIScrollViewDelegate, UISheetP
         
     }
     
-    func configureMode(){
-        if mode == .editMode{
-            print("수정모드",groupId)
-        }else{
-            print("생성모드",groupId)
+    func configureMode() {
+        if mode == .editMode {
+            print("수정모드", groupId)
+            print("editTime: \(editTime)")
+            
+            setTimeOnPicker(for: editTime)
+            
+            updateRepeatDayLabel()
+        } else {
+            print("생성모드", groupId)
+            setCurrentTimeOnPicker()
         }
     }
     
@@ -401,13 +406,24 @@ class MakeAlarmViewController : UIViewController, UIScrollViewDelegate, UISheetP
         }
     }
     
-    
-    //그룹 수정
+    //MARK: - 수정할때 시간
+    var editTime : String = ""
     var groupId : Int = 0
+    
     private func editGroup(){
+        let editdata = EditGroupMaindata(name: groupTextfield.text ?? "모임명이 없습니다.", wakeupTime: editTime, dayOfWeekList: selectedDayOfWeek, isAgree: true, memo: memoTextView.text)
         
-        APInetwork.patcheditGroup(groupId: groupId){ result in
+        APInetwork.patcheditGroup(groupId: groupId, editGroupdata: editdata){ result in
             LoadingIndicator.showLoading()
+            switch result {
+            case .success(let data):
+                print("알람 수정",data)
+                self.navigationController?.popViewController(animated: true)
+                LoadingIndicator.hideLoading()
+            case .failure(let error):
+                print(error.localizedDescription)
+                LoadingIndicator.hideLoading()
+            }
         }
     }
     
@@ -428,6 +444,7 @@ class MakeAlarmViewController : UIViewController, UIScrollViewDelegate, UISheetP
         }
     }
     
+    //알람만들기할때
     func setCurrentTimeOnPicker() {
         let currentDate = Date()
         let calendar = Calendar.current
@@ -446,7 +463,7 @@ class MakeAlarmViewController : UIViewController, UIScrollViewDelegate, UISheetP
             ampm = 0 // AM
         }
         
-        let hour24 = ampm == 1 ? (hourForPicker == 12 ? 12 : hourForPicker + 12) : (hourForPicker == 12 ? 0 : hourForPicker)
+        let hour24 = hour
         
         selectedTime24 = String(format: "%02d:%02d", hour24, minute)
         print("초기화 시 설정된 시간 (24시간제): \(selectedTime24)")
@@ -460,6 +477,34 @@ class MakeAlarmViewController : UIViewController, UIScrollViewDelegate, UISheetP
         timePicker.selectRow(middleMinute + minute, inComponent: 1, animated: false)
         timePicker.selectRow(middleAMPM + ampm, inComponent: 2, animated: false)
     }
+    
+    //알람 수정
+    func setTimeOnPicker(for timeString: String) {
+        let timeComponents = timeString.split(separator: ":")
+        
+        guard timeComponents.count == 2,
+              let hour24 = Int(timeComponents[0]),
+              let minute = Int(timeComponents[1]) else {
+            return
+        }
+        
+        let hour12 = hour24 % 12
+        let displayHour = hour12 == 0 ? 12 : hour12
+        let isPM = hour24 >= 12
+        
+        let middleHour = hour.count * 50
+        let middleMinute = min.count * 50
+        let middleAMPM = AMPM.count * 50
+        
+        timePicker.selectRow(middleHour + (displayHour - 1), inComponent: 0, animated: false)
+        timePicker.selectRow(middleMinute + minute, inComponent: 1, animated: false)
+        timePicker.selectRow(middleAMPM + (isPM ? 1 : 0), inComponent: 2, animated: false)
+        
+        editTime = String(format: "%02d:%02d", hour24, minute)
+        print("설정된 시간 (24시간제): \(editTime)")
+    }
+    
+    
     
     //MARK: - @objc func
     @objc func popclicked(){
@@ -514,6 +559,8 @@ class MakeAlarmViewController : UIViewController, UIScrollViewDelegate, UISheetP
     @objc func saveclicked() {
         if mode == .editMode {
             print("editmode")
+            editGroup()
+            
         }else{
             print("makemode")
             makeGroup()
@@ -657,9 +704,9 @@ extension MakeAlarmViewController : UIPickerViewDelegate, UIPickerViewDataSource
             return 45
         }
     }
-    //MARK: - 현재 설정한 시간(24시간제) 출력
+    
+    //MARK: - 설정한 시간(24시간제) 출력
     func pickerView(_ pickerView: UIPickerView, didSelectRow row: Int, inComponent component: Int) {
-        
         let selectedHour = hour[pickerView.selectedRow(inComponent: 0) % hour.count]
         let selectedMinute = min[pickerView.selectedRow(inComponent: 1) % min.count]
         let selectedAMPM = AMPM[pickerView.selectedRow(inComponent: 2)]
@@ -671,13 +718,18 @@ extension MakeAlarmViewController : UIPickerViewDelegate, UIPickerViewDataSource
             hour24 = 0
         }
         
+        let selectedTime = String(format: "%02d:%02d", hour24, selectedMinute)
         
-        selectedTime24 = String(format: "%02d:%02d", hour24, selectedMinute)
-        
-        print("설정된 시간 (24시간제): \(selectedTime24)")
-        
+        if mode == .editMode {
+            editTime = selectedTime
+            print("설정된 시간 (수정 모드, 24시간제): \(editTime)")
+        } else {
+            selectedTime24 = selectedTime
+            print("설정된 시간 (생성 모드, 24시간제): \(selectedTime24)")
+        }
     }
 }
+
 
 extension MakeAlarmViewController: UITextViewDelegate, UIGestureRecognizerDelegate {
     

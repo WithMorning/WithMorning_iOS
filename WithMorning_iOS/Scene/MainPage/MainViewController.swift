@@ -347,6 +347,7 @@ extension MainViewController : UITableViewDelegate, UITableViewDataSource{
         cell.ConfigureMember(alarm.userList ?? [])
         
         cell.timeLabel.text = alarm.wakeupTime
+        
         cell.groupId = alarm.groupID
         
         cell.participantcode = alarm.participationCode
@@ -360,11 +361,15 @@ extension MainViewController : UITableViewDelegate, UITableViewDataSource{
             if let dayOfWeekList = alarm.dayOfWeekList, dayOfWeekList.contains(days[index]) {
                 dayLabel.backgroundColor = DesignSystemColor.Orange500.value
                 dayLabel.textColor = .white
+                
+                cell.editweek = alarm.dayOfWeekList ?? []
+                
             } else {
                 dayLabel.backgroundColor = DesignSystemColor.Gray100.value
                 dayLabel.textColor = DesignSystemColor.Gray300.value
             }
         }
+        
         
         //알람 삭제 후 실행되는 클로저
         cell.onAlarmDelete = { [weak self] in

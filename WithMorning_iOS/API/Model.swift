@@ -186,7 +186,7 @@ struct leavegroupResponse: Codable {
     let message: String
 }
 //MARK: - 그룹 수정
-struct editgroupRequest: Codable {
+struct EditGroupMaindata: Codable {
     let name, wakeupTime: String
     let dayOfWeekList: [String]
     let isAgree: Bool

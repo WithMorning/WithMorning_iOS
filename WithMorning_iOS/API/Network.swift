@@ -453,9 +453,9 @@ class Network{
     }
     
     //MARK: - 그룹 수정
-    func patcheditGroup(groupId: Int, completionHandler: @escaping (Result<editgroupResponse, Error>) -> Void){
+    func patcheditGroup(groupId : Int ,editGroupdata: EditGroupMaindata, completionHandler: @escaping (Result<editgroupResponse, Error>) -> Void){
         print("보내는 groupId: \(groupId)")
-        AF.request(Router.patcheditgroup(groupId: groupId)).validate(statusCode: 200..<300)
+        AF.request(Router.patcheditgroup(groupId: groupId, data: editGroupdata)).validate(statusCode: 200..<300)
             .responseDecodable(of: editgroupResponse.self){response in
                 switch response.result{
                 case .success(let data):
@@ -472,7 +472,7 @@ class Network{
                                 NewAccessToken.shared.newAccessToken { success in
                                     if success {
                                         // 엑세스 토큰 갱신 후 API 재시도
-                                        self.patcheditGroup(groupId: groupId, completionHandler: completionHandler)
+                                        self.patcheditGroup(groupId: groupId, editGroupdata: editGroupdata, completionHandler: completionHandler)
                                         
                                     } else {
                                         completionHandler(.failure(NSError(domain: "NewAccessTokenErrorDomain", code: 0, userInfo: [NSLocalizedDescriptionKey: "새 엑세스 토큰 발급 실패"])))

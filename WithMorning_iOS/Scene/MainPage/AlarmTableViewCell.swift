@@ -380,6 +380,7 @@ class AlarmTableViewCell : UITableViewCell, UISheetPresentationControllerDelegat
     var disturb : Bool = false
     
     func patchDisturb(newDisturbMode: Bool) {
+        
         let data = DisturbMaindata(isDisturbBanMode: newDisturbMode)
         
         APInetwork.patchDisturb(groupId: self.groupId, DisturbData: data) { result in
@@ -569,9 +570,14 @@ class AlarmTableViewCell : UITableViewCell, UISheetPresentationControllerDelegat
     
     //MARK: - objc func
     
+    // 방해금지모드
     @objc func clicktoggle() {
         patchDisturb(newDisturbMode: !disturb)
     }
+    //수정하기 버튼 클릭시
+    var editweek: [String] = []
+    
+    var selectedTime24 : String = ""
     
     var isLeader : Bool = false
     
@@ -611,6 +617,14 @@ class AlarmTableViewCell : UITableViewCell, UISheetPresentationControllerDelegat
                 vc.dismiss(animated: true) {
                     let makeVC = MakeAlarmViewController()
                     makeVC.groupId = self.groupId
+                    makeVC.mode = .editMode
+                    makeVC.groupTextfield.text = self.topViewLabel.text
+                    makeVC.memoTextView.text = self.fullText
+                    makeVC.memoPlaceholder.isHidden = true
+                    
+                    makeVC.selectedDayOfWeek = self.editweek
+                    makeVC.editTime = self.timeLabel.text ?? ""
+                    
                     
                     parentViewController.navigationController?.pushViewController(makeVC, animated: true)
                 }
