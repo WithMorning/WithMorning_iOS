@@ -21,14 +21,14 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         RegisterUserInfo.shared.$loginState.sink { loginState in
             let refreshToken = KeyChain.read(key: "refreshToken")
             
-            print(#fileID, #function, #line, "- sceneDelegate refreshToken: \(refreshToken)")
+            print(#fileID, #function, #line, "- sceneDelegate refreshToken: \(String(describing: refreshToken))")
             
             if let loginState = loginState {
                 
                 switch loginState {
-                case .login:
+                case .login, .logout, .quit:
                     // 로그인 상태이지만 아직 회원가입을 완료하지 않은 경우
-                    self.setRootViewContrller(scene, type: .joined)
+                    self.setRootViewContrller(scene, type: .login)
                 case .joined:
                     // 로그인 상태이며 회원가입을 완료한 경우
                     self.setRootViewContrller(scene, type: .joined)
@@ -42,6 +42,7 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
                     print("🔥KeyChain에 저장된 refreshToken : ",KeyChain.read(key: "refreshToken") ?? "")
                     
                     #warning("test")
+                    
                     self.setRootViewContrller(scene, type: .joined) //joined 바로 메인조회, login 토큰받고 메인
                     
                 } else if Storage.isFirstTime() {
@@ -90,8 +91,6 @@ enum rootViewController {
     case login
     case joined
     case termAgree
-    case mypage
-    //    case onBoarding
     //MARK: - test 용
     case test
     
@@ -99,7 +98,6 @@ enum rootViewController {
         switch self{
         case .login : return LoginViewController()
         case .joined: return MainViewController()
-        case .mypage: return MyPageViewController()
         case .termAgree: return TermsViewController()
             //        case .onBoarding: return OnBoardingTutorialViewController()
             

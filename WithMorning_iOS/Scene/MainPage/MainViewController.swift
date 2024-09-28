@@ -410,7 +410,6 @@ extension MainViewController : UITableViewDelegate, UITableViewDataSource{
         if let userList = alarm.userList {
             let isDisturbModeOn = userList.contains(where: { $0.nickname == UserDefaults.standard.string(forKey: "nickname") && $0.isDisturbBanMode })
             
-            // 방해금지 모드일 때
             if isDisturbModeOn {
                 return baseHeight
             } else {

@@ -10,8 +10,8 @@ import Foundation
 enum LoginStatus {
     case login //로그인
     case joined //가입됨
-//    case logout//로그아웃
-//    case guest //게스트모드
+    case logout//로그아웃
+    case quit //회원탈퇴
 }
 
 //MARK: - 애플로그인
@@ -47,4 +47,9 @@ struct getToken: Codable {
 struct getTokenResponse: Codable {
     let accessToken: String?
 }
+
+//MARK: - 로그아웃
+
+//MARK: - 탈퇴
+
 
