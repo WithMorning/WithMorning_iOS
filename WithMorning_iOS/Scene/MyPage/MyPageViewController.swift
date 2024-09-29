@@ -713,14 +713,15 @@ class MyPageViewController : UIViewController, UIScrollViewDelegate {
                 
                 KeyChain.delete(key: "refreshToken")
                 KeyChain.delete(key: "accessToken")
-                
-//                self.registerUserInfo.loginState = .logout
+                KeyChain.delete(key: "fcmToken")
+                UserDefaults.standard.set(true, forKey: "isFirstTime")
                 
                 LoadingIndicator.hideLoading()
                 print(data)
                 
             case .failure(let error):
                 LoadingIndicator.hideLoading()
+                UserDefaults.standard.set(true, forKey: "isFirstTime")
                 print(error.localizedDescription)
             }
         }

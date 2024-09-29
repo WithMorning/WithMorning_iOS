@@ -45,20 +45,20 @@ class LoginViewController: UIViewController{
         return button
     }()
     
-    //MARK: - 게스트로 로그인
-    private lazy var guestButton : UIButton = {
-        let button = UIButton()
-        button.backgroundColor = DesignSystemColor.Gray400.value
-        button.setTitle("  게스트로 로그인", for: .normal)
-        button.titleLabel?.font = DesignSystemFont.Pretendard_SemiBold16.value
-        button.setTitleColor(.white, for: .normal)
-        button.tintColor = .white
-        button.layer.cornerRadius = 8
-        button.setImage(UIImage(systemName: "person.circle.fill"), for: .normal)
-        button.titleLabel?.textAlignment = .center
-        button.addTarget(self, action: #selector(guest), for: .touchUpInside)
-        return button
-    }()
+//    //MARK: - 게스트로 로그인
+//    private lazy var guestButton : UIButton = {
+//        let button = UIButton()
+//        button.backgroundColor = DesignSystemColor.Gray400.value
+//        button.setTitle("  게스트로 로그인", for: .normal)
+//        button.titleLabel?.font = DesignSystemFont.Pretendard_SemiBold16.value
+//        button.setTitleColor(.white, for: .normal)
+//        button.tintColor = .white
+//        button.layer.cornerRadius = 8
+//        button.setImage(UIImage(systemName: "person.circle.fill"), for: .normal)
+//        button.titleLabel?.textAlignment = .center
+//        button.addTarget(self, action: #selector(guest), for: .touchUpInside)
+//        return button
+//    }()
     
     //MARK: - lifecycle
     
@@ -72,7 +72,7 @@ class LoginViewController: UIViewController{
     //MARK: - setUI
     
     func setUI(){
-        view.addSubviews(popButton,titleIMG,appleButton,guestButton)
+        view.addSubviews(popButton,titleIMG,appleButton)
         
         popButton.snp.makeConstraints{
             $0.top.equalTo(view.safeAreaLayoutGuide).offset(20)
@@ -87,14 +87,14 @@ class LoginViewController: UIViewController{
         appleButton.snp.makeConstraints{
             $0.height.equalTo(64)
             $0.leading.trailing.equalToSuperview().inset(16)
-            $0.bottom.equalTo(guestButton.snp.top).offset(-8)
-        }
-        
-        guestButton.snp.makeConstraints{
-            $0.height.equalTo(0)
-            $0.leading.trailing.equalToSuperview().inset(16)
             $0.bottom.equalTo(view.safeAreaLayoutGuide).inset(80)
         }
+        
+//        guestButton.snp.makeConstraints{
+//            $0.height.equalTo(0)
+//            $0.leading.trailing.equalToSuperview().inset(16)
+//            $0.bottom.equalTo(view.safeAreaLayoutGuide).inset(80)
+//        }
     }
     
     //MARK: - objc func
@@ -102,10 +102,6 @@ class LoginViewController: UIViewController{
         self.navigationController?.popViewController(animated: true)
     }
     
-    @objc private func guest(){
-        let vc = MainViewController()
-        self.navigationController?.pushViewController(vc, animated: true)
-    }
     
     @objc private func apple(){
         AppleLoginManager.shared.startSignInWithAppleFlow()

@@ -149,7 +149,10 @@ class CertificateViewController : UIViewController{
                 
                 self.showToast(message: "인증번호가 확인되었습니다.")
                 
+                UserDefaults.standard.set(false, forKey: "isFirstTime")
+                
                 self.navigationController?.pushViewController(vc, animated: true)
+                
             case .failure(let error):
                 LoadingIndicator.hideLoading()
                 print(error.localizedDescription)

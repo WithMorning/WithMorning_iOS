@@ -376,6 +376,10 @@ extension MainViewController : UITableViewDelegate, UITableViewDataSource{
             self?.getMainpage()
             
         }
+        //알람을 나간 후 실행되는 클로저
+        cell.onAlarmLeave = { [weak self] in
+            self?.getMainpage()
+        }
         
         //토클 클릭시 실행되는 클로저
         cell.toggleclicked = { [weak self] in

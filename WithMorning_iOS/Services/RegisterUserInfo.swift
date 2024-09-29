@@ -16,6 +16,7 @@ class RegisterUserInfo {
 //MARK: - 로그인 후
     
     @Published var loginState: LoginStatus? = nil
+    @Published var userIsRegistered: Bool = false
     @Published var nickName : String? = ""
     @Published var profileImage : UIImage? = nil
     @Published var privateNumber : Bool = false

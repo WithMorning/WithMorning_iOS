@@ -14,8 +14,8 @@ class Network{
     
     //MARK: - 마이페이지
     func getMypage(completionHandler: @escaping (Result<MypageResponse, Error>) -> Void) {
-        AF.request(Router.getmypage)
-        //        AF.request(Router.getmypage, interceptor: AuthInterceptor()) //소셜로그인
+//        AF.request(Router.getmypage)
+                AF.request(Router.getmypage, interceptor: AuthInterceptor()) //소셜로그인
             .validate(statusCode: 200..<300)
             .responseDecodable(of: Mypage.self) { (response: DataResponse<Mypage, AFError>) in
                 switch response.result {
@@ -57,8 +57,8 @@ class Network{
     
     // MARK: - 메인페이지
     func getMainpage(completionHandler: @escaping (Result<MainpageResponse, Error>) -> Void) {
-        AF.request(Router.getmainpage)
-        //        AF.request(Router.getmainpage, interceptor: AuthInterceptor()) // 소셜로그인
+//        AF.request(Router.getmainpage)
+                AF.request(Router.getmainpage, interceptor: AuthInterceptor()) // 소셜로그인
             .validate(statusCode: 200..<300)
             .responseDecodable(of: Mainpage.self) { (response: DataResponse<Mainpage, AFError>) in
                 switch response.result {
@@ -99,8 +99,8 @@ class Network{
     
     //MARK: - 알람(그룹)생성
     func postGroup(groupdata: MakeGroupMaindata,completionHandler: @escaping (Result<MakegroupResponse, Error>) -> Void){
-        AF.request(Router.postgroup(data : groupdata))
-        //        AF.request(Router.postgroup(data : data), interceptor: AuthInterceptor())
+//        AF.request(Router.postgroup(data : groupdata))
+                AF.request(Router.postgroup(data : groupdata), interceptor: AuthInterceptor())
             .validate(statusCode: 200..<300)
             .responseDecodable(of: Makegroup.self){(response: DataResponse<Makegroup, AFError>) in
                 switch response.result {
@@ -145,8 +145,8 @@ class Network{
     
     //MARK: - 알람(그룹)삭제
     func deleteGroup(groupId : Int, completionHandler: @escaping (Result<Deletegroup, Error>) -> Void){
-        //        AF.request(Router.deletegrop(groupId: groupId), interceptor: AuthInterceptor())
-        AF.request(Router.deletegroup(groupId: groupId))
+                AF.request(Router.deletegroup(groupId: groupId), interceptor: AuthInterceptor())
+//        AF.request(Router.deletegroup(groupId: groupId))
             .validate(statusCode: 200..<300)
             .responseDecodable(of: Deletegroup.self){(response: DataResponse<Deletegroup, AFError>) in
                 switch response.result {
@@ -191,8 +191,8 @@ class Network{
     
     //MARK: - 코드로 방 입장
     func joinGroup(joindata : JoingroupMaindata,completionHandler: @escaping (Result<JoingroupResponse, Error>) -> Void){
-        //        AF.request(Router.joingroup(data: data), interceptor: AuthInterceptor())
-        AF.request(Router.joingroup(data: joindata))
+                AF.request(Router.joingroup(data: joindata), interceptor: AuthInterceptor())
+//        AF.request(Router.joingroup(data: joindata))
             .validate(statusCode: 200..<300)
             .responseDecodable(of: Joingroup.self){(response: DataResponse<Joingroup, AFError>) in
                 switch response.result {
@@ -236,8 +236,8 @@ class Network{
     
     //MARK: - 자는 시간 설정
     func postBedtime(bedtimedata : BedtimeMaindata, completionHandler: @escaping (Result<Bedtime, Error>) -> Void ){
-        //        AF.request(Router.postbedtime(data: bedtimedata), interceptor: AuthInterceptor())
-        AF.request(Router.postbedtime(data: bedtimedata))
+                AF.request(Router.postbedtime(data: bedtimedata), interceptor: AuthInterceptor())
+//        AF.request(Router.postbedtime(data: bedtimedata))
             .validate(statusCode: 200..<300)
             .responseDecodable(of: Bedtime.self){(response: DataResponse<Bedtime, AFError>) in
                 switch response.result {
@@ -283,8 +283,8 @@ class Network{
         
         print("보내는 groupId: \(groupId)")
         
-        //        AF.request(Router.patchdisturb(groupId: groupId, data: DisturbData), interceptor: AuthInterceptor())
-        AF.request(Router.patchdisturb(groupId: groupId, data: DisturbData))
+        AF.request(Router.patchdisturb(groupId: groupId, data: DisturbData), interceptor: AuthInterceptor())
+//        AF.request(Router.patchdisturb(groupId: groupId, data: DisturbData))
             .validate(statusCode: 200..<300)
             .responseDecodable(of: DisturbResponse.self) { response in
                 switch response.result {
@@ -327,8 +327,8 @@ class Network{
         
         print("보내는 userId: \(userId)")
         
-        //AF.request(Router.postprick(userId: userId), interceptor: AuthInterceptor())
-        AF.request(Router.postprick(userId: userId))
+        AF.request(Router.postprick(userId: userId), interceptor: AuthInterceptor())
+//        AF.request(Router.postprick(userId: userId))
             .validate(statusCode: 200..<300)
             .responseDecodable(of: prickResponse.self){ response in
                 switch response.result{
@@ -370,8 +370,9 @@ class Network{
     func patchWakeup(groupId: Int, completionHandler: @escaping (Result<wakeupResponse, Error>) -> Void){
         
         print("보내는 groupId: \(groupId)")
-        
-        AF.request(Router.patchwakeup(groupId: groupId)).validate(statusCode: 200..<300)
+        AF.request(Router.patchwakeup(groupId: groupId), interceptor: AuthInterceptor())
+//        AF.request(Router.patchwakeup(groupId: groupId))
+            .validate(statusCode: 200..<300)
             .responseDecodable(of: wakeupResponse.self){ response in
                 switch response.result{
                 case .success(let data):
@@ -411,8 +412,9 @@ class Network{
     func deleteleaveGroup(groupId: Int, completionHandler: @escaping (Result<leavegroupResponse, Error>) -> Void) {
         
         print("보내는 groupId: \(groupId)")
-        
-        AF.request(Router.deleteleavegroup(groupId: groupId)).validate(statusCode: 200..<300)
+        AF.request(Router.deleteleavegroup(groupId: groupId), interceptor: AuthInterceptor())
+//        AF.request(Router.deleteleavegroup(groupId: groupId))
+            .validate(statusCode: 200..<300)
             .responseDecodable(of: leavegroupResponse.self){response in
                 switch response.result{
                 case .success(let data):
@@ -455,7 +457,9 @@ class Network{
     //MARK: - 그룹 수정
     func patcheditGroup(groupId : Int ,editGroupdata: EditGroupMaindata, completionHandler: @escaping (Result<editgroupResponse, Error>) -> Void){
         print("보내는 groupId: \(groupId)")
-        AF.request(Router.patcheditgroup(groupId: groupId, data: editGroupdata)).validate(statusCode: 200..<300)
+        AF.request(Router.patcheditgroup(groupId: groupId, data: editGroupdata), interceptor: AuthInterceptor())
+//        AF.request(Router.patcheditgroup(groupId: groupId, data: editGroupdata))
+            .validate(statusCode: 200..<300)
             .responseDecodable(of: editgroupResponse.self){response in
                 switch response.result{
                 case .success(let data):

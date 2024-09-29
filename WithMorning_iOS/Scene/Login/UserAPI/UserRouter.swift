@@ -37,7 +37,7 @@ enum UserRouter : URLRequestConvertible{
     var headers: HTTPHeaders {
         switch self {
         default:
-            return HTTPHeaders(["accept" : "application/json", "Content-Type" : "application/json", "Authorization":"\(Authorization1)"])
+            return HTTPHeaders(["accept" : "application/json", "Content-Type" : "application/json"/*, "Authorization":"\(Authorization1)"*/])
         }
     }
     

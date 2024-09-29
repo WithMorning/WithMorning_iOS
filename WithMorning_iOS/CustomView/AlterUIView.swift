@@ -20,7 +20,6 @@ protocol AlterDelegate {
 }
 
 //MARK: - 알림창의 타입을 위한 enum
-
 enum Altertype {
     case deleteAlarm
     case outGroup
@@ -190,52 +189,46 @@ class AlterUIView: UIViewController {
     
     //확인클릭
     @objc func confirmclicked() {
-            switch alterType {
-            case .deleteAlarm:
-                handleDeleteAlarm()
-            case .outGroup:
-                handleOutGroup()
-            case .quit:
-                handleQuit()
-            }
+        switch alterType {
+        case .deleteAlarm:
+            handleDeleteAlarm()
+        case .outGroup:
+            handleOutGroup()
+        case .quit:
+            handleQuit()
+        }
+        
+        self.dismiss(animated: true) {
+            self.delegate?.confirm()
             
-            self.dismiss(animated: true) {
-                self.delegate?.confirm()
-                print("dismiss 후 확인버튼")
-                print("AlterView의 groupId", self.groupId as Any)
+            switch self.alterType {
                 
-                switch self.alterType {
-                    
-                case .deleteAlarm:
-                    self.deleteAlarm()
-                case .outGroup:
-                    self.leaveAlarm()
-                case .quit:
-//                    self.quitaccount()
-                    print("회원탈퇴")
-                    break
-                }
+            case .deleteAlarm:
+                self.deleteAlarm()
+            case .outGroup:
+                self.leaveAlarm()
+            case .quit:
+                self.quitaccount()
+                break
             }
         }
+    }
     
     //MARK: - API handling
     
     private func handleDeleteAlarm() {
-        // 알람 삭제에 대한 처리 로직
         print("알람 삭제 로직 실행")
         
     }
     
     private func handleOutGroup() {
-        // 모임 나가기 처리 로직
         print("모임 나가기 로직 실행")
-        // 예시: 서버에 나가기 요청 보내기, UI 업데이트 등
+
     }
     
     private func handleQuit() {
-        // 윗모닝 탈퇴 처리 로직
         print("윗모닝 탈퇴 로직 실행")
-        // 예시: 서버에 탈퇴 요청 보내기, 유저 정보 삭제 등
+        
     }
     
     //MARK: - 알람 삭제를 위한 groupId
@@ -275,12 +268,12 @@ class AlterUIView: UIViewController {
             LoadingIndicator.showLoading()
             switch result{
             case .success(let data):
+                
                 DispatchQueue.main.async {
                     self.dismiss(animated: true) {
                         self.confirmAction?()
                     }
                     print(data)
-                    print("알람 삭제 성공")
                 }
                 LoadingIndicator.hideLoading()
             case .failure(let error):
@@ -292,7 +285,6 @@ class AlterUIView: UIViewController {
     }
     
     //MARK: - 회원 탈퇴
-
     func quitaccount(){
         USERnetwork.deleteaccount(){ result in
             LoadingIndicator.showLoading()
@@ -304,13 +296,12 @@ class AlterUIView: UIViewController {
                 
                 KeyChain.delete(key: "refreshToken")
                 KeyChain.delete(key: "accessToken")
+                KeyChain.delete(key: "fcmToken")
                 
                 UserDefaults.standard.set(true, forKey: "isFirstTime")
                 UserDefaults.standard.removeObject(forKey: "nickname")
                 UserDefaults.standard.removeObject(forKey: "volume")
                 UserDefaults.standard.removeObject(forKey: "vibrate")
-                
-//                self.registerUserInfo.loginState = .logout
                 
                 LoadingIndicator.hideLoading()
                 print(data)

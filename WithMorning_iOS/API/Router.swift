@@ -49,7 +49,7 @@ enum Router : URLRequestConvertible{
     //헤더
     var headers: HTTPHeaders {
         switch self {
-        case .patchdisturb(let groupId, _) : return HTTPHeaders(["accept":"application/json","Content-Type" : "application/json" ,"groupId":"\(groupId)","Authorization":"\(Authorization)"])
+        case .patchdisturb(let groupId, _) : return HTTPHeaders(["accept":"application/json","Content-Type" : "application/json" ,"groupId":"\(groupId)"/*,"Authorization":"\(Authorization)"*/])
             
         default: return HTTPHeaders(["accept":"application/json","Content-Type" : "application/json" ,"Authorization":"\(Authorization)"])
         }

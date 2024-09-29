@@ -206,16 +206,6 @@ class TermsViewController: UIViewController{
             $0.centerY.equalTo(infoLabel)
             $0.trailing.equalToSuperview().inset(24)
         }
-//        maketingLabel.snp.makeConstraints{
-//            $0.top.equalTo(infoLabel.snp.bottom)
-//                .offset(20)
-//            $0.leading.equalToSuperview().offset(24)
-//            $0.height.equalTo(26)
-//        }
-//        maketingButton.snp.makeConstraints{
-//            $0.centerY.equalTo(maketingLabel)
-//            $0.trailing.equalToSuperview().inset(24)
-//        }
         
         view2.snp.makeConstraints{
             $0.leading.trailing.equalToSuperview().inset(16)

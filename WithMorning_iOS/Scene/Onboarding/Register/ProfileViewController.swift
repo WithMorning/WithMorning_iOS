@@ -218,6 +218,7 @@ class ProfileViewController : UIViewController, UIImagePickerControllerDelegate 
                 
                 self.navigationController?.pushViewController(vc, animated: true)
                 
+                
             case .failure(let error):
                 LoadingIndicator.hideLoading()
                 print("프로필 등록 실패: \(error.localizedDescription)")

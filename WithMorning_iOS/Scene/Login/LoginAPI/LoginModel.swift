@@ -8,9 +8,8 @@
 import Foundation
 
 enum LoginStatus {
-    case joined //가입됨
     case logout//로그아웃
-    case quit //회원탈퇴
+    case login //로그인
 }
 
 //MARK: - 애플로그인

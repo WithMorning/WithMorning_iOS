@@ -99,7 +99,7 @@ extension AppleLoginManager : ASAuthorizationControllerDelegate {
             
             if let authorizationCode = appleIDCredential.authorizationCode,
                
-               let codeString = String(data: authorizationCode, encoding: .utf8) {
+                let codeString = String(data: authorizationCode, encoding: .utf8) {
                 print(#fileID, #function, #line, "- codeString🔥: \(codeString)")
                 
                 let loginRequestTokenData = AppleloginRequest(code: idTokenString)
@@ -112,7 +112,7 @@ extension AppleLoginManager : ASAuthorizationControllerDelegate {
                             print(#fileID, #function, #line, "- error: \(error.localizedDescription)")
                         case .success(let data):
                             if let dataResult = data.result {
-//                                #warning("UserDeault에 userID 저장 후 userID로 토큰 저장")
+                                
                                 print("엑세스 : ",data.result?.accessToken as Any)
                                 print("리프레쉬 토큰 : ",data.result?.accessToken as Any)
                                 
@@ -124,7 +124,7 @@ extension AppleLoginManager : ASAuthorizationControllerDelegate {
                                 
                             }
                             
-                            self.registerUserInfo.loginState = .joined
+                            self.registerUserInfo.loginState = .login
                             
                             print("🔥KeyChain에 새로 저장된 accessToken : ", KeyChain.read(key: "accessToken") ?? "")
                             print("🔥KeyChain에 새로 저장된 refreshToken : ",KeyChain.read(key: "refreshToken") ?? "")
@@ -137,5 +137,24 @@ extension AppleLoginManager : ASAuthorizationControllerDelegate {
     func authorizationController(controller: ASAuthorizationController, didCompleteWithError error: Error) {
         // 로그인 실패(유저의 취소도 포함)
         print("로그인 실패 - \(error.localizedDescription)")
+    }
+    
+    func appleLoginDeleteUser() {
+        let token = KeyChain.read(key: "refreshToken")
+        print(#fileID, #function, #line, "- token checking⭐️: \(String(describing: token))")
+        //token으로 데이터 삭제
+        if let token = token {
+            let url = URL(string: "https://us-central1-pickdrink-492de.cloudfunctions.net/revokeToken?refresh_token=\(token)".addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed) ?? "https://apple.com")!
+            
+            let task = URLSession.shared.dataTask(with: url) {(data, response, error) in
+                guard data != nil else { return }
+                print(#fileID, #function, #line, "- revoke token error🔥: \(String(describing: error?.localizedDescription))")
+                print(#fileID, #function, #line, "- revokeToken response checking🔥: \(String(describing: response))")
+                
+            }
+            task.resume()
+        }
+        print(#fileID, #function, #line, "- revokeToken success⭐️")
+        
     }
 }
