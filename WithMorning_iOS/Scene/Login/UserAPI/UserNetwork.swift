@@ -165,7 +165,49 @@ class UserNetwork{
             }
         }
     }
+    //MARK: - 로그아웃
+    func deletelogout(refreshToken : deletelogoutRequest, completionHandler: @escaping (Result<deletelogoutResponse, Error>) -> Void){
+        //        AF.request(UserRouter.deletelogout(refreshToken: refreshToken), interceptor: AuthInterceptor())
+        AF.request(UserRouter.deletelogout(refreshToken: refreshToken)).validate(statusCode: 200..<300)
+            .responseDecodable(of: deletelogoutResponse.self) {(response: DataResponse<deletelogoutResponse, AFError>) in
+                switch response.result{
+                case .failure(_):
+                    if let data = response.data {
+                        do {
+                            // JSON 데이터 파싱
+                            let json = try JSONSerialization.jsonObject(with: data, options: []) as? [String: Any]
+                            print(#fileID, #function, #line, "- 실패 JSON 데이터: \(json ?? [:])")
+                            
+                            // JSON 응답에서 코드 확인
+                            if let errorCode = json?["code"] as? Int, errorCode == 9104 {
+                                // 새로운 엑세스 토큰 발급
+                                print("🚨 실패 - 엑세스 토큰 만료. 갱신 시도 중...")
+                                NewAccessToken.shared.newAccessToken { success in
+                                    if success {
+                                        // 새 엑세스 토큰 발급 성공 시, 다시 메인페이지 요청
+                                        self.deletelogout(refreshToken: refreshToken, completionHandler: completionHandler)
+                                        
+                                    } else {
+                                        // 실패 시, completionHandler 호출
+                                        completionHandler(.failure(NSError(domain: "NewAccessTokenErrorDomain", code: 0, userInfo: [NSLocalizedDescriptionKey: "새 엑세스 토큰 발급 실패"])))
+                                    }
+                                }
+                            }
+                        } catch {
+                            print(#fileID, #function, #line, "- JSON 데이터 파싱 실패: \(error.localizedDescription)")
+                            completionHandler(.failure(error))
+                        }
+                    }
+                case .success(let data):
+                    print(#fileID, #function, #line, "- ⭐️로그아웃 성공 ㅠㅜ⭐️!")
+                    // 성공 시, 데이터 처리
+                    completionHandler(.success(data))
+                    
+                }
+            }
+    }
 }
+
 
 
 

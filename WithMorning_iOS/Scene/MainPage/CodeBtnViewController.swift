@@ -152,20 +152,6 @@ class CodeBtnViewController: UIViewController {
         openButton.tintColor = isPrivate ? DesignSystemColor.Orange500.value : DesignSystemColor.Gray200.value
     }
     
-    //    func Buttontintcolor() {
-    //        DispatchQueue.main.async {
-    //            if RegisterUserInfo.shared.privateNumber == true {
-    //                RegisterUserInfo.shared.privateNumber = false
-    //                self.openButton.tintColor = DesignSystemColor.Gray200.value
-    //                print(RegisterUserInfo.shared.privateNumber)
-    //            } else {
-    //                RegisterUserInfo.shared.privateNumber = true
-    //                self.openButton.tintColor = DesignSystemColor.Orange500.value
-    //                print(RegisterUserInfo.shared.privateNumber)
-    //            }
-    //        }
-    //    }
-    
     //MARK: - @objc func
     @objc func buttonclicked(){
         codeButton { [weak self] success in

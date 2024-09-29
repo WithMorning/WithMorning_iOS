@@ -162,7 +162,7 @@ class EditprofileViewController : UIViewController,UIImagePickerControllerDelega
         if let inputNickname = nicknameTextfield.text, !inputNickname.isEmpty {
             nickname = inputNickname
         } else {
-            nickname = RegisterUserInfo.shared.nickName ?? "오류"
+            nickname = UserDefaults.standard.string(forKey: "nickname") ?? "오류"
         }
         
         guard let imageData = image.jpegData(compressionQuality: 1) else {

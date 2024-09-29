@@ -8,7 +8,6 @@
 import Foundation
 
 enum LoginStatus {
-    case login //로그인
     case joined //가입됨
     case logout//로그아웃
     case quit //회원탈퇴
@@ -49,7 +48,15 @@ struct getTokenResponse: Codable {
 }
 
 //MARK: - 로그아웃
+struct deletelogoutRequest: Codable {
+    let refreshToken: String
+}
+struct deletelogoutResponse: Codable {
+    let isSuccess: Bool
+    let code: Int
+    let message: String
+}
 
-//MARK: - 탈퇴
+//MARK: - 회원탈퇴
 
 

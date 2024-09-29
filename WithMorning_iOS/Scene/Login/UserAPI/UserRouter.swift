@@ -17,6 +17,7 @@ enum UserRouter : URLRequestConvertible{
     case postSMSrequest(data : SMSnumRequest) //휴대폰 번호 인증
     case postSMSresponsse(data : SMScodeResquest) //번호 + 코드 인증
     case RegisterProfile(data : profileRequest) //닉네임 + 이미지 + FCM토큰
+    case deletelogout(refreshToken: deletelogoutRequest)
     
     // url가르기
     var endPoint: String {
@@ -24,6 +25,8 @@ enum UserRouter : URLRequestConvertible{
         case .postSMSrequest : return "/user/send-code"
         case .postSMSresponsse : return "/user/verify-code"
         case .RegisterProfile : return "/user/profile"
+        case .deletelogout: return "/logout"
+            
             
         }
     }
@@ -38,7 +41,11 @@ enum UserRouter : URLRequestConvertible{
     
     //어떤 방식(get, post, delete, update)
     var method: HTTPMethod {
-        return .post
+        switch self {
+        case .postSMSrequest, .postSMSresponsse, .RegisterProfile: return .post
+        case .deletelogout: return .delete
+        }
+        
     }
     
     var parameters: Parameters {
@@ -67,17 +74,21 @@ enum UserRouter : URLRequestConvertible{
             request = try JSONParameterEncoder().encode(data, into: request)
         case .RegisterProfile(let data):
             request = try JSONParameterEncoder().encode(data, into: request)
+            //MARK: - 오류날 시 여기부터 확인
             
+        case .deletelogout(let data):
+            request = try JSONParameterEncoder().encode(data, into: request)
         }
+        
         
         //request = try URLEncoding.queryString.encode(request, with: parameters)
         //이 인코딩 방식은 GET 요청 또는 URL 쿼리 매개변수를 전송할 때 사용
         
         //request = try JSONParameterEncoder().encode(data, into: request)
         //이 인코딩 방식은 주로 POST 요청에서 사용되며, HTTP 요청 바디에 JSON 데이터를 넣어 전송할 때 사용
-        
         return request
     }
 }
+
 
 

@@ -103,7 +103,6 @@ extension AppleLoginManager : ASAuthorizationControllerDelegate {
                 print(#fileID, #function, #line, "- codeString🔥: \(codeString)")
                 
                 let loginRequestTokenData = AppleloginRequest(code: idTokenString)
-                // loginRequestTokenData == idTokenString
                 
                 //MARK: - 로그인 요청
                 AF.request(LoginRouter.AppleLogin(data: loginRequestTokenData))
@@ -125,7 +124,8 @@ extension AppleLoginManager : ASAuthorizationControllerDelegate {
                                 
                             }
                             
-                            self.registerUserInfo.loginState = .login
+                            self.registerUserInfo.loginState = .joined
+                            
                             print("🔥KeyChain에 새로 저장된 accessToken : ", KeyChain.read(key: "accessToken") ?? "")
                             print("🔥KeyChain에 새로 저장된 refreshToken : ",KeyChain.read(key: "refreshToken") ?? "")
                         }
