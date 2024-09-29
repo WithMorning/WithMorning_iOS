@@ -19,7 +19,7 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         guard let _ = scene as? UIWindowScene else { return }
         RegisterUserInfo.shared.$loginState.sink { loginState in
             let refreshToken = KeyChain.read(key: "refreshToken")
-
+            
             print(#fileID, #function, #line, "- sceneDelegate refreshToken: \(refreshToken)")
             
             if let loginState = loginState {
@@ -69,7 +69,7 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
     
     func sceneDidBecomeActive(_ scene: UIScene) {
         
-
+        
     }
     
     func sceneWillResignActive(_ scene: UIScene) {
@@ -135,8 +135,13 @@ extension SceneDelegate {
                 } else if type == .register{
                     let navigationController = UINavigationController(rootViewController: type.vc)
                     window.rootViewController = navigationController
+                }
+                else if type == .main{
+                    let navigationController = UINavigationController(rootViewController: type.vc)
+                    window.rootViewController = navigationController
+                    navigationController.navigationBar.isHidden = true
                 }else{
-                    window.rootViewController = type.vc 
+                    window.rootViewController = type.vc
                 }
                 
                 self.window = window
