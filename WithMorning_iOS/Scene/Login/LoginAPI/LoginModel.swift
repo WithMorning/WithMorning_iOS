@@ -58,5 +58,9 @@ struct deletelogoutResponse: Codable {
 }
 
 //MARK: - 회원탈퇴
-
+struct deleteaccountResponse: Codable {
+    let isSuccess: Bool
+    let code: Int
+    let message: String
+}
 

@@ -739,7 +739,7 @@ extension MakeAlarmViewController : UIPickerViewDelegate, UIPickerViewDataSource
     func pickerView(_ pickerView: UIPickerView, didSelectRow row: Int, inComponent component: Int) {
         let selectedHour = hour[pickerView.selectedRow(inComponent: 0) % hour.count]
         let selectedMinute = min[pickerView.selectedRow(inComponent: 1) % min.count]
-        let selectedAMPM = AMPM[pickerView.selectedRow(inComponent: 2) % AMPM.count]
+        let selectedAMPM = AMPM[pickerView.selectedRow(inComponent: 2)]
         
         var hour24 = selectedHour
         if selectedAMPM == "PM" && selectedHour != 12 {

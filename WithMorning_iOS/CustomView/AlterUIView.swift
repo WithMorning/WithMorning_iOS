@@ -11,6 +11,7 @@ import Then
 import Alamofire
 
 let APInetwork = Network.shared
+let USERnetwork = UserNetwork.shared
 
 //MARK: - 취소,확인을 위한 델리게이트
 protocol AlterDelegate {
@@ -156,8 +157,8 @@ class AlterUIView: UIViewController {
             MainLabel.snp.makeConstraints{
                 $0.top.equalToSuperview().offset(44)
                 $0.centerX.equalToSuperview()
-                
             }
+            
         case .quit:
             MainLabel.text = "정말 윗모닝을 탈퇴하시겠습니까? 🥲"
             SubLabel.text = "탈퇴시 모든 개인정보는 바로 삭제 처리됩니다."
@@ -179,6 +180,7 @@ class AlterUIView: UIViewController {
         }
     }
     //MARK: - objc func
+    //취소클릭
     @objc func cancelclicked(){
         self.dismiss(animated: true) {
             self.delegate?.cancel()
@@ -186,7 +188,7 @@ class AlterUIView: UIViewController {
         }
     }
     
-    
+    //확인클릭
     @objc func confirmclicked() {
             switch alterType {
             case .deleteAlarm:
@@ -207,10 +209,10 @@ class AlterUIView: UIViewController {
                 case .deleteAlarm:
                     self.deleteAlarm()
                 case .outGroup:
-//                    self.leaveAlarm()
-                    print("방장아니니까 그냥나가기")
+                    self.leaveAlarm()
                 case .quit:
-                    // 기존 탈퇴 로직 유지
+//                    self.quitaccount()
+                    print("회원탈퇴")
                     break
                 }
             }
@@ -287,6 +289,51 @@ class AlterUIView: UIViewController {
             }
         }
         
+    }
+    
+    //MARK: - 회원 탈퇴
+
+    func quitaccount(){
+        USERnetwork.deleteaccount(){ result in
+            LoadingIndicator.showLoading()
+            switch result{
+            case .success(let data):
+                DispatchQueue.main.async {
+                    self.navigateToLoginViewController()
+                }
+                
+                KeyChain.delete(key: "refreshToken")
+                KeyChain.delete(key: "accessToken")
+                
+                UserDefaults.standard.set(true, forKey: "isFirstTime")
+                UserDefaults.standard.removeObject(forKey: "nickname")
+                UserDefaults.standard.removeObject(forKey: "volume")
+                UserDefaults.standard.removeObject(forKey: "vibrate")
+                
+//                self.registerUserInfo.loginState = .logout
+                
+                LoadingIndicator.hideLoading()
+                print(data)
+            case .failure(let error):
+                print(error.localizedDescription)
+            }
+            
+        }
+    }
+    
+    func navigateToLoginViewController() {
+        let loginVC = LoginViewController()
+        let navController = UINavigationController(rootViewController: loginVC)
+        navController.modalPresentationStyle = .fullScreen
+        
+        if let keyWindow = UIApplication.shared.connectedScenes
+            .compactMap({ $0 as? UIWindowScene })
+            .flatMap({ $0.windows })
+            .first(where: { $0.isKeyWindow }) {
+            
+            keyWindow.rootViewController = navController
+            keyWindow.makeKeyAndVisible()
+        }
     }
     
 }

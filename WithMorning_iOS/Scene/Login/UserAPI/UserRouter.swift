@@ -17,7 +17,9 @@ enum UserRouter : URLRequestConvertible{
     case postSMSrequest(data : SMSnumRequest) //휴대폰 번호 인증
     case postSMSresponsse(data : SMScodeResquest) //번호 + 코드 인증
     case RegisterProfile(data : profileRequest) //닉네임 + 이미지 + FCM토큰
-    case deletelogout(refreshToken: deletelogoutRequest)
+    
+    case deletelogout(refreshToken: deletelogoutRequest) //로그아웃
+    case deleteaccount //회원 탈퇴
     
     // url가르기
     var endPoint: String {
@@ -25,9 +27,9 @@ enum UserRouter : URLRequestConvertible{
         case .postSMSrequest : return "/user/send-code"
         case .postSMSresponsse : return "/user/verify-code"
         case .RegisterProfile : return "/user/profile"
+            
         case .deletelogout: return "/logout"
-            
-            
+        case .deleteaccount: return "/account"
         }
     }
     
@@ -43,7 +45,7 @@ enum UserRouter : URLRequestConvertible{
     var method: HTTPMethod {
         switch self {
         case .postSMSrequest, .postSMSresponsse, .RegisterProfile: return .post
-        case .deletelogout: return .delete
+        case .deletelogout, .deleteaccount: return .delete
         }
         
     }
@@ -74,10 +76,11 @@ enum UserRouter : URLRequestConvertible{
             request = try JSONParameterEncoder().encode(data, into: request)
         case .RegisterProfile(let data):
             request = try JSONParameterEncoder().encode(data, into: request)
-            //MARK: - 오류날 시 여기부터 확인
             
         case .deletelogout(let data):
             request = try JSONParameterEncoder().encode(data, into: request)
+        case .deleteaccount:
+            request = try URLEncoding.queryString.encode(request, with: parameters)
         }
         
         

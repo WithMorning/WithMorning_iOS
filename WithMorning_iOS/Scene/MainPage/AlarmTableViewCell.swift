@@ -18,7 +18,6 @@ class AlarmTableViewCell : UITableViewCell, UISheetPresentationControllerDelegat
     
     //MARK: - closure
     var toggleclicked : ( () -> Void ) = {}
-    var moreclicked : ( () -> Void) = {}
     var onEditAlarm: ((Int) -> Void)?
     
     //알람삭제후 실행되는 클로저
@@ -281,7 +280,7 @@ class AlarmTableViewCell : UITableViewCell, UISheetPresentationControllerDelegat
         //윗부분 시작
         topView.snp.makeConstraints{
             $0.top.leading.trailing.equalToSuperview()
-            $0.height.equalTo(129)
+            $0.height.equalTo(129).priority(.low)
         }
         topViewLabel.snp.makeConstraints{
             $0.leading.equalToSuperview().inset(16)
@@ -557,6 +556,7 @@ class AlarmTableViewCell : UITableViewCell, UISheetPresentationControllerDelegat
         memoView.snp.updateConstraints { make in
             self.memoViewHeightConstraint?.update(offset: max(calculatedHeight, baseHeight))
         }
+        
     }
     
     
@@ -565,6 +565,7 @@ class AlarmTableViewCell : UITableViewCell, UISheetPresentationControllerDelegat
     @objc func memoLabelTapped() {
         isExpanded.toggle()
         updateMemoLabel()
+        
     }
     
     

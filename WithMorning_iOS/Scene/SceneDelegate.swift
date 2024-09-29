@@ -14,9 +14,11 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
     var cancellables = Set<AnyCancellable>()
     var window: UIWindow?
     
+    //MARK: - 루트뷰 설정
+    
     func scene(_ scene: UIScene, willConnectTo session: UISceneSession, options connectionOptions: UIScene.ConnectionOptions) {
         
-        guard let windowScene = (scene as? UIWindowScene) else { return }
+        guard (scene is UIWindowScene) else { return }
         
         RegisterUserInfo.shared.$loginState.sink { loginState in
             
@@ -41,8 +43,6 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
                 if refreshToken != "" { // refreshToken이 있으면 자동 로그인
                     print("🔥KeyChain에 저장된 accessToken : ", KeyChain.read(key: "accessToken") ?? "")
                     print("🔥KeyChain에 저장된 refreshToken : ",KeyChain.read(key: "refreshToken") ?? "")
-                    
-                    #warning("test")
                     
                     self.setRootViewContrller(scene, type: .joined) //joined 바로 메인조회, login 토큰받고 메인
                     
@@ -92,31 +92,26 @@ enum rootViewController {
     case login
     case joined
     case termAgree
+    case alarmOn
     
-    //MARK: - test 용
-    case test
     
     var vc : UIViewController{
         switch self{
         case .login : return LoginViewController()
         case .joined: return MainViewController()
         case .termAgree: return TermsViewController()
-            //        case .onBoarding: return OnBoardingTutorialViewController()
-            
-        //MARK: - test용
-        case .test : return ProfileViewController()
+        case .alarmOn: return AlarmViewController()
         }
     }
 }
 
 //MARK: - 시작 순서 결정 : 약관동의 -> 로그인 -> 회원가입 -> 인증번호 -> 프로필작성 -> 튜토리얼
-
 extension SceneDelegate{
     private func setRootViewController(_ scene: UIScene) {
         let refreshToken = KeyChain.read(key: "refreshToken")
         print(#fileID, #function, #line, "- refreshToken: \(refreshToken)")
         
-        if Storage.isFirstTime() {
+        if Storage.isFirstTime() { //첫 시작
             setRootViewContrller(scene, type: .termAgree) // 첫 로그인일때
         }
         else if refreshToken != "" {
@@ -137,7 +132,7 @@ extension SceneDelegate{
                 let rootVC: UIViewController
                 
                 switch type {
-                case .termAgree, .joined, .test: //.phone수정
+                case .termAgree, .joined: //.phone수정
                     let navigationController = UINavigationController(rootViewController: type.vc)
                     if type == .joined {
                         navigationController.setNavigationBarHidden(true, animated: false)

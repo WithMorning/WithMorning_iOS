@@ -400,12 +400,10 @@ extension MainViewController : UITableViewDelegate, UITableViewDataSource{
     
     //cell의 높이
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-        
         let alarm = alarmData[indexPath.row]
         
-        let extraHeight: CGFloat = 217
-        let memoHeight: CGFloat = 100
         let baseHeight: CGFloat = 129  // 기본 높이
+        let extraHeight: CGFloat = 217 // 멤버 컬렉션 뷰 등의 추가 높이
         
         if let userList = alarm.userList {
             let isDisturbModeOn = userList.contains(where: { $0.nickname == UserDefaults.standard.string(forKey: "nickname") && $0.isDisturbBanMode })
@@ -414,12 +412,19 @@ extension MainViewController : UITableViewDelegate, UITableViewDataSource{
                 return baseHeight
             } else {
                 // 방해금지 모드가 아닐 때
-                return baseHeight + extraHeight + memoHeight
+                // 임시 셀을 만들어 메모 뷰의 높이를 계산
+                let cell = tableView.dequeueReusableCell(withIdentifier: "AlarmTableViewCell") as! AlarmTableViewCell
+                
+                cell.setMemoText(alarm.memo)
+                
+                let memoViewHeight = cell.calculateMemoViewHeight()
+                
+                return baseHeight + extraHeight + memoViewHeight
             }
         }
         
         // 사용자 목록이 없거나 조건에 맞는 사용자가 없을 경우 기본 설정
-        return baseHeight + extraHeight + memoHeight
+        return baseHeight + extraHeight
     }
     
 }

@@ -22,7 +22,7 @@ class MyPageViewController : UIViewController, UIScrollViewDelegate {
     
     let APInetwork = Network.shared
     let USERnetwork = UserNetwork.shared
-    let registerUserInfo = RegisterUserInfo.shared
+//    let registerUserInfo = RegisterUserInfo.shared
     
     //MARK: - 네비게이션
     
@@ -701,9 +701,7 @@ class MyPageViewController : UIViewController, UIScrollViewDelegate {
     }
     //로그아웃
     func logout(){
-        
         let refreshtoken = deletelogoutRequest(refreshToken: KeyChain.read(key: "refreshToken") ?? "")
-        
         USERnetwork.deletelogout(refreshToken: refreshtoken){ result in
             LoadingIndicator.showLoading()
             switch result{
@@ -716,7 +714,7 @@ class MyPageViewController : UIViewController, UIScrollViewDelegate {
                 KeyChain.delete(key: "refreshToken")
                 KeyChain.delete(key: "accessToken")
                 
-                self.registerUserInfo.loginState = .logout
+//                self.registerUserInfo.loginState = .logout
                 
                 LoadingIndicator.hideLoading()
                 print(data)
@@ -727,8 +725,6 @@ class MyPageViewController : UIViewController, UIScrollViewDelegate {
             }
         }
     }
-    
-    //
     
     //MARK: - 시간 형식 수정
     func updateSleepTimeLabel(with bedtime: String, dayOfWeekList: [String]) {
@@ -775,12 +771,12 @@ class MyPageViewController : UIViewController, UIScrollViewDelegate {
         let loginVC = LoginViewController()
         let navController = UINavigationController(rootViewController: loginVC)
         navController.modalPresentationStyle = .fullScreen
-
+        
         if let keyWindow = UIApplication.shared.connectedScenes
             .compactMap({ $0 as? UIWindowScene })
             .flatMap({ $0.windows })
             .first(where: { $0.isKeyWindow }) {
-
+            
             keyWindow.rootViewController = navController
             keyWindow.makeKeyAndVisible()
         }

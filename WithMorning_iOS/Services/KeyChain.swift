@@ -8,9 +8,6 @@
 import Foundation
 import Security
 
-
-    #warning("로그인 시, 토큰 저장 부분 (UserDefaults.standard.set -> KeyChain.create 변경)")
-
 class KeyChain{
     
     //MARK: - create
@@ -47,8 +44,6 @@ class KeyChain{
             return nil
         }
     }
-    
-    #warning("2) 로그아웃 시, 토큰 삭제 부분 (UserDefaults.standard.removeObject -> KeyChain.delete 변경)")
     
     //MARK: - delete
     class func delete(key: String) {
