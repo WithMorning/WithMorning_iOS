@@ -714,6 +714,7 @@ class MyPageViewController : UIViewController, UIScrollViewDelegate {
                 KeyChain.delete(key: "refreshToken")
                 KeyChain.delete(key: "accessToken")
                 KeyChain.delete(key: "fcmToken")
+                
                 UserDefaults.standard.set(true, forKey: "isFirstTime")
                 
                 LoadingIndicator.hideLoading()

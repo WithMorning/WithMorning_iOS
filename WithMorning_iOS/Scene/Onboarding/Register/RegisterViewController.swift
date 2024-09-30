@@ -131,6 +131,7 @@ class RegisterViewController : UIViewController{
                 
             case .failure(let error):
                 LoadingIndicator.hideLoading()
+                self.showToast(message: "인증번호 전송에 실패했습니다.")
                 print(error.localizedDescription)
                 
             }

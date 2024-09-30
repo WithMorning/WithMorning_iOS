@@ -352,7 +352,7 @@ extension MainViewController : UITableViewDelegate, UITableViewDataSource{
         
         cell.participantcode = alarm.participationCode
         
-        
+        //알림이 설정되어있는 요일의 색
         let dayLabels = [cell.MonLabel, cell.TueLabel, cell.WedLabel, cell.ThuLabel, cell.FriLabel, cell.SatLabel, cell.SunLabel]
         
         let days = ["mon", "tue", "wed", "thu", "fri", "sat", "sun"]

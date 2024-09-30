@@ -298,12 +298,13 @@ class AlterUIView: UIViewController {
                 KeyChain.delete(key: "accessToken")
                 KeyChain.delete(key: "fcmToken")
                 
-                UserDefaults.standard.set(true, forKey: "isFirstTime")
+                UserDefaults.standard.removeObject(forKey: "isFirstTime")
                 UserDefaults.standard.removeObject(forKey: "nickname")
                 UserDefaults.standard.removeObject(forKey: "volume")
                 UserDefaults.standard.removeObject(forKey: "vibrate")
                 
                 LoadingIndicator.hideLoading()
+                
                 print(data)
             case .failure(let error):
                 print(error.localizedDescription)

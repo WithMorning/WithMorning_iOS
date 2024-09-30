@@ -240,7 +240,6 @@ class AlarmTableViewCell : UITableViewCell, UISheetPresentationControllerDelegat
         button.setTitle("더보기", for: .normal)
         button.titleLabel?.font = DesignSystemFont.Pretendard_Medium12.value
         button.setTitleColor(DesignSystemColor.Gray600.value, for: .normal)
-        //        button.addTarget(self, action: #selector(moreButtonTapped), for: .touchUpInside)
         return button
     }()
     
@@ -397,7 +396,9 @@ class AlarmTableViewCell : UITableViewCell, UISheetPresentationControllerDelegat
         }
     }
     
+    
     func configureCell(with alarm: GroupList, currentUserNickname: String) {
+        
         if let currentUser = alarm.userList?.first(where: { $0.nickname == currentUserNickname }) {
             
             disturb = currentUser.isDisturbBanMode
@@ -406,6 +407,19 @@ class AlarmTableViewCell : UITableViewCell, UISheetPresentationControllerDelegat
             
             DispatchQueue.main.async {
                 self.bottomView.isHidden = self.disturb
+                
+                let dayLabels = [self.MonLabel, self.TueLabel, self.WedLabel, self.ThuLabel, self.FriLabel, self.SatLabel, self.SunLabel]
+                
+                for label in dayLabels {
+                    if self.disturb {
+                        label.backgroundColor = DesignSystemColor.Gray100.value
+                        label.textColor = DesignSystemColor.Gray300.value
+                    } else {
+                        label.backgroundColor = DesignSystemColor.Orange500.value
+                        label.textColor = .white
+                    }
+                }
+                
             }
             
         }

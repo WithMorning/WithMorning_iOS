@@ -193,7 +193,7 @@ class ProfileViewController : UIViewController, UIImagePickerControllerDelegate 
             return
         }
         
-        guard let imageData = image.jpegData(compressionQuality: 1) else {
+        guard let imageData = image.jpegData(compressionQuality: 0.5) else {
             print("이미지를 JPEG 데이터로 변환하는 데 실패했습니다.")
             return
         }
