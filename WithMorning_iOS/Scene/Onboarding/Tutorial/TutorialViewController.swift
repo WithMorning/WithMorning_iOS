@@ -83,15 +83,13 @@ class TutorialViewController : UIViewController{
     }()
     
     //MARK: - life cycle
-    
     override func viewDidLoad() {
         super.viewDidLoad()
         self.view.backgroundColor = DesignSystemColor.Gray150.value
         setUI()
-    }
-    override func viewWillAppear(_ animated: Bool) {
         skiphidden()
     }
+
     
     //MARK: - Autolayout
     

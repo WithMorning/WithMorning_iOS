@@ -13,7 +13,6 @@ import Alamofire
 class TutorialSecondViewController : UIViewController {
     
     //MARK: - properties
-    
     private lazy var timerView : UIView = {
         let view = UIView()
         view.backgroundColor = .white

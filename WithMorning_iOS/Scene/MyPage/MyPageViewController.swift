@@ -674,8 +674,26 @@ class MyPageViewController : UIViewController, UIScrollViewDelegate {
                 
                 self.nickNameLabel.text = mypage.nickname
                 self.updateSleepTimeLabel(with: mypage.bedtime, dayOfWeekList: mypage.dayOfWeekList)
-                self.bedtime = mypage.bedtime
-                self.dayOfWeekList = mypage.dayOfWeekList
+                
+                #warning("오류")
+                if mypage.dayOfWeekList.isEmpty {
+                    self.sleeptimeLabel3.text = "요일 없음"
+                    if mypage.bedtime.isEmpty{
+                        self.sleeptimeLabel3.text = "시간 없음"
+                    }else{
+                        self.bedtime = mypage.bedtime
+                    }
+                }else{
+                    self.dayOfWeekList = mypage.dayOfWeekList
+                }
+                
+//                if mypage.bedtime.isEmpty{
+//                    self.sleeptimeLabel3.text = "시간 없음"
+//                }else{
+//                    self.bedtime = mypage.bedtime
+//                }
+                
+                
                 self.noti = mypage.isAllowBedTimeAlarm
                 self.nickname = mypage.nickname
                 

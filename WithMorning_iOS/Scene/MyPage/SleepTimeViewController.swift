@@ -279,7 +279,6 @@ class SleepTimeViewController : UIViewController, UISheetPresentationControllerD
         timePicker.selectRow(isPM ? 1 : 0, inComponent: 2, animated: false)
         
         selectedTime24 = timeString  // 24시간제로 유지
-//        updateTimeDisplay()
     }
     
     //MARK: - 요일 설정
