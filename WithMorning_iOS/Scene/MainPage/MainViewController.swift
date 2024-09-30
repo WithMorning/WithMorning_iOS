@@ -228,8 +228,12 @@ class MainViewController: UIViewController, UISheetPresentationControllerDelegat
     @objc func clickedcode() { //참여코드입력
         let vc = CodeBtnViewController()
         vc.modalPresentationStyle = .formSheet
-        self.present(vc, animated: true)
         
+        vc.participantClosure = { [weak self] in
+            self?.getMainpage()
+        }
+        
+        self.present(vc, animated: true)
         if let sheet = vc.sheetPresentationController {
             if #available(iOS 16.0, *) {
                 sheet.detents = [.custom { context in

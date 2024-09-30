@@ -13,6 +13,7 @@ import Alamofire
 class CodeBtnViewController: UIViewController {
     
     let APInetwork = Network.shared
+    var participantClosure: (() -> Void)?
     
     //MARK: - properties
     private lazy var codeLabel : UILabel = {
@@ -157,9 +158,12 @@ class CodeBtnViewController: UIViewController {
         codeButton { [weak self] success in
             DispatchQueue.main.async {
                 if success {
-                    self?.dismiss(animated: true)
+                    self?.dismiss(animated: true){
+                        self?.participantClosure?()
+                    }
+                    
                 } else {
-                    print("초대코드로 입장 실패")
+                    self?.showToast(message: "참여 코드를 다시 확인해주세요.")
                 }
             }
         }
@@ -175,6 +179,7 @@ class CodeBtnViewController: UIViewController {
     private func codeButton(completion: @escaping (Bool) -> Void){
         
         let data = JoingroupMaindata(participationCode: codeTextfield.text ?? "", isAgree: RegisterUserInfo.shared.privateNumber)
+        
         APInetwork.joinGroup(joindata: data){ result in
             LoadingIndicator.showLoading()
             switch result{

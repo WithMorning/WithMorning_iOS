@@ -157,9 +157,9 @@ class SleepTimeViewController : UIViewController, UISheetPresentationControllerD
         super.viewDidLoad()
         self.view.backgroundColor = DesignSystemColor.Gray150.value
         SetUI()
+        setSelectedTimeOnPicker()
         updateRepeatDayLabel()
         allowAlarmTintColor()
-        setTimeOnPicker(for: selectedTime24)
     }
     
     override func viewDidLayoutSubviews() {
@@ -258,28 +258,35 @@ class SleepTimeViewController : UIViewController, UISheetPresentationControllerD
         }
     }
     
-    func setTimeOnPicker(for timeString: String) {
-        let timeComponents = timeString.split(separator: ":")
-        
-        guard timeComponents.count == 2,
-              let hour24 = Int(timeComponents[0]),
-              let minute = Int(timeComponents[1]) else {
-            return
+    func setSelectedTimeOnPicker() {
+            let dateFormatter = DateFormatter()
+            dateFormatter.dateFormat = "HH:mm"
+            
+            guard let date = dateFormatter.date(from: selectedTime24) else { return }
+            
+            let calendar = Calendar.current
+            let hour = calendar.component(.hour, from: date)
+            let minute = calendar.component(.minute, from: date)
+            
+            let hourForPicker: Int
+            let ampm: Int
+            
+            if hour >= 12 {
+                hourForPicker = hour == 12 ? 12 : hour - 12
+                ampm = 1 // PM
+            } else {
+                hourForPicker = hour == 0 ? 12 : hour
+                ampm = 0 // AM
+            }
+            
+            let middleHour = self.hour.count * 50
+            let middleMinute = min.count * 50
+            let middleAMPM = AMPM.count * 50
+            
+            timePicker.selectRow(middleHour + hourForPicker - 1, inComponent: 0, animated: false)
+            timePicker.selectRow(middleMinute + minute, inComponent: 1, animated: false)
+            timePicker.selectRow(middleAMPM + ampm, inComponent: 2, animated: false)
         }
-        
-        let hour12 = hour24 % 12
-        let displayHour = hour12 == 0 ? 12 : hour12
-        let isPM = hour24 >= 12
-        
-        let middleHour = hour.count * 50
-        let middleMinute = min.count * 50
-        
-        timePicker.selectRow(middleHour + (displayHour - 1), inComponent: 0, animated: false)
-        timePicker.selectRow(middleMinute + minute, inComponent: 1, animated: false)
-        timePicker.selectRow(isPM ? 1 : 0, inComponent: 2, animated: false)
-        
-        selectedTime24 = timeString  // 24시간제로 유지
-    }
     
     //MARK: - 요일 설정
     func updateRepeatDayLabel() {
@@ -431,7 +438,6 @@ extension SleepTimeViewController : UIPickerViewDelegate, UIPickerViewDataSource
             } else {
                 timelabel.text = String(format: "%02d", min[row % min.count])
             }
-            
             return timelabel
             
         } else {
@@ -472,8 +478,7 @@ extension SleepTimeViewController : UIPickerViewDelegate, UIPickerViewDataSource
             hour24 = 0
         }
         
-        let selectedTime24 = String(format: "%02d:%02d", hour24, selectedMinute)
-        self.selectedTime24 = selectedTime24
+        selectedTime24 = String(format: "%02d:%02d", hour24, selectedMinute)
         
         print("설정된 시간 (24시간제): \(selectedTime24)")
     }

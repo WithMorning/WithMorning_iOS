@@ -142,8 +142,7 @@ class TutorialViewController : UIViewController{
     
     @objc func nextbtn(){
         if pageControl.currentPage == 1{
-            let vc = MainViewController()
-            self.navigationController?.pushViewController(vc, animated: true)
+            navigateToMainViewController()
         }
         
         if pageControl.currentPage < 1 {
@@ -169,6 +168,22 @@ class TutorialViewController : UIViewController{
     
     @objc func skip(){
         print("skipButton.ishidden = false")
+    }
+    
+    //MARK: - 회원가입 성공 후 튜토리얼 종료시 모든 뷰 삭제 후 메인으로 넘어감
+    func navigateToMainViewController() {
+        let mainVC = MainViewController()
+        let navController = UINavigationController(rootViewController: mainVC)
+        navController.modalPresentationStyle = .fullScreen
+        
+        if let keyWindow = UIApplication.shared.connectedScenes
+            .compactMap({ $0 as? UIWindowScene })
+            .flatMap({ $0.windows })
+            .first(where: { $0.isKeyWindow }) {
+            
+            keyWindow.rootViewController = navController
+            keyWindow.makeKeyAndVisible()
+        }
     }
     
     

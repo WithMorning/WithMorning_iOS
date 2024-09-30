@@ -68,9 +68,10 @@ struct Mypage: Codable {
 struct MypageResponse: Codable {
     let userID: Int
     let imageURL: String?
-    let nickname, bedtime: String
-    let isAllowBedTimeAlarm: Bool
-    let dayOfWeekList: [String]
+    let nickname: String
+    let bedtime: String?
+    let isAllowBedTimeAlarm: Bool?
+    let dayOfWeekList: [String]?
     
     enum CodingKeys: String, CodingKey {
         case userID = "userId"

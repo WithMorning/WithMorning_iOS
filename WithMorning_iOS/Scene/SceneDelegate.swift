@@ -41,7 +41,7 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
                     }
                     // 처음 등록한 유저가 아니고 refreshToken이 있다면
                     else if refreshToken != "" {
-                        self.setRootViewContrller(scene, type: .main)
+                        self.setRootViewContrller(scene, type: .main) //테스트시 여기 수정
                     }
                     // refreshToken이 없다면
                     else {
@@ -52,7 +52,7 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
                 if Storage.isFirstTime() {
                     self.setRootViewContrller(scene, type: .termAgree)
                 }
-                else if refreshToken != "" {
+                else if refreshToken != " " {
                     self.setRootViewContrller(scene, type: .main)
                 }
             }
@@ -96,6 +96,8 @@ enum StartViewControllerType {
     case termAgree //이용동의
     case main //메인
     case register //회원가입
+    #warning("test")
+    case test
     
     var vc: UIViewController {
         switch self {
@@ -103,6 +105,8 @@ enum StartViewControllerType {
         case .termAgree: return TermsViewController()
         case .main: return MainViewController()
         case .register: return RegisterViewController()
+            
+        case .test : return ProfileViewController()
         }
     }
 }
@@ -129,17 +133,20 @@ extension SceneDelegate {
             DispatchQueue.main.async {
                 let window = UIWindow(windowScene: windowScene)
                 print(#fileID, #function, #line, "- 어떤 type의 data인지 확인하기⭐️: \(type)")
+                
                 if type == .termAgree {
                     let navigationController = UINavigationController(rootViewController: type.vc)
                     window.rootViewController = navigationController
+                    
                 } else if type == .register{
                     let navigationController = UINavigationController(rootViewController: type.vc)
                     window.rootViewController = navigationController
-                }
-                else if type == .main{
+                    
+                } else if type == .main{
                     let navigationController = UINavigationController(rootViewController: type.vc)
                     window.rootViewController = navigationController
                     navigationController.navigationBar.isHidden = true
+                    
                 }else{
                     window.rootViewController = type.vc
                 }

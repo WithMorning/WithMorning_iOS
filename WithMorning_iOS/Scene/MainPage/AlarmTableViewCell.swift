@@ -362,7 +362,7 @@ class AlarmTableViewCell : UITableViewCell, UISheetPresentationControllerDelegat
         }
         
         memoView.snp.makeConstraints {
-            $0.top.equalTo(memberCollectionView.snp.bottom)
+            $0.top.equalTo(memberCollectionView.snp.bottom).offset(12)
             $0.leading.trailing.equalToSuperview().inset(20)
         }
         
@@ -414,9 +414,6 @@ class AlarmTableViewCell : UITableViewCell, UISheetPresentationControllerDelegat
                     if self.disturb {
                         label.backgroundColor = DesignSystemColor.Gray100.value
                         label.textColor = DesignSystemColor.Gray300.value
-                    } else {
-                        label.backgroundColor = DesignSystemColor.Orange500.value
-                        label.textColor = .white
                     }
                 }
                 

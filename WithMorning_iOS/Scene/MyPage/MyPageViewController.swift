@@ -22,7 +22,7 @@ class MyPageViewController : UIViewController, UIScrollViewDelegate {
     
     let APInetwork = Network.shared
     let USERnetwork = UserNetwork.shared
-//    let registerUserInfo = RegisterUserInfo.shared
+    //    let registerUserInfo = RegisterUserInfo.shared
     
     //MARK: - 네비게이션
     
@@ -673,28 +673,10 @@ class MyPageViewController : UIViewController, UIScrollViewDelegate {
             case.success(let mypage):
                 
                 self.nickNameLabel.text = mypage.nickname
-                self.updateSleepTimeLabel(with: mypage.bedtime, dayOfWeekList: mypage.dayOfWeekList)
-                
-                #warning("오류")
-                if mypage.dayOfWeekList.isEmpty {
-                    self.sleeptimeLabel3.text = "요일 없음"
-                    if mypage.bedtime.isEmpty{
-                        self.sleeptimeLabel3.text = "시간 없음"
-                    }else{
-                        self.bedtime = mypage.bedtime
-                    }
-                }else{
-                    self.dayOfWeekList = mypage.dayOfWeekList
-                }
-                
-//                if mypage.bedtime.isEmpty{
-//                    self.sleeptimeLabel3.text = "시간 없음"
-//                }else{
-//                    self.bedtime = mypage.bedtime
-//                }
-                
-                
-                self.noti = mypage.isAllowBedTimeAlarm
+                self.updateSleepTimeLabel(with: mypage.bedtime ?? "", dayOfWeekList: mypage.dayOfWeekList ?? [])
+                self.bedtime = mypage.bedtime ?? ""
+                self.dayOfWeekList = mypage.dayOfWeekList ?? []
+                self.noti = mypage.isAllowBedTimeAlarm ?? false
                 self.nickname = mypage.nickname
                 
                 if ((mypage.imageURL?.isEmpty) != nil) {
@@ -748,6 +730,7 @@ class MyPageViewController : UIViewController, UIScrollViewDelegate {
     
     //MARK: - 시간 형식 수정
     func updateSleepTimeLabel(with bedtime: String, dayOfWeekList: [String]) {
+        
         let dateFormatter = DateFormatter()
         dateFormatter.dateFormat = "HH:mm"
         
@@ -778,8 +761,11 @@ class MyPageViewController : UIViewController, UIScrollViewDelegate {
             else if dayOfWeekSet.isSubset(of: weekendSet) {
                 sleeptimeLabel3.text = "\(formattedTime) 주말"
             }
-            // 그 외: 모든 요일 출력
-            else {
+            
+            else if dayOfWeekSet.isEmpty{
+                sleeptimeLabel3.text = "없음"
+                // 그 외: 모든 요일 출력
+            }else{
                 let koreanDays = dayOfWeekList.compactMap { dayOfWeekDict[$0] }.joined(separator: ", ")
                 sleeptimeLabel3.text = "\(formattedTime) \(koreanDays)"
             }
