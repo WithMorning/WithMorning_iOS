@@ -711,6 +711,9 @@ class AlarmTableViewCell : UITableViewCell, UISheetPresentationControllerDelegat
         
         cell.configureMember(with: userlistData.nickname,imageURL: userlistData.imageURL ?? "",isDisturbBanMode: userlistData.isDisturbBanMode,isWakeup: userlistData.isWakeup)
         
+        
+        
+        
         return cell
     }
     

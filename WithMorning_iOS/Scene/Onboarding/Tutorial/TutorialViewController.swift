@@ -175,6 +175,7 @@ class TutorialViewController : UIViewController{
         let mainVC = MainViewController()
         let navController = UINavigationController(rootViewController: mainVC)
         navController.modalPresentationStyle = .fullScreen
+        navController.navigationBar.isHidden = true
         
         if let keyWindow = UIApplication.shared.connectedScenes
             .compactMap({ $0 as? UIWindowScene })
