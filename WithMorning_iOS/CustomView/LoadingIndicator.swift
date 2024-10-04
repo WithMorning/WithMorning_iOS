@@ -9,36 +9,46 @@ import UIKit
 
 class LoadingIndicator {
     
+    static private var activityIndicator: UIActivityIndicatorView?
+    
     static func showLoading() {
         DispatchQueue.main.async {
             guard let windowScene = UIApplication.shared.connectedScenes.first as? UIWindowScene,
                   let window = windowScene.windows.first(where: { $0.isKeyWindow }) else {
                 return
             }
-
-            let loadingIndicatorView: UIActivityIndicatorView
-            if let existedView = window.subviews.first(where: { $0 is UIActivityIndicatorView }) as? UIActivityIndicatorView {
-                loadingIndicatorView = existedView
+            
+            if let existingIndicator = activityIndicator {
+                existingIndicator.startAnimating()
+                window.bringSubviewToFront(existingIndicator)
             } else {
-                loadingIndicatorView = UIActivityIndicatorView(style: .large)
-                loadingIndicatorView.frame = window.frame
-                loadingIndicatorView.color = DesignSystemColor.Orange500.value
-                loadingIndicatorView.backgroundColor = UIColor.black.withAlphaComponent(0.5)  // Optional: Adds a translucent background
-                window.addSubview(loadingIndicatorView)
+                let indicator = UIActivityIndicatorView(style: .large)
+                indicator.frame = window.bounds
+                indicator.backgroundColor = UIColor.black.withAlphaComponent(0.5)
+                indicator.color = /*.white*/ DesignSystemColor.Orange500.value
+                indicator.startAnimating()
+                window.addSubview(indicator)
+                window.bringSubviewToFront(indicator)
+                activityIndicator = indicator
             }
             
-            loadingIndicatorView.startAnimating()
+            window.isUserInteractionEnabled = false
+            print("Loading indicator is now visible")
         }
     }
-
+    
     static func hideLoading() {
         DispatchQueue.main.async {
+            activityIndicator?.stopAnimating()
+            activityIndicator?.removeFromSuperview()
+            activityIndicator = nil
+            
             guard let windowScene = UIApplication.shared.connectedScenes.first as? UIWindowScene,
                   let window = windowScene.windows.first(where: { $0.isKeyWindow }) else {
                 return
             }
-            
-            window.subviews.filter({ $0 is UIActivityIndicatorView }).forEach { $0.removeFromSuperview() }
+            window.isUserInteractionEnabled = true
+            print("Loading indicator has been hidden")
         }
     }
 }

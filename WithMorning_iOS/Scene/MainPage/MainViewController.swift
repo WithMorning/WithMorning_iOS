@@ -333,6 +333,7 @@ class MainViewController: UIViewController, UISheetPresentationControllerDelegat
 extension MainViewController : UITableViewDelegate, UITableViewDataSource{
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        
         return alarmData.count
     }
     

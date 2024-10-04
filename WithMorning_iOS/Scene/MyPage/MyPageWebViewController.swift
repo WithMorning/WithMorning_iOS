@@ -22,6 +22,7 @@ class MypageWebViewController: UIViewController, WKUIDelegate {
         webView.uiDelegate = self
         view = UIView()
         view.addSubview(webView)
+
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -31,7 +32,7 @@ class MypageWebViewController: UIViewController, WKUIDelegate {
         navBarAppearance.backgroundColor = UIColor.white
         self.navigationController?.navigationBar.standardAppearance = navBarAppearance
         self.navigationController?.navigationBar.scrollEdgeAppearance = navBarAppearance
-        self.navigationController?.navigationBar.isHidden = false
+        self.navigationController?.navigationBar.isHidden = true
     }
     
     override func viewDidLoad() {

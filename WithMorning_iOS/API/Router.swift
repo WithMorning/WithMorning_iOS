@@ -10,9 +10,6 @@ import Alamofire
 
 private let BaseURL = "https://withmorning.site/api"
 
-let Authorization =  "Bearer " +
-"eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiI2IiwiaWF0IjoxNzI3MTUzODQzLCJleHAiOjE3Mjc3NTg2NDN9.orFXuQCBz3e3SaTSqXB9fDMXvh0C0QOWsCAxuDvpFwA"
-
 enum Router : URLRequestConvertible{
     
     case getmypage //마이페이지
@@ -49,9 +46,9 @@ enum Router : URLRequestConvertible{
     //헤더
     var headers: HTTPHeaders {
         switch self {
-        case .patchdisturb(let groupId, _) : return HTTPHeaders(["accept":"application/json","Content-Type" : "application/json" ,"groupId":"\(groupId)"/*,"Authorization":"\(Authorization)"*/])
+        case .patchdisturb(let groupId, _) : return HTTPHeaders(["accept":"application/json","Content-Type" : "application/json" ,"groupId":"\(groupId)"])
             
-        default: return HTTPHeaders(["accept":"application/json","Content-Type" : "application/json" ,"Authorization":"\(Authorization)"])
+        default: return HTTPHeaders(["accept":"application/json","Content-Type" : "application/json" ])
         }
     }
     

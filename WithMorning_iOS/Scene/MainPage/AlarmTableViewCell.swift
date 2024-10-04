@@ -750,6 +750,7 @@ class AlarmTableViewCell : UITableViewCell, UISheetPresentationControllerDelegat
         vc.userphoneNum = selectedUser.phone
         vc.userId = selectedUser.userID
         vc.isagree = selectedUser.isAgree
+        
         // 유저 이미지 설정
         if let imageURLString = selectedUser.imageURL, !imageURLString.isEmpty, let url = URL(string: imageURLString) {
             // Kingfisher를 사용하여 이미지 다운로드 및 둥근 모서리 적용 처리
@@ -814,7 +815,6 @@ class memberCollectioViewCell: UICollectionViewCell {
     
     lazy var memberLabel: UILabel = {
         let label = UILabel()
-        label.textColor = .black
         label.font = DesignSystemFont.Pretendard_SemiBold12.value
         label.numberOfLines = 0
         label.textAlignment = .center
@@ -936,21 +936,20 @@ class memberCollectioViewCell: UICollectionViewCell {
         
         
         //방해금지모드
-        if isDisturbBanMode == true{
+        if isDisturbBanMode{
             memberView.backgroundColor = DesignSystemColor.Gray150.value
             memberLabel.textColor = DesignSystemColor.Gray500.value
             meView.backgroundColor = DesignSystemColor.Gray150.value
             
-            
         }else{
             memberView.backgroundColor = DesignSystemColor.Orange500.value
+            memberLabel.textColor = .black
             meView.backgroundColor = DesignSystemColor.Orange500.value
         }
         
         //일어났나
-        if isWakeup == true {
+        if isWakeup{
             sleepView.isHidden = false
-            
         } else {
             sleepView.isHidden = true
         }
