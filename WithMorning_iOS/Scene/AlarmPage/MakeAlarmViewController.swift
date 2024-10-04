@@ -467,9 +467,12 @@ class MakeAlarmViewController : UIViewController, UIScrollViewDelegate, UISheetP
         selectedTime24 = String(format: "%02d:%02d", hour, minute)
         print("초기화 시 설정된 시간 (24시간제): \(selectedTime24)")
         
-        // PickerView의 값을 현재 시각으로 설정
-        timePicker.selectRow(hourForPicker - 1, inComponent: 0, animated: false)
-        timePicker.selectRow(minute, inComponent: 1, animated: false)
+        // PickerView의 값을 현재 시각으로 설정 (중간 위치에서 시작)
+        let middleHour = (self.hour.count * 50) + (hourForPicker - 1)
+        let middleMinute = (self.min.count * 50) + minute
+        
+        timePicker.selectRow(middleHour, inComponent: 0, animated: false)
+        timePicker.selectRow(middleMinute, inComponent: 1, animated: false)
         timePicker.selectRow(ampm, inComponent: 2, animated: false)
         
         // 12시간제 + AM/PM으로 변환하여 표시
@@ -479,8 +482,6 @@ class MakeAlarmViewController : UIViewController, UIScrollViewDelegate, UISheetP
             let displayTime = timeFormat.string(from: date)
             print("표시될 시간 (12시간제): \(displayTime)")
         }
-        
-//        updateTimeDisplay()
     }
     
     //알람 수정
@@ -497,43 +498,16 @@ class MakeAlarmViewController : UIViewController, UIScrollViewDelegate, UISheetP
         let displayHour = hour12 == 0 ? 12 : hour12
         let isPM = hour24 >= 12
         
-        let middleHour = hour.count * 50
-        let middleMinute = min.count * 50
+        // 중간 위치에서 시작하도록 설정
+        let middleHour = (hour.count * 50) + (displayHour - 1)
+        let middleMinute = (min.count * 50) + minute
         
-        timePicker.selectRow(middleHour + (displayHour - 1), inComponent: 0, animated: false)
-        timePicker.selectRow(middleMinute + minute, inComponent: 1, animated: false)
+        timePicker.selectRow(middleHour, inComponent: 0, animated: false)
+        timePicker.selectRow(middleMinute, inComponent: 1, animated: false)
         timePicker.selectRow(isPM ? 1 : 0, inComponent: 2, animated: false)
         
-        editTime = timeString  // 24시간제로 유지
-//        updateTimeDisplay()
+        editTime = timeString
     }
-    
-//    func updateTimeDisplay() {
-//        let selectedHour = hour[timePicker.selectedRow(inComponent: 0) % hour.count]
-//        let selectedMinute = min[timePicker.selectedRow(inComponent: 1) % min.count]
-//        let selectedAMPM = AMPM[timePicker.selectedRow(inComponent: 2)]
-//        
-//        let hour24 = (selectedAMPM == "PM" && selectedHour != 12) ? selectedHour + 12 :
-//        (selectedAMPM == "AM" && selectedHour == 12) ? 0 : selectedHour
-//        
-//        selectedTime24 = String(format: "%02d:%02d", hour24, selectedMinute)
-//        
-//        let displayTime = String(format: "%02d:%02d %@", selectedHour, selectedMinute, selectedAMPM)
-//        print("선택된 시간 (12시간제): \(displayTime)")
-//        print("선택된 시간 (24시간제): \(selectedTime24)")
-//    }
-//    
-//    func convert24To12(time: String) -> String {
-//        let formatter = DateFormatter()
-//        formatter.dateFormat = "HH:mm"
-//        
-//        if let date = formatter.date(from: time) {
-//            formatter.dateFormat = "hh:mm a"
-//            return formatter.string(from: date)
-//        }
-//        return time  // 변환 실패 시 원래 문자열 반환
-//    }
-    
     
     
     //MARK: - @objc func
@@ -588,11 +562,9 @@ class MakeAlarmViewController : UIViewController, UIScrollViewDelegate, UISheetP
     
     @objc func saveclicked() {
         if mode == .editMode {
-            print("editmode")
             editGroup()
             
         }else{
-            print("makemode")
             makeGroup()
         }
         

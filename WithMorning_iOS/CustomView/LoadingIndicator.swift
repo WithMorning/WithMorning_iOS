@@ -25,7 +25,7 @@ class LoadingIndicator {
                 let indicator = UIActivityIndicatorView(style: .large)
                 indicator.frame = window.bounds
                 indicator.backgroundColor = UIColor.black.withAlphaComponent(0.5)
-                indicator.color = /*.white*/ DesignSystemColor.Orange500.value
+                indicator.color = /*.white*/ /*DesignSystemColor.Orange500.value*/.black
                 indicator.startAnimating()
                 window.addSubview(indicator)
                 window.bringSubviewToFront(indicator)

@@ -52,7 +52,7 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
                 if Storage.isFirstTime() {
                     self.setRootViewContrller(scene, type: .termAgree)
                 }
-                else if refreshToken != " " {
+                else if refreshToken != "" {
                     self.setRootViewContrller(scene, type: .main)
                 }
             }
@@ -172,3 +172,47 @@ public class Storage {
     }
 }
 
+
+//import UIKit
+//import Combine
+//
+//class SceneDelegate: UIResponder, UIWindowSceneDelegate {
+//    var cancellables = Set<AnyCancellable>()
+//    var window: UIWindow?
+//    
+//    func scene(_ scene: UIScene, willConnectTo session: UISceneSession, options connectionOptions: UIScene.ConnectionOptions) {
+//        guard let windowScene = scene as? UIWindowScene else { return }
+//        
+//        UserAuthService.shared.$loginState
+//            .sink { [weak self] _ in
+//                self?.setRootViewController(windowScene)
+//            }
+//            .store(in: &cancellables)
+//        
+//        setRootViewController(windowScene)
+//    }
+//    
+//    private func setRootViewController(_ scene: UIWindowScene) {
+//        let window = UIWindow(windowScene: scene)
+//        let startType = UserAuthService.shared.checkAuthStatus()
+//        
+//        print(#fileID, #function, #line, "- 어떤 type의 data인지 확인하기⭐️: \(startType)")
+//        
+//        let rootViewController: UIViewController
+//        
+//        switch startType {
+//        case .termAgree, .register, .main:
+//            let navigationController = UINavigationController(rootViewController: startType.vc)
+//            if startType == .main {
+//                navigationController.navigationBar.isHidden = true
+//            }
+//            rootViewController = navigationController
+//        default:
+//            rootViewController = startType.vc
+//        }
+//        
+//        window.rootViewController = rootViewController
+//        self.window = window
+//        window.makeKeyAndVisible()
+//    }
+//}

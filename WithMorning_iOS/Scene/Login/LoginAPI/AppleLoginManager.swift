@@ -111,10 +111,12 @@ extension AppleLoginManager : ASAuthorizationControllerDelegate {
                         case .failure(let error):
                             print(#fileID, #function, #line, "- error: \(error.localizedDescription)")
                         case .success(let data):
+                            
                             if let dataResult = data.result {
                                 
-                                print("엑세스 : ",data.result?.accessToken as Any)
-                                print("리프레쉬 토큰 : ",data.result?.accessToken as Any)
+//                                UserAuthService.shared.saveAuthInfo(refreshToken: dataResult.refreshToken)
+
+//                                UserAuthService.shared.saveAuthInfo(accessToken: dataResult.refreshToken)
                                 
                                 KeyChain.create(key: "accessToken", token: dataResult.accessToken)
                                 KeyChain.create(key: "refreshToken", token: dataResult.refreshToken)

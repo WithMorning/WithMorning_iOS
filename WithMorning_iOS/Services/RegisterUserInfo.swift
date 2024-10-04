@@ -20,11 +20,6 @@ class RegisterUserInfo {
     @Published var nickName : String? = ""
     @Published var profileImage : UIImage? = nil
     @Published var privateNumber : Bool = false
-//    @Published var userVibrate : Bool? = false
-//    @Published var userVolum : Int? = 50
-//    @Published var userName : String? = ""
-//    @Published var userEmail : String? = ""
-//    @Published var userId: String? = ""
 
     private init() {}
 }

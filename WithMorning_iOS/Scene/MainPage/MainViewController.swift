@@ -281,7 +281,7 @@ class MainViewController: UIViewController, UISheetPresentationControllerDelegat
                 self.MainpageUpdate(with: mainpage)
                 print(mainpage)
                 
-                self.nameLabel.text = "HI, \(mainpage.connectorNickname)"
+                self.nameLabel.text = "Hi, \(mainpage.connectorNickname)"
                 
                 if ((mainpage.connectorProfileURL?.isEmpty) != nil) {
                     // 이미지 URL이 유효한 경우: 이미지 다운로드 처리
@@ -351,7 +351,9 @@ extension MainViewController : UITableViewDelegate, UITableViewDataSource{
         
         cell.ConfigureMember(alarm.userList ?? [])
         
-        cell.timeLabel.text = alarm.wakeupTime
+//        cell.timeLabel.text = alarm.wakeupTime
+        
+//        cell.convertTimeTo12HourFormat(alarm.wakeupTime)
         
         cell.groupId = alarm.groupID
         

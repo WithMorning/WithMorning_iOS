@@ -396,6 +396,28 @@ class AlarmTableViewCell : UITableViewCell, UISheetPresentationControllerDelegat
         }
     }
     
+    func convertTimeTo12HourFormat(_ time24: String) -> (String, String) {
+        let dateFormatter = DateFormatter()
+        dateFormatter.dateFormat = "HH:mm"
+        dateFormatter.locale = Locale(identifier: "en_US")
+        
+        // "HH:mm" 형태의 24시간제를 Date 객체로 변환
+        if let time = dateFormatter.date(from: time24) {
+            // 시간 형식: "h:mm" (12시간제)
+            dateFormatter.dateFormat = "h:mm"
+            let time12Hour = dateFormatter.string(from: time)
+            
+            // AM/PM 형식
+            dateFormatter.dateFormat = "a"
+            let amPm = dateFormatter.string(from: time)
+            
+            return (time12Hour, amPm)  // 시간을 AM/PM과 함께 반환
+        }
+        
+        // 만약 변환에 실패하면 원래의 값을 반환
+        return (time24, "")
+    }
+    
     
     func configureCell(with alarm: GroupList, currentUserNickname: String) {
         
@@ -407,6 +429,11 @@ class AlarmTableViewCell : UITableViewCell, UISheetPresentationControllerDelegat
             
             DispatchQueue.main.async {
                 self.bottomView.isHidden = self.disturb
+                let (time, amPm) = self.convertTimeTo12HourFormat(alarm.wakeupTime)
+                
+                // timeLabel 에는 시간만, noonLabel 에는 AM/PM을 넣음
+                self.timeLabel.text = time
+                self.noonLabel.text = amPm
                 
                 let dayLabels = [self.MonLabel, self.TueLabel, self.WedLabel, self.ThuLabel, self.FriLabel, self.SatLabel, self.SunLabel]
                 
