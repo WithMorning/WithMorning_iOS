@@ -15,6 +15,7 @@ class AppDelegate:UIResponder, UIApplicationDelegate {
         
         sleep(1)
         
+        
         //파이어베이스 설정
         FirebaseApp.configure()
         
@@ -54,10 +55,32 @@ class AppDelegate:UIResponder, UIApplicationDelegate {
     }
     
     //MARK: - Foreground(앱 켜진 상태)에서도 알림 오는 설정
-    #warning("앱이 켜져있는 상태에서도 어떻게 알람이 와야할지")
+#warning("앱이 켜져있는 상태에서도 어떻게 알람이 와야할지")
+    
     func userNotificationCenter(_ center: UNUserNotificationCenter, willPresent notification: UNNotification, withCompletionHandler completionHandler: @escaping (UNNotificationPresentationOptions) -> Void) {
-            completionHandler([.banner, .list, .sound])
+        completionHandler([.banner, .list, .sound])
+        
+        let userInfo = notification.request.content.userInfo
+        
+        // 알림 내용을 읽기 쉽게 출력
+        if let aps = userInfo["aps"] as? [String: Any],
+           let alert = aps["alert"] as? [String: Any],
+           let title = alert["title"] as? String,
+           let body = alert["body"] as? String {
+            print("\n🔔 수신된 알림 ================")
+            print("제목:", title)
+            print("내용:", body)
+            print("==============================\n")
         }
+        
+        // 전체 데이터가 필요한 경우 JSON 형식으로 예쁘게 출력
+        if let jsonData = try? JSONSerialization.data(withJSONObject: userInfo, options: .prettyPrinted),
+           let jsonString = String(data: jsonData, encoding: .utf8) {
+            print("📋 전체 알림 데이터:")
+            print(jsonString)
+        }
+        
+    }
     
     
 }
@@ -67,8 +90,11 @@ extension AppDelegate: UNUserNotificationCenterDelegate {
     // 백그라운드에서 푸시 알림을 탭했을 때 실행
     func application(_ application: UIApplication,
                      didRegisterForRemoteNotificationsWithDeviceToken deviceToken: Data) {
+        
         print("APNS token: \(deviceToken)")
+        
         Messaging.messaging().apnsToken = deviceToken
+        
     }
     
 }
@@ -77,21 +103,25 @@ extension AppDelegate: MessagingDelegate {
     
     // 파이어베이스 MessagingDelegate 설정
     func messaging(_ messaging: Messaging, didReceiveRegistrationToken fcmToken: String?) {
-//      print("Firebase registration token: \(String(describing: fcmToken))")
-
-      let dataDict: [String: String] = ["token": fcmToken ?? ""]
-      NotificationCenter.default.post(
-        name: Notification.Name("FCMToken"),
-        object: nil,
-        userInfo: dataDict
-      )
-        #warning("토큰은 여기에서 처리하세요 ! ")
+        //      print("Firebase registration token: \(String(describing: fcmToken))")
+        
+        let dataDict: [String: String] = ["token": fcmToken ?? ""]
+        
+        NotificationCenter.default.post(
+            name: Notification.Name("FCMToken"),
+            object: nil,
+            userInfo: dataDict
+        )
+#warning("토큰은 여기에서 처리하세요 ! ")
         
         KeyChain.create(key: "fcmToken", token: fcmToken ?? "")
         print("🔥키체인에 들어있는 fcmToken",KeyChain.read(key: "fcmToken") ?? "")
-      // TODO: If necessary send token to application server.
-      // Note: This callback is fired at each app startup and whenever a new token is generated.
+        // TODO: If necessary send token to applicㄴation server.
+        // Note: This callback is fired at each app startup and whenever a new token is generated.
     }
     
-    
+    // 메시지가 도착했을 때 실행되는 메서드
+    func messaging(_ messaging: Messaging, didReceiveMessage remoteMessage: MessagingDelegate) {
+        print("🔔 FCM 메시지 수신:", remoteMessage)
+    }
 }

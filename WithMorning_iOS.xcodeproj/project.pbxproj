@@ -11,6 +11,10 @@
 		D10978422C48E55600CBF9E3 /* FirebaseMessaging in Frameworks */ = {isa = PBXBuildFile; productRef = D10978412C48E55600CBF9E3 /* FirebaseMessaging */; };
 		D109BC8C2C43B23A005E075F /* SleepTimeViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D109BC8B2C43B23A005E075F /* SleepTimeViewController.swift */; };
 		D10F846F2BC7E7CF00F3A172 /* UIColor_Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = D10F846E2BC7E7CF00F3A172 /* UIColor_Extension.swift */; };
+		D1206EC42CB4F32D008DFA03 /* SecondSound.wav in Resources */ = {isa = PBXBuildFile; fileRef = D1206EC22CB4F32D008DFA03 /* SecondSound.wav */; };
+		D1206EC52CB4F32D008DFA03 /* DefaultSound.wav in Resources */ = {isa = PBXBuildFile; fileRef = D1206EC02CB4F32D008DFA03 /* DefaultSound.wav */; };
+		D1206EC62CB4F32D008DFA03 /* ThirdSound.wav in Resources */ = {isa = PBXBuildFile; fileRef = D1206EC32CB4F32D008DFA03 /* ThirdSound.wav */; };
+		D1206EC72CB4F32D008DFA03 /* FirstSound.wav in Resources */ = {isa = PBXBuildFile; fileRef = D1206EC12CB4F32D008DFA03 /* FirstSound.wav */; };
 		D12346C82CAFD12D00AF9193 /* UserAuthService.swift in Sources */ = {isa = PBXBuildFile; fileRef = D12346C72CAFD11F00AF9193 /* UserAuthService.swift */; };
 		D129AAF12C2D4C0800F995D2 /* LeaderMenuViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D129AAF02C2D4C0800F995D2 /* LeaderMenuViewController.swift */; };
 		D129AC772C75A99C00C83DB9 /* PushNotificationHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = D129AC762C75A99C00C83DB9 /* PushNotificationHelper.swift */; };
@@ -92,6 +96,10 @@
 		D10978402C48E31B00CBF9E3 /* WithMorning_iOS.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = WithMorning_iOS.entitlements; sourceTree = "<group>"; };
 		D109BC8B2C43B23A005E075F /* SleepTimeViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SleepTimeViewController.swift; sourceTree = "<group>"; };
 		D10F846E2BC7E7CF00F3A172 /* UIColor_Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIColor_Extension.swift; sourceTree = "<group>"; };
+		D1206EC02CB4F32D008DFA03 /* DefaultSound.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; path = DefaultSound.wav; sourceTree = "<group>"; };
+		D1206EC12CB4F32D008DFA03 /* FirstSound.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; path = FirstSound.wav; sourceTree = "<group>"; };
+		D1206EC22CB4F32D008DFA03 /* SecondSound.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; path = SecondSound.wav; sourceTree = "<group>"; };
+		D1206EC32CB4F32D008DFA03 /* ThirdSound.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; path = ThirdSound.wav; sourceTree = "<group>"; };
 		D12346C72CAFD11F00AF9193 /* UserAuthService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserAuthService.swift; sourceTree = "<group>"; };
 		D129AAF02C2D4C0800F995D2 /* LeaderMenuViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LeaderMenuViewController.swift; sourceTree = "<group>"; };
 		D129AC762C75A99C00C83DB9 /* PushNotificationHelper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PushNotificationHelper.swift; sourceTree = "<group>"; };
@@ -212,6 +220,17 @@
 				D1E0F9902C9176A100733DEC /* UserDefault_Extension.swift */,
 			);
 			name = Extension;
+			sourceTree = "<group>";
+		};
+		D1206EBF2CB4EF77008DFA03 /* CustomSound */ = {
+			isa = PBXGroup;
+			children = (
+				D1206EC02CB4F32D008DFA03 /* DefaultSound.wav */,
+				D1206EC12CB4F32D008DFA03 /* FirstSound.wav */,
+				D1206EC22CB4F32D008DFA03 /* SecondSound.wav */,
+				D1206EC32CB4F32D008DFA03 /* ThirdSound.wav */,
+			);
+			path = CustomSound;
 			sourceTree = "<group>";
 		};
 		D129AAEF2C2D4BCC00F995D2 /* MainPage */ = {
@@ -422,9 +441,10 @@
 		D1E672B92BC4FD3300A32790 /* WithMorning_iOS */ = {
 			isa = PBXGroup;
 			children = (
+				D13178992C635412002C368A /* CustomView */,
+				D1206EBF2CB4EF77008DFA03 /* CustomSound */,
 				D10978402C48E31B00CBF9E3 /* WithMorning_iOS.entitlements */,
 				D14A2D6A2BC8EB6D0087E0CB /* DesignSystem */,
-				D13178992C635412002C368A /* CustomView */,
 				D14967F72C7065D8000E8C1B /* Services */,
 				D10F846D2BC7E72000F3A172 /* Extension */,
 				D16F5FCF2BC6562A006640F9 /* Resource */,
@@ -511,6 +531,10 @@
 			files = (
 				D1E672C42BC4FD3500A32790 /* Assets.xcassets in Resources */,
 				D1DECB212BE54B37009AC667 /* Pretendard-Regular.otf in Resources */,
+				D1206EC42CB4F32D008DFA03 /* SecondSound.wav in Resources */,
+				D1206EC52CB4F32D008DFA03 /* DefaultSound.wav in Resources */,
+				D1206EC62CB4F32D008DFA03 /* ThirdSound.wav in Resources */,
+				D1206EC72CB4F32D008DFA03 /* FirstSound.wav in Resources */,
 				D1DECB252BE54B37009AC667 /* Pretendard-ExtraLight.otf in Resources */,
 				D1DECB232BE54B37009AC667 /* Pretendard-ExtraBold.otf in Resources */,
 				D1DECB242BE54B37009AC667 /* Pretendard-Thin.otf in Resources */,
