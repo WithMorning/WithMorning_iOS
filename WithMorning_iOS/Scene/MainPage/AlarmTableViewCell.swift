@@ -27,6 +27,8 @@ class AlarmTableViewCell : UITableViewCell, UISheetPresentationControllerDelegat
     
     var APInetwork = Network.shared
     
+    var time24: String = ""
+    
     lazy var AlarmStackView : UIStackView = {
         let view = UIStackView()
         view.addSubviews(topView,bottomView)
@@ -374,7 +376,6 @@ class AlarmTableViewCell : UITableViewCell, UISheetPresentationControllerDelegat
     }
     
     //MARK: - 방해금지 모드 API
-    
     var disturb : Bool = false
     
     func patchDisturb(newDisturbMode: Bool) {
@@ -395,6 +396,7 @@ class AlarmTableViewCell : UITableViewCell, UISheetPresentationControllerDelegat
             }
         }
     }
+    //MARK: - 24시간을 12시간으로 포멧
     
     func convertTimeTo12HourFormat(_ time24: String) -> (String, String) {
         let dateFormatter = DateFormatter()
@@ -591,13 +593,11 @@ class AlarmTableViewCell : UITableViewCell, UISheetPresentationControllerDelegat
         let baseHeight: CGFloat = 49
         
         // 여기서 .updateConstraints를 사용하여 기존의 제약 조건을 업데이트합니다.
-        memoView.snp.updateConstraints { make in
+        memoView.snp.updateConstraints{ make in
             self.memoViewHeightConstraint?.update(offset: max(calculatedHeight, baseHeight))
         }
         
     }
-    
-    
     
     //MARK: - 메모 더 보기
     @objc func memoLabelTapped() {
@@ -662,7 +662,7 @@ class AlarmTableViewCell : UITableViewCell, UISheetPresentationControllerDelegat
                     makeVC.memoPlaceholder.isHidden = true
                     
                     makeVC.selectedDayOfWeek = self.editweek
-                    makeVC.editTime = self.timeLabel.text ?? ""
+                    makeVC.editTime = self.time24
                     
                     
                     parentViewController.navigationController?.pushViewController(makeVC, animated: true)

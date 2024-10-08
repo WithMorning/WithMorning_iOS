@@ -53,6 +53,7 @@
 		D19589E02C6745C50000B77C /* CoreHaptics_Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = D19589DF2C6745C50000B77C /* CoreHaptics_Extension.swift */; };
 		D19A9CB22C26901100748CE8 /* MakeAlarmViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D19A9CB12C26901100748CE8 /* MakeAlarmViewController.swift */; };
 		D19E7FAA2C4A47C10053ACA8 /* LoginViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D19E7FA92C4A47C10053ACA8 /* LoginViewController.swift */; };
+		D1A095DB2CB56D7A002EEF6E /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = D1A095DA2CB56D7A002EEF6E /* GoogleService-Info.plist */; };
 		D1ABF7922C5239C7008B5084 /* TutorialSecondViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D1ABF7912C5239C7008B5084 /* TutorialSecondViewController.swift */; };
 		D1ABF7962C5239E4008B5084 /* TutorialFirstViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D1ABF7952C5239E4008B5084 /* TutorialFirstViewController.swift */; };
 		D1AD15AC2C7AF19F003EE342 /* UILabel_Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = D1AD15AB2C7AF19F003EE342 /* UILabel_Extension.swift */; };
@@ -84,7 +85,6 @@
 		D1E672BF2BC4FD3300A32790 /* MainViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D1E672BE2BC4FD3300A32790 /* MainViewController.swift */; };
 		D1E672C42BC4FD3500A32790 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = D1E672C32BC4FD3500A32790 /* Assets.xcassets */; };
 		D1E672C72BC4FD3500A32790 /* Base in Resources */ = {isa = PBXBuildFile; fileRef = D1E672C62BC4FD3500A32790 /* Base */; };
-		D1EDDBE52CAC2358009DCFFB /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = D1EDDBE42CAC2358009DCFFB /* GoogleService-Info.plist */; };
 		D1F71B1A2C50AE2C0070A8AA /* ProfileViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D1F71B192C50AE2C0070A8AA /* ProfileViewController.swift */; };
 		D1FC698D2C74EA69006B93C8 /* MyPageWebViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D1FC698C2C74EA69006B93C8 /* MyPageWebViewController.swift */; };
 /* End PBXBuildFile section */
@@ -138,6 +138,7 @@
 		D19589DF2C6745C50000B77C /* CoreHaptics_Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CoreHaptics_Extension.swift; sourceTree = "<group>"; };
 		D19A9CB12C26901100748CE8 /* MakeAlarmViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MakeAlarmViewController.swift; sourceTree = "<group>"; };
 		D19E7FA92C4A47C10053ACA8 /* LoginViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginViewController.swift; sourceTree = "<group>"; };
+		D1A095DA2CB56D7A002EEF6E /* GoogleService-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		D1ABF7912C5239C7008B5084 /* TutorialSecondViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TutorialSecondViewController.swift; sourceTree = "<group>"; };
 		D1ABF7952C5239E4008B5084 /* TutorialFirstViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TutorialFirstViewController.swift; sourceTree = "<group>"; };
 		D1AD15AB2C7AF19F003EE342 /* UILabel_Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UILabel_Extension.swift; sourceTree = "<group>"; };
@@ -165,7 +166,6 @@
 		D1E672C32BC4FD3500A32790 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		D1E672C62BC4FD3500A32790 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		D1E672C82BC4FD3500A32790 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		D1EDDBE42CAC2358009DCFFB /* GoogleService-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		D1F71B192C50AE2C0070A8AA /* ProfileViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileViewController.swift; sourceTree = "<group>"; };
 		D1FC698C2C74EA69006B93C8 /* MyPageWebViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyPageWebViewController.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -324,6 +324,7 @@
 				D109BC8B2C43B23A005E075F /* SleepTimeViewController.swift */,
 				D1303A002C451B3F0071267A /* EditprofileViewController.swift */,
 				D1FC698C2C74EA69006B93C8 /* MyPageWebViewController.swift */,
+				D1A095DA2CB56D7A002EEF6E /* GoogleService-Info.plist */,
 			);
 			path = MyPage;
 			sourceTree = "<group>";
@@ -451,7 +452,6 @@
 				D1652D792BC653AF00F80F6F /* API */,
 				D1652D782BC653A700F80F6F /* Scene */,
 				D1E672C82BC4FD3500A32790 /* Info.plist */,
-				D1EDDBE42CAC2358009DCFFB /* GoogleService-Info.plist */,
 				D1E672C52BC4FD3500A32790 /* LaunchScreen.storyboard */,
 			);
 			path = WithMorning_iOS;
@@ -538,7 +538,7 @@
 				D1DECB252BE54B37009AC667 /* Pretendard-ExtraLight.otf in Resources */,
 				D1DECB232BE54B37009AC667 /* Pretendard-ExtraBold.otf in Resources */,
 				D1DECB242BE54B37009AC667 /* Pretendard-Thin.otf in Resources */,
-				D1EDDBE52CAC2358009DCFFB /* GoogleService-Info.plist in Resources */,
+				D1A095DB2CB56D7A002EEF6E /* GoogleService-Info.plist in Resources */,
 				D1DECB262BE54B37009AC667 /* Pretendard-Light.otf in Resources */,
 				D15AE7342BC990DA00024CE3 /* Pretendard-Bold.otf in Resources */,
 				D15AE7382BC990E900024CE3 /* Pretendard-SemiBold.otf in Resources */,

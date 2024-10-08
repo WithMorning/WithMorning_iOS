@@ -20,7 +20,7 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         RegisterUserInfo.shared.$loginState.sink { loginState in
             let refreshToken = KeyChain.read(key: "refreshToken")
             
-            print(#fileID, #function, #line, "- sceneDelegate refreshToken: \(refreshToken)")
+//            print(#fileID, #function, #line, "- sceneDelegate refreshToken: \(refreshToken)")
             
             if let loginState = loginState {
                 //로그인이 되어있다면
@@ -42,6 +42,7 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
                     // 처음 등록한 유저가 아니고 refreshToken이 있다면
                     else if refreshToken != "" {
                         self.setRootViewContrller(scene, type: .main) //테스트시 여기 수정
+                        print(KeyChain.read(key: "fcmToken"))
                     }
                     // refreshToken이 없다면
                     else {

@@ -95,7 +95,7 @@ class MainViewController: UIViewController, UISheetPresentationControllerDelegat
         return button
     }()
     
-    private lazy var AlarmTableView : UITableView = {
+     lazy var AlarmTableView : UITableView = {
         let tableView = UITableView()
         tableView.layer.cornerRadius = 8
         return tableView
@@ -350,10 +350,7 @@ extension MainViewController : UITableViewDelegate, UITableViewDataSource{
         cell.setMemoText(alarm.memo)
         
         cell.ConfigureMember(alarm.userList ?? [])
-        
-//        cell.timeLabel.text = alarm.wakeupTime
-        
-//        cell.convertTimeTo12HourFormat(alarm.wakeupTime)
+        cell.time24 = alarm.wakeupTime
         
         cell.groupId = alarm.groupID
         
@@ -420,17 +417,22 @@ extension MainViewController : UITableViewDelegate, UITableViewDataSource{
             let isDisturbModeOn = userList.contains(where: { $0.nickname == UserDefaults.standard.string(forKey: "nickname") && $0.isDisturbBanMode })
             
             if isDisturbModeOn {
+                
                 return baseHeight
+                
             } else {
                 // 방해금지 모드가 아닐 때
                 // 임시 셀을 만들어 메모 뷰의 높이를 계산
                 let cell = tableView.dequeueReusableCell(withIdentifier: "AlarmTableViewCell") as! AlarmTableViewCell
                 
                 cell.setMemoText(alarm.memo)
-                
-                let memoViewHeight = cell.calculateMemoViewHeight()
-                
-                return baseHeight + extraHeight + memoViewHeight
+                if cell.isExpanded == true{
+                    return baseHeight + extraHeight + 30
+                }else{
+                    let memoViewHeight = cell.calculateMemoViewHeight()
+                    
+                    return baseHeight + extraHeight + memoViewHeight
+                }
             }
         }
         

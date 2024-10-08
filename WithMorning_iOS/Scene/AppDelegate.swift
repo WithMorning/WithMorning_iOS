@@ -55,23 +55,12 @@ class AppDelegate:UIResponder, UIApplicationDelegate {
     }
     
     //MARK: - Foreground(앱 켜진 상태)에서도 알림 오는 설정
-#warning("앱이 켜져있는 상태에서도 어떻게 알람이 와야할지")
+    #warning("앱이 켜져있는 상태에서도 어떻게 알람이 와야할지")
     
     func userNotificationCenter(_ center: UNUserNotificationCenter, willPresent notification: UNNotification, withCompletionHandler completionHandler: @escaping (UNNotificationPresentationOptions) -> Void) {
         completionHandler([.banner, .list, .sound])
         
         let userInfo = notification.request.content.userInfo
-        
-        // 알림 내용을 읽기 쉽게 출력
-        if let aps = userInfo["aps"] as? [String: Any],
-           let alert = aps["alert"] as? [String: Any],
-           let title = alert["title"] as? String,
-           let body = alert["body"] as? String {
-            print("\n🔔 수신된 알림 ================")
-            print("제목:", title)
-            print("내용:", body)
-            print("==============================\n")
-        }
         
         // 전체 데이터가 필요한 경우 JSON 형식으로 예쁘게 출력
         if let jsonData = try? JSONSerialization.data(withJSONObject: userInfo, options: .prettyPrinted),
@@ -112,7 +101,7 @@ extension AppDelegate: MessagingDelegate {
             object: nil,
             userInfo: dataDict
         )
-#warning("토큰은 여기에서 처리하세요 ! ")
+            #warning("토큰은 여기에서 처리하세요 ! ")
         
         KeyChain.create(key: "fcmToken", token: fcmToken ?? "")
         print("🔥키체인에 들어있는 fcmToken",KeyChain.read(key: "fcmToken") ?? "")
