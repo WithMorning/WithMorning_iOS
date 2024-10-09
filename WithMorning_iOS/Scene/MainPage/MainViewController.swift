@@ -231,6 +231,7 @@ class MainViewController: UIViewController, UISheetPresentationControllerDelegat
         
         vc.participantClosure = { [weak self] in
             self?.getMainpage()
+            self?.showToast(message: "그룹에 참여하였습니다.")
         }
         
         self.present(vc, animated: true)

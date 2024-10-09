@@ -162,7 +162,8 @@ class CodeBtnViewController: UIViewController {
                         self?.participantClosure?()
                     }
                     
-                } else {
+                }
+                else {
                     self?.showToast(message: "참여 코드를 다시 확인해주세요.")
                 }
             }
@@ -171,27 +172,30 @@ class CodeBtnViewController: UIViewController {
     
     @objc func numberclicked() {
         let currentSetting = UserDefaults.getPrivateNumber()
+        
         UserDefaults.setPrivateNumber(!currentSetting)
+        
         updateButtonColor()
     }
     
     //MARK: - API
-    private func codeButton(completion: @escaping (Bool) -> Void){
-        LoadingIndicator.showLoading()
+    func codeButton(completion: @escaping (Bool) -> Void){
+        let data = JoingroupMaindata(participationCode: codeTextfield.text ?? "", isAgree: UserDefaults.getPrivateNumber())
         
-        let data = JoingroupMaindata(participationCode: codeTextfield.text ?? "", isAgree: RegisterUserInfo.shared.privateNumber)
+        print(data)
         
         APInetwork.joinGroup(joindata: data){ result in
-            
             switch result{
             case.success(let data):
                 print(data)
+                print("성공")
                 completion(true)
-                LoadingIndicator.hideLoading()
+                
             case.failure(let error):
                 print(error.localizedDescription)
+                print("실패")
                 completion(false)
-                LoadingIndicator.hideLoading()
+                
             }
         }
     }
@@ -225,7 +229,6 @@ extension CodeBtnViewController : UITextFieldDelegate {
     }
 }
 //MARK: - 번호 숨기기 버튼 클릭시 키보드 안내려가게 하기
-
 extension CodeBtnViewController : UIGestureRecognizerDelegate{
     func gestureRecognizer(_ gestureRecognizer: UIGestureRecognizer, shouldReceive touch: UITouch) -> Bool {
         if touch.view == openButton,touch.view == DoneButton {

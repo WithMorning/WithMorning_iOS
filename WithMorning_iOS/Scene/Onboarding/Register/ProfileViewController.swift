@@ -217,6 +217,8 @@ class ProfileViewController : UIViewController, UIImagePickerControllerDelegate 
                 
                 self.showToast(message: "회원가입이 완료되었습니다.")
                 
+                UserDefaults.standard.set(true, forKey: "isRegistered")
+                
                 self.navigationController?.pushViewController(vc, animated: true)
                 
                 

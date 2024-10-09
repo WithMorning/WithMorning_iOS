@@ -110,45 +110,40 @@ extension AppleLoginManager : ASAuthorizationControllerDelegate {
                         switch response.result {
                         case .failure(let error):
                             print(#fileID, #function, #line, "- error: \(error.localizedDescription)")
+                            
                         case .success(let data):
-                            if let dataResult = data.result {
-                                
-                                let existingRefreshToken = KeyChain.read(key: "refreshToken")
-                                
-                                KeyChain.create(key: "accessToken", token: dataResult.accessToken)
-                                KeyChain.create(key: "refreshToken", token: dataResult.refreshToken)
-                                
-                                print("🔥KeyChain에 저장된 accessToken : ", KeyChain.read(key: "accessToken") ?? "")
-                                print("🔥KeyChain에 저장된 refreshToken : ",KeyChain.read(key: "refreshToken") ?? "")
-                                RegisterUserInfo.shared.loginState = .login
-                                
-                                if existingRefreshToken == nil {
-                                    print("📝 신규 회원: 추가 정보 등록 필요")
-                                    
-                                } else {
-                                    print("✅ 기존 회원: 메인 화면으로 이동")
-                                    
-                                }
-                                
-                                
+                            guard let dataResult = data.result else {
+                                print("로그인 응답에 결과 데이터가 없습니다.")
+                                return
                             }
                             
-                            self.registerUserInfo.loginState = .login
+                            self.handleLoginSuccess(with: dataResult)
                             
-                            print("🔥KeyChain에 새로 저장된 accessToken : ", KeyChain.read(key: "accessToken") ?? "")
-                            print("🔥KeyChain에 새로 저장된 refreshToken : ",KeyChain.read(key: "refreshToken") ?? "")
                         }
-                        
                     }
             }
         }
     }
+    private func handleLoginSuccess(with data: AppleLoginData) {
+        // 토큰 저장
+        KeyChain.create(key: "accessToken", token: data.accessToken)
+        KeyChain.create(key: "refreshToken", token: data.refreshToken)
+        
+        // 로그인 상태 업데이트
+        registerUserInfo.loginState = .login
+        
+        print("🔐 KeyChain에 저장된 accessToken: \(KeyChain.read(key: "accessToken") ?? "")")
+        print("🔐 KeyChain에 저장된 refreshToken: \(KeyChain.read(key: "refreshToken") ?? "")")
+    }
+    
+    
     func authorizationController(controller: ASAuthorizationController, didCompleteWithError error: Error) {
         // 로그인 실패(유저의 취소도 포함)
         print("로그인 실패 - \(error.localizedDescription)")
     }
     
     func appleLoginDeleteUser() {
+        
         let token = KeyChain.read(key: "refreshToken")
         print(#fileID, #function, #line, "- token checking⭐️: \(String(describing: token))")
         //token으로 데이터 삭제
@@ -167,3 +162,4 @@ extension AppleLoginManager : ASAuthorizationControllerDelegate {
         
     }
 }
+

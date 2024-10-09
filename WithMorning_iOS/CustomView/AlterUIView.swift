@@ -297,20 +297,26 @@ class AlterUIView: UIViewController {
                     self.navigateToLoginViewController()
                 }
                 
-                KeyChain.delete(key: "refreshToken")
-                KeyChain.delete(key: "accessToken")
-                KeyChain.delete(key: "fcmToken")
+                func deleteAccount() {
+                    KeyChain.delete(key: "accessToken")
+                    KeyChain.delete(key: "refreshToken")
+                    RegisterUserInfo.shared.loginState = .logout
+                    KeyChain.delete(key: "fcmToken")
+                }
+
                 
                 UserDefaults.standard.removeObject(forKey: "isFirstTime")
                 UserDefaults.standard.removeObject(forKey: "nickname")
                 UserDefaults.standard.removeObject(forKey: "volume")
                 UserDefaults.standard.removeObject(forKey: "vibrate")
+                UserDefaults.standard.removeObject(forKey: "isRegistered")
                 
                 LoadingIndicator.hideLoading()
                 
                 print(data)
             case .failure(let error):
                 print(error.localizedDescription)
+                LoadingIndicator.hideLoading()
             }
             
         }

@@ -717,7 +717,7 @@ class MyPageViewController : UIViewController, UIScrollViewDelegate {
                 KeyChain.delete(key: "accessToken")
                 KeyChain.delete(key: "fcmToken")
                 
-                UserDefaults.standard.set(true, forKey: "isFirstTime")
+                RegisterUserInfo.shared.loginState = .logout
                 
                 LoadingIndicator.hideLoading()
                 print(data)
