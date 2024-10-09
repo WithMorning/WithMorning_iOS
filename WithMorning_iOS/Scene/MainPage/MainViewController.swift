@@ -274,8 +274,9 @@ class MainViewController: UIViewController, UISheetPresentationControllerDelegat
     
     //메인페이지
     func getMainpage() {
+        LoadingIndicator.showLoading()
+
         APInetwork.getMainpage() { result in
-            LoadingIndicator.showLoading()
             switch result {
             case .success(let mainpage):
                 self.MainpageUpdate(with: mainpage)
@@ -316,6 +317,7 @@ class MainViewController: UIViewController, UISheetPresentationControllerDelegat
         guard let groupList = mainpage.groupList else {
             return
         }
+        
         self.alarmData = groupList
         DispatchQueue.main.async {
             self.AlarmTableView.reloadData()
@@ -414,6 +416,7 @@ extension MainViewController : UITableViewDelegate, UITableViewDataSource{
         let extraHeight: CGFloat = 217 // 멤버 컬렉션 뷰 등의 추가 높이
         
         if let userList = alarm.userList {
+            
             let isDisturbModeOn = userList.contains(where: { $0.nickname == UserDefaults.standard.string(forKey: "nickname") && $0.isDisturbBanMode })
             
             if isDisturbModeOn {
@@ -421,8 +424,6 @@ extension MainViewController : UITableViewDelegate, UITableViewDataSource{
                 return baseHeight
                 
             } else {
-                // 방해금지 모드가 아닐 때
-                // 임시 셀을 만들어 메모 뷰의 높이를 계산
                 let cell = tableView.dequeueReusableCell(withIdentifier: "AlarmTableViewCell") as! AlarmTableViewCell
                 
                 cell.setMemoText(alarm.memo)

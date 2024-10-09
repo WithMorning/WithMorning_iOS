@@ -111,18 +111,25 @@ extension AppleLoginManager : ASAuthorizationControllerDelegate {
                         case .failure(let error):
                             print(#fileID, #function, #line, "- error: \(error.localizedDescription)")
                         case .success(let data):
-                            
                             if let dataResult = data.result {
                                 
-//                                UserAuthService.shared.saveAuthInfo(refreshToken: dataResult.refreshToken)
-
-//                                UserAuthService.shared.saveAuthInfo(accessToken: dataResult.refreshToken)
+                                let existingRefreshToken = KeyChain.read(key: "refreshToken")
                                 
                                 KeyChain.create(key: "accessToken", token: dataResult.accessToken)
                                 KeyChain.create(key: "refreshToken", token: dataResult.refreshToken)
                                 
                                 print("🔥KeyChain에 저장된 accessToken : ", KeyChain.read(key: "accessToken") ?? "")
                                 print("🔥KeyChain에 저장된 refreshToken : ",KeyChain.read(key: "refreshToken") ?? "")
+                                RegisterUserInfo.shared.loginState = .login
+                                
+                                if existingRefreshToken == nil {
+                                    print("📝 신규 회원: 추가 정보 등록 필요")
+                                    
+                                } else {
+                                    print("✅ 기존 회원: 메인 화면으로 이동")
+                                    
+                                }
+                                
                                 
                             }
                             

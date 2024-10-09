@@ -177,11 +177,12 @@ class CodeBtnViewController: UIViewController {
     
     //MARK: - API
     private func codeButton(completion: @escaping (Bool) -> Void){
+        LoadingIndicator.showLoading()
         
         let data = JoingroupMaindata(participationCode: codeTextfield.text ?? "", isAgree: RegisterUserInfo.shared.privateNumber)
         
         APInetwork.joinGroup(joindata: data){ result in
-            LoadingIndicator.showLoading()
+            
             switch result{
             case.success(let data):
                 print(data)

@@ -667,8 +667,9 @@ class MyPageViewController : UIViewController, UIScrollViewDelegate {
     var nickname : String = ""
     
     func getMypage(){
+        LoadingIndicator.showLoading()
         APInetwork.getMypage(){ result in
-            LoadingIndicator.showLoading()
+            
             switch result{
             case.success(let mypage):
                 
@@ -701,9 +702,10 @@ class MyPageViewController : UIViewController, UIScrollViewDelegate {
     }
     //로그아웃
     func logout(){
+        LoadingIndicator.showLoading()
         let refreshtoken = deletelogoutRequest(refreshToken: KeyChain.read(key: "refreshToken") ?? "")
         USERnetwork.deletelogout(refreshToken: refreshtoken){ result in
-            LoadingIndicator.showLoading()
+            
             switch result{
             case .success(let data):
                 

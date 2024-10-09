@@ -18,9 +18,8 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         
         guard let _ = scene as? UIWindowScene else { return }
         RegisterUserInfo.shared.$loginState.sink { loginState in
-            let refreshToken = KeyChain.read(key: "refreshToken")
             
-//            print(#fileID, #function, #line, "- sceneDelegate refreshToken: \(refreshToken)")
+            let refreshToken = KeyChain.read(key: "refreshToken")
             
             if let loginState = loginState {
                 //로그인이 되어있다면

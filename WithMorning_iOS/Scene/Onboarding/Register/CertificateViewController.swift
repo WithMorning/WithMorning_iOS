@@ -136,12 +136,13 @@ class CertificateViewController : UIViewController{
     var code = ""
     
     private func responseSMS(){
+        LoadingIndicator.showLoading()
         
         let data = SMScodeResquest(phone: phonenumber, code: code)
         let vc = ProfileViewController()
         
         APInetwork.responseSMS(responsedata: data){ result in
-            LoadingIndicator.showLoading()
+            
             switch result{
             case .success(let data):
                 print(data)

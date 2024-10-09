@@ -379,11 +379,12 @@ class AlarmTableViewCell : UITableViewCell, UISheetPresentationControllerDelegat
     var disturb : Bool = false
     
     func patchDisturb(newDisturbMode: Bool) {
+        LoadingIndicator.showLoading()
         
         let data = DisturbMaindata(isDisturbBanMode: newDisturbMode)
         
         APInetwork.patchDisturb(groupId: self.groupId, DisturbData: data) { result in
-            LoadingIndicator.showLoading()
+            
             switch result {
             case .success(_):
                 self.disturb = newDisturbMode

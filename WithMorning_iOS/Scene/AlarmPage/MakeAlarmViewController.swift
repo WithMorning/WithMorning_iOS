@@ -389,10 +389,11 @@ class MakeAlarmViewController : UIViewController, UIScrollViewDelegate, UISheetP
     
     //그룹 생성
     private func makeGroup(){
+        LoadingIndicator.showLoading()
         let data = MakeGroupMaindata(name: groupTextfield.text ?? "모임명이 없습니다.", wakeupTime: selectedTime24, dayOfWeekList: selectedDayOfWeek, isAgree: true, memo: memoTextView.text)
         
         APInetwork.postGroup(groupdata: data){ result in
-            LoadingIndicator.showLoading()
+            
             switch result {
             case .success(let makeAlarm):
                 print("알람 생성 API",makeAlarm)
@@ -411,10 +412,11 @@ class MakeAlarmViewController : UIViewController, UIScrollViewDelegate, UISheetP
     var groupId : Int = 0
     
     private func editGroup(){
+        LoadingIndicator.showLoading()
         let editdata = EditGroupMaindata(name: groupTextfield.text ?? "모임명이 없습니다.", wakeupTime: editTime, dayOfWeekList: selectedDayOfWeek, isAgree: true, memo: memoTextView.text)
         
         APInetwork.patcheditGroup(groupId: groupId, editGroupdata: editdata){ result in
-            LoadingIndicator.showLoading()
+            
             switch result {
             case .success(let data):
                 print("알람 수정",data)

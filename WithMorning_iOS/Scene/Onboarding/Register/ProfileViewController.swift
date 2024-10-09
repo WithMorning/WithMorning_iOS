@@ -206,8 +206,9 @@ class ProfileViewController : UIViewController, UIImagePickerControllerDelegate 
         let vc = IntroViewController()
 
         // 7. API 호출
+        LoadingIndicator.showLoading()
         APInetwork.postProfile(profileData: registerData) { result in
-            LoadingIndicator.showLoading()
+            
             switch result {
             case .success(_):
                 UserDefaults.standard.set(nickname, forKey: "nickname")

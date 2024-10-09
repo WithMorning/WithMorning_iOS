@@ -145,11 +145,12 @@ class UserStateViewController : UIViewController{
     var userId : Int = 0
     
     func prickUser(){
+        LoadingIndicator.showLoading()
         
         let useridData = prickRequest(userID: userId)
         
         APInetwork.postprick(userId: useridData){ result in
-            LoadingIndicator.showLoading()
+            
             switch result{
             case .success(let data):
                 print(data)

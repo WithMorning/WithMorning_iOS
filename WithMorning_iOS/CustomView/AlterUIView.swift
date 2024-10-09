@@ -236,9 +236,10 @@ class AlterUIView: UIViewController {
     
     //MARK: - 알람삭제 API
     private func deleteAlarm(){
+        LoadingIndicator.showLoading()
+        
         guard let groupId = groupId else{return}
         APInetwork.deleteGroup(groupId: groupId){ result in
-            LoadingIndicator.showLoading()
             switch result {
             case.success(let data):
                 DispatchQueue.main.async {
@@ -263,9 +264,10 @@ class AlterUIView: UIViewController {
     }
     //MARK: - 그룹 나가기
     private func leaveAlarm(){
+        LoadingIndicator.showLoading()
         guard let groupId = groupId else{return}
         APInetwork.deleteleaveGroup(groupId: groupId){ result in
-            LoadingIndicator.showLoading()
+            
             switch result{
             case .success(let data):
                 
@@ -286,8 +288,9 @@ class AlterUIView: UIViewController {
     
     //MARK: - 회원 탈퇴
     func quitaccount(){
+        LoadingIndicator.showLoading()
         USERnetwork.deleteaccount(){ result in
-            LoadingIndicator.showLoading()
+           
             switch result{
             case .success(let data):
                 DispatchQueue.main.async {

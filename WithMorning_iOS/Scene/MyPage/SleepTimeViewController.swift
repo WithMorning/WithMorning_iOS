@@ -316,10 +316,11 @@ class SleepTimeViewController : UIViewController, UISheetPresentationControllerD
     var allowAlarm : Bool = false
     
     func editBedtime(){
+        LoadingIndicator.showLoading()
         let bedtime = BedtimeMaindata(bedTime: selectedTime24, bedDayOfWeekList: selectedDayOfWeek, isAllowBedTimeAlarm: allowAlarm)
         
         APInetwork.postBedtime(bedtimedata: bedtime){ result in
-            LoadingIndicator.showLoading()
+            
             switch result {
             case .success(let bed):
                 print("취침시간",bed)

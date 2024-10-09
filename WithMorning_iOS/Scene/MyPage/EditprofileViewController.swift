@@ -152,6 +152,7 @@ class EditprofileViewController : UIViewController,UIImagePickerControllerDelega
     
     // MARK: - API
     private func registerProfile() {
+        LoadingIndicator.showLoading()
         guard let image = profileImage.image else {
             print("프로필 이미지를 선택하세요.")
             return
@@ -176,7 +177,7 @@ class EditprofileViewController : UIViewController,UIImagePickerControllerDelega
         
         // 6. API 호출
         APInetwork.postProfile(profileData: registerData) { result in
-            LoadingIndicator.showLoading()
+            
             switch result {
             case .success(let data):
                 print("프로필 업로드 성공: \(data)")

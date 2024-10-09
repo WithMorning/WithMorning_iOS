@@ -442,9 +442,9 @@
 		D1E672B92BC4FD3300A32790 /* WithMorning_iOS */ = {
 			isa = PBXGroup;
 			children = (
+				D10978402C48E31B00CBF9E3 /* WithMorning_iOS.entitlements */,
 				D13178992C635412002C368A /* CustomView */,
 				D1206EBF2CB4EF77008DFA03 /* CustomSound */,
-				D10978402C48E31B00CBF9E3 /* WithMorning_iOS.entitlements */,
 				D14A2D6A2BC8EB6D0087E0CB /* DesignSystem */,
 				D14967F72C7065D8000E8C1B /* Services */,
 				D10F846D2BC7E72000F3A172 /* Extension */,

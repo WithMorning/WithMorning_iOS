@@ -9,7 +9,7 @@ import UIKit
 
 class LoadingIndicator {
     
-    static private var activityIndicator: UIActivityIndicatorView?
+    static let shared = LoadingIndicator()
     
     static func showLoading() {
         DispatchQueue.main.async {
@@ -18,37 +18,28 @@ class LoadingIndicator {
                 return
             }
             
-            if let existingIndicator = activityIndicator {
-                existingIndicator.startAnimating()
-                window.bringSubviewToFront(existingIndicator)
-            } else {
-                let indicator = UIActivityIndicatorView(style: .large)
-                indicator.frame = window.bounds
-                indicator.backgroundColor = UIColor.black.withAlphaComponent(0.5)
-                indicator.color = /*.white*/ /*DesignSystemColor.Orange500.value*/.black
-                indicator.startAnimating()
-                window.addSubview(indicator)
-                window.bringSubviewToFront(indicator)
-                activityIndicator = indicator
-            }
+            let backgroundView = UIView(frame: window.bounds)
+            backgroundView.backgroundColor = UIColor.black.withAlphaComponent(0.7) // 투명도 조절
+            backgroundView.tag = 999
             
-            window.isUserInteractionEnabled = false
-            print("Loading indicator is now visible")
+            let loadingIndicatorView = UIActivityIndicatorView(style: .large)
+            loadingIndicatorView.center = backgroundView.center
+            loadingIndicatorView.color = DesignSystemColor.Orange500.value.withAlphaComponent(0.7) // 인디케이터 색상을 메인칼라루 변경
+            
+            backgroundView.addSubview(loadingIndicatorView)
+            window.addSubview(backgroundView)
+            
+            loadingIndicatorView.startAnimating()
         }
     }
     
     static func hideLoading() {
         DispatchQueue.main.async {
-            activityIndicator?.stopAnimating()
-            activityIndicator?.removeFromSuperview()
-            activityIndicator = nil
-            
             guard let windowScene = UIApplication.shared.connectedScenes.first as? UIWindowScene,
                   let window = windowScene.windows.first(where: { $0.isKeyWindow }) else {
                 return
             }
-            window.isUserInteractionEnabled = true
-            print("Loading indicator has been hidden")
+            window.subviews.filter({ $0.tag == 999 }).forEach { $0.removeFromSuperview() }
         }
     }
 }

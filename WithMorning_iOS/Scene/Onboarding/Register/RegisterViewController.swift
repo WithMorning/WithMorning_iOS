@@ -113,12 +113,12 @@ class RegisterViewController : UIViewController{
     var phonenumber = ""
     
     private func requestSMS(){
-        
+        LoadingIndicator.showLoading()
         let data = SMSnumRequest(phone: phonenumber)
         let vc = CertificateViewController()
         
         APInetwork.requestSMS(phoneNumber: data){result in
-            LoadingIndicator.showLoading()
+            
             switch result{
             case .success(let data):
                 print(data)
