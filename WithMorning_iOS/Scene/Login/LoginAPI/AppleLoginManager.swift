@@ -128,12 +128,13 @@ extension AppleLoginManager : ASAuthorizationControllerDelegate {
         // 토큰 저장
         KeyChain.create(key: "accessToken", token: data.accessToken)
         KeyChain.create(key: "refreshToken", token: data.refreshToken)
-        
-        // 로그인 상태 업데이트
-        registerUserInfo.loginState = .login
-        
+
         print("🔐 KeyChain에 저장된 accessToken: \(KeyChain.read(key: "accessToken") ?? "")")
         print("🔐 KeyChain에 저장된 refreshToken: \(KeyChain.read(key: "refreshToken") ?? "")")
+        
+        UserDefaults.setUserState("register")
+        NotificationCenter.default.post(name: NSNotification.Name("UserStateChanged"), object: nil)
+        
     }
     
     
@@ -143,7 +144,6 @@ extension AppleLoginManager : ASAuthorizationControllerDelegate {
     }
     
     func appleLoginDeleteUser() {
-        
         let token = KeyChain.read(key: "refreshToken")
         print(#fileID, #function, #line, "- token checking⭐️: \(String(describing: token))")
         //token으로 데이터 삭제

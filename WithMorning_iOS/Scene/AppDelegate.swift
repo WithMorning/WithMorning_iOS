@@ -60,8 +60,8 @@ class AppDelegate:UIResponder, UIApplicationDelegate {
         handleNotification(userInfo)
         completionHandler([.banner, .list, .sound])
     }
-    //MARK: - Background(앱 꺼진 상태)에서도 알림 오는 설정
     
+    //MARK: - Background(앱 꺼진 상태)에서도 알림 오는 설정
     func userNotificationCenter(_ center: UNUserNotificationCenter, didReceive response: UNNotificationResponse, withCompletionHandler completionHandler: @escaping () -> Void) {
         let userInfo = response.notification.request.content.userInfo
         handleNotification(userInfo)
@@ -90,6 +90,7 @@ class AppDelegate:UIResponder, UIApplicationDelegate {
         UserDefaults.standard.set(true, forKey: "isWakeUpAlarmActive")
         NotificationCenter.default.post(name: NSNotification.Name("WakeUpAlarmReceived"), object: nil)
     }
+    
     private func handleprick(_ userInfo: [AnyHashable: Any]) {
         print("콕 찌르기")
 

@@ -7,11 +7,6 @@
 
 import Foundation
 
-enum LoginStatus {
-    case logout//로그아웃
-    case login //로그인
-}
-
 //MARK: - 애플로그인
 struct AppleloginRequest: Codable {
     let code: String

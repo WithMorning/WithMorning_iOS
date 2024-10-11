@@ -170,9 +170,6 @@ class AlarmViewController: UIViewController {
         }
     }
     
-    
-    
-    
     //MARK: - @objc func
     @objc func turnoffalarm(){
         print("turnoff")

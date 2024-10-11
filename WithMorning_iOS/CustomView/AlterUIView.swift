@@ -223,7 +223,7 @@ class AlterUIView: UIViewController {
     
     private func handleOutGroup() {
         print("모임 나가기 로직 실행")
-
+        
     }
     
     private func handleQuit() {
@@ -289,27 +289,24 @@ class AlterUIView: UIViewController {
     //MARK: - 회원 탈퇴
     func quitaccount(){
         LoadingIndicator.showLoading()
+        
         USERnetwork.deleteaccount(){ result in
-           
             switch result{
             case .success(let data):
                 DispatchQueue.main.async {
                     self.navigateToLoginViewController()
-                }
-                
-                func deleteAccount() {
+                    AppleLoginManager.shared.appleLoginDeleteUser()
                     KeyChain.delete(key: "accessToken")
                     KeyChain.delete(key: "refreshToken")
-                    RegisterUserInfo.shared.loginState = .logout
                     KeyChain.delete(key: "fcmToken")
                 }
-
                 
-                UserDefaults.standard.removeObject(forKey: "isFirstTime")
                 UserDefaults.standard.removeObject(forKey: "nickname")
                 UserDefaults.standard.removeObject(forKey: "volume")
                 UserDefaults.standard.removeObject(forKey: "vibrate")
-                UserDefaults.standard.removeObject(forKey: "isRegistered")
+                
+                UserDefaults.setUserState("deleteaccount")
+                NotificationCenter.default.post(name: NSNotification.Name("UserStateChanged"), object: nil)
                 
                 LoadingIndicator.hideLoading()
                 

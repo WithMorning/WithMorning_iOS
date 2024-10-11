@@ -11,68 +11,80 @@ import Combine
 import AuthenticationServices
 
 class SceneDelegate: UIResponder, UIWindowSceneDelegate {
+    
     var cancellables = Set<AnyCancellable>()
     var window: UIWindow?
     
     func scene(_ scene: UIScene, willConnectTo session: UISceneSession, options connectionOptions: UIScene.ConnectionOptions) {
         guard let windowScene = scene as? UIWindowScene else { return }
         
+        let refreshToken = KeyChain.read(key: "refreshToken")
+        
+        // 사용자 상태 변경 및 알람 이벤트 옵저버 등록
+        NotificationCenter.default.addObserver(self, selector: #selector(handleUserStateChange), name: NSNotification.Name("UserStateChanged"), object: nil)
+        
         NotificationCenter.default.addObserver(self, selector: #selector(handleWakeUpAlarm), name: NSNotification.Name("WakeUpAlarmReceived"), object: nil)
         
-        RegisterUserInfo.shared.$loginState.sink { [weak self] loginState in
+        //MARK: - 컴바인 최고ㅜㅜㅜㅜ
+        RegisterUserInfo.shared.$loginState.sink { loginState in
             DispatchQueue.main.async {
-                self?.updateRootViewController(windowScene, loginState: loginState)
+                self.wakeupAlarm(windowScene, loginState: loginState)
             }
         }
         .store(in: &cancellables)
         
-        // 초기 상태 설정
-        updateRootViewController(windowScene, loginState: RegisterUserInfo.shared.loginState)
+        let userState = UserDefaults.getUserState()
+        updateViewControllerForUserState(userState, windowScene: windowScene, refreshToken: refreshToken)
+    }
+    
+    func wakeupAlarm(_ scene: UIWindowScene, loginState: LoginStatus?){
+        if let windowScene = window?.windowScene {
+            // 알람 상태로 화면 전환
+            setRootViewController(windowScene, type: .alarmON)
+        }
+        
+        if UserDefaults.standard.bool(forKey: "isWakeUpAlarmActive") {
+            setRootViewController(scene, type: .alarmON)
+            return
+        }
     }
     
     @objc private func handleWakeUpAlarm() {
         if let windowScene = window?.windowScene {
-            setRootViewController(windowScene, type: .alarmOn)
+            // 알람 상태로 화면 전환
+            setRootViewController(windowScene, type: .alarmON)
         }
     }
     
-    
-    private func updateRootViewController(_ scene: UIWindowScene, loginState: LoginStatus?) {
+    @objc private func handleUserStateChange() {
+        let userState = UserDefaults.getUserState()
+        print(#fileID, #function, #line, "- 현재 사용자 상태: \(userState ?? "nil")")
         
         let refreshToken = KeyChain.read(key: "refreshToken")
-        
-        let isRegistered = UserDefaults.standard.bool(forKey: "isRegistered")
-        
-        if UserDefaults.standard.bool(forKey: "isWakeUpAlarmActive") {
-            setRootViewController(scene, type: .alarmOn)
-            return
+        if let windowScene = window?.windowScene {
+            updateViewControllerForUserState(userState, windowScene: windowScene, refreshToken: refreshToken)
         }
-        
-        let viewControllerType: StartViewControllerType
-        
-        if let refreshToken = refreshToken, !refreshToken.isEmpty {
-            viewControllerType = .main
-        } else {
-            switch loginState { //로그인 분기처리
-                
-            case .login: //로그인 상태
-                if isRegistered {
-                    viewControllerType = .main
-                } else {
-                    viewControllerType = .register
-                }
-            case .logout, nil: //로그아웃 or 처음인 상태
-                if Storage.isFirstTime() { //처음일 경우
-                    viewControllerType = .termAgree
-                } else if refreshToken != nil && isRegistered {
-                    viewControllerType = .login
-                } else {
-                    viewControllerType = .login
-                }
+    }
+    
+    private func updateViewControllerForUserState(_ userState: String?, windowScene: UIWindowScene, refreshToken: String?) {
+        switch userState {
+        case "termsagree":
+            setRootViewController(windowScene, type: .termAgree)
+        case "register":
+            if let token = refreshToken, !token.isEmpty {
+                setRootViewController(windowScene, type: .main)
+            } else {
+                setRootViewController(windowScene, type: .register) // 회원가입 화면
             }
+        case "login":
+            setRootViewController(windowScene, type: .main) // 메인 화면
+        case "logout":
+            setRootViewController(windowScene, type: .login) // 로그인 화면
+        case "deleteaccount":
+            setRootViewController(windowScene, type: .termAgree) // 약관 동의 화면
+        default:
+            setRootViewController(windowScene, type: .termAgree) // 기본적으로 약관 동의 화면
         }
-        
-        setRootViewController(scene, type: viewControllerType)
     }
     
     private func setRootViewController(_ scene: UIWindowScene, type: StartViewControllerType) {
@@ -86,14 +98,12 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         let navigationController: UINavigationController
         
         switch type {
-        case .termAgree, .register, .main, .alarmOn:
+        case .termAgree, .register, .main, .login:
             navigationController = UINavigationController(rootViewController: viewController)
-            
             if type == .main {
                 navigationController.navigationBar.isHidden = true
             }
             newWindow.rootViewController = navigationController
-            
         default:
             newWindow.rootViewController = viewController
         }
@@ -118,7 +128,7 @@ enum StartViewControllerType {
     case termAgree
     case main
     case register
-    case alarmOn
+    case alarmON
     
     var vc: UIViewController {
         switch self {
@@ -126,7 +136,7 @@ enum StartViewControllerType {
         case .termAgree: return TermsViewController()
         case .main: return MainViewController()
         case .register: return RegisterViewController()
-        case .alarmOn: return AlarmViewController()
+        case .alarmON: return AlarmViewController()
         }
     }
 }
@@ -142,3 +152,4 @@ public class Storage {
         }
     }
 }
+

@@ -18,6 +18,14 @@ extension UserDefaults {
         return UserDefaults.standard.bool(forKey: "privateNumber")
     }
     
+    static func setUserState(_ state: String) {
+        UserDefaults.standard.set(state, forKey: "userState")
+    }
+    
+    static func getUserState() -> String? {
+        return UserDefaults.standard.string(forKey: "userState")
+    }
+    
     // Float 타입 데이터를 불러올 때 기본값을 제공하는 메서드
     func float(forKey key: String, default defaultValue: Float) -> Float {
         return self.object(forKey: key) as? Float ?? defaultValue

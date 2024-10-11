@@ -710,21 +710,22 @@ class MyPageViewController : UIViewController, UIScrollViewDelegate {
             case .success(let data):
                 
                 DispatchQueue.main.async {
+                    
                     self.navigateToLoginViewController()
+                    
+                    KeyChain.delete(key: "accessToken")
+                    
+                    UserDefaults.setUserState("logout")
+                    NotificationCenter.default.post(name: NSNotification.Name("UserStateChanged"), object: nil)
                 }
                 
-                KeyChain.delete(key: "refreshToken")
-                KeyChain.delete(key: "accessToken")
-                KeyChain.delete(key: "fcmToken")
                 
-                RegisterUserInfo.shared.loginState = .logout
                 
                 LoadingIndicator.hideLoading()
                 print(data)
                 
             case .failure(let error):
                 LoadingIndicator.hideLoading()
-                UserDefaults.standard.set(true, forKey: "isFirstTime")
                 print(error.localizedDescription)
             }
         }
