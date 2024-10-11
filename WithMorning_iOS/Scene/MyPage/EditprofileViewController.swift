@@ -181,8 +181,7 @@ class EditprofileViewController : UIViewController,UIImagePickerControllerDelega
             switch result {
             case .success(let data):
                 print("프로필 업로드 성공: \(data)")
-                
-                RegisterUserInfo.shared.nickName = self.nickname
+            
                 UserDefaults.standard.set(self.nickname, forKey: "nickname")
                 RegisterUserInfo.shared.profileImage = image
                 

@@ -296,6 +296,7 @@ class AlterUIView: UIViewController {
                 DispatchQueue.main.async {
                     self.navigateToLoginViewController()
                     AppleLoginManager.shared.appleLoginDeleteUser()
+                    
                     KeyChain.delete(key: "accessToken")
                     KeyChain.delete(key: "refreshToken")
                     KeyChain.delete(key: "fcmToken")
@@ -308,8 +309,11 @@ class AlterUIView: UIViewController {
                 UserDefaults.setUserState("deleteaccount")
                 NotificationCenter.default.post(name: NSNotification.Name("UserStateChanged"), object: nil)
                 
-                LoadingIndicator.hideLoading()
+                print(KeyChain.read(key: "accessToken") ?? "엑세스가 없습니다.")
+                print(KeyChain.read(key: "refreshToken") ?? "리프레쉬토큰이 없습니다.")
+                print(KeyChain.read(key: "fcmToken") ?? "fcm토큰이 없습니다.")
                 
+                LoadingIndicator.hideLoading()
                 print(data)
             case .failure(let error):
                 print(error.localizedDescription)

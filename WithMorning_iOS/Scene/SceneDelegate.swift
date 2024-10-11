@@ -61,17 +61,19 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         print(#fileID, #function, #line, "- 현재 사용자 상태: \(userState ?? "nil")")
         
         let refreshToken = KeyChain.read(key: "refreshToken")
+        
         if let windowScene = window?.windowScene {
             updateViewControllerForUserState(userState, windowScene: windowScene, refreshToken: refreshToken)
         }
     }
     
     private func updateViewControllerForUserState(_ userState: String?, windowScene: UIWindowScene, refreshToken: String?) {
+        
         switch userState {
         case "termsagree":
             setRootViewController(windowScene, type: .termAgree)
         case "register":
-            if let token = refreshToken, !token.isEmpty {
+            if let token = refreshToken, !token.isEmpty{
                 setRootViewController(windowScene, type: .main)
             } else {
                 setRootViewController(windowScene, type: .register) // 회원가입 화면

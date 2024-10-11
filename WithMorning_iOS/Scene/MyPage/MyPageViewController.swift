@@ -710,16 +710,12 @@ class MyPageViewController : UIViewController, UIScrollViewDelegate {
             case .success(let data):
                 
                 DispatchQueue.main.async {
-                    
                     self.navigateToLoginViewController()
-                    
                     KeyChain.delete(key: "accessToken")
                     
                     UserDefaults.setUserState("logout")
                     NotificationCenter.default.post(name: NSNotification.Name("UserStateChanged"), object: nil)
                 }
-                
-                
                 
                 LoadingIndicator.hideLoading()
                 print(data)
