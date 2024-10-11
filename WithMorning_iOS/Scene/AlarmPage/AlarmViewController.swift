@@ -23,7 +23,7 @@ class AlarmViewController: UIViewController {
         stackView.spacing = 4
         return stackView
     }()
-
+    
     private lazy var timeLabel: UILabel = {
         let label = UILabel()
         label.font = DesignSystemFont.Pretendard_Bold70.value
@@ -45,7 +45,7 @@ class AlarmViewController: UIViewController {
     }()
     
     //MARK: - 메세지
-
+    
     private lazy var messageLabel: UILabel = {
         let label = UILabel()
         label.text = "오늘의 메시지 💬"
@@ -62,7 +62,7 @@ class AlarmViewController: UIViewController {
         label.textAlignment = .center
         return label
     }()
-
+    
     
     //MARK: - 저장 버튼
     private lazy var turnoffButton : UIButton = {
@@ -81,7 +81,7 @@ class AlarmViewController: UIViewController {
         label.font = DesignSystemFont.Pretendard_Bold16.value
         return label
     }()
-
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         view.backgroundColor = UIColor(red: 0.96, green: 0.96, blue: 0.96, alpha: 1)
@@ -157,24 +157,48 @@ class AlarmViewController: UIViewController {
     var groupId : Int = 0
     
     func Wakeup(){
+        LoadingIndicator.showLoading()
         APInetwork.patchWakeup(groupId: groupId){ result in
             switch result{
             case .success(let data):
+                LoadingIndicator.hideLoading()
                 print(data)
             case .failure(let error):
                 print(error.localizedDescription)
+                LoadingIndicator.hideLoading()
             }
         }
     }
     
     
-
+    
     
     //MARK: - @objc func
     @objc func turnoffalarm(){
         print("turnoff")
+        Wakeup()
+        UserDefaults.standard.set(false, forKey: "isWakeUpAlarmActive")
+        mainViewController()
+        
     }
-
+    
+    
+    func mainViewController() {
+        let mainVC = MainViewController()
+        let navController = UINavigationController(rootViewController: mainVC)
+        navController.modalPresentationStyle = .fullScreen
+        navController.navigationBar.isHidden = true
+        
+        if let keyWindow = UIApplication.shared.connectedScenes
+            .compactMap({ $0 as? UIWindowScene })
+            .flatMap({ $0.windows })
+            .first(where: { $0.isKeyWindow }) {
+            
+            keyWindow.rootViewController = navController
+            keyWindow.makeKeyAndVisible()
+        }
+    }
+    
 }
 
 

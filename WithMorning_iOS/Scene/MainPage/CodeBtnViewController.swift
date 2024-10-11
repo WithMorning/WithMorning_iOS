@@ -148,6 +148,7 @@ class CodeBtnViewController: UIViewController {
             $0.top.equalToSuperview().offset(20)
         }
     }
+    
     func updateButtonColor() {
         let isPrivate = UserDefaults.getPrivateNumber()
         openButton.tintColor = isPrivate ? DesignSystemColor.Orange500.value : DesignSystemColor.Gray200.value

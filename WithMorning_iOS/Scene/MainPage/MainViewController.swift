@@ -108,12 +108,30 @@ class MainViewController: UIViewController, UISheetPresentationControllerDelegat
         return refresh
     }()
     
+    //MARK: - 알람이 하나도 없을때 뜨는 뷰
+    private lazy var emptyView : UIView = {
+        let view = UIView()
+        view.backgroundColor = .clear
+        view.addSubview(emptyimage)
+        view.isHidden = true
+        return view
+    }()
+    
+    private lazy var emptyimage : UIImageView = {
+        let view = UIImageView()
+        view.image = UIImage(named: "empty")
+        return view
+    }()
+
+
+    
     //MARK: - LifeCycle
     override func viewDidLoad() {
         super.viewDidLoad()
         self.view.backgroundColor = DesignSystemColor.Gray150.value
         tableSetting()
         SetUI()
+        emptycellcheck()
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -125,7 +143,7 @@ class MainViewController: UIViewController, UISheetPresentationControllerDelegat
     
     //MARK: - UI
     func SetUI(){
-        view.addSubviews(nameLabel,profileButton,soundButton,AlarmTableView)
+        view.addSubviews(nameLabel,profileButton,soundButton,AlarmTableView,emptyView)
         
         headerView.addSubview(headerStackView)
         
@@ -172,6 +190,14 @@ class MainViewController: UIViewController, UISheetPresentationControllerDelegat
             $0.leading.trailing.equalToSuperview().inset(16)
             $0.bottom.equalTo(view.safeAreaLayoutGuide)
         }
+        emptyView.snp.makeConstraints{
+            $0.top.equalTo(headerView.snp.bottom)
+            $0.leading.trailing.bottom.equalTo(AlarmTableView)
+        }
+        emptyimage.snp.makeConstraints{
+            $0.center.equalToSuperview()
+        }
+        
         
     }
     
@@ -298,6 +324,7 @@ class MainViewController: UIViewController, UISheetPresentationControllerDelegat
                     self.profileButton.image = UIImage(named: "profile") // 기본 이미지로 설정
                 }
                 self.AlarmTableView.reloadData()
+                self.emptycellcheck()
                 
                 LoadingIndicator.hideLoading()
             case .failure(let error):
@@ -308,6 +335,11 @@ class MainViewController: UIViewController, UISheetPresentationControllerDelegat
                 
             }
         }
+    }
+    //MARK: - 텅 뷰
+
+    func emptycellcheck(){
+        emptyView.isHidden = !alarmData.isEmpty
     }
     
     //MARK: - Data Array
@@ -336,8 +368,9 @@ class MainViewController: UIViewController, UISheetPresentationControllerDelegat
 extension MainViewController : UITableViewDelegate, UITableViewDataSource{
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        
-        return alarmData.count
+        let count = alarmData.count
+        self.emptycellcheck()
+        return count
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {

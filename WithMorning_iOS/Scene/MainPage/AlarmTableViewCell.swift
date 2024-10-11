@@ -836,7 +836,7 @@ class memberCollectioViewCell: UICollectionViewCell {
         view.backgroundColor = .clear
         view.image = UIImage(named: "profile")
         view.layer.cornerRadius = 29
-        view.contentMode = .scaleAspectFit
+        view.contentMode = .scaleAspectFill
         view.clipsToBounds = true
         return view
     }()
@@ -949,8 +949,8 @@ class memberCollectioViewCell: UICollectionViewCell {
             let url = URL(string: imageURL)
             let placeholderImage = UIImage(named: "profile")
             let processor = RoundCornerImageProcessor(cornerRadius: 29)
-            
             memberIMG.kf.setImage(with: url, placeholder: placeholderImage, options: [.processor(processor)])
+            
         } else {
             memberIMG.image = UIImage(named: "profile")
         }

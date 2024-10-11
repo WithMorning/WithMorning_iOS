@@ -765,7 +765,7 @@ class MyPageViewController : UIViewController, UIScrollViewDelegate {
             }
             
             else if dayOfWeekSet.isEmpty{
-                sleeptimeLabel3.text = "없음"
+                sleeptimeLabel3.text = "\(formattedTime) 없음"
                 // 그 외: 모든 요일 출력
             }else{
                 let koreanDays = dayOfWeekList.compactMap { dayOfWeekDict[$0] }.joined(separator: ", ")
@@ -789,6 +789,10 @@ class MyPageViewController : UIViewController, UIScrollViewDelegate {
             keyWindow.makeKeyAndVisible()
         }
     }
+    
+    
+    
+    
 }
 
 //MARK: - extension

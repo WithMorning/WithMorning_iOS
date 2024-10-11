@@ -17,6 +17,8 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
     func scene(_ scene: UIScene, willConnectTo session: UISceneSession, options connectionOptions: UIScene.ConnectionOptions) {
         guard let windowScene = scene as? UIWindowScene else { return }
         
+        NotificationCenter.default.addObserver(self, selector: #selector(handleWakeUpAlarm), name: NSNotification.Name("WakeUpAlarmReceived"), object: nil)
+        
         RegisterUserInfo.shared.$loginState.sink { [weak self] loginState in
             DispatchQueue.main.async {
                 self?.updateRootViewController(windowScene, loginState: loginState)
@@ -28,13 +30,26 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         updateRootViewController(windowScene, loginState: RegisterUserInfo.shared.loginState)
     }
     
+    @objc private func handleWakeUpAlarm() {
+        if let windowScene = window?.windowScene {
+            setRootViewController(windowScene, type: .alarmOn)
+        }
+    }
+    
+    
     private func updateRootViewController(_ scene: UIWindowScene, loginState: LoginStatus?) {
         
         let refreshToken = KeyChain.read(key: "refreshToken")
         
         let isRegistered = UserDefaults.standard.bool(forKey: "isRegistered")
         
+        if UserDefaults.standard.bool(forKey: "isWakeUpAlarmActive") {
+            setRootViewController(scene, type: .alarmOn)
+            return
+        }
+        
         let viewControllerType: StartViewControllerType
+        
         if let refreshToken = refreshToken, !refreshToken.isEmpty {
             viewControllerType = .main
         } else {
@@ -71,12 +86,14 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         let navigationController: UINavigationController
         
         switch type {
-        case .termAgree, .register, .main:
+        case .termAgree, .register, .main, .alarmOn:
             navigationController = UINavigationController(rootViewController: viewController)
+            
             if type == .main {
                 navigationController.navigationBar.isHidden = true
             }
             newWindow.rootViewController = navigationController
+            
         default:
             newWindow.rootViewController = viewController
         }
@@ -101,6 +118,7 @@ enum StartViewControllerType {
     case termAgree
     case main
     case register
+    case alarmOn
     
     var vc: UIViewController {
         switch self {
@@ -108,6 +126,7 @@ enum StartViewControllerType {
         case .termAgree: return TermsViewController()
         case .main: return MainViewController()
         case .register: return RegisterViewController()
+        case .alarmOn: return AlarmViewController()
         }
     }
 }

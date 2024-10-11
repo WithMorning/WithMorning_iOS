@@ -55,24 +55,57 @@ class AppDelegate:UIResponder, UIApplicationDelegate {
     }
     
     //MARK: - Foreground(앱 켜진 상태)에서도 알림 오는 설정
-    #warning("앱이 켜져있는 상태에서도 어떻게 알람이 와야할지")
-    
     func userNotificationCenter(_ center: UNUserNotificationCenter, willPresent notification: UNNotification, withCompletionHandler completionHandler: @escaping (UNNotificationPresentationOptions) -> Void) {
-        completionHandler([.banner, .list, .sound])
-        
         let userInfo = notification.request.content.userInfo
-        
-        // 전체 데이터가 필요한 경우 JSON 형식으로 예쁘게 출력
-        if let jsonData = try? JSONSerialization.data(withJSONObject: userInfo, options: .prettyPrinted),
-           let jsonString = String(data: jsonData, encoding: .utf8) {
-            print("📋 전체 알림 데이터:")
-            print(jsonString)
+        handleNotification(userInfo)
+        completionHandler([.banner, .list, .sound])
+    }
+    //MARK: - Background(앱 꺼진 상태)에서도 알림 오는 설정
+    
+    func userNotificationCenter(_ center: UNUserNotificationCenter, didReceive response: UNNotificationResponse, withCompletionHandler completionHandler: @escaping () -> Void) {
+        let userInfo = response.notification.request.content.userInfo
+        handleNotification(userInfo)
+        completionHandler()
+    }
+    
+    private func handleNotification(_ userInfo: [AnyHashable: Any]) {
+        if let aps = userInfo["aps"] as? [String: Any],
+           let alert = aps["alert"] as? [String: Any],
+           let title = alert["title"] as? String {
+            switch title {
+            case "기상 알람":
+                handlewakeup(userInfo)
+            case "콕 찌르기":
+                handleprick(userInfo)
+            case "취침 알람":
+                handlebedtime(userInfo)
+            default:
+                handleDefault(userInfo)
+            }
         }
-        
+    }
+    
+    private func handlewakeup(_ userInfo: [AnyHashable: Any]) {
+        print("기상알람")
+        UserDefaults.standard.set(true, forKey: "isWakeUpAlarmActive")
+        NotificationCenter.default.post(name: NSNotification.Name("WakeUpAlarmReceived"), object: nil)
+    }
+    private func handleprick(_ userInfo: [AnyHashable: Any]) {
+        print("콕 찌르기")
+
+    }
+    private func handlebedtime(_ userInfo: [AnyHashable: Any]) {
+        print("취침 알람")
+
+    }
+    private func handleDefault(_ userInfo: [AnyHashable: Any]) {
+        print("기본 알람")
+
     }
     
     
 }
+
 
 extension AppDelegate: UNUserNotificationCenterDelegate {
     
@@ -84,6 +117,7 @@ extension AppDelegate: UNUserNotificationCenterDelegate {
         
         Messaging.messaging().apnsToken = deviceToken
         
+        
     }
     
 }
@@ -92,7 +126,6 @@ extension AppDelegate: MessagingDelegate {
     
     // 파이어베이스 MessagingDelegate 설정
     func messaging(_ messaging: Messaging, didReceiveRegistrationToken fcmToken: String?) {
-        //      print("Firebase registration token: \(String(describing: fcmToken))")
         
         let dataDict: [String: String] = ["token": fcmToken ?? ""]
         
@@ -101,7 +134,6 @@ extension AppDelegate: MessagingDelegate {
             object: nil,
             userInfo: dataDict
         )
-            #warning("토큰은 여기에서 처리하세요 ! ")
         
         KeyChain.create(key: "fcmToken", token: fcmToken ?? "")
         print("🔥키체인에 들어있는 fcmToken",KeyChain.read(key: "fcmToken") ?? "")
@@ -109,8 +141,4 @@ extension AppDelegate: MessagingDelegate {
         // Note: This callback is fired at each app startup and whenever a new token is generated.
     }
     
-    // 메시지가 도착했을 때 실행되는 메서드
-    func messaging(_ messaging: Messaging, didReceiveMessage remoteMessage: MessagingDelegate) {
-        print("🔔 FCM 메시지 수신:", remoteMessage)
-    }
 }

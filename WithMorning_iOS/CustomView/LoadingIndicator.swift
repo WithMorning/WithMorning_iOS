@@ -19,7 +19,7 @@ class LoadingIndicator {
             }
             
             let backgroundView = UIView(frame: window.bounds)
-            backgroundView.backgroundColor = UIColor.black.withAlphaComponent(0.7) // 투명도 조절
+            backgroundView.backgroundColor = UIColor.black.withAlphaComponent(0.1) // 투명도 조절
             backgroundView.tag = 999
             
             let loadingIndicatorView = UIActivityIndicatorView(style: .large)

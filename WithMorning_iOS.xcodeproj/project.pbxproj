@@ -31,6 +31,7 @@
 		D14967F62C6FB3F5000E8C1B /* RegisterUserInfo.swift in Sources */ = {isa = PBXBuildFile; fileRef = D14967F52C6FB3F5000E8C1B /* RegisterUserInfo.swift */; };
 		D14967F92C70864D000E8C1B /* KeyChain.swift in Sources */ = {isa = PBXBuildFile; fileRef = D14967F82C70864D000E8C1B /* KeyChain.swift */; };
 		D14A2D6C2BC8EB810087E0CB /* DesignSystem.swift in Sources */ = {isa = PBXBuildFile; fileRef = D14A2D6B2BC8EB810087E0CB /* DesignSystem.swift */; };
+		D14F61032CB90C700094777B /* NetworkErrorHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = D14F61022CB90C6A0094777B /* NetworkErrorHandler.swift */; };
 		D15534A32C943C8E0087AED7 /* UserModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = D12D51302C60BBFF00D3F1A9 /* UserModel.swift */; };
 		D15AE7342BC990DA00024CE3 /* Pretendard-Bold.otf in Resources */ = {isa = PBXBuildFile; fileRef = D15AE7332BC990DA00024CE3 /* Pretendard-Bold.otf */; };
 		D15AE7362BC990E200024CE3 /* Pretendard-Medium.otf in Resources */ = {isa = PBXBuildFile; fileRef = D15AE7352BC990E200024CE3 /* Pretendard-Medium.otf */; };
@@ -116,6 +117,7 @@
 		D14967F52C6FB3F5000E8C1B /* RegisterUserInfo.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RegisterUserInfo.swift; sourceTree = "<group>"; };
 		D14967F82C70864D000E8C1B /* KeyChain.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KeyChain.swift; sourceTree = "<group>"; };
 		D14A2D6B2BC8EB810087E0CB /* DesignSystem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DesignSystem.swift; sourceTree = "<group>"; };
+		D14F61022CB90C6A0094777B /* NetworkErrorHandler.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NetworkErrorHandler.swift; sourceTree = "<group>"; };
 		D15AE7332BC990DA00024CE3 /* Pretendard-Bold.otf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Pretendard-Bold.otf"; sourceTree = "<group>"; };
 		D15AE7352BC990E200024CE3 /* Pretendard-Medium.otf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Pretendard-Medium.otf"; sourceTree = "<group>"; };
 		D15AE7372BC990E900024CE3 /* Pretendard-SemiBold.otf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Pretendard-SemiBold.otf"; sourceTree = "<group>"; };
@@ -370,6 +372,7 @@
 		D1652D792BC653AF00F80F6F /* API */ = {
 			isa = PBXGroup;
 			children = (
+				D14F61022CB90C6A0094777B /* NetworkErrorHandler.swift */,
 				D16F5FD02BC65671006640F9 /* Network.swift */,
 				D16F5FD22BC65679006640F9 /* Model.swift */,
 				D16F5FD42BC65680006640F9 /* Router.swift */,
@@ -595,6 +598,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				D179E6332CA104C500800FEC /* LoadingIndicator.swift in Sources */,
+				D14F61032CB90C700094777B /* NetworkErrorHandler.swift in Sources */,
 				D1891F302C58F72500DFF89C /* UITextField_Extension.swift in Sources */,
 				D15534A32C943C8E0087AED7 /* UserModel.swift in Sources */,
 				D1E1FBDE2C65F23E001E5375 /* Toast_Message.swift in Sources */,
