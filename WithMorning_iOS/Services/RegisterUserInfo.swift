@@ -14,6 +14,9 @@ enum LoginStatus {
     case login //로그인
 }
 
+//컴바인을 이용함.
+//앱 종료시 데이터가 삭제댐
+
 class RegisterUserInfo {
     
     static let shared = RegisterUserInfo()

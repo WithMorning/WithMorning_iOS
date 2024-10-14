@@ -443,8 +443,6 @@ class WeekChoiceViewController : UIViewController, UIScrollViewDelegate {
         
     }
     
-    
-    
     //MARK: - 요일 이동 클로저
     let daysOrder = ["mon", "tue", "wed", "thu", "fri", "sat", "sun"]
     //알람설정부분
@@ -494,8 +492,6 @@ class WeekChoiceViewController : UIViewController, UIScrollViewDelegate {
         selectedDayOfWeek = Array(AlarmSelectedDays).sorted()
     }
     
-    
-    
     //MARK: - objc func
     @objc func monclick() { toggleDay("mon", image: MonIMG) }
     @objc func tueclick() { toggleDay("tue", image: TueIMG) }
@@ -509,10 +505,8 @@ class WeekChoiceViewController : UIViewController, UIScrollViewDelegate {
         switch callerType {
         case .sleepTime:
             weekClosure?(AlarmSelectedDays)
-            print("알람요일설정 present")
         case .makeAlarm:
             weekClosure?(AlarmSelectedDays)
-            print("알람생성 present")
         }
         self.dismiss(animated: true)
         

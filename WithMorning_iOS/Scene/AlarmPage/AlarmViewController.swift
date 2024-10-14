@@ -76,7 +76,7 @@ class AlarmViewController: UIViewController {
     
     private lazy var buttonLabel : UILabel = {
         let label = UILabel()
-        label.text = "알람끄기"
+        label.text = "알람 끄기"
         label.textColor = .white
         label.font = DesignSystemFont.Pretendard_Bold16.value
         return label

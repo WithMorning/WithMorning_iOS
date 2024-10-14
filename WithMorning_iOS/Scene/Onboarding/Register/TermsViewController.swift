@@ -236,17 +236,11 @@ class TermsViewController: UIViewController{
     }
     //MARK: - 모두 동의 함수
     func setallagree(){
-        if [agecheckButton,serviceButton,infoButton,maketingButton].allSatisfy({$0.tintColor == DesignSystemColor.Orange500.value}){
+        if [agecheckButton,serviceButton,infoButton].allSatisfy({$0.tintColor == DesignSystemColor.Orange500.value}){
             allagreeButton.tintColor = DesignSystemColor.Orange500.value
             nextButton.backgroundColor = DesignSystemColor.Orange500.value
         }else{
             allagreeButton.tintColor = DesignSystemColor.Gray200.value
-            nextButton.backgroundColor = DesignSystemColor.Gray300.value
-        }
-        
-        if [agecheckButton,serviceButton,infoButton].allSatisfy({$0.tintColor == DesignSystemColor.Orange500.value}){
-            nextButton.backgroundColor = DesignSystemColor.Orange500.value
-        }else{
             nextButton.backgroundColor = DesignSystemColor.Gray300.value
         }
         
@@ -293,6 +287,7 @@ class TermsViewController: UIViewController{
             [agecheckButton,serviceButton,infoButton,maketingButton].forEach({$0.tintColor = DesignSystemColor.Orange500.value})
             nextButton.backgroundColor = DesignSystemColor.Orange500.value
             allagreeButton.tintColor = DesignSystemColor.Orange500.value
+            
         }else{
             [agecheckButton,serviceButton,infoButton,maketingButton].forEach({$0.tintColor = DesignSystemColor.Gray200.value})
             nextButton.backgroundColor = DesignSystemColor.Gray300.value
@@ -302,6 +297,7 @@ class TermsViewController: UIViewController{
     
     @objc func nextbtn(){
         if nextButton.backgroundColor == DesignSystemColor.Gray300.value {
+            self.showToast(message: "약관에 모두 동의해주세요.")
         }else{
             let vc = LoginViewController()
             self.navigationController?.pushViewController(vc, animated: true)

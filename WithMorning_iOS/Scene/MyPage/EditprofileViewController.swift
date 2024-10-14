@@ -151,12 +151,13 @@ class EditprofileViewController : UIViewController,UIImagePickerControllerDelega
     }
     
     // MARK: - API
+    private var selectedIMG : UIImage?
     private func registerProfile() {
         LoadingIndicator.showLoading()
-        guard let image = profileImage.image else {
-            print("프로필 이미지를 선택하세요.")
-            return
-        }
+        //        guard let image = profileImage.image else {
+        //            print("프로필 이미지를 선택하세요.")
+        //            return
+        //        }
         
         let fcmToken = KeyChain.read(key: "fcmToken") ?? ""
         
@@ -166,13 +167,18 @@ class EditprofileViewController : UIViewController,UIImagePickerControllerDelega
             nickname = UserDefaults.standard.string(forKey: "nickname") ?? "오류"
         }
         
-        guard let imageData = image.jpegData(compressionQuality: 1) else {
-            print("이미지를 JPEG 데이터로 변환하는 데 실패했습니다.")
-            return
+        let requestProfile = Requestprofile(nickname: nickname, fcmToken: fcmToken)
+        
+        var imageData: Data?
+        
+        if let selectedImage = selectedIMG {
+            imageData = selectedImage.jpegData(compressionQuality: 0.5)
+            
+        }else if let currentImage = profileImage.image {
+            // 이미지를 선택하지 않았다면 현재 프로필 이미지를 사용
+            imageData = currentImage.jpegData(compressionQuality: 0.5)
         }
         
-        // 5. 프로필 데이터 설정
-        let requestProfile = Requestprofile(nickname: nickname, fcmToken: fcmToken)
         let registerData = profileRequest(request: requestProfile, image: imageData)
         
         // 6. API 호출
@@ -181,9 +187,11 @@ class EditprofileViewController : UIViewController,UIImagePickerControllerDelega
             switch result {
             case .success(let data):
                 print("프로필 업로드 성공: \(data)")
-            
+                
                 UserDefaults.standard.set(self.nickname, forKey: "nickname")
-                RegisterUserInfo.shared.profileImage = image
+                if let selectedImage = self.selectedIMG {
+                    RegisterUserInfo.shared.profileImage = selectedImage
+                }
                 
                 self.showToast(message: "프로필 수정이 완료되었습니다.")
                 
@@ -209,7 +217,6 @@ class EditprofileViewController : UIViewController,UIImagePickerControllerDelega
     
     @objc func doneclick(){
         registerProfile()
-        
     }
     
     @objc func galleryclick(){
@@ -233,15 +240,16 @@ class EditprofileViewController : UIViewController,UIImagePickerControllerDelega
     
     //MARK: - Gallery Setting
     func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [UIImagePickerController.InfoKey : Any]) {
-        
         if let editedImage = info[UIImagePickerController.InfoKey.editedImage] as? UIImage {
             DispatchQueue.main.async {
                 self.profileImage.image = editedImage
+                self.selectedIMG = editedImage
             }
         } else if info[UIImagePickerController.InfoKey.originalImage] is UIImage {
             // 만약 편집된 이미지가 존재하지 않으면 원본 이미지를 사용합니다.
             DispatchQueue.main.async {
                 self.profileImage.image = UIImage(named: "profile")
+                self.selectedIMG = nil
             }
         }
         
@@ -249,11 +257,15 @@ class EditprofileViewController : UIViewController,UIImagePickerControllerDelega
     }
     
     func openGallery(){
+        LoadingIndicator.showLoading()
         imgPicker.sourceType = .photoLibrary
         present(imgPicker, animated: true, completion: nil)
+        LoadingIndicator.hideLoading()
     }
+    
     func deletephoto(){
         profileImage.image = UIImage(named: "profile")
+        selectedIMG = nil
     }
     
 }

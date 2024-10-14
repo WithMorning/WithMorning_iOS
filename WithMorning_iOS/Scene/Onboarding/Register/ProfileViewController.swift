@@ -180,33 +180,34 @@ class ProfileViewController : UIViewController, UIImagePickerControllerDelegate 
     }
     
     // MARK: - API
+    private var selectedIMG : UIImage?
     private func registerProfile() {
-        guard let image = profileImage.image else {
-            print("프로필 이미지를 선택하세요.")
-            return
-        }
+        LoadingIndicator.showLoading()
+//        guard profileImage.image != nil else {
+//            print("프로필 이미지를 선택하세요.")
+//            return
+//        }
         
         let fcmToken = KeyChain.read(key: "fcmToken") ?? ""
         
         guard let nickname = nicknameTextfield.text, !nickname.isEmpty else {
-            print("닉네임을 입력해야 합니다.")
+            self.showToast(message: "닉네임을 입력해주세요.")
             return
         }
         
-        guard let imageData = image.jpegData(compressionQuality: 0.5) else {
-            print("이미지를 JPEG 데이터로 변환하는 데 실패했습니다.")
-            return
-        }
-        
-        // 5. 프로필 데이터 설정
+        // 닉네임 + 토큰
         let requestProfile = Requestprofile(nickname: nickname, fcmToken: fcmToken)
+        
+        var imageData : Data?
+        if let selectedIMG = selectedIMG{
+            imageData = selectedIMG.jpegData(compressionQuality: 0.5)
+        }
+        
+        // 닉네임 + 토큰 + 이미지
         let registerData = profileRequest(request: requestProfile, image: imageData)
 
-        // 6. 다음 화면 준비
         let vc = IntroViewController()
 
-        // 7. API 호출
-        LoadingIndicator.showLoading()
         APInetwork.postProfile(profileData: registerData) { result in
             
             switch result {
@@ -235,15 +236,16 @@ class ProfileViewController : UIViewController, UIImagePickerControllerDelegate 
     //MARK: - Gallery Setting
     
     func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [UIImagePickerController.InfoKey : Any]) {
-        
         if let editedImage = info[UIImagePickerController.InfoKey.editedImage] as? UIImage {
                 DispatchQueue.main.async {
                     self.profileImage.image = editedImage
+                    self.selectedIMG = editedImage
                 }
+            
         } else if info[UIImagePickerController.InfoKey.originalImage] is UIImage {
-                // 만약 편집된 이미지가 존재하지 않으면 원본 이미지를 사용합니다.
                 DispatchQueue.main.async {
                     self.profileImage.image = UIImage(named: "profile")
+                    self.selectedIMG = nil
                 }
             }
         
@@ -251,12 +253,16 @@ class ProfileViewController : UIViewController, UIImagePickerControllerDelegate 
     }
     
     func openGallery(){
+        LoadingIndicator.showLoading()
         imgPicker.sourceType = .photoLibrary
         present(imgPicker, animated: true, completion: nil)
+        LoadingIndicator.hideLoading()
+        
     }
     
     func deletephoto(){
         profileImage.image = UIImage(named: "profile")
+        selectedIMG = nil
     }
     
 }

@@ -406,12 +406,8 @@ class MyPageViewController : UIViewController, UIScrollViewDelegate {
         super.viewDidLoad()
         self.view.backgroundColor = DesignSystemColor.Gray150.value
         SetUI()
-        popGesture()
-    }
-    
-    override func viewWillAppear(_ animated: Bool) {
-        super.viewWillAppear(animated)
         getMypage()
+        popGesture()
         
     }
     
@@ -607,10 +603,11 @@ class MyPageViewController : UIViewController, UIScrollViewDelegate {
     }
     
     @objc func editprofile(){
+        LoadingIndicator.showLoading()
         let vc = EditprofileViewController()
         vc.nickname = self.nickname
         self.navigationController?.pushViewController(vc, animated: true)
-        
+        LoadingIndicator.hideLoading()
     }
     
     @objc func sleeptime(){

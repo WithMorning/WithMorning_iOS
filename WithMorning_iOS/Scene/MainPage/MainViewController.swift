@@ -66,7 +66,7 @@ class MainViewController: UIViewController, UISheetPresentationControllerDelegat
         let button = UIButton()
         button.backgroundColor = DesignSystemColor.Orange500.value
         button.titleLabel?.font = DesignSystemFont.Pretendard_Bold14.value
-        button.setTitle("  새로운 알람설정", for: .normal)
+        button.setTitle("  새로운 알람 설정", for: .normal)
         button.setTitleColor(.white, for: .normal)
         button.tintColor = .white
         button.layer.cornerRadius = 8
@@ -131,13 +131,13 @@ class MainViewController: UIViewController, UISheetPresentationControllerDelegat
         self.view.backgroundColor = DesignSystemColor.Gray150.value
         tableSetting()
         SetUI()
+        getMainpage()
         emptycellcheck()
     }
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         updateSoundButtonImage()
-        getMainpage()
         
     }
     
@@ -245,7 +245,7 @@ class MainViewController: UIViewController, UISheetPresentationControllerDelegat
         self.navigationController?.pushViewController(vc, animated: true)
     }
     
-    @objc func clickedmakeAlarm(){ //새로운 알람설정
+    @objc func clickedmakeAlarm(){ //새로운 알람 설정
         let vc = MakeAlarmViewController()
         vc.mode = .createMode
         self.navigationController?.pushViewController(vc, animated: true)

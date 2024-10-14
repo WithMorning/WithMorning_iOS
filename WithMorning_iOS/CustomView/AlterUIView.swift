@@ -154,7 +154,7 @@ class AlterUIView: UIViewController {
             MainLabel.text = "해당 모임에서 나가시겠습니까?"
             SubLabel.isHidden = true
             MainLabel.snp.makeConstraints{
-                $0.top.equalToSuperview().offset(44)
+                $0.top.equalToSuperview().offset(47)
                 $0.centerX.equalToSuperview()
             }
             
