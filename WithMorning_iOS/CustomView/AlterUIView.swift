@@ -63,17 +63,9 @@ class AlterUIView: UIViewController {
     
     private lazy var SubLabel: UILabel = {
         let label = UILabel()
+        label.applyDesignFont(.Pretendard_Medium14, text: "삭제시 모든 메이트의 알람이 삭제처리됩니다. \n미리 전달해 주세요.",color: DesignSystemColor.Gray600.value)
         label.textAlignment = .center
-        label.textColor = DesignSystemColor.Gray600.value
-        label.font = DesignSystemFont.Pretendard_Medium14.value
-        label.numberOfLines = 2
-        
-        let paragraphStyle = NSMutableParagraphStyle()
-        paragraphStyle.lineSpacing = 4 // 원하는 행간 간격을 설정
-        paragraphStyle.alignment = .center
-        let attributedString = NSAttributedString(string: "삭제시 모든 메이트의 알람이 삭제처리됩니다. \n미리 전달해 주세요.",
-                                                  attributes: [NSAttributedString.Key.paragraphStyle: paragraphStyle])
-        label.attributedText = attributedString
+        label.numberOfLines = 0
         return label
     }()
     

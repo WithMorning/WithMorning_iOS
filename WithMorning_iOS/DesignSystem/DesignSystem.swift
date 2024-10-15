@@ -44,7 +44,7 @@ enum DesignSystemColor {
 extension DesignSystemColor {
     var value: UIColor {
         switch self {
-        case .Orange50: 
+        case .Orange50:
             UIColor(hex: "#FFF4EB")
         case .Orange100:
             UIColor(hex: "#FFE4CC")
@@ -64,8 +64,8 @@ extension DesignSystemColor {
             UIColor(hex: "#663100")
         case .Orange900:
             UIColor(hex: "#331800")
-        
-
+            
+            
         case .Gray100:
             UIColor(hex: "#FAFAFA")
         case .Gray150:
@@ -156,41 +156,55 @@ extension DesignSystemFont {
     }
     
     var lineHeightMultiple: CGFloat {
-        switch self {
-        case .Pretendard_Bold8:
-            return 1.17
-        case .Pretendard_Bold12:
-            return 1.19
-        case .Pretendard_Bold20:
-            return 1.19
-        case .Pretendard_Bold14:
-            return 1.19
-        case .Pretendard_Bold70:
-            return 1.17
-        case .Pretendard_SemiBold10:
-            return 1.17
-        case .Pretendard_SemiBold12:
-            return 2.32
-        case .Pretendard_Medium12:
-            return 1.17
-        case .Pretendard_Medium14:
-            return 1.17
-        case .Pretendard_Medium16:
-            return 1.17
-        case .Pretendard_Bold30:
-            return 1.19
-        case .Pretendard_Bold18:
-            return 1.19
-        case .Pretendard_Bold16:
-            return 1.17
-        case .Pretendard_SemiBold14:
-            return 1.17
-        case .Pretendard_SemiBold16:
-            return 1.17
-        case .Pretendard_Medium18:
-            return 1.17
-        }
+        return 1.4
+        //        switch self {
+        //        case .Pretendard_Bold8:
+        //            return 1.17
+        //        case .Pretendard_Bold12:
+        //            return 1.19
+        //        case .Pretendard_Bold20:
+        //            return 1.19
+        //        case .Pretendard_Bold14:
+        //            return 1.19
+        //        case .Pretendard_Bold70:
+        //            return 1.17
+        //        case .Pretendard_SemiBold10:
+        //            return 1.17
+        //        case .Pretendard_SemiBold12:
+        //            return 2.32
+        //        case .Pretendard_Medium12:
+        //            return 1.17
+        //        case .Pretendard_Medium14:
+        //            return 1.17
+        //        case .Pretendard_Medium16:
+        //            return 1.17
+        //        case .Pretendard_Bold30:
+        //            return 1.19
+        //        case .Pretendard_Bold18:
+        //            return 1.19
+        //        case .Pretendard_Bold16:
+        //            return 1.17
+        //        case .Pretendard_SemiBold14:
+        //            return 1.17
+        //        case .Pretendard_SemiBold16:
+        //            return 1.17
+        //        case .Pretendard_Medium18:
+        //            return 1.17
+        //        }
     }
+    func attributedString(for text: String, color: UIColor = .black) -> NSAttributedString {
+        let paragraphStyle = NSMutableParagraphStyle()
+        paragraphStyle.lineHeightMultiple = self.lineHeightMultiple
+        
+        let attributes: [NSAttributedString.Key: Any] = [
+            .font: self.value,
+            .foregroundColor: color,
+            .paragraphStyle: paragraphStyle
+        ]
+        
+        return NSAttributedString(string: text, attributes: attributes)
+    }
+    
 }
 
 // MARK: - 아이콘
@@ -202,9 +216,15 @@ enum DesignSystemIcon {
 extension DesignSystemIcon {
     var imageName: String {
         switch self {
-
+            
         case .codbutton:
             return "codebutton"
         }
+    }
+}
+
+extension UILabel{
+    func applyDesignFont(_ font: DesignSystemFont, text: String, color: UIColor = .black) {
+        self.attributedText = font.attributedString(for: text, color: color)
     }
 }

@@ -34,7 +34,7 @@ class EditprofileViewController : UIViewController,UIImagePickerControllerDelega
     
     private lazy var profileLabel : UILabel = {
         let label = UILabel()
-        label.text = "사용하실 프로필을 설정해주세요."
+        label.text = "사용하실 프로필을 설정해 주세요."
         label.font = DesignSystemFont.Pretendard_Medium14.value
         label.textColor = DesignSystemColor.Gray500.value
         label.textAlignment = .center

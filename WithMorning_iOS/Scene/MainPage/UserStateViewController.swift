@@ -39,7 +39,7 @@ class UserStateViewController : UIViewController{
     lazy var callButton : UIButton = {
         let button = UIButton()
         button.backgroundColor = DesignSystemColor.Orange500.value
-        button.setTitle("  전화로 깨우기", for: .normal)
+        button.setTitle("전화로 깨우기", for: .normal)
         button.titleLabel?.font = DesignSystemFont.Pretendard_SemiBold14.value
         button.titleLabel?.textAlignment = .center
         button.setTitleColor(.white, for: .normal)
@@ -52,7 +52,7 @@ class UserStateViewController : UIViewController{
     lazy var pickButton : UIButton = {
         let button = UIButton()
         button.backgroundColor = DesignSystemColor.Orange500.value
-        button.setTitle("  콕 찔러 깨우기", for: .normal)
+        button.setTitle("콕 찔러 깨우기", for: .normal)
         button.titleLabel?.font = DesignSystemFont.Pretendard_SemiBold14.value
         button.titleLabel?.textAlignment = .center
         button.setTitleColor(.white, for: .normal)

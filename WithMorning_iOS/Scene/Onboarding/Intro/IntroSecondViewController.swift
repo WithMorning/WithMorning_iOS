@@ -23,11 +23,10 @@ class IntroSecondViewController : UIViewController {
     
     private lazy var mainLabel : UILabel = {
         let label = UILabel()
+        label.applyDesignFont(.Pretendard_Medium16, text: "아침 기상으로 고민 중인 친구들이 있다면\n윗모닝에 초대해서 기상 약속을 잡아볼까요?",color: .black)
+        
         label.numberOfLines = 2
         label.textAlignment = .center
-        label.textColor = .black
-        label.text = "아침 기상으로 고민 중인 친구들이 있다면\n윗모닝에 초대해서 기상 약속을 잡아볼까요?"
-        label.font = DesignSystemFont.Pretendard_Medium16.value
         return label
     }()
     

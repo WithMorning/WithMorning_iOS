@@ -23,11 +23,9 @@ class IntroFirstViewController : UIViewController {
     
     private lazy var mainLabel : UILabel = {
         let label = UILabel()
+        label.applyDesignFont(.Pretendard_Medium16, text: "윗모닝은 어떤 알람으로도\n한번에 기상하기 힘든 사람들을 위한 앱이에요.",color: .black)
         label.numberOfLines = 2
         label.textAlignment = .center
-        label.textColor = .black
-        label.text = "윗모닝은 어떤 알람으로도\n한번에 기상하기 힘든 사람들을 위한 앱이에요."
-        label.font = DesignSystemFont.Pretendard_Medium16.value
         return label
     }()
     

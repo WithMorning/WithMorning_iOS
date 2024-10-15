@@ -43,7 +43,6 @@
 		D16F5FD32BC65679006640F9 /* Model.swift in Sources */ = {isa = PBXBuildFile; fileRef = D16F5FD22BC65679006640F9 /* Model.swift */; };
 		D16F5FD52BC65680006640F9 /* Router.swift in Sources */ = {isa = PBXBuildFile; fileRef = D16F5FD42BC65680006640F9 /* Router.swift */; };
 		D175A2142CA3C83E0001F99C /* AlarmViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D175A2132CA3C8300001F99C /* AlarmViewController.swift */; };
-		D1773F892BC988AB005C82FA /* UIFont_Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = D1773F882BC988AB005C82FA /* UIFont_Extension.swift */; };
 		D179E6332CA104C500800FEC /* LoadingIndicator.swift in Sources */ = {isa = PBXBuildFile; fileRef = D179E6322CA104C500800FEC /* LoadingIndicator.swift */; };
 		D17AC1A12C98019A007ADB3D /* IntroFirstViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D17AC1A02C98019A007ADB3D /* IntroFirstViewController.swift */; };
 		D17AC1A32C980BE1007ADB3D /* IntroSecondViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D17AC1A22C980BE1007ADB3D /* IntroSecondViewController.swift */; };
@@ -51,6 +50,7 @@
 		D18288CB2C7EF45800BDAB3A /* Error.swift in Sources */ = {isa = PBXBuildFile; fileRef = D18288CA2C7EF45800BDAB3A /* Error.swift */; };
 		D1891F302C58F72500DFF89C /* UITextField_Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = D1891F2F2C58F72500DFF89C /* UITextField_Extension.swift */; };
 		D19589E02C6745C50000B77C /* CoreHaptics_Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = D19589DF2C6745C50000B77C /* CoreHaptics_Extension.swift */; };
+		D19A73B22CBCD5830038E5A7 /* UIFont_Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = D19A73B12CBCD5830038E5A7 /* UIFont_Extension.swift */; };
 		D19A9CB22C26901100748CE8 /* MakeAlarmViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D19A9CB12C26901100748CE8 /* MakeAlarmViewController.swift */; };
 		D19E7FAA2C4A47C10053ACA8 /* LoginViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D19E7FA92C4A47C10053ACA8 /* LoginViewController.swift */; };
 		D1A095DB2CB56D7A002EEF6E /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = D1A095DA2CB56D7A002EEF6E /* GoogleService-Info.plist */; };
@@ -128,7 +128,6 @@
 		D16F5FD22BC65679006640F9 /* Model.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Model.swift; sourceTree = "<group>"; };
 		D16F5FD42BC65680006640F9 /* Router.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Router.swift; sourceTree = "<group>"; };
 		D175A2132CA3C8300001F99C /* AlarmViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AlarmViewController.swift; sourceTree = "<group>"; };
-		D1773F882BC988AB005C82FA /* UIFont_Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIFont_Extension.swift; sourceTree = "<group>"; };
 		D179E6322CA104C500800FEC /* LoadingIndicator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoadingIndicator.swift; sourceTree = "<group>"; };
 		D17AC1A02C98019A007ADB3D /* IntroFirstViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IntroFirstViewController.swift; sourceTree = "<group>"; };
 		D17AC1A22C980BE1007ADB3D /* IntroSecondViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IntroSecondViewController.swift; sourceTree = "<group>"; };
@@ -136,6 +135,7 @@
 		D18288CA2C7EF45800BDAB3A /* Error.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Error.swift; sourceTree = "<group>"; };
 		D1891F2F2C58F72500DFF89C /* UITextField_Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UITextField_Extension.swift; sourceTree = "<group>"; };
 		D19589DF2C6745C50000B77C /* CoreHaptics_Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CoreHaptics_Extension.swift; sourceTree = "<group>"; };
+		D19A73B12CBCD5830038E5A7 /* UIFont_Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIFont_Extension.swift; sourceTree = "<group>"; };
 		D19A9CB12C26901100748CE8 /* MakeAlarmViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MakeAlarmViewController.swift; sourceTree = "<group>"; };
 		D19E7FA92C4A47C10053ACA8 /* LoginViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginViewController.swift; sourceTree = "<group>"; };
 		D1A095DA2CB56D7A002EEF6E /* GoogleService-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
@@ -209,10 +209,10 @@
 		D10F846D2BC7E72000F3A172 /* Extension */ = {
 			isa = PBXGroup;
 			children = (
+				D19A73B12CBCD5830038E5A7 /* UIFont_Extension.swift */,
 				D19589DF2C6745C50000B77C /* CoreHaptics_Extension.swift */,
 				D1891F2F2C58F72500DFF89C /* UITextField_Extension.swift */,
 				D10F846E2BC7E7CF00F3A172 /* UIColor_Extension.swift */,
-				D1773F882BC988AB005C82FA /* UIFont_Extension.swift */,
 				D15AE7392BC995B800024CE3 /* UIView_Extension.swift */,
 				D16B609A2C65EF190039B99A /* UISlider_Extension.swift */,
 				D1B86A022C6D13D20052F528 /* UICell_Extension.swift */,
@@ -607,9 +607,9 @@
 				D1B86A052C6F2EAC0052F528 /* LoginModel.swift in Sources */,
 				D14967F92C70864D000E8C1B /* KeyChain.swift in Sources */,
 				D1B86A012C6D12710052F528 /* UserStateViewController.swift in Sources */,
+				D19A73B22CBCD5830038E5A7 /* UIFont_Extension.swift in Sources */,
 				D19589E02C6745C50000B77C /* CoreHaptics_Extension.swift in Sources */,
 				D1BCF7D22C99752800FC4FD5 /* IntroViewController.swift in Sources */,
-				D1773F892BC988AB005C82FA /* UIFont_Extension.swift in Sources */,
 				D14967F62C6FB3F5000E8C1B /* RegisterUserInfo.swift in Sources */,
 				D1E672BF2BC4FD3300A32790 /* MainViewController.swift in Sources */,
 				D1E672BB2BC4FD3300A32790 /* AppDelegate.swift in Sources */,

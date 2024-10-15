@@ -55,9 +55,7 @@ class AlarmViewController: UIViewController {
     
     private lazy var messagetextLabel : UILabel = {
         let label = UILabel()
-        label.text = "나에게 불가능은 없다.\n나는 모든걸 실현할 수 있는 힘이 있다."
-        label.font = DesignSystemFont.Pretendard_Medium16.value
-        label.textColor = DesignSystemColor.Gray600.value
+        label.applyDesignFont(.Pretendard_Medium14, text: "나에게 불가능은 없다.\n나는 모든걸 실현할 수 있는 힘이 있다.",color: DesignSystemColor.Gray600.value)
         label.numberOfLines = 0
         label.textAlignment = .center
         return label

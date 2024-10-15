@@ -23,11 +23,9 @@ class IntroThridViewContoller : UIViewController {
     
     private lazy var mainLabel : UILabel = {
         let label = UILabel()
+        label.applyDesignFont(.Pretendard_Medium16, text: "흐지부지되지 않게 패널티를 함께 설정하고\n아침형 인간으로 거듭나요!",color: .black)
         label.numberOfLines = 2
         label.textAlignment = .center
-        label.textColor = .black
-        label.text = "흐지부지되지 않게 패널티를 함께 설정하고\n아침형 인간으로 거듭나요!"
-        label.font = DesignSystemFont.Pretendard_Medium16.value
         return label
     }()
     

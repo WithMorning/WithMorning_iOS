@@ -53,6 +53,7 @@ class AlarmTableViewCell : UITableViewCell, UISheetPresentationControllerDelegat
     let toggleButton : UISwitch = {
         let toggle = UISwitch()
         toggle.onTintColor = DesignSystemColor.Orange500.value
+        toggle.tintColor = DesignSystemColor.Gray300.value
         toggle.addTarget(self, action: #selector(clicktoggle), for: .touchUpInside)
         return toggle
     }()
