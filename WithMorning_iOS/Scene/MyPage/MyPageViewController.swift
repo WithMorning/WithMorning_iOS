@@ -406,9 +406,13 @@ class MyPageViewController : UIViewController, UIScrollViewDelegate {
         super.viewDidLoad()
         self.view.backgroundColor = DesignSystemColor.Gray150.value
         SetUI()
-        getMypage()
         popGesture()
         
+    }
+    
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        getMypage()
     }
     
     override func viewDidLayoutSubviews() {

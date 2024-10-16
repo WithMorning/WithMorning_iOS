@@ -285,6 +285,7 @@ class AlterUIView: UIViewController {
         USERnetwork.deleteaccount(){ result in
             switch result{
             case .success(let data):
+                
                 DispatchQueue.main.async {
                     self.navigateToLoginViewController()
                     AppleLoginManager.shared.appleLoginDeleteUser()
@@ -306,6 +307,7 @@ class AlterUIView: UIViewController {
                 print(KeyChain.read(key: "fcmToken") ?? "fcm토큰이 없습니다.")
                 
                 LoadingIndicator.hideLoading()
+                print(#fileID, #function, #line, "- 회원 탈퇴 Sucess")
                 print(data)
             case .failure(let error):
                 print(error.localizedDescription)

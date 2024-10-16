@@ -131,14 +131,13 @@ class MainViewController: UIViewController, UISheetPresentationControllerDelegat
         self.view.backgroundColor = DesignSystemColor.Gray150.value
         tableSetting()
         SetUI()
-        getMainpage()
         emptycellcheck()
     }
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
+        getMainpage()
         updateSoundButtonImage()
-        
     }
     
     //MARK: - UI
