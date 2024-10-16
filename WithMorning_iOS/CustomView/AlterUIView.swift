@@ -132,8 +132,8 @@ class AlterUIView: UIViewController {
     }
     
     func types() {
+        
         switch alterType {
-            
         case .deleteAlarm:
             MainLabel.text = "해당 알람을 삭제하시겠습니까?"
             
@@ -200,14 +200,22 @@ class AlterUIView: UIViewController {
             case .outGroup:
                 self.leaveAlarm()
             case .quit:
-                self.quitaccount()
-                break
+                self.quitaccount{ result in
+                    switch result {
+                    case .success:
+                        print("계정 삭제 성공")
+                        DispatchQueue.main.async {
+                            self.navigatetermsViewController()
+                        }
+                    case .failure(let error):
+                        self.showToast(message: "회원탈퇴에 실패하였습니다.")
+                    }
+                }
             }
         }
     }
     
     //MARK: - API handling
-    
     private func handleDeleteAlarm() {
         print("알람 삭제 로직 실행")
         
@@ -247,9 +255,7 @@ class AlterUIView: UIViewController {
                 print("알람 삭제 실패: \(error.localizedDescription)")
                 DispatchQueue.main.async {
                     // 에러 메시지를 사용자에게 표시
-                    let alert = UIAlertController(title: "오류", message: "알람 삭제에 실패했습니다.", preferredStyle: .alert)
-                    alert.addAction(UIAlertAction(title: "확인", style: .default, handler: nil))
-                    self.present(alert, animated: true, completion: nil)
+                    self.showToast(message: "알람삭제에 실패하였습니다.")
                 }
             }
         }
@@ -279,49 +285,64 @@ class AlterUIView: UIViewController {
     }
     
     //MARK: - 회원 탈퇴
-    func quitaccount(){
+    func quitaccount(completion: @escaping (Result<Void, Error>) -> Void){
         LoadingIndicator.showLoading()
-        
-        USERnetwork.deleteaccount(){ result in
+        AppleLoginManager.shared.appleLoginDeleteUser(){
+            [weak self] result in
             switch result{
-            case .success(let data):
-                
-                DispatchQueue.main.async {
-                    self.navigateToLoginViewController()
-                    AppleLoginManager.shared.appleLoginDeleteUser()
-                    
-                    KeyChain.delete(key: "accessToken")
-                    KeyChain.delete(key: "refreshToken")
-                    KeyChain.delete(key: "fcmToken")
+            case .success:
+                self?.deleteAccountOnServer { serverResult in
+                    switch serverResult {
+                    case .success:
+                        // Step 3: Clean up local data
+                        self?.cleanUpLocalData()
+                        LoadingIndicator.hideLoading()
+                        completion(.success(()))
+                    case .failure(let error):
+                        LoadingIndicator.hideLoading()
+                        completion(.failure(error))
+                    }
                 }
-                
-                UserDefaults.standard.removeObject(forKey: "nickname")
-                UserDefaults.standard.removeObject(forKey: "volume")
-                UserDefaults.standard.removeObject(forKey: "vibrate")
-                
-                UserDefaults.setUserState("deleteaccount")
-                NotificationCenter.default.post(name: NSNotification.Name("UserStateChanged"), object: nil)
-                
-                print(KeyChain.read(key: "accessToken") ?? "엑세스가 없습니다.")
-                print(KeyChain.read(key: "refreshToken") ?? "리프레쉬토큰이 없습니다.")
-                print(KeyChain.read(key: "fcmToken") ?? "fcm토큰이 없습니다.")
-                
-                LoadingIndicator.hideLoading()
-                print(#fileID, #function, #line, "- 회원 탈퇴 Sucess")
-                print(data)
+                completion(.success(()))
             case .failure(let error):
-                print(error.localizedDescription)
-                LoadingIndicator.hideLoading()
+                completion(.failure(error))
             }
-            
         }
     }
     
-    func navigateToLoginViewController() {
-        let loginVC = LoginViewController()
+    private func deleteAccountOnServer(completion: @escaping (Result<Void, Error>) -> Void) {
+        USERnetwork.deleteaccount { result in
+            switch result {
+            case .success:
+                completion(.success(()))
+            case .failure(let error):
+                completion(.failure(error))
+            }
+        }
+    }
+    private func cleanUpLocalData() {
+        // Remove tokens
+        KeyChain.delete(key: "accessToken")
+        KeyChain.delete(key: "refreshToken")
+        KeyChain.delete(key: "fcmToken")
+        
+        // Remove user defaults
+        UserDefaults.standard.removeObject(forKey: "nickname")
+        UserDefaults.standard.removeObject(forKey: "volume")
+        UserDefaults.standard.removeObject(forKey: "vibrate")
+        
+        // Update user state
+        UserDefaults.setUserState("deleteaccount")
+        NotificationCenter.default.post(name: NSNotification.Name("UserStateChanged"), object: nil)
+    }
+    
+    
+    //MARK: - 처음으로 가기
+    func navigatetermsViewController() {
+        let loginVC = TermsViewController()
         let navController = UINavigationController(rootViewController: loginVC)
         navController.modalPresentationStyle = .fullScreen
-        
+        navController.navigationBar.isHidden = true
         if let keyWindow = UIApplication.shared.connectedScenes
             .compactMap({ $0 as? UIWindowScene })
             .flatMap({ $0.windows })

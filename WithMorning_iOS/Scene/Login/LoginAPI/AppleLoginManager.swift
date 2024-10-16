@@ -10,6 +10,7 @@ import AuthenticationServices
 import CryptoKit
 import Security
 import Alamofire
+import SwiftJWT
 
 final class AppleLoginManager : NSObject {
     
@@ -128,7 +129,7 @@ extension AppleLoginManager : ASAuthorizationControllerDelegate {
         // 토큰 저장
         KeyChain.create(key: "accessToken", token: data.accessToken)
         KeyChain.create(key: "refreshToken", token: data.refreshToken)
-
+        
         print("🔐 KeyChain에 저장된 accessToken: \(KeyChain.read(key: "accessToken") ?? "")")
         print("🔐 KeyChain에 저장된 refreshToken: \(KeyChain.read(key: "refreshToken") ?? "")")
         
@@ -143,23 +144,48 @@ extension AppleLoginManager : ASAuthorizationControllerDelegate {
         print("로그인 실패 - \(error.localizedDescription)")
     }
     
-    func appleLoginDeleteUser() {
-        let token = KeyChain.read(key: "refreshToken")
-        print(#fileID, #function, #line, "- token checking⭐️: \(String(describing: token))")
-        //token으로 데이터 삭제
-        if let token = token {
-            let url = URL(string: "https://us-central1-pickdrink-492de.cloudfunctions.net/revokeToken?refresh_token=\(token)".addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed) ?? "https://apple.com")!
-            
-            let task = URLSession.shared.dataTask(with: url) {(data, response, error) in
-                guard data != nil else { return }
-                print(#fileID, #function, #line, "- revoke token error🔥: \(String(describing: error?.localizedDescription))")
-                print(#fileID, #function, #line, "- revokeToken response checking🔥: \(String(describing: response))")
-                
-            }
-            task.resume()
-        }
-        print(#fileID, #function, #line, "- revokeToken success⭐️")
+    func appleLoginDeleteUser(completion: @escaping (Result<Void, Error>) -> Void) {
         
+//        guard let clientSecret = generateClientSecret() else {
+//            completion(.failure(NSError(domain: "AppleLogin", code: 0, userInfo: [NSLocalizedDescriptionKey: "Failed to get client ID or generate client secret"])))
+//            return
+//        }
+        
+        guard let refreshToken = KeyChain.read(key: "refreshToken") else {
+            completion(.failure(NSError(domain: "AppleLogin", code: 1, userInfo: [NSLocalizedDescriptionKey: "No refresh token found"])))
+            return
+        }
+        
+        let clientId = "com.ash-amad.WithMorning-iOS"
+        let url = "https://appleid.apple.com/auth/revoke"
+        let parameters: [String: Any] = [
+            "client_id": clientId,
+//            "client_secret": clientSecret,
+            "token": refreshToken,
+            "token_type_hint": "refresh_token"
+        ]
+        
+        AF.request(url, method: .post, parameters: parameters)
+            .validate()
+            .response { response in
+                switch response.result {
+                case .success:
+                    print(#fileID, #function, #line, "- revokeToken success⭐️")
+                    completion(.success(()))
+                case .failure(let error):
+                    print(#fileID, #function, #line, "- revoke token error🔥: \(error.localizedDescription)")
+                    completion(.failure(error))
+                }
+            }
+    }
+    
+    private func generateClientSecret(){
+        //        // TODO: Implement the logic to generate the client secret
+        //        // This typically involves creating a JWT (JSON Web Token)
+        //        // You'll need to use your Apple Developer Team ID, Service ID, and private key
+        //        // The exact implementation depends on your setup and the libraries you're using
+        //
+        //        // This is a placeholder. You need to implement the actual JWT generation.
     }
 }
 

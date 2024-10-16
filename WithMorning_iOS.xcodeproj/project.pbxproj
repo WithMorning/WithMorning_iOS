@@ -48,6 +48,7 @@
 		D17AC1A32C980BE1007ADB3D /* IntroSecondViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D17AC1A22C980BE1007ADB3D /* IntroSecondViewController.swift */; };
 		D17AC1A52C980BF6007ADB3D /* IntroThridViewContoller.swift in Sources */ = {isa = PBXBuildFile; fileRef = D17AC1A42C980BF6007ADB3D /* IntroThridViewContoller.swift */; };
 		D18288CB2C7EF45800BDAB3A /* Error.swift in Sources */ = {isa = PBXBuildFile; fileRef = D18288CA2C7EF45800BDAB3A /* Error.swift */; };
+		D186AC5D2CBF80CF0086A6ED /* SwiftJWT in Frameworks */ = {isa = PBXBuildFile; productRef = D186AC5C2CBF80CF0086A6ED /* SwiftJWT */; };
 		D1891F302C58F72500DFF89C /* UITextField_Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = D1891F2F2C58F72500DFF89C /* UITextField_Extension.swift */; };
 		D19589E02C6745C50000B77C /* CoreHaptics_Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = D19589DF2C6745C50000B77C /* CoreHaptics_Extension.swift */; };
 		D19A73B22CBCD5830038E5A7 /* UIFont_Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = D19A73B12CBCD5830038E5A7 /* UIFont_Extension.swift */; };
@@ -183,6 +184,7 @@
 				D1D891F02C42684B00ED8092 /* FirebaseAnalyticsOnDeviceConversion in Frameworks */,
 				05083B923D6EB143B0BA46E1 /* Pods_WithMorning_iOS.framework in Frameworks */,
 				D1D891F62C42684B00ED8092 /* FirebaseInAppMessaging-Beta in Frameworks */,
+				D186AC5D2CBF80CF0086A6ED /* SwiftJWT in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -483,6 +485,7 @@
 				D1D891F52C42684B00ED8092 /* FirebaseInAppMessaging-Beta */,
 				D1D891F72C42684B00ED8092 /* FirebaseInAppMessagingSwift-Beta */,
 				D10978412C48E55600CBF9E3 /* FirebaseMessaging */,
+				D186AC5C2CBF80CF0086A6ED /* SwiftJWT */,
 			);
 			productName = WithMorning_iOS;
 			productReference = D1E672B72BC4FD3300A32790 /* WithMorning_iOS.app */;
@@ -514,6 +517,7 @@
 			mainGroup = D1E672AE2BC4FD3300A32790;
 			packageReferences = (
 				D1D891EB2C4265F100ED8092 /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */,
+				D186AC5B2CBF80CF0086A6ED /* XCRemoteSwiftPackageReference "Swift-JWT" */,
 			);
 			productRefGroup = D1E672B82BC4FD3300A32790 /* Products */;
 			projectDirPath = "";
@@ -881,6 +885,14 @@
 /* End XCConfigurationList section */
 
 /* Begin XCRemoteSwiftPackageReference section */
+		D186AC5B2CBF80CF0086A6ED /* XCRemoteSwiftPackageReference "Swift-JWT" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/Kitura/Swift-JWT";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 4.0.1;
+			};
+		};
 		D1D891EB2C4265F100ED8092 /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/firebase/firebase-ios-sdk";
@@ -896,6 +908,11 @@
 			isa = XCSwiftPackageProductDependency;
 			package = D1D891EB2C4265F100ED8092 /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */;
 			productName = FirebaseMessaging;
+		};
+		D186AC5C2CBF80CF0086A6ED /* SwiftJWT */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = D186AC5B2CBF80CF0086A6ED /* XCRemoteSwiftPackageReference "Swift-JWT" */;
+			productName = SwiftJWT;
 		};
 		D1D891ED2C42684B00ED8092 /* FirebaseAnalytics */ = {
 			isa = XCSwiftPackageProductDependency;

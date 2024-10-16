@@ -706,21 +706,17 @@ class MyPageViewController : UIViewController, UIScrollViewDelegate {
         LoadingIndicator.showLoading()
         let refreshtoken = deletelogoutRequest(refreshToken: KeyChain.read(key: "refreshToken") ?? "")
         USERnetwork.deletelogout(refreshToken: refreshtoken){ result in
-            
             switch result{
             case .success(let data):
-                
                 DispatchQueue.main.async {
                     self.navigateToLoginViewController()
                     KeyChain.delete(key: "accessToken")
-                    
+                    KeyChain.delete(key: "refreshToken")
                     UserDefaults.setUserState("logout")
                     NotificationCenter.default.post(name: NSNotification.Name("UserStateChanged"), object: nil)
                 }
-                
                 LoadingIndicator.hideLoading()
                 print(data)
-                
             case .failure(let error):
                 LoadingIndicator.hideLoading()
                 print(error.localizedDescription)
@@ -787,10 +783,6 @@ class MyPageViewController : UIViewController, UIScrollViewDelegate {
             keyWindow.makeKeyAndVisible()
         }
     }
-    
-    
-    
-    
 }
 
 //MARK: - extension

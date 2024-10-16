@@ -964,23 +964,22 @@ class memberCollectioViewCell: UICollectionViewCell {
         }
         
         
-        //방해금지모드
-        if isDisturbBanMode{
+        
+        if isDisturbBanMode{ //방해금지모드가 켜져있음
             memberView.backgroundColor = DesignSystemColor.Gray150.value
             memberLabel.textColor = DesignSystemColor.Gray500.value
             meView.backgroundColor = DesignSystemColor.Gray150.value
-            
-        }else{
-            memberView.backgroundColor = DesignSystemColor.Orange500.value
-            memberLabel.textColor = .black
+        }else{              //방해금지모드가 꺼져있음
+            if isWakeup{ //일어남
+                sleepView.isHidden = true
+                memberView.backgroundColor = DesignSystemColor.Orange500.value
+                memberLabel.textColor = .black
+            } else {     //자는 중
+                sleepView.isHidden = false
+                memberView.backgroundColor = .clear
+                memberLabel.textColor = .black
+            }
             meView.backgroundColor = DesignSystemColor.Orange500.value
-        }
-        
-        //일어났나
-        if isWakeup{
-            sleepView.isHidden = false
-        } else {
-            sleepView.isHidden = true
         }
         
         
