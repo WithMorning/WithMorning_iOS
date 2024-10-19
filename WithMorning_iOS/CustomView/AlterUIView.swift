@@ -209,6 +209,7 @@ class AlterUIView: UIViewController {
                         }
                     case .failure(let error):
                         self.showToast(message: "회원탈퇴에 실패하였습니다.")
+                        print(error.localizedDescription)
                     }
                 }
             }

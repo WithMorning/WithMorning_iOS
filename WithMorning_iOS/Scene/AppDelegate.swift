@@ -59,6 +59,13 @@ class AppDelegate:UIResponder, UIApplicationDelegate {
         let userInfo = notification.request.content.userInfo
         handleNotification(userInfo)
         completionHandler([.banner, .list, .sound])
+        
+        // 전체 데이터가 필요한 경우 JSON 형식으로 예쁘게 출력
+        if let jsonData = try? JSONSerialization.data(withJSONObject: userInfo, options: .prettyPrinted),
+           let jsonString = String(data: jsonData, encoding: .utf8) {
+            print("📋 전체 알림 데이터:")
+            print(jsonString)
+        }
     }
     
     //MARK: - Background(앱 꺼진 상태)에서도 알림 오는 설정
@@ -66,6 +73,13 @@ class AppDelegate:UIResponder, UIApplicationDelegate {
         let userInfo = response.notification.request.content.userInfo
         handleNotification(userInfo)
         completionHandler()
+        
+        // 전체 데이터가 필요한 경우 JSON 형식으로 예쁘게 출력
+        if let jsonData = try? JSONSerialization.data(withJSONObject: userInfo, options: .prettyPrinted),
+           let jsonString = String(data: jsonData, encoding: .utf8) {
+            print("📋 전체 알림 데이터:")
+            print(jsonString)
+        }
     }
     
     private func handleNotification(_ userInfo: [AnyHashable: Any]) {
@@ -93,15 +107,15 @@ class AppDelegate:UIResponder, UIApplicationDelegate {
     
     private func handleprick(_ userInfo: [AnyHashable: Any]) {
         print("콕 찌르기")
-
+        
     }
     private func handlebedtime(_ userInfo: [AnyHashable: Any]) {
         print("취침 알람")
-
+        
     }
     private func handleDefault(_ userInfo: [AnyHashable: Any]) {
         print("기본 알람")
-
+        
     }
     
     

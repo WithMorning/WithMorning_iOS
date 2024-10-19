@@ -95,7 +95,7 @@ class MainViewController: UIViewController, UISheetPresentationControllerDelegat
         return button
     }()
     
-     lazy var AlarmTableView : UITableView = {
+    lazy var AlarmTableView : UITableView = {
         let tableView = UITableView()
         tableView.layer.cornerRadius = 8
         return tableView
@@ -122,8 +122,8 @@ class MainViewController: UIViewController, UISheetPresentationControllerDelegat
         view.image = UIImage(named: "empty")
         return view
     }()
-
-
+    
+    
     
     //MARK: - LifeCycle
     override func viewDidLoad() {
@@ -213,7 +213,7 @@ class MainViewController: UIViewController, UISheetPresentationControllerDelegat
         AlarmTableView.separatorStyle = .none
         AlarmTableView.refreshControl = tableViewRefresh
         
-        AlarmTableView.estimatedRowHeight = UITableView.automaticDimension
+        AlarmTableView.rowHeight = UITableView.automaticDimension
         
         headerView.layoutIfNeeded()
         
@@ -301,7 +301,7 @@ class MainViewController: UIViewController, UISheetPresentationControllerDelegat
     //메인페이지
     func getMainpage() {
         LoadingIndicator.showLoading()
-
+        
         APInetwork.getMainpage() { result in
             switch result {
             case .success(let mainpage):
@@ -336,7 +336,7 @@ class MainViewController: UIViewController, UISheetPresentationControllerDelegat
         }
     }
     //MARK: - 텅 뷰
-
+    
     func emptycellcheck(){
         emptyView.isHidden = !alarmData.isEmpty
     }
@@ -382,7 +382,6 @@ extension MainViewController : UITableViewDelegate, UITableViewDataSource{
         cell.backgroundColor = .clear
         
         cell.topViewLabel.text = alarm.name
-        cell.setMemoText(alarm.memo)
         
         cell.ConfigureMember(alarm.userList ?? [])
         cell.time24 = alarm.wakeupTime
@@ -422,8 +421,20 @@ extension MainViewController : UITableViewDelegate, UITableViewDataSource{
         
         //토클 클릭시 실행되는 클로저
         cell.toggleclicked = { [weak self] in
-            self?.getMainpage()
+            //            cell.isDisturbBanGroup = alarm.isDisturbBanGroup
+            //            self?.AlarmTableView.beginUpdates()
+            //            self?.AlarmTableView.endUpdates()
+            //            self?.getMainpage()
+            
+            if alarm.isDisturbBanGroup{
+                cell.bottomView.isHidden = true
+                self?.getMainpage()
+            }else{
+                cell.bottomView.isHidden = false
+                self?.getMainpage()
+            }
         }
+        
         
         //내가 리더인지 아닌지 체크
         cell.configureCell(with: alarm, currentUserNickname: UserDefaults.standard.string(forKey: "nickname") ?? "")
@@ -438,6 +449,15 @@ extension MainViewController : UITableViewDelegate, UITableViewDataSource{
             cell.isLeader = false
         }
         
+        //메모 크기
+        cell.setMemoText(alarm.memo)
+        
+        cell.memoExpand = { [weak self] in
+            self?.AlarmTableView.beginUpdates()
+            cell.expandMemo()
+            self?.AlarmTableView.endUpdates()
+        }
+        
         return cell
     }
     
@@ -448,34 +468,14 @@ extension MainViewController : UITableViewDelegate, UITableViewDataSource{
         let baseHeight: CGFloat = 129  // 기본 높이
         let extraHeight: CGFloat = 217 // 멤버 컬렉션 뷰 등의 추가 높이
         
-        if let userList = alarm.userList {
-            
-            let isDisturbModeOn = userList.contains(where: { $0.nickname == UserDefaults.standard.string(forKey: "nickname") && $0.isDisturbBanMode })
-            
-            if isDisturbModeOn {
-                
-                return baseHeight
-                
-            } else {
-                let cell = tableView.dequeueReusableCell(withIdentifier: "AlarmTableViewCell") as! AlarmTableViewCell
-                
-                cell.setMemoText(alarm.memo)
-                if cell.isExpanded == true{
-                    return baseHeight + extraHeight + 30
-                }else{
-                    let memoViewHeight = cell.calculateMemoViewHeight()
-                    
-                    return baseHeight + extraHeight + memoViewHeight
-                }
-            }
+        // 셀의 isDisturbBanGroup 상태에 따라 높이를 다르게 설정
+        if alarm.isDisturbBanGroup {
+            return baseHeight // 방해 금지 모드가 켜져있으면 기본 높이만 반환
+        } else {
+            return baseHeight + extraHeight // 방해 금지 모드가 꺼져있으면 추가 높이를 포함한 값을 반환
         }
-        
-        // 사용자 목록이 없거나 조건에 맞는 사용자가 없을 경우 기본 설정
-        return baseHeight + extraHeight
     }
-    
 }
-
 //Preview code
 #if DEBUG
 import SwiftUI

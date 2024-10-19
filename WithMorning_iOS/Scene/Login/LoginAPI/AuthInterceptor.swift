@@ -40,12 +40,16 @@ class NewAccessToken {
                 switch response.result {
                 case .failure(let error):
                     print("❌ 새 엑세스 토큰 발급 실패 - \(error.localizedDescription)")
-                    
                     if let data = response.data {
                         do {
                             let json = try JSONSerialization.jsonObject(with: data, options: []) as? [String: Any]
+                            if let errorCode = json?["code"] as? Int, errorCode == 9103 {
+                                DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
+                                    self.navigateToLoginViewController()
+                                }
+                                
+                            }
                             print("❌ 새 엑세스 토큰 발급 실패 - 응답 JSON 데이터: \(String(describing: json))")
-                            
                         } catch {
                             print("❌ 응답 JSON 데이터 파싱 실패: \(error.localizedDescription)")
                         }
@@ -69,6 +73,22 @@ class NewAccessToken {
                     }
                 }
             }
+    }
+    
+    //MARK: - refreshToken만료시 로그인 페이지로 이동맨
+    private func navigateToLoginViewController() {
+        let loginVC = LoginViewController()
+        let navController = UINavigationController(rootViewController: loginVC)
+        navController.modalPresentationStyle = .fullScreen
+        navController.navigationBar.isHidden = true
+        if let keyWindow = UIApplication.shared.connectedScenes
+            .compactMap({ $0 as? UIWindowScene })
+            .flatMap({ $0.windows })
+            .first(where: { $0.isKeyWindow }) {
+            
+            keyWindow.rootViewController = navController
+            keyWindow.makeKeyAndVisible()
+        }
     }
     
 }

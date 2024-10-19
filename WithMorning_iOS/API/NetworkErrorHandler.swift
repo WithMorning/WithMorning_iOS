@@ -44,9 +44,11 @@ class NetworkErrorHandler {
                 let json = try JSONSerialization.jsonObject(with: data, options: []) as? [String: Any]
                 if let errorCode = json?["code"] as? Int {
                     print(#fileID, #function, #line, "- 실패 JSON 데이터: \(json ?? [:])")
+                    
                     switch errorCode {
                         
                     case 9103: //리프레쉬 토큰 만료
+                        print(#fileID, #function, #line, "-🚨  실패 리프레쉬 토큰 만료. 로그인으로 이동합니다.: \(json ?? [:])")
                         DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
                             self.navigateToLoginViewController()
                         }
@@ -54,7 +56,7 @@ class NetworkErrorHandler {
                         completion(.failure(NetworkError.refreshTokenExpired))
                         
                     case 9104: //엑세스 토큰 만료
-                        print("🚨 실패 - 엑세스 토큰 만료. 갱신 시도 중...")
+                        print(#fileID, #function, #line,"🚨 실패 - 엑세스 토큰 만료. 갱신 시도 중...")
                         NewAccessToken.shared.newAccessToken { success in
                             if success {
                                 retryRequest()
@@ -65,6 +67,7 @@ class NetworkErrorHandler {
                         
                     case 500:
                         let message = json?["message"] as? String ?? "알 수 없는 서버 오류"
+                        print(#fileID, #function, #line,"- 실패 JSON 데이터: \(json ?? [:])")
                         completion(.failure(NetworkError.serverError(code: errorCode, message: message)))
                     default:
                         completion(.failure(NetworkError.unknownError(error)))
@@ -81,7 +84,6 @@ class NetworkErrorHandler {
     }
     
     //MARK: - refreshToken만료시 로그인 페이지로 이동맨
-    
     private func navigateToLoginViewController() {
         let loginVC = LoginViewController()
         let navController = UINavigationController(rootViewController: loginVC)

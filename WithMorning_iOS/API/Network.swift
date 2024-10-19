@@ -191,8 +191,11 @@ class Network{
                     NetworkErrorHandler.shared.handleNetworkError(error, data: response.data, retryRequest: {
                         self.patchWakeup(groupId: groupId, completionHandler: completionHandler)
                     }, completion: completionHandler)
+                   
                 case .success(let data):
+                    print(#fileID, #function, #line, "- ⭐️\(groupId)의 방 기상완료맨")
                     completionHandler(.success(data))
+                    
                 }
             }
     }
@@ -211,7 +214,9 @@ class Network{
                     }, completion: completionHandler)
                     
                 case .success(let data):
+                    print(#fileID, #function, #line, "- ⭐️\(groupId)의 방나가기 성공")
                     completionHandler(.success(data))
+                    
                 }
                 
             }
@@ -231,7 +236,7 @@ class Network{
                     }, completion: completionHandler)
                 case .success(let data):
                     completionHandler(.success(data))
-                    
+                    print(#fileID, #function, #line, "- ⭐️\(groupId)의 방 그룹 수정성공")
                 }
                 
             }
