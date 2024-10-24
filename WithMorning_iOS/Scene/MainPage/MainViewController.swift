@@ -465,7 +465,7 @@ extension MainViewController : UITableViewDelegate, UITableViewDataSource{
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
         let alarm = alarmData[indexPath.row]
         
-        let baseHeight: CGFloat = 129  // 기본 높이
+        let baseHeight: CGFloat = 130  // 기본 높이
         let extraHeight: CGFloat = 217 // 멤버 컬렉션 뷰 등의 추가 높이
         
         // 셀의 isDisturbBanGroup 상태에 따라 높이를 다르게 설정
