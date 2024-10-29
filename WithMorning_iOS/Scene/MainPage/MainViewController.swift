@@ -97,7 +97,6 @@ class MainViewController: UIViewController, UISheetPresentationControllerDelegat
     
     lazy var AlarmTableView : UITableView = {
         let tableView = UITableView()
-        tableView.layer.cornerRadius = 8
         return tableView
     }()
     

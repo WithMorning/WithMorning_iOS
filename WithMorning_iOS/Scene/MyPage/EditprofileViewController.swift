@@ -154,10 +154,6 @@ class EditprofileViewController : UIViewController,UIImagePickerControllerDelega
     private var selectedIMG : UIImage?
     private func registerProfile() {
         LoadingIndicator.showLoading()
-        //        guard let image = profileImage.image else {
-        //            print("프로필 이미지를 선택하세요.")
-        //            return
-        //        }
         
         let fcmToken = KeyChain.read(key: "fcmToken") ?? ""
         
@@ -246,7 +242,7 @@ class EditprofileViewController : UIViewController,UIImagePickerControllerDelega
                 self.selectedIMG = editedImage
             }
         } else if info[UIImagePickerController.InfoKey.originalImage] is UIImage {
-            // 만약 편집된 이미지가 존재하지 않으면 원본 이미지를 사용합니다.
+
             DispatchQueue.main.async {
                 self.profileImage.image = UIImage(named: "profile")
                 self.selectedIMG = nil
@@ -274,6 +270,12 @@ class EditprofileViewController : UIViewController,UIImagePickerControllerDelega
 //MARK: - 키보드 세팅, textfield세팅
 
 extension EditprofileViewController : UITextFieldDelegate,UIGestureRecognizerDelegate {
+    
+    private func updateDoneButtonState(for text: String? = nil) {
+        let textToCheck = text ?? nicknameTextfield.text ?? ""
+        doneButton.backgroundColor = textToCheck.isEmpty ? DesignSystemColor.Gray300.value : DesignSystemColor.Orange500.value
+    }
+    
     func hideKeyboardWhenTappedAround() {
         let tap = UITapGestureRecognizer(target: self, action: #selector(EditprofileViewController.dismissKeyboard))
         tap.cancelsTouchesInView = false
@@ -285,26 +287,37 @@ extension EditprofileViewController : UITextFieldDelegate,UIGestureRecognizerDel
     }
     
     func textFieldDidBeginEditing(_ textField: UITextField) {
+        
         textField.layer.borderWidth = 1
         textField.layer.borderColor = DesignSystemColor.Orange500.value.cgColor
-        doneButton.backgroundColor = DesignSystemColor.Gray300.value
+        updateDoneButtonState()
         
     }
     
     func textFieldDidEndEditing(_ textField: UITextField) {
         textField.layer.borderWidth = 0
-        doneButton.backgroundColor = DesignSystemColor.Orange500.value
+        updateDoneButtonState()
     }
     
     func textField(_ textField: UITextField, shouldChangeCharactersIn range: NSRange, replacementString string: String) -> Bool {
         if let char = string.cString(using: String.Encoding.utf8) {
             let isBackSpace = strcmp(char, "\\b")
             if isBackSpace == -92 {
+                updateDoneButtonState()
                 return true
             }
         }
-        guard textField.text!.count < 10 else { return false } // 10 글자로 제한
-        return true
+        
+        let maxLength = 10
+        let currentString: NSString = textField.text as NSString? ?? ""
+        let newString = currentString.replacingCharacters(in: range, with: string)
+        let isWithinLimit = newString.count <= maxLength
+        
+        if isWithinLimit {
+            updateDoneButtonState(for: newString)
+        }
+        
+        return isWithinLimit
     }
     
     func popGesture(){

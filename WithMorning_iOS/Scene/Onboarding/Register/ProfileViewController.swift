@@ -104,7 +104,7 @@ class ProfileViewController : UIViewController, UIImagePickerControllerDelegate 
         self.view.backgroundColor = DesignSystemColor.Gray150.value
         setUI()
         hideKeyboardWhenTappedAround()
-
+        
         
     }
     
@@ -183,10 +183,10 @@ class ProfileViewController : UIViewController, UIImagePickerControllerDelegate 
     private var selectedIMG : UIImage?
     private func registerProfile() {
         LoadingIndicator.showLoading()
-//        guard profileImage.image != nil else {
-//            print("프로필 이미지를 선택하세요.")
-//            return
-//        }
+        //        guard profileImage.image != nil else {
+        //            print("프로필 이미지를 선택하세요.")
+        //            return
+        //        }
         
         let fcmToken = KeyChain.read(key: "fcmToken") ?? ""
         
@@ -205,9 +205,9 @@ class ProfileViewController : UIViewController, UIImagePickerControllerDelegate 
         
         // 닉네임 + 토큰 + 이미지
         let registerData = profileRequest(request: requestProfile, image: imageData)
-
+        
         let vc = IntroViewController()
-
+        
         APInetwork.postProfile(profileData: registerData) { result in
             
             switch result {
@@ -229,7 +229,7 @@ class ProfileViewController : UIViewController, UIImagePickerControllerDelegate 
             }
         }
     }
-
+    
     
     
     
@@ -237,17 +237,17 @@ class ProfileViewController : UIViewController, UIImagePickerControllerDelegate 
     
     func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [UIImagePickerController.InfoKey : Any]) {
         if let editedImage = info[UIImagePickerController.InfoKey.editedImage] as? UIImage {
-                DispatchQueue.main.async {
-                    self.profileImage.image = editedImage
-                    self.selectedIMG = editedImage
-                }
+            DispatchQueue.main.async {
+                self.profileImage.image = editedImage
+                self.selectedIMG = editedImage
+            }
             
         } else if info[UIImagePickerController.InfoKey.originalImage] is UIImage {
-                DispatchQueue.main.async {
-                    self.profileImage.image = UIImage(named: "profile")
-                    self.selectedIMG = nil
-                }
+            DispatchQueue.main.async {
+                self.profileImage.image = UIImage(named: "profile")
+                self.selectedIMG = nil
             }
+        }
         
         self.dismiss(animated: true, completion: nil)
     }
@@ -270,6 +270,13 @@ class ProfileViewController : UIViewController, UIImagePickerControllerDelegate 
 
 //MARK: - 키보드 세팅, textfield세팅
 extension ProfileViewController : UITextFieldDelegate {
+    
+    private func updateDoneButtonState(for text: String? = nil) {
+        let textToCheck = text ?? nicknameTextfield.text ?? ""
+        doneButton.backgroundColor = textToCheck.isEmpty ? DesignSystemColor.Gray300.value : DesignSystemColor.Orange500.value
+    }
+    
+    
     func hideKeyboardWhenTappedAround() {
         let tap = UITapGestureRecognizer(target: self, action: #selector(EditprofileViewController.dismissKeyboard))
         tap.cancelsTouchesInView = false
@@ -283,27 +290,38 @@ extension ProfileViewController : UITextFieldDelegate {
     func textFieldDidBeginEditing(_ textField: UITextField) {
         textField.layer.borderWidth = 1
         textField.layer.borderColor = DesignSystemColor.Orange500.value.cgColor
-        doneButton.backgroundColor = DesignSystemColor.Gray300.value
+        updateDoneButtonState()
         
     }
     
     func textFieldDidEndEditing(_ textField: UITextField) {
         textField.layer.borderWidth = 0
-        doneButton.backgroundColor = DesignSystemColor.Orange500.value
+        updateDoneButtonState()
     }
     
     func textField(_ textField: UITextField, shouldChangeCharactersIn range: NSRange, replacementString string: String) -> Bool {
         if let char = string.cString(using: String.Encoding.utf8) {
             let isBackSpace = strcmp(char, "\\b")
             if isBackSpace == -92 {
+                updateDoneButtonState()
                 return true
             }
         }
+        
+        let maxLength = 10
+        let currentString: NSString = textField.text as NSString? ?? ""
+        let newString = currentString.replacingCharacters(in: range, with: string)
+        let isWithinLimit = newString.count <= maxLength
+        
+        if isWithinLimit {
+            updateDoneButtonState(for: newString)
+        }
+        
         guard textField.text!.count < 10 else {
             self.showToast(message: "최대 10자까지 입력해 주세요.")
             return false } // 10 글자로 제한
         
-        return true
+        return isWithinLimit
     }
 }
 
