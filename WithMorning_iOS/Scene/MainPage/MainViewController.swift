@@ -449,30 +449,37 @@ extension MainViewController : UITableViewDelegate, UITableViewDataSource{
             cell.isLeader = false
         }
         
-        //메모 크기
+        //메모 텍스트
         cell.setMemoText(alarm.memo)
         
-        cell.memoExpand = { [weak self] in
-            self?.AlarmTableView.beginUpdates()
-            cell.expandMemo()
-            self?.AlarmTableView.endUpdates()
-        }
+//        cell.memoExpand = { [weak self] in
+//            self?.AlarmTableView.beginUpdates()
+//            cell.expandMemo()
+//            self?.AlarmTableView.endUpdates()
+//        }
         
         return cell
     }
     
     //cell의 높이
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
+        let cell = AlarmTableViewCell()
+        
         let alarm = alarmData[indexPath.row]
         
         let baseHeight: CGFloat = 130  // 기본 높이
         let extraHeight: CGFloat = 217 // 멤버 컬렉션 뷰 등의 추가 높이
+        let memoHeight = cell.calculateMemoViewHeight()
         
         // 셀의 isDisturbBanGroup 상태에 따라 높이를 다르게 설정
         if alarm.isDisturbBanGroup {
             return baseHeight // 방해 금지 모드가 켜져있으면 기본 높이만 반환
         } else {
-            return baseHeight + extraHeight // 방해 금지 모드가 꺼져있으면 추가 높이를 포함한 값을 반환
+            if cell.isExpanded{
+                return baseHeight + extraHeight + memoHeight
+            }else{
+                return baseHeight + extraHeight
+            }
         }
     }
 }

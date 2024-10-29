@@ -17,8 +17,7 @@ class AlarmTableViewCell : UITableViewCell, UISheetPresentationControllerDelegat
     
     
     //MARK: - closure
-    var toggleclicked : ( () -> Void ) = {} //토클 온 오프
-    
+    var toggleclicked : ( () -> Void ) = {}
     var onEditAlarm: ((Int) -> Void)?
     
     //알람삭제후 실행되는 클로저
@@ -232,7 +231,6 @@ class AlarmTableViewCell : UITableViewCell, UISheetPresentationControllerDelegat
         label.textAlignment = .center
         label.numberOfLines = 0
         label.isUserInteractionEnabled = true
-        label.lineBreakMode = .byTruncatingTail
         
         let tapGesture = UITapGestureRecognizer(target: self, action: #selector(memoLabelTapped))
         label.addGestureRecognizer(tapGesture)
@@ -257,7 +255,6 @@ class AlarmTableViewCell : UITableViewCell, UISheetPresentationControllerDelegat
     override func layoutSubviews() {
         super.layoutSubviews()
         setCell()
-        memoLabel.preferredMaxLayoutWidth = memoLabel.frame.width
         
     }
     
@@ -285,7 +282,7 @@ class AlarmTableViewCell : UITableViewCell, UISheetPresentationControllerDelegat
         //윗부분 시작
         topView.snp.makeConstraints{
             $0.top.leading.trailing.equalToSuperview()
-            $0.height.equalTo(129)
+            $0.height.equalTo(129).priority(.low)
         }
         topViewLabel.snp.makeConstraints{
             $0.leading.equalToSuperview().inset(16)
@@ -431,9 +428,8 @@ class AlarmTableViewCell : UITableViewCell, UISheetPresentationControllerDelegat
         if let currentUser = alarm.userList?.first(where: { $0.nickname == currentUserNickname }) {
             
             disturb = currentUser.isDisturbBanMode
-            
             toggleButton.isOn = !disturb
-            //            self.bottomView.isHidden = self.disturb
+            self.bottomView.isHidden = self.disturb
             
             DispatchQueue.main.async {
                 self.bottomView.isHidden = self.disturb
@@ -535,58 +531,96 @@ class AlarmTableViewCell : UITableViewCell, UISheetPresentationControllerDelegat
     
     private var memoViewHeightConstraint: Constraint?
     var fullText: String = ""
-    var isExpanded : Bool = false
-    var memoExpand : (() -> Void)?
+    var isExpanded = false
     
     // 메모 라벨 초기 설정
     func setMemoText(_ text: String) {
         fullText = text
-        memoLabel.numberOfLines = 1
-        
-        if isExpanded {
-            memoLabel.numberOfLines = 0
-        }else{
-            memoLabel.numberOfLines = 1
+        isExpanded = false
+        updateMemoLabel()
+    }
+    
+    func setupMemoView() {
+        memoView.snp.makeConstraints { make in
+            make.top.equalTo(memberCollectionView.snp.bottom).offset(12)
+            make.leading.trailing.equalToSuperview().inset(20)
+            self.memoViewHeightConstraint = make.height.equalTo(49).constraint // 초기 높이 설정
         }
     }
     
-    func expandMemo() {
-        isExpanded.toggle()
-        memoLabel.numberOfLines = isExpanded ? 0 : 1
-        setNeedsLayout()
+    func calculateMemoViewHeight() -> CGFloat {
+        let maxWidth = contentView.frame.width - 96
+        let size = memoLabel.sizeThatFits(CGSize(width: maxWidth, height: CGFloat.greatestFiniteMagnitude))
+        return size.height + 32  // 텍스트 높이에 여백 추가
     }
     
-    func updateConstarints() {
-        super.updateConstraints()
-        if memoViewHeightConstraint == nil {
-            memoView.snp.makeConstraints { make in
-                memoViewHeightConstraint = make.height.equalTo(calculateMemoViewHeight()).constraint
+    
+    // 메모라벨 업데이트를 위한 함수
+    func updateMemoLabel() {
+        DispatchQueue.main.async {
+            // 메모 라벨의 가용 너비를 기준으로 텍스트 크기를 계산
+            let maxWidth = self.contentView.frame.width - 96  // memoView의 좌우 패딩을 고려한 너비
+            let size = (self.fullText as NSString).boundingRect(
+                with: CGSize(width: maxWidth, height: .greatestFiniteMagnitude),
+                options: .usesLineFragmentOrigin,
+                attributes: [.font: self.memoLabel.font!],
+                context: nil
+            )
+            
+            // 텍스트가 한 줄을 넘는지 여부를 체크
+            let isMultiline = size.height > self.memoLabel.font.lineHeight
+            
+            // 한 줄만 보이거나, 전체 텍스트를 보이도록 결정 (isExpanded에 따라)
+            if isMultiline {
+                self.memoLabel.numberOfLines = self.isExpanded ? 0 : 1
+                print("메모 더보기 클릭시 확장 여부 : ",self.isExpanded)
+            } else {
+                self.memoLabel.numberOfLines = 1
+                print("메모 더보기 클릭시 확장 여부 : ",self.isExpanded)
             }
-        } else {
-            memoViewHeightConstraint?.update(offset: calculateMemoViewHeight())
+            self.memoLabel.text = self.fullText
+            
+            // 메모 뷰 업데이트
+            self.updateMemoViewHeight()
+            
+            // 테이블 뷰 레이아웃 업데이트
+            if let tableView = self.superview as? UITableView {
+                tableView.beginUpdates()
+                tableView.endUpdates()
+            }
         }
-        
-        super.updateConstraints()
-        
     }
     
-    private func calculateMemoViewHeight() -> CGFloat {
-        let labelSize = memoLabel.sizeThatFits(CGSize(width: memoView.bounds.width, height: .greatestFiniteMagnitude))
-        return min(labelSize.height + 20, isExpanded ? .greatestFiniteMagnitude : 44)
+    //MARK: - 메모View 높이 계산
+    func updateMemoViewHeight() {
+        let calculatedHeight = calculateMemoViewHeight()
+        let baseHeight: CGFloat = 49
+        
+        // 여기서 .updateConstraints를 사용하여 기존의 제약 조건을 업데이트합니다.
+        memoView.snp.updateConstraints{ make in
+            self.memoViewHeightConstraint?.update(offset: max(calculatedHeight, baseHeight))
+        }
+        
     }
     
     //MARK: - 메모 더 보기
     @objc func memoLabelTapped() {
-        memoExpand?()
+        if isExpanded == false{
+            isExpanded = true
+        }else{
+            isExpanded = false
+        }
+        updateMemoLabel()
+        
     }
     
     
     //MARK: - objc func
+    
     // 방해금지모드
     @objc func clicktoggle() {
         patchDisturb(newDisturbMode: !disturb)
     }
-    
     //수정하기 버튼 클릭시
     var editweek: [String] = []
     
@@ -708,11 +742,12 @@ class AlarmTableViewCell : UITableViewCell, UISheetPresentationControllerDelegat
         
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "memberCollectioViewCell", for: indexPath) as! memberCollectioViewCell
         
-        cell.backgroundColor = .clear
-        
         let userlistData = userData[indexPath.item]
         
         cell.configureMember(with: userlistData.nickname,imageURL: userlistData.imageURL ?? "",isDisturbBanMode: userlistData.isDisturbBanMode,isWakeup: userlistData.isWakeup)
+        
+        
+        
         
         return cell
     }
@@ -795,10 +830,10 @@ class memberCollectioViewCell: UICollectionViewCell {
     
     lazy var memberView: UIView = {
         let view = UIImageView()
-        //        view.backgroundColor = DesignSystemColor.Orange500.value
+        view.backgroundColor = DesignSystemColor.Orange500.value
         view.layer.cornerRadius = 31
+        view.tintColor = .white
         view.contentMode = .scaleAspectFit
-        view.clipsToBounds = true
         view.addSubview(memberIMG)
         return view
     }()
@@ -821,8 +856,6 @@ class memberCollectioViewCell: UICollectionViewCell {
         return label
     }()
     
-    //MARK: - 나에요
-    
     private lazy var meView : UIView = {
         let view = UIView()
         view.backgroundColor = DesignSystemColor.Orange500.value
@@ -842,6 +875,7 @@ class memberCollectioViewCell: UICollectionViewCell {
     
     
     //MARK: - 자는중 일 경우 view
+    
     private lazy var sleepView : UIView = {
         let view = UIView()
         view.backgroundColor = UIColor(red: 0, green: 0, blue: 0, alpha: 0.4)
@@ -936,24 +970,23 @@ class memberCollectioViewCell: UICollectionViewCell {
         }
         
         
-        if isDisturbBanMode{ //방해금지모드가 켜져있음
-            memberView.backgroundColor = DesignSystemColor.Gray300.value
+        //방해금지모드
+        if isDisturbBanMode{
+            memberView.backgroundColor = DesignSystemColor.Gray150.value
             memberLabel.textColor = DesignSystemColor.Gray500.value
             meView.backgroundColor = DesignSystemColor.Gray150.value
-        }else{              //방해금지모드가 꺼져있음
-            meView.backgroundColor = DesignSystemColor.Orange500.value
+            
+        }else{
             memberView.backgroundColor = DesignSystemColor.Orange500.value
-            
-            if isWakeup{ //일어남
-                sleepView.isHidden = true
-                memberLabel.textColor = .black
-                memberView.backgroundColor = DesignSystemColor.Orange500.value
-            } else {     //자는 중
-                sleepView.isHidden = false
-                memberView.backgroundColor = .white
-                memberLabel.textColor = .black
-            }
-            
+            memberLabel.textColor = .black
+            meView.backgroundColor = DesignSystemColor.Orange500.value
+        }
+        
+        //일어났나
+        if isWakeup{
+            sleepView.isHidden = false
+        } else {
+            sleepView.isHidden = true
         }
         
         

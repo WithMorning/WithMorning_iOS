@@ -199,7 +199,7 @@ class MakeAlarmViewController : UIViewController, UIScrollViewDelegate, UISheetP
         view.layer.cornerRadius = 8
         view.tintColor = DesignSystemColor.Orange500.value
         
-        view.textContainerInset = UIEdgeInsets(top: 16, left: 13, bottom: 0, right: 0)
+        view.textContainerInset = UIEdgeInsets(top: 16, left: 13, bottom: 0, right: 10)
         
         view.addSubview(memoPlaceholder)
         view.autocorrectionType = .no
