@@ -24,8 +24,10 @@ class AlarmTableViewCell : UITableViewCell, UISheetPresentationControllerDelegat
     var onAlarmDelete: (() -> Void)?
     //알람나가기 누른 후 실행되는 클로저
     var onAlarmLeave: (()->Void)?
+    var Expandclosure : ((Bool) -> Void)? = nil
     
     var APInetwork = Network.shared
+    
     
     var time24: String = ""
     
@@ -532,6 +534,7 @@ class AlarmTableViewCell : UITableViewCell, UISheetPresentationControllerDelegat
     private var memoViewHeightConstraint: Constraint?
     var fullText: String = ""
     var isExpanded = false
+
     
     // 메모 라벨 초기 설정
     func setMemoText(_ text: String) {
@@ -573,11 +576,10 @@ class AlarmTableViewCell : UITableViewCell, UISheetPresentationControllerDelegat
             // 한 줄만 보이거나, 전체 텍스트를 보이도록 결정 (isExpanded에 따라)
             if isMultiline {
                 self.memoLabel.numberOfLines = self.isExpanded ? 0 : 1
-                print("메모 더보기 클릭시 확장 여부 : ",self.isExpanded)
             } else {
                 self.memoLabel.numberOfLines = 1
-                print("메모 더보기 클릭시 확장 여부 : ",self.isExpanded)
             }
+            
             self.memoLabel.text = self.fullText
             
             // 메모 뷰 업데이트
@@ -605,11 +607,8 @@ class AlarmTableViewCell : UITableViewCell, UISheetPresentationControllerDelegat
     
     //MARK: - 메모 더 보기
     @objc func memoLabelTapped() {
-        if isExpanded == false{
-            isExpanded = true
-        }else{
-            isExpanded = false
-        }
+        isExpanded.toggle()
+        self.Expandclosure?(self.isExpanded)
         updateMemoLabel()
         
     }

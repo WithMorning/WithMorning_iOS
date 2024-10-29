@@ -343,6 +343,7 @@ class MainViewController: UIViewController, UISheetPresentationControllerDelegat
     
     //MARK: - Data Array
     var alarmData  : [GroupList] = []
+    var isExpanded: Bool = false
     
     //API뿌려주기.
     func MainpageUpdate(with mainpage: MainpageResponse){
@@ -421,10 +422,6 @@ extension MainViewController : UITableViewDelegate, UITableViewDataSource{
         
         //토클 클릭시 실행되는 클로저
         cell.toggleclicked = { [weak self] in
-            //            cell.isDisturbBanGroup = alarm.isDisturbBanGroup
-            //            self?.AlarmTableView.beginUpdates()
-            //            self?.AlarmTableView.endUpdates()
-            //            self?.getMainpage()
             
             if alarm.isDisturbBanGroup{
                 cell.bottomView.isHidden = true
@@ -452,11 +449,12 @@ extension MainViewController : UITableViewDelegate, UITableViewDataSource{
         //메모 텍스트
         cell.setMemoText(alarm.memo)
         
-//        cell.memoExpand = { [weak self] in
-//            self?.AlarmTableView.beginUpdates()
-//            cell.expandMemo()
-//            self?.AlarmTableView.endUpdates()
-//        }
+        //더보기
+        cell.Expandclosure = { [weak tableView] isExpanded in
+            
+            tableView?.beginUpdates()
+            tableView?.endUpdates()
+        }
         
         return cell
     }
@@ -467,17 +465,21 @@ extension MainViewController : UITableViewDelegate, UITableViewDataSource{
         
         let alarm = alarmData[indexPath.row]
         
+        let isExpanded = (tableView.cellForRow(at: indexPath) as? AlarmTableViewCell)?.isExpanded ?? false // 직접 가져옴
+        
         let baseHeight: CGFloat = 130  // 기본 높이
-        let extraHeight: CGFloat = 217 // 멤버 컬렉션 뷰 등의 추가 높이
+        let extraHeight: CGFloat = 237 // 멤버 컬렉션 뷰 등의 추가 높이
         let memoHeight = cell.calculateMemoViewHeight()
         
         // 셀의 isDisturbBanGroup 상태에 따라 높이를 다르게 설정
         if alarm.isDisturbBanGroup {
-            return baseHeight // 방해 금지 모드가 켜져있으면 기본 높이만 반환
+            return baseHeight // 방해 금지 모드
         } else {
-            if cell.isExpanded{
+            if isExpanded{
+                
                 return baseHeight + extraHeight + memoHeight
             }else{
+                
                 return baseHeight + extraHeight
             }
         }
