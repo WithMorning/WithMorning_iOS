@@ -241,7 +241,7 @@ class AlarmTableViewCell : UITableViewCell, UISheetPresentationControllerDelegat
     }()
     
     lazy var moreButton: UIButton = {
-        let button = UIButton(type: .system)
+        let button = UIButton()
         button.setTitle("더보기", for: .normal)
         button.titleLabel?.font = DesignSystemFont.Pretendard_Medium12.value
         button.setTitleColor(DesignSystemColor.Gray600.value, for: .normal)
@@ -369,6 +369,12 @@ class AlarmTableViewCell : UITableViewCell, UISheetPresentationControllerDelegat
         memoView.snp.makeConstraints {
             $0.top.equalTo(memberCollectionView.snp.bottom).offset(12)
             $0.leading.trailing.equalToSuperview().inset(20)
+        }
+        
+        moreButton.snp.makeConstraints{
+            $0.centerY.equalToSuperview()
+            $0.leading.equalTo(memoLabel.snp.trailing).offset(10)
+            $0.trailing.equalToSuperview().inset(48)
         }
         
         
@@ -534,7 +540,7 @@ class AlarmTableViewCell : UITableViewCell, UISheetPresentationControllerDelegat
     private var memoViewHeightConstraint: Constraint?
     var fullText: String = ""
     var isExpanded = false
-
+    
     
     // 메모 라벨 초기 설정
     func setMemoText(_ text: String) {

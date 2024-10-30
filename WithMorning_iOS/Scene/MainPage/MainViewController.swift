@@ -301,6 +301,9 @@ class MainViewController: UIViewController, UISheetPresentationControllerDelegat
     func getMainpage() {
         LoadingIndicator.showLoading()
         
+        print("🔥키체인에 들어있는 refreshToken",KeyChain.read(key: "refreshToken") ?? "")
+        print("🔥키체인에 들어있는 accessToken",KeyChain.read(key: "accessToken") ?? "")
+        
         APInetwork.getMainpage() { result in
             switch result {
             case .success(let mainpage):

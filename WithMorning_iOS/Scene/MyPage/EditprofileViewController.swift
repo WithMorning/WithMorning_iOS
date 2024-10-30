@@ -272,7 +272,9 @@ class EditprofileViewController : UIViewController,UIImagePickerControllerDelega
 extension EditprofileViewController : UITextFieldDelegate,UIGestureRecognizerDelegate {
     
     private func updateDoneButtonState(for text: String? = nil) {
+        
         let textToCheck = text ?? nicknameTextfield.text ?? ""
+        
         doneButton.backgroundColor = textToCheck.isEmpty ? DesignSystemColor.Gray300.value : DesignSystemColor.Orange500.value
     }
     
@@ -300,13 +302,13 @@ extension EditprofileViewController : UITextFieldDelegate,UIGestureRecognizerDel
     }
     
     func textField(_ textField: UITextField, shouldChangeCharactersIn range: NSRange, replacementString string: String) -> Bool {
-        if let char = string.cString(using: String.Encoding.utf8) {
-            let isBackSpace = strcmp(char, "\\b")
-            if isBackSpace == -92 {
-                updateDoneButtonState()
-                return true
-            }
-        }
+//        if let char = string.cString(using: String.Encoding.utf8) {
+//            let isBackSpace = strcmp(char, "\\b")
+//            if isBackSpace == -92 {
+//                updateDoneButtonState()
+//                return true
+//            }
+//        }
         
         let maxLength = 10
         let currentString: NSString = textField.text as NSString? ?? ""
