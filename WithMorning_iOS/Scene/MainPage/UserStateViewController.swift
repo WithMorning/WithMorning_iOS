@@ -13,6 +13,9 @@ import Kingfisher
 
 class UserStateViewController : UIViewController{
     
+    var userphoneNum: String = ""
+    var isagree : Bool?
+    
     //MARK: - 유저 정보
     lazy var userImage : UIImageView = {
         let view = UIImageView()
@@ -129,17 +132,32 @@ class UserStateViewController : UIViewController{
         }
     }
     
-    var userphoneNum: String = ""
-    var isagree : Bool = false
-    
     func configureUserState(){
+        print("isagree",isagree as Any)
+        print("닉네임",nicknameLabel.text as Any)
+        print("폰번호",userphoneNum)
+        print("유저아이디",userId)
         
-        if isagree == true {
-            subLabel.text = "전화를 걸어 친구를 깨워주세요."
-        }else{
-            subLabel.text = "콕 찔러 깨우기를 선호하는 유저입니다."
-            callButton.backgroundColor = DesignSystemColor.Gray300.value
-        }
+        // 유저 이미지 설정
+//        if let imageURLString = selectedUser.imageURL, !imageURLString.isEmpty, let url = URL(string: imageURLString) {
+//            // Kingfisher를 사용하여 이미지 다운로드 및 둥근 모서리 적용 처리
+//            let placeholderImage = UIImage(named: "profile")
+//            let processor = RoundCornerImageProcessor(cornerRadius: 50) // 둥근 모서리
+//            
+//            // Kingfisher 이미지 설정
+//            vc.userImage.kf.setImage(with: url, placeholder: placeholderImage, options: [.processor(processor)]) {
+//                result in
+//                switch result {
+//                case .success(let value):
+//                    print("이미지 로드 성공: \(value.source.url?.absoluteString ?? "")")
+//                case .failure( _):
+//                    vc.userImage.image = placeholderImage
+//                }
+//            }
+//        } else {
+//            // imageURL이 nil이거나 빈 문자열일 경우 기본 이미지 설정
+//            vc.userImage.image = UIImage(named: "profile")
+//        }
     }
     
     var userId : Int = 0
@@ -174,7 +192,7 @@ class UserStateViewController : UIViewController{
                 }
             })
         }else{
-            return
+            showToast(message: "전화를 할 수 없습니다.")
         }
     }
     

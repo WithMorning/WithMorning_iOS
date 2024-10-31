@@ -621,12 +621,11 @@ class AlarmTableViewCell : UITableViewCell, UISheetPresentationControllerDelegat
     
     
     //MARK: - objc func
-    
     // 방해금지모드
     @objc func clicktoggle() {
         patchDisturb(newDisturbMode: !disturb)
     }
-    //수정하기 버튼 클릭시
+  
     var editweek: [String] = []
     
     var selectedTime24 : String = ""
@@ -752,8 +751,6 @@ class AlarmTableViewCell : UITableViewCell, UISheetPresentationControllerDelegat
         cell.configureMember(with: userlistData.nickname,imageURL: userlistData.imageURL ?? "",isDisturbBanMode: userlistData.isDisturbBanMode,isWakeup: userlistData.isWakeup)
         
         
-        
-        
         return cell
     }
     
@@ -782,14 +779,20 @@ class AlarmTableViewCell : UITableViewCell, UISheetPresentationControllerDelegat
         }
         
         let vc = UserStateViewController()
-        vc.modalPresentationStyle = .formSheet
-        parentViewController.present(vc, animated: true)
         
         let selectedUser = userData[indexPath.item]
+        
         vc.nicknameLabel.text = selectedUser.nickname
         vc.userphoneNum = selectedUser.phone
         vc.userId = selectedUser.userID
         vc.isagree = selectedUser.isAgree
+        
+        
+        //데이터 present를 하기 전에 데이터를 먼저 옮긴 후 present를 해야함
+        // - 라영님 -
+        
+        vc.modalPresentationStyle = .formSheet
+        parentViewController.present(vc, animated: true)
         
         // 유저 이미지 설정
         if let imageURLString = selectedUser.imageURL, !imageURLString.isEmpty, let url = URL(string: imageURLString) {
@@ -811,7 +814,6 @@ class AlarmTableViewCell : UITableViewCell, UISheetPresentationControllerDelegat
             // imageURL이 nil이거나 빈 문자열일 경우 기본 이미지 설정
             vc.userImage.image = UIImage(named: "profile")
         }
-        
         
         
         if let vc = vc.sheetPresentationController{
