@@ -47,6 +47,7 @@
 		D17AC1A12C98019A007ADB3D /* IntroFirstViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D17AC1A02C98019A007ADB3D /* IntroFirstViewController.swift */; };
 		D17AC1A32C980BE1007ADB3D /* IntroSecondViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D17AC1A22C980BE1007ADB3D /* IntroSecondViewController.swift */; };
 		D17AC1A52C980BF6007ADB3D /* IntroThridViewContoller.swift in Sources */ = {isa = PBXBuildFile; fileRef = D17AC1A42C980BF6007ADB3D /* IntroThridViewContoller.swift */; };
+		D17AEA442CD9EE01009D7DD9 /* MyStateViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D17AEA432CD9EDFA009D7DD9 /* MyStateViewController.swift */; };
 		D18288CB2C7EF45800BDAB3A /* Error.swift in Sources */ = {isa = PBXBuildFile; fileRef = D18288CA2C7EF45800BDAB3A /* Error.swift */; };
 		D186AC5D2CBF80CF0086A6ED /* SwiftJWT in Frameworks */ = {isa = PBXBuildFile; productRef = D186AC5C2CBF80CF0086A6ED /* SwiftJWT */; };
 		D1891F302C58F72500DFF89C /* UITextField_Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = D1891F2F2C58F72500DFF89C /* UITextField_Extension.swift */; };
@@ -133,6 +134,7 @@
 		D17AC1A02C98019A007ADB3D /* IntroFirstViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IntroFirstViewController.swift; sourceTree = "<group>"; };
 		D17AC1A22C980BE1007ADB3D /* IntroSecondViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IntroSecondViewController.swift; sourceTree = "<group>"; };
 		D17AC1A42C980BF6007ADB3D /* IntroThridViewContoller.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IntroThridViewContoller.swift; sourceTree = "<group>"; };
+		D17AEA432CD9EDFA009D7DD9 /* MyStateViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyStateViewController.swift; sourceTree = "<group>"; };
 		D18288CA2C7EF45800BDAB3A /* Error.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Error.swift; sourceTree = "<group>"; };
 		D1891F2F2C58F72500DFF89C /* UITextField_Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UITextField_Extension.swift; sourceTree = "<group>"; };
 		D19589DF2C6745C50000B77C /* CoreHaptics_Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CoreHaptics_Extension.swift; sourceTree = "<group>"; };
@@ -238,6 +240,7 @@
 		D129AAEF2C2D4BCC00F995D2 /* MainPage */ = {
 			isa = PBXGroup;
 			children = (
+				D17AEA432CD9EDFA009D7DD9 /* MyStateViewController.swift */,
 				D1E672BE2BC4FD3300A32790 /* MainViewController.swift */,
 				D15D60C62BCA8BC3009C0874 /* AlarmTableViewCell.swift */,
 				D12C73B12CA538D400E3B245 /* FollowerMenuViewController.swift */,
@@ -639,6 +642,7 @@
 				D15D60C72BCA8BC3009C0874 /* AlarmTableViewCell.swift in Sources */,
 				D109BC8C2C43B23A005E075F /* SleepTimeViewController.swift in Sources */,
 				D129AAF12C2D4C0800F995D2 /* LeaderMenuViewController.swift in Sources */,
+				D17AEA442CD9EE01009D7DD9 /* MyStateViewController.swift in Sources */,
 				D19A9CB22C26901100748CE8 /* MakeAlarmViewController.swift in Sources */,
 				D135377D2C3285AD004B49BB /* AlterUIView.swift in Sources */,
 				D17AC1A12C98019A007ADB3D /* IntroFirstViewController.swift in Sources */,

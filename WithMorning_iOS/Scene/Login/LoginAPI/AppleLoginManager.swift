@@ -103,7 +103,7 @@ extension AppleLoginManager : ASAuthorizationControllerDelegate {
                 let codeString = String(data: authorizationCode, encoding: .utf8) {
                 print(#fileID, #function, #line, "- codeString🔥: \(codeString)")
                 
-                let loginRequestTokenData = AppleloginRequest(code: idTokenString) //authorizationCode전송
+                let loginRequestTokenData = AppleloginRequest(identityToken: idTokenString/*, code: codeString*/) //id토큰, auth토큰 전송할 데이터 셋
                 
                 
                 //MARK: - 로그인 요청

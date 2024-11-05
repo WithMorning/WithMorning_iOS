@@ -166,6 +166,7 @@ class SleepTimeViewController : UIViewController, UISheetPresentationControllerD
         super.viewDidLayoutSubviews()
         pickerviewUI()
     }
+    
     //MARK: - setUI
     
     func SetUI(){
@@ -259,34 +260,39 @@ class SleepTimeViewController : UIViewController, UISheetPresentationControllerD
     }
     
     func setSelectedTimeOnPicker() {
-            let dateFormatter = DateFormatter()
-            dateFormatter.dateFormat = "HH:mm"
-            
-            guard let date = dateFormatter.date(from: selectedTime24) else { return }
-            
-            let calendar = Calendar.current
-            let hour = calendar.component(.hour, from: date)
-            let minute = calendar.component(.minute, from: date)
-            
-            let hourForPicker: Int
-            let ampm: Int
-            
-            if hour >= 12 {
-                hourForPicker = hour == 12 ? 12 : hour - 12
-                ampm = 1 // PM
-            } else {
-                hourForPicker = hour == 0 ? 12 : hour
-                ampm = 0 // AM
-            }
-            
-            let middleHour = self.hour.count * 50
-            let middleMinute = min.count * 50
-            let middleAMPM = AMPM.count * 50
-            
-            timePicker.selectRow(middleHour + hourForPicker - 1, inComponent: 0, animated: false)
-            timePicker.selectRow(middleMinute + minute, inComponent: 1, animated: false)
-            timePicker.selectRow(middleAMPM + ampm, inComponent: 2, animated: false)
+        // "HH:mm" 형식의 selectedTime24 파싱
+        let components = selectedTime24.split(separator: ":")
+        guard components.count == 2,
+              let hour24 = Int(components[0]),
+              let minute = Int(components[1]) else {
+            print("Invalid time format: \(selectedTime24)")
+            return
         }
+        
+        // AM/PM 결정 (24시간제 기준)
+        let isPM = hour24 >= 12
+        
+        // 12시간제로 변환
+        let hour12: Int
+        if hour24 == 0 {
+            hour12 = 12  // 자정 (12 AM)
+        } else if hour24 > 12 {
+            hour12 = hour24 - 12  // PM
+        } else {
+            hour12 = hour24  // AM or 12 PM
+        }
+        
+        print("Setting time - 24h: \(selectedTime24), 12h: \(hour12):\(minute) \(isPM ? "PM" : "AM")")
+        
+        // Picker 설정
+        let hourIndex = (hour.count * 50) + (hour12 - 1)
+        let minuteIndex = (min.count * 50) + minute
+        let ampmIndex = isPM ? 1 : 0  // PM이면 1, AM이면 0으로 설정합니다.
+        
+        timePicker.selectRow(hourIndex, inComponent: 0, animated: false)
+        timePicker.selectRow(minuteIndex, inComponent: 1, animated: false)
+        timePicker.selectRow(ampmIndex, inComponent: 2, animated: false)
+    }
     
     //MARK: - 요일 설정
     func updateRepeatDayLabel() {
@@ -308,7 +314,7 @@ class SleepTimeViewController : UIViewController, UISheetPresentationControllerD
             repeatDayLabel1.text = dayNames.joined(separator: ", ")
         }
     }
-
+    
     
     //MARK: - 호출 API
     var selectedDayOfWeek: [String] = []
@@ -445,7 +451,7 @@ extension SleepTimeViewController : UIPickerViewDelegate, UIPickerViewDataSource
             let AMPMlabel = UILabel()
             AMPMlabel.textAlignment = .center
             AMPMlabel.font = DesignSystemFont.Pretendard_Bold18.value
-            AMPMlabel.text = String(AMPM[row])
+            AMPMlabel.text = /*String(AMPM[row])*/AMPM[row % AMPM.count]
             
             return AMPMlabel
         }
@@ -470,18 +476,22 @@ extension SleepTimeViewController : UIPickerViewDelegate, UIPickerViewDataSource
     func pickerView(_ pickerView: UIPickerView, didSelectRow row: Int, inComponent component: Int) {
         let selectedHour = hour[pickerView.selectedRow(inComponent: 0) % hour.count]
         let selectedMinute = min[pickerView.selectedRow(inComponent: 1) % min.count]
-        let selectedAMPM = AMPM[pickerView.selectedRow(inComponent: 2)]
+        let selectedAMPM = AMPM[pickerView.selectedRow(inComponent: 2) % AMPM.count]
         
+        // 24시간제로 변환
         var hour24 = selectedHour
-        if selectedAMPM == "PM" && selectedHour != 12 {
-            hour24 += 12
-        } else if selectedAMPM == "AM" && selectedHour == 12 {
-            hour24 = 0
+        if selectedAMPM == "PM" {
+            if selectedHour != 12 {
+                hour24 += 12
+            }
+        } else { // AM
+            if selectedHour == 12 {
+                hour24 = 0
+            }
         }
         
         selectedTime24 = String(format: "%02d:%02d", hour24, selectedMinute)
-        
-        print("설정된 시간 (24시간제): \(selectedTime24)")
+        print("Selected time (24h): \(selectedTime24)")
     }
     
     

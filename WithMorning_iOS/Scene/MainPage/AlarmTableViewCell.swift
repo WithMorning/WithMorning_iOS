@@ -625,7 +625,7 @@ class AlarmTableViewCell : UITableViewCell, UISheetPresentationControllerDelegat
     @objc func clicktoggle() {
         patchDisturb(newDisturbMode: !disturb)
     }
-  
+    
     var editweek: [String] = []
     
     var selectedTime24 : String = ""
@@ -750,7 +750,6 @@ class AlarmTableViewCell : UITableViewCell, UISheetPresentationControllerDelegat
         
         cell.configureMember(with: userlistData.nickname,imageURL: userlistData.imageURL ?? "",isDisturbBanMode: userlistData.isDisturbBanMode,isWakeup: userlistData.isWakeup)
         
-        
         return cell
     }
     
@@ -778,55 +777,91 @@ class AlarmTableViewCell : UITableViewCell, UISheetPresentationControllerDelegat
             return
         }
         
-        let vc = UserStateViewController()
+        let Uservc = UserStateViewController()
+        let Myvc = MyStateViewController()
         
         let selectedUser = userData[indexPath.item]
         
-        vc.nicknameLabel.text = selectedUser.nickname
-        vc.userphoneNum = selectedUser.phone
-        vc.userId = selectedUser.userID
-        vc.isagree = selectedUser.isAgree
+        //        Uservc.nicknameLabel.text = selectedUser.nickname
+        //        Uservc.userphoneNum = selectedUser.phone
+        //        Uservc.userId = selectedUser.userID
+        //        Uservc.isagree = selectedUser.isAgree
+        //        Uservc.imageURL = selectedUser.imageURL
+        //
+        //        //데이터 present를 하기 전에 데이터를 먼저 옮긴 후 present를 해야함
+        //        // - 라영님 -
+        //        Uservc.modalPresentationStyle = .formSheet
+        //        parentViewController.present(Uservc, animated: true)
+        //
+        //        if let vc = Uservc.sheetPresentationController{
+        //            if #available(iOS 16.0, *) {
+        //                vc.detents = [.custom { context in
+        //                    return 330
+        //                }]
+        //                vc.delegate = self
+        //                vc.prefersGrabberVisible = false
+        //                vc.preferredCornerRadius = 16
+        //            }
+        //
+        //        }
         
-        
-        //데이터 present를 하기 전에 데이터를 먼저 옮긴 후 present를 해야함
-        // - 라영님 -
-        
-        vc.modalPresentationStyle = .formSheet
-        parentViewController.present(vc, animated: true)
-        
-        // 유저 이미지 설정
-        if let imageURLString = selectedUser.imageURL, !imageURLString.isEmpty, let url = URL(string: imageURLString) {
-            // Kingfisher를 사용하여 이미지 다운로드 및 둥근 모서리 적용 처리
-            let placeholderImage = UIImage(named: "profile")
-            let processor = RoundCornerImageProcessor(cornerRadius: 50) // 둥근 모서리
+        if selectedUser.isDisturbBanMode == true{
             
-            // Kingfisher 이미지 설정
-            vc.userImage.kf.setImage(with: url, placeholder: placeholderImage, options: [.processor(processor)]) {
-                result in
-                switch result {
-                case .success(let value):
-                    print("이미지 로드 성공: \(value.source.url?.absoluteString ?? "")")
-                case .failure( _):
-                    vc.userImage.image = placeholderImage
+            parentVC?.showToast(message: "방해금지모드토스트입니다.여기닉넴들어가야하는데 그거 하는중임다. 일단 테스트맨")
+            
+        }else{
+            
+            
+            if selectedUser.nickname == UserDefaults.standard.string(forKey: "nickname"){
+                Myvc.nicknameLabel.text = selectedUser.nickname
+                Myvc.userphoneNum = selectedUser.phone
+                Myvc.userId = selectedUser.userID
+                Myvc.isagree = selectedUser.isAgree
+                Myvc.imageURL = selectedUser.imageURL
+                
+                Myvc.modalPresentationStyle = .formSheet
+                parentViewController.present(Myvc, animated: true)
+                
+                if let vc = Myvc.sheetPresentationController{
+                    if #available(iOS 16.0, *) {
+                        vc.detents = [.custom { context in
+                            return 330
+                        }]
+                        vc.delegate = self
+                        vc.prefersGrabberVisible = false
+                        vc.preferredCornerRadius = 16
+                    }
+                    
                 }
+                
+            }else{
+                print("남이에용")
+                Uservc.nicknameLabel.text = selectedUser.nickname
+                Uservc.userphoneNum = selectedUser.phone
+                Uservc.userId = selectedUser.userID
+                Uservc.isagree = selectedUser.isAgree
+                Uservc.imageURL = selectedUser.imageURL
+                
+                //데이터 present를 하기 전에 데이터를 먼저 옮긴 후 present를 해야함
+                // - 라영님 -
+                Uservc.modalPresentationStyle = .formSheet
+                parentViewController.present(Uservc, animated: true)
+                
+                if let vc = Uservc.sheetPresentationController{
+                    if #available(iOS 16.0, *) {
+                        vc.detents = [.custom { context in
+                            return 330
+                        }]
+                        vc.delegate = self
+                        vc.prefersGrabberVisible = false
+                        vc.preferredCornerRadius = 16
+                    }
+                    
+                }
+                
             }
-        } else {
-            // imageURL이 nil이거나 빈 문자열일 경우 기본 이미지 설정
-            vc.userImage.image = UIImage(named: "profile")
         }
         
-        
-        if let vc = vc.sheetPresentationController{
-            if #available(iOS 16.0, *) {
-                vc.detents = [.custom { context in
-                    return 330
-                }]
-                vc.delegate = self
-                vc.prefersGrabberVisible = false
-                vc.preferredCornerRadius = 16
-            }
-            
-        }
     }
     
 }

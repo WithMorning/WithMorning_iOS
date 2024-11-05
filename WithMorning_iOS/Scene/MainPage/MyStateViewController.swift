@@ -1,21 +1,22 @@
 //
-//  UserStateViewController.swift
+//  MyStateViewController.swift
 //  WithMorning_iOS
 //
-//  Created by 안세훈 on 8/15/24.
+//  Created by 안세훈 on 11/5/24.
 //
-
 import UIKit
 import SnapKit
 import Then
 import Alamofire
 import Kingfisher
 
-class UserStateViewController : UIViewController{
+class MyStateViewController : UIViewController{
     
     var userphoneNum: String = ""
     var isagree : Bool?
     var imageURL : String?
+    
+    var APInetwork = Network.shared
     
     //MARK: - 유저 정보
     lazy var userImage : UIImageView = {
@@ -41,10 +42,10 @@ class UserStateViewController : UIViewController{
         return label
     }()
     
-    lazy var callButton : UIButton = {
+    lazy var opencallButton : UIButton = {
         let button = UIButton()
         button.backgroundColor = DesignSystemColor.Orange500.value
-        button.setTitle("전화로 깨우기", for: .normal)
+        button.setTitle("전화번호 공개", for: .normal)
         button.titleLabel?.font = DesignSystemFont.Pretendard_SemiBold14.value
         button.titleLabel?.textAlignment = .center
         button.setTitleColor(.white, for: .normal)
@@ -54,16 +55,16 @@ class UserStateViewController : UIViewController{
         return button
     }()
     
-    lazy var pickButton : UIButton = {
+    lazy var closecallButton : UIButton = {
         let button = UIButton()
         button.backgroundColor = DesignSystemColor.Orange500.value
-        button.setTitle("콕 찔러 깨우기", for: .normal)
+        button.setTitle("전화번호 비공개", for: .normal)
         button.titleLabel?.font = DesignSystemFont.Pretendard_SemiBold14.value
         button.titleLabel?.textAlignment = .center
         button.setTitleColor(.white, for: .normal)
         button.layer.cornerRadius = 8
         button.setImage(UIImage(named: "pick"), for: .normal)
-        button.addTarget(self, action: #selector(pickup), for: .touchUpInside)
+        button.addTarget(self, action: #selector(callclick), for: .touchUpInside)
         return button
     }()
     
@@ -94,7 +95,7 @@ class UserStateViewController : UIViewController{
     }
     
     func SetUI(){
-        view.addSubviews(userImage,nicknameLabel,subLabel,callButton,pickButton,DoneButton)
+        view.addSubviews(userImage,nicknameLabel,subLabel,opencallButton,closecallButton,DoneButton)
         
         userImage.snp.makeConstraints{
             $0.width.height.equalTo(100)
@@ -109,13 +110,13 @@ class UserStateViewController : UIViewController{
             $0.centerX.equalToSuperview()
             $0.top.equalTo(nicknameLabel.snp.bottom).offset(8)
         }
-        callButton.snp.makeConstraints{
+        opencallButton.snp.makeConstraints{
             $0.height.equalTo(56)
             $0.top.equalTo(subLabel.snp.bottom).offset(16)
             $0.leading.equalToSuperview().inset(16)
             $0.trailing.equalTo(view.snp.centerX).offset(-4)
         }
-        pickButton.snp.makeConstraints{
+        closecallButton.snp.makeConstraints{
             $0.height.equalTo(56)
             $0.top.equalTo(subLabel.snp.bottom).offset(16)
             $0.trailing.equalToSuperview().inset(16)
@@ -123,7 +124,7 @@ class UserStateViewController : UIViewController{
         }
         
         DoneButton.snp.makeConstraints{
-            $0.top.equalTo(pickButton.snp.bottom).offset(16)
+            $0.top.equalTo(closecallButton.snp.bottom).offset(16)
             $0.leading.trailing.equalTo(view.safeAreaLayoutGuide)
             $0.height.equalTo(300)
         }
@@ -134,10 +135,29 @@ class UserStateViewController : UIViewController{
         }
     }
     
+    //MARK: - API
+    var userId : Int = 0
+    
+    func editphoneagree(){
+        LoadingIndicator.showLoading()
+        APInetwork.patchphoneagree(groupId: self.userId){ result in
+            switch result{
+            case .success(let data):
+                LoadingIndicator.hideLoading()
+                print(data)
+            case .failure(let error):
+                LoadingIndicator.hideLoading()
+                print(error.localizedDescription)
+            }
+            
+        }
+    }
+
+    
+    
     func configureUserState(){
         print("isagree",isagree as Any)
         print("닉네임",nicknameLabel.text as Any)
-        print("폰번호",userphoneNum)
         print("유저아이디",userId)
         print("이미지 url", imageURL as Any)
         
@@ -166,61 +186,28 @@ class UserStateViewController : UIViewController{
         
         //전화번호 공개 비공개
         if isagree == true{
-            subLabel.text = "전화를 걸어 친구를 깨워주세요."
-            callButton.backgroundColor =  DesignSystemColor.Orange500.value
+            subLabel.text = "전화번호를 공개한 그룹입니다."
+            closecallButton.backgroundColor = DesignSystemColor.Gray300.value
         }else{
-            subLabel.text = "콕 찔러 깨우기를 선호하는 유저입니다."
-            callButton.backgroundColor = DesignSystemColor.Gray300.value
+            subLabel.text = "전화번호를 공개한 그룹입니다."
+            opencallButton.backgroundColor = DesignSystemColor.Gray300.value
         }
         
         
         
     }
     
-    var userId : Int = 0
-    
-    func prickUser(){
-        LoadingIndicator.showLoading()
-        
-        let useridData = prickRequest(userID: userId)
-        
-        APInetwork.postprick(userId: useridData){ result in
-            switch result{
-            case .success(let data):
-                print(data)
-                
-                LoadingIndicator.hideLoading()
-                self.showToast(message: "\(self.nicknameLabel.text ?? "") 님을 콕! 찔렀어요.")
-                
-            case .failure(let error):
-                print(error.localizedDescription)
-                LoadingIndicator.hideLoading()
-            }
-        }
-    }
     
     //MARK: - @objc func
     @objc func callclick() {
-        if isagree == true{
-            self.dismiss(animated: true, completion: {
-                if let phoneURL = URL(string: "tel://\(self.userphoneNum)"), UIApplication.shared.canOpenURL(phoneURL) {
-                    UIApplication.shared.open(phoneURL, options: [:], completionHandler: nil)
-                }
-            })
-        }else{
-            showToast(message: "전화가 꺼져있는 상태")
-        }
+        editphoneagree()
     }
     
-    @objc func pickup(){
-        prickUser()
-    }
+    
     
     @objc func doneclick(){
         self.dismiss(animated: true)
     }
-    
-    
     
     
 }
@@ -232,22 +219,22 @@ class UserStateViewController : UIViewController{
 //Preview code
 #if DEBUG
 import SwiftUI
-struct UserStateViewControllerRepresentable: UIViewControllerRepresentable {
+struct MyStateViewControllerRepresentable: UIViewControllerRepresentable {
     
     func updateUIViewController(_ uiView: UIViewController,context: Context) {
         // leave this empty
     }
     @available(iOS 13.0.0, *)
     func makeUIViewController(context: Context) -> UIViewController{
-        UserStateViewController()
+        MyStateViewController()
     }
 }
 @available(iOS 13.0, *)
-struct UserStateViewControllerRepresentable_PreviewProvider: PreviewProvider {
+struct MyStateViewControllerRepresentable_PreviewProvider: PreviewProvider {
     static var previews: some View {
         Group {
             if #available(iOS 14.0, *) {
-                UserStateViewControllerRepresentable()
+                MyStateViewControllerRepresentable()
                     .ignoresSafeArea()
                     .previewDisplayName(/*@START_MENU_TOKEN@*/"Preview"/*@END_MENU_TOKEN@*/)
                     .previewDevice(PreviewDevice(rawValue: "iPhone se3"))

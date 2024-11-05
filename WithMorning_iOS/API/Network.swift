@@ -241,6 +241,25 @@ class Network{
                 
             }
     }
+    //MARK: - 전화번호 공개 수정
+    func patchphoneagree(groupId : Int, completionHandler: @escaping (Result<editphoneagreeResponse, Error>) -> Void){
+        print("보내는 groupId: \(groupId)")
+        AF.request(Router.patchphoneagree(groupId: groupId), interceptor: AuthInterceptor())
+            .validate(statusCode: 200..<300)
+            .responseDecodable(of: editphoneagreeResponse.self){response in
+                switch response.result{
+                case .failure(let error):
+                    NetworkErrorHandler.shared.handleNetworkError(error, data: response.data, retryRequest: {
+                        self.patchphoneagree(groupId: groupId, completionHandler: completionHandler)
+                    }, completion: completionHandler)
+                case .success(let data):
+                    completionHandler(.success(data))
+                    print(#fileID, #function, #line, "- ⭐️\(groupId)의 전화번호 공개 수정 성공")
+                }
+                
+            }
+    }
+
     
     
     

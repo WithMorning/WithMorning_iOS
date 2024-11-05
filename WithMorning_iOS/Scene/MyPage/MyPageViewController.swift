@@ -613,7 +613,7 @@ class MyPageViewController : UIViewController, UIScrollViewDelegate {
         self.navigationController?.pushViewController(vc, animated: true)
         LoadingIndicator.hideLoading()
     }
-    
+    //취침시간
     @objc func sleeptime(){
         let vc = SleepTimeViewController()
         vc.selectedTime24 = self.bedtime
