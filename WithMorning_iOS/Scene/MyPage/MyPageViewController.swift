@@ -726,6 +726,7 @@ class MyPageViewController : UIViewController, UIScrollViewDelegate {
     
     //MARK: - 시간 형식 수정
     func updateSleepTimeLabel(with bedtime: String, dayOfWeekList: [String]) {
+        print(dayOfWeekList)
         
         let dateFormatter = DateFormatter()
         dateFormatter.dateFormat = "HH:mm"
@@ -745,8 +746,12 @@ class MyPageViewController : UIViewController, UIScrollViewDelegate {
                 "sat": "토", "sun": "일"
             ]
             
+            // 빈 리스트 체크를 가장 먼저 수행
+            if dayOfWeekSet.isEmpty {
+                sleeptimeLabel3.text = "\(formattedTime) 없음"
+            }
             // 모든 요일이 포함된 경우 "매일" 출력
-            if dayOfWeekSet == allDaysSet {
+            else if dayOfWeekSet == allDaysSet {
                 sleeptimeLabel3.text = "\(formattedTime) 매일"
             }
             // 평일: 월화수목금이 모두 포함된 경우
@@ -757,11 +762,7 @@ class MyPageViewController : UIViewController, UIScrollViewDelegate {
             else if dayOfWeekSet.isSubset(of: weekendSet) {
                 sleeptimeLabel3.text = "\(formattedTime) 주말"
             }
-            
-            else if dayOfWeekSet.isEmpty{
-                sleeptimeLabel3.text = "\(formattedTime) 없음"
-                // 그 외: 모든 요일 출력
-            }else{
+            else {
                 let koreanDays = dayOfWeekList.compactMap { dayOfWeekDict[$0] }.joined(separator: ", ")
                 sleeptimeLabel3.text = "\(formattedTime) \(koreanDays)"
             }

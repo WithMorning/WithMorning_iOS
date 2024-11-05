@@ -807,10 +807,9 @@ class AlarmTableViewCell : UITableViewCell, UISheetPresentationControllerDelegat
         
         if selectedUser.isDisturbBanMode == true{
             
-            parentVC?.showToast(message: "방해금지모드토스트입니다.여기닉넴들어가야하는데 그거 하는중임다. 일단 테스트맨")
+            parentVC?.showToast(message: "\(selectedUser.nickname)님은 현재 방해금지 모드에요!")
             
         }else{
-            
             
             if selectedUser.nickname == UserDefaults.standard.string(forKey: "nickname"){
                 Myvc.nicknameLabel.text = selectedUser.nickname
