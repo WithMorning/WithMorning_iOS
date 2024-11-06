@@ -454,8 +454,10 @@ extension MainViewController : UITableViewDelegate, UITableViewDataSource{
         //더보기
         cell.Expandclosure = { [weak tableView] isExpanded in
             
-            tableView?.beginUpdates()
-            tableView?.endUpdates()
+            UIView.performWithoutAnimation {
+                tableView?.beginUpdates()
+                tableView?.endUpdates()
+            }
         }
         
         return cell

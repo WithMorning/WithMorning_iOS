@@ -265,7 +265,6 @@ class SleepTimeViewController : UIViewController, UISheetPresentationControllerD
         guard components.count == 2,
               let hour24 = Int(components[0]),
               let minute = Int(components[1]) else {
-            print("Invalid time format: \(selectedTime24)")
             return
         }
         

@@ -190,7 +190,7 @@ class UserStateViewController : UIViewController{
                 print(data)
                 
                 LoadingIndicator.hideLoading()
-                self.showToast(message: "\(self.nicknameLabel.text ?? "") 님을 콕! 찔렀어요.")
+                self.showToast(message: "\(self.nicknameLabel.text ?? "")  님을 콕! 찔렀어요.")
                 
             case .failure(let error):
                 print(error.localizedDescription)

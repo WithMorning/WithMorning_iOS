@@ -23,7 +23,7 @@ enum Router : URLRequestConvertible{
     case postprick(userId : prickRequest) //콕찌르기
     case patchwakeup(groupId : Int) //기상 상태로 변경
     case patcheditgroup(groupId : Int, data : EditGroupMaindata) //그룹 수정
-    case patchphoneagree(groupId : Int)
+    case patchphoneagree(groupId : Int, data : EditphoneMaindata)
     
     
     
@@ -41,8 +41,7 @@ enum Router : URLRequestConvertible{
         case .patchwakeup(let groupId): return "/user/\(groupId)/wake-status"
         case .deleteleavegroup(let groupId): return "/groups/\(groupId)/leave"
         case .patcheditgroup(let groupId, _): return "/groups/\(groupId)"
-        case .patchphoneagree: return
-            "/api/user/phone-agree"
+        case .patchphoneagree: return "/api/user/phone-agree"
             
         }
     }
@@ -108,7 +107,7 @@ enum Router : URLRequestConvertible{
             request = try URLEncoding.queryString.encode(request, with: parameters)
         case .patcheditgroup(_ ,let data):
             request = try JSONParameterEncoder().encode(data, into: request)
-        case .patchphoneagree(let data):
+        case .patchphoneagree( _, let data):
             request = try JSONParameterEncoder().encode(data, into: request)
         }
         

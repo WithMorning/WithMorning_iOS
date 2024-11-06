@@ -228,8 +228,8 @@ class AlarmTableViewCell : UITableViewCell, UISheetPresentationControllerDelegat
     
     lazy var memoLabel: UILabel = {
         let label = UILabel()
-        label.textColor = DesignSystemColor.Gray400.value
-        label.font = DesignSystemFont.Pretendard_Medium12.value
+//        label.textColor = DesignSystemColor.Gray400.value
+//        label.font = DesignSystemFont.Pretendard_Medium12.value
         label.textAlignment = .center
         label.numberOfLines = 0
         label.isUserInteractionEnabled = true
@@ -586,7 +586,8 @@ class AlarmTableViewCell : UITableViewCell, UISheetPresentationControllerDelegat
                 self.memoLabel.numberOfLines = 1
             }
             
-            self.memoLabel.text = self.fullText
+            self.memoLabel.applyDesignFont(.Pretendard_Medium12, text: self.fullText, color: DesignSystemColor.Gray400.value)
+            self.memoLabel.textAlignment = .center
             
             // 메모 뷰 업데이트
             self.updateMemoViewHeight()
@@ -817,7 +818,7 @@ class AlarmTableViewCell : UITableViewCell, UISheetPresentationControllerDelegat
                 Myvc.userId = selectedUser.userID
                 Myvc.isagree = selectedUser.isAgree
                 Myvc.imageURL = selectedUser.imageURL
-                
+                Myvc.groupId = self.groupId
                 Myvc.modalPresentationStyle = .formSheet
                 parentViewController.present(Myvc, animated: true)
                 

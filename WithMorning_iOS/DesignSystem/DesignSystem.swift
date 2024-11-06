@@ -192,6 +192,7 @@ extension DesignSystemFont {
         //            return 1.17
         //        }
     }
+    
     func attributedString(for text: String, color: UIColor = .black) -> NSAttributedString {
         let paragraphStyle = NSMutableParagraphStyle()
         paragraphStyle.lineHeightMultiple = self.lineHeightMultiple
@@ -223,8 +224,3 @@ extension DesignSystemIcon {
     }
 }
 
-extension UILabel{
-    func applyDesignFont(_ font: DesignSystemFont, text: String, color: UIColor = .black) {
-        self.attributedText = font.attributedString(for: text, color: color)
-    }
-}

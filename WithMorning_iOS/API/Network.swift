@@ -224,11 +224,11 @@ class Network{
     }
     
     //MARK: - 그룹 수정
-    func patcheditGroup(groupId : Int ,editGroupdata: EditGroupMaindata, completionHandler: @escaping (Result<editgroupResponse, Error>) -> Void){
+    func patcheditGroup(groupId : Int ,editGroupdata: EditGroupMaindata, completionHandler: @escaping (Result<EditgroupResponse, Error>) -> Void){
         print("보내는 groupId: \(groupId)")
         AF.request(Router.patcheditgroup(groupId: groupId, data: editGroupdata), interceptor: AuthInterceptor())
             .validate(statusCode: 200..<300)
-            .responseDecodable(of: editgroupResponse.self){response in
+            .responseDecodable(of: EditgroupResponse.self){response in
                 switch response.result{
                 case .failure(let error):
                     NetworkErrorHandler.shared.handleNetworkError(error, data: response.data, retryRequest: {
@@ -242,15 +242,17 @@ class Network{
             }
     }
     //MARK: - 전화번호 공개 수정
-    func patchphoneagree(groupId : Int, completionHandler: @escaping (Result<editphoneagreeResponse, Error>) -> Void){
-        print("보내는 groupId: \(groupId)")
-        AF.request(Router.patchphoneagree(groupId: groupId), interceptor: AuthInterceptor())
+    func patchphoneagree(groupId : Int, editphoneagree : EditphoneMaindata, completionHandler: @escaping (Result<EditphoneagreeResponse, Error>) -> Void){
+        
+        print("보내는 groupId: \(groupId) \(editphoneagree)")
+        
+        AF.request(Router.patchphoneagree(groupId: groupId, data: editphoneagree), interceptor: AuthInterceptor())
             .validate(statusCode: 200..<300)
-            .responseDecodable(of: editphoneagreeResponse.self){response in
+            .responseDecodable(of: EditphoneagreeResponse.self){response in
                 switch response.result{
                 case .failure(let error):
                     NetworkErrorHandler.shared.handleNetworkError(error, data: response.data, retryRequest: {
-                        self.patchphoneagree(groupId: groupId, completionHandler: completionHandler)
+                        self.patchphoneagree(groupId: groupId, editphoneagree : editphoneagree, completionHandler: completionHandler)
                     }, completion: completionHandler)
                 case .success(let data):
                     completionHandler(.success(data))

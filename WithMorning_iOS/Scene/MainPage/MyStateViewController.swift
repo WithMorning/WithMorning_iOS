@@ -64,7 +64,7 @@ class MyStateViewController : UIViewController{
         button.setTitleColor(.white, for: .normal)
         button.layer.cornerRadius = 8
         button.setImage(UIImage(named: "pick"), for: .normal)
-        button.addTarget(self, action: #selector(callclick), for: .touchUpInside)
+        button.addTarget(self, action: #selector(nocallclick), for: .touchUpInside)
         return button
     }()
     
@@ -94,6 +94,9 @@ class MyStateViewController : UIViewController{
         configureUserState()
     }
     
+    
+    //MARK: - UI
+
     func SetUI(){
         view.addSubviews(userImage,nicknameLabel,subLabel,opencallButton,closecallButton,DoneButton)
         
@@ -134,33 +137,13 @@ class MyStateViewController : UIViewController{
             $0.top.equalToSuperview().offset(20)
         }
     }
-    
-    //MARK: - API
-    var userId : Int = 0
-    
-    func editphoneagree(){
-        LoadingIndicator.showLoading()
-        APInetwork.patchphoneagree(groupId: self.userId){ result in
-            switch result{
-            case .success(let data):
-                LoadingIndicator.hideLoading()
-                print(data)
-            case .failure(let error):
-                LoadingIndicator.hideLoading()
-                print(error.localizedDescription)
-            }
-            
-        }
-    }
 
-    
-    
     func configureUserState(){
         print("isagree",isagree as Any)
         print("닉네임",nicknameLabel.text as Any)
         print("유저아이디",userId)
         print("이미지 url", imageURL as Any)
-        
+        print("groupId", groupId as Any)
         
         // 유저 이미지 설정
         if let imageURLString = imageURL, !imageURLString.isEmpty, let url = URL(string: imageURLString) {
@@ -197,17 +180,50 @@ class MyStateViewController : UIViewController{
         
     }
     
+    //MARK: - API
+    var userId : Int = 0
+    var groupId : Int = 0
+    
+    func editphoneagree() {
+        LoadingIndicator.showLoading()
+        
+        // 현재 isagree 값을 반전하여 API에 전송할 값 설정
+        let updatedAgreeStatus = !(isagree ?? false)
+        isagree = updatedAgreeStatus // 상태를 전환하여 반영
+        
+        let editphoneData = EditphoneMaindata(isAgree: updatedAgreeStatus)
+
+        // API 호출
+        APInetwork.patchphoneagree(groupId: self.groupId, editphoneagree: editphoneData) { result in
+            switch result {
+            case .success(let data):
+                LoadingIndicator.hideLoading()
+                print("전화번호 공개 상태 변경 성공: \(data)")
+                self.configureUserState()
+                
+            case .failure(let error):
+                LoadingIndicator.hideLoading()
+                print("오류 발생: \(error.localizedDescription)")
+            }
+        }
+    }
+
     
     //MARK: - @objc func
     @objc func callclick() {
         editphoneagree()
     }
     
+    @objc func nocallclick() {
+        editphoneagree()
+    }
     
     
     @objc func doneclick(){
         self.dismiss(animated: true)
     }
+    
+    
     
     
 }

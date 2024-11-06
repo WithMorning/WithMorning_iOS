@@ -193,16 +193,16 @@ struct EditGroupMaindata: Codable {
     let isAgree: Bool
     let memo: String
 }
-struct editgroupResponse: Codable {
+struct EditgroupResponse: Codable {
     let isSuccess: Bool
     let code: Int
     let message: String
 }
 //MARK: - 전화번호 공개 수정
-struct editphoneagree: Codable {
+struct EditphoneMaindata: Codable {
     let isAgree: Bool
 }
-struct editphoneagreeResponse: Codable {
+struct EditphoneagreeResponse: Codable {
     let isSuccess: Bool
     let code: Int
     let message: String
