@@ -246,6 +246,7 @@ class MainViewController: UIViewController, UISheetPresentationControllerDelegat
     @objc func clickedmakeAlarm(){ //새로운 알람 설정
         let vc = MakeAlarmViewController()
         vc.mode = .createMode
+        vc.username = nameLabel.text ?? ""
         self.navigationController?.pushViewController(vc, animated: true)
     }
     
@@ -332,6 +333,7 @@ class MainViewController: UIViewController, UISheetPresentationControllerDelegat
                 
                 self.AlarmTableView.reloadData()
                 LoadingIndicator.hideLoading()
+                self.showToast(message: "오류가 발생했습니다. 잠시후 다시 시도해주세요.")
                 print(error)
                 
             }
@@ -463,6 +465,7 @@ extension MainViewController : UITableViewDelegate, UITableViewDataSource{
         return cell
     }
     
+    
     //cell의 높이
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
         let cell = AlarmTableViewCell()
@@ -480,12 +483,19 @@ extension MainViewController : UITableViewDelegate, UITableViewDataSource{
             return baseHeight // 방해 금지 모드
         } else {
             if isExpanded{
-                
                 return baseHeight + extraHeight + memoHeight
             }else{
                 
                 return baseHeight + extraHeight
             }
+        }
+    }
+    
+    func tableView(_ tableView: UITableView, didEndDisplaying cell: UITableViewCell, forRowAt indexPath: IndexPath) {
+        
+        if let alarmCell = cell as? AlarmTableViewCell {
+            alarmCell.isExpanded = false
+            alarmCell.updateMemoLabel()
         }
     }
 }

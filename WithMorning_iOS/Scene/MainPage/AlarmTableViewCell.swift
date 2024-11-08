@@ -228,8 +228,6 @@ class AlarmTableViewCell : UITableViewCell, UISheetPresentationControllerDelegat
     
     lazy var memoLabel: UILabel = {
         let label = UILabel()
-//        label.textColor = DesignSystemColor.Gray400.value
-//        label.font = DesignSystemFont.Pretendard_Medium12.value
         label.textAlignment = .center
         label.numberOfLines = 0
         label.isUserInteractionEnabled = true
@@ -263,6 +261,7 @@ class AlarmTableViewCell : UITableViewCell, UISheetPresentationControllerDelegat
     required init?(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
+    
     
     //MARK: - SetUI
     func setCell(){
@@ -371,11 +370,11 @@ class AlarmTableViewCell : UITableViewCell, UISheetPresentationControllerDelegat
             $0.leading.trailing.equalToSuperview().inset(20)
         }
         
-        moreButton.snp.makeConstraints{
-            $0.centerY.equalToSuperview()
-            $0.leading.equalTo(memoLabel.snp.trailing).offset(10)
-            $0.trailing.equalToSuperview().inset(48)
-        }
+        //        moreButton.snp.makeConstraints{
+        //            $0.centerY.equalToSuperview()
+        //            $0.leading.equalTo(memoLabel.snp.trailing).offset(10)
+        //            $0.trailing.equalToSuperview().inset(48)
+        //        }
         
         
         memoLabel.snp.makeConstraints{
@@ -559,10 +558,24 @@ class AlarmTableViewCell : UITableViewCell, UISheetPresentationControllerDelegat
     
     func calculateMemoViewHeight() -> CGFloat {
         let maxWidth = contentView.frame.width - 96
-        let size = memoLabel.sizeThatFits(CGSize(width: maxWidth, height: CGFloat.greatestFiniteMagnitude))
-        return size.height + 32  // 텍스트 높이에 여백 추가
+        let size = memoLabel.sizeThatFits(CGSize(width: maxWidth, height: .greatestFiniteMagnitude))
+        
+        // 현재 폰트의 lineHeight를 사용하여 줄 수 계산
+        let lineHeight = memoLabel.font.lineHeight
+        let numberOfLines = ceil(size.height / lineHeight)
+        
+        // 줄 수에 따른 높이 계산
+        switch Int(numberOfLines) {
+        case 1:
+            return 49  // 1줄일 때
+        case 2:
+            return 66  // 2줄일 때
+        case 3:
+            return 83  // 3줄일 때
+        default:
+            return 83
+        }
     }
-    
     
     // 메모라벨 업데이트를 위한 함수
     func updateMemoLabel() {
@@ -576,6 +589,12 @@ class AlarmTableViewCell : UITableViewCell, UISheetPresentationControllerDelegat
                 context: nil
             )
             
+            // 텍스트의 실제 줄 수 계산
+            let lineHeight = self.memoLabel.font.lineHeight
+            let numberOfLines = ceil(size.height / lineHeight)
+            
+            print("메모 텍스트 줄 수: \(Int(numberOfLines))줄")
+            
             // 텍스트가 한 줄을 넘는지 여부를 체크
             let isMultiline = size.height > self.memoLabel.font.lineHeight
             
@@ -586,6 +605,7 @@ class AlarmTableViewCell : UITableViewCell, UISheetPresentationControllerDelegat
                 self.memoLabel.numberOfLines = 1
             }
             
+            //행간조절을 위한 extension적용
             self.memoLabel.applyDesignFont(.Pretendard_Medium12, text: self.fullText, color: DesignSystemColor.Gray400.value)
             self.memoLabel.textAlignment = .center
             

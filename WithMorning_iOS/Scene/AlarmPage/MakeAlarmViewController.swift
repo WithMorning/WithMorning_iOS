@@ -386,11 +386,12 @@ class MakeAlarmViewController : UIViewController, UIScrollViewDelegate, UISheetP
     //MARK: - API
     var selectedTime24: String = ""
     var selectedDayOfWeek: [String] = []
+    var username : String = ""
     
     //그룹 생성
     private func makeGroup(){
         LoadingIndicator.showLoading()
-        let data = MakeGroupMaindata(name: groupTextfield.text ?? "모임명이 없습니다.", wakeupTime: selectedTime24, dayOfWeekList: selectedDayOfWeek, isAgree: true, memo: memoTextView.text)
+        let data = MakeGroupMaindata(name: groupTextfield.text ?? "\(self.username)의 알람그룹", wakeupTime: selectedTime24, dayOfWeekList: selectedDayOfWeek, isAgree: true, memo: memoTextView.text ?? "아침에 하고 싶은 말 또는 패널티를 정해주세요. 아침에 하고 싶은 말 또는 패널티를 정해주세요. 아침에 하고 싶은 말 또는 패널티를 정해주세요.")
         
         APInetwork.postGroup(groupdata: data){ result in
             
