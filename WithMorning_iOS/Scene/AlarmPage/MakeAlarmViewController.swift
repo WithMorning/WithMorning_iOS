@@ -389,22 +389,34 @@ class MakeAlarmViewController : UIViewController, UIScrollViewDelegate, UISheetP
     var username : String = ""
     
     //그룹 생성
-    private func makeGroup(){
+    private func makeGroup() {
         LoadingIndicator.showLoading()
-        let data = MakeGroupMaindata(name: groupTextfield.text ?? "\(self.username)의 알람그룹", wakeupTime: selectedTime24, dayOfWeekList: selectedDayOfWeek, isAgree: true, memo: memoTextView.text ?? "아침에 하고 싶은 말 또는 패널티를 정해주세요. 아침에 하고 싶은 말 또는 패널티를 정해주세요. 아침에 하고 싶은 말 또는 패널티를 정해주세요.")
         
-        APInetwork.postGroup(groupdata: data){ result in
+        // 비어있을 경우 기본값 설정
+        let groupName = groupTextfield.text?.isEmpty == true ?
+            "\(self.username)님의 윗모닝" : groupTextfield.text!
             
+        let memo = memoTextView.text?.isEmpty == true ?
+            "아침에 하고 싶은 말 또는 패널티를 정해주세요." : memoTextView.text!
+
+        let data = MakeGroupMaindata(
+            name: groupName,
+            wakeupTime: selectedTime24,
+            dayOfWeekList: selectedDayOfWeek,
+            isAgree: true,
+            memo: memo
+        )
+        
+        APInetwork.postGroup(groupdata: data) { result in
             switch result {
             case .success(let makeAlarm):
-                print("알람 생성 API",makeAlarm)
+                print("알람 생성 API", makeAlarm)
                 self.navigationController?.popViewController(animated: true)
                 LoadingIndicator.hideLoading()
             case .failure(let error):
                 LoadingIndicator.hideLoading()
                 print(error.localizedDescription)
             }
-            
         }
     }
     
