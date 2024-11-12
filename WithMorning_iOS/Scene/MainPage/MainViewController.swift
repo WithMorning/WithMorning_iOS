@@ -348,6 +348,7 @@ class MainViewController: UIViewController, UISheetPresentationControllerDelegat
     //MARK: - Data Array
     var alarmData  : [GroupList] = []
     var isExpanded: Bool = false
+    var isExpandedStates: [Int: Bool] = [:]  // indexPath.row를 키로 사용
     
     //API뿌려주기.
     func MainpageUpdate(with mainpage: MainpageResponse){
@@ -465,31 +466,80 @@ extension MainViewController : UITableViewDelegate, UITableViewDataSource{
         return cell
     }
     
-    
-    //cell의 높이
+    //cell높이 지정
+    // heightForRowAt에서 isExpanded 상태를 기반으로 셀 높이 계산
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-        let cell = AlarmTableViewCell()
-        
         let alarm = alarmData[indexPath.row]
-        
-        let isExpanded = (tableView.cellForRow(at: indexPath) as? AlarmTableViewCell)?.isExpanded ?? false // 직접 가져옴
+        let cell = tableView.cellForRow(at: indexPath) as? AlarmTableViewCell
         
         let baseHeight: CGFloat = 130  // 기본 높이
         let extraHeight: CGFloat = 237 // 멤버 컬렉션 뷰 등의 추가 높이
-        let memoHeight = cell.calculateMemoViewHeight()
-        
-        // 셀의 isDisturbBanGroup 상태에 따라 높이를 다르게 설정
+
+        // 메모 라벨의 너비 계산 (패딩 고려)
+        let maxWidth = tableView.frame.width - 96
+        let font = UIFont.systemFont(ofSize: 17)  // memoLabel의 폰트 크기와 동일하게 설정
+        let memoText = alarm.memo as NSString? ?? ""
+        let memoSize = memoText.boundingRect(
+            with: CGSize(width: maxWidth, height: .greatestFiniteMagnitude),
+            options: .usesLineFragmentOrigin,
+            attributes: [.font: font],
+            context: nil
+        )
+
+        let lineHeight = font.lineHeight
+        let numberOfLines = ceil(memoSize.height / lineHeight)
+
+        let memoHeight: CGFloat
+        switch Int(numberOfLines) {
+        case 1:
+            memoHeight = 0
+        case 2:
+            memoHeight = 30
+        default:
+            memoHeight = 40
+        }
+
+        // 방해 금지 모드 처리
         if alarm.isDisturbBanGroup {
-            return baseHeight // 방해 금지 모드
+            return baseHeight
         } else {
-            if isExpanded{
-                return baseHeight + extraHeight + memoHeight
-            }else{
-                
-                return baseHeight + extraHeight
-            }
+            return (cell?.isExpanded ?? false) ? baseHeight + extraHeight + memoHeight : baseHeight + extraHeight
         }
     }
+
+    // 셀 확장/축소 처리
+    func toggleExpansion(for indexPath: IndexPath) {
+        // 해당 셀의 확장 상태를 토글
+        isExpandedStates[indexPath.row] = !(isExpandedStates[indexPath.row] ?? false)
+        
+        // 셀의 높이를 갱신하기 위해 테이블 뷰 리로드
+        AlarmTableView.reloadRows(at: [indexPath], with: .automatic)
+    }
+
+
+    
+//    func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
+//        let cell = AlarmTableViewCell()
+//        
+//        let alarm = alarmData[indexPath.row]
+//        let isExpanded = (tableView.cellForRow(at: indexPath) as? AlarmTableViewCell)?.isExpanded ?? false
+//
+//        let baseHeight: CGFloat = 130  // 기본 높이
+//        let extraHeight: CGFloat = 237 // 멤버 컬렉션 뷰 등의 추가 높이
+//        let memoHeight = cell.calculateMemoViewHeight()
+//
+//        // 메모가 한 줄일 때만 높이를 추가하지 않도록 조정
+//        if alarm.isDisturbBanGroup {
+//            return baseHeight // 방해 금지 모드
+//        } else {
+//            if isExpanded {
+//                return baseHeight + extraHeight + memoHeight
+//            } else {
+//                // 메모 높이가 0이거나 줄 수가 1줄일 때 extraHeight 제외
+//                return memoHeight > 0 ? baseHeight + extraHeight : baseHeight
+//            }
+//        }
+//    }
     
     func tableView(_ tableView: UITableView, didEndDisplaying cell: UITableViewCell, forRowAt indexPath: IndexPath) {
         

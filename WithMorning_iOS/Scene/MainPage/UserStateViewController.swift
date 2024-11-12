@@ -141,7 +141,6 @@ class UserStateViewController : UIViewController{
         print("유저아이디",userId)
         print("이미지 url", imageURL as Any)
         
-        
         // 유저 이미지 설정
         if let imageURLString = imageURL, !imageURLString.isEmpty, let url = URL(string: imageURLString) {
             // Kingfisher를 사용하여 이미지 다운로드 및 둥근 모서리 적용 처리
@@ -163,7 +162,6 @@ class UserStateViewController : UIViewController{
             userImage.image = UIImage(named: "profile")
         }
         
-        
         //전화번호 공개 비공개
         if isagree == true{
             subLabel.text = "전화를 걸어 친구를 깨워주세요."
@@ -172,8 +170,6 @@ class UserStateViewController : UIViewController{
             subLabel.text = "콕 찔러 깨우기를 선호하는 유저입니다."
             callButton.backgroundColor = DesignSystemColor.Gray300.value
         }
-        
-        
         
     }
     

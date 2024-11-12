@@ -255,7 +255,6 @@ class AlarmTableViewCell : UITableViewCell, UISheetPresentationControllerDelegat
     override func layoutSubviews() {
         super.layoutSubviews()
         setCell()
-        
     }
     
     required init?(coder aDecoder: NSCoder) {
@@ -552,36 +551,18 @@ class AlarmTableViewCell : UITableViewCell, UISheetPresentationControllerDelegat
         memoView.snp.makeConstraints { make in
             make.top.equalTo(memberCollectionView.snp.bottom).offset(12)
             make.leading.trailing.equalToSuperview().inset(20)
-            self.memoViewHeightConstraint = make.height.equalTo(49).constraint // 초기 높이 설정
+//            self.memoViewHeightConstraint = make.height.equalTo(49).constraint // 초기 높이 설정
         }
     }
     
-    func calculateMemoViewHeight() -> CGFloat {
-        let maxWidth = contentView.frame.width - 96
-        let size = memoLabel.sizeThatFits(CGSize(width: maxWidth, height: .greatestFiniteMagnitude))
-        
-        // 현재 폰트의 lineHeight를 사용하여 줄 수 계산
-        let lineHeight = memoLabel.font.lineHeight
-        let numberOfLines = ceil(size.height / lineHeight)
-        
-        // 줄 수에 따른 높이 계산
-        switch Int(numberOfLines) {
-        case 1:
-            return 49  // 1줄일 때
-        case 2:
-            return 66  // 2줄일 때
-        case 3:
-            return 83  // 3줄일 때
-        default:
-            return 83
-        }
-    }
+    
     
     // 메모라벨 업데이트를 위한 함수
     func updateMemoLabel() {
         DispatchQueue.main.async {
-            // 메모 라벨의 가용 너비를 기준으로 텍스트 크기를 계산
             let maxWidth = self.contentView.frame.width - 96  // memoView의 좌우 패딩을 고려한 너비
+            
+            // 텍스트 크기 계산
             let size = (self.fullText as NSString).boundingRect(
                 with: CGSize(width: maxWidth, height: .greatestFiniteMagnitude),
                 options: .usesLineFragmentOrigin,
@@ -589,30 +570,30 @@ class AlarmTableViewCell : UITableViewCell, UISheetPresentationControllerDelegat
                 context: nil
             )
             
-            // 텍스트의 실제 줄 수 계산
+            // 줄 수 계산
             let lineHeight = self.memoLabel.font.lineHeight
             let numberOfLines = ceil(size.height / lineHeight)
-            
-            print("메모 텍스트 줄 수: \(Int(numberOfLines))줄")
+
+            print("메모 텍스트 줄 수: \(Int(numberOfLines))줄, \(String(describing: self.memoLabel.text))")
             
             // 텍스트가 한 줄을 넘는지 여부를 체크
             let isMultiline = size.height > self.memoLabel.font.lineHeight
             
-            // 한 줄만 보이거나, 전체 텍스트를 보이도록 결정 (isExpanded에 따라)
+            // numberOfLines 설정, 텍스트가 길어지면 확장할 수 있도록 처리
             if isMultiline {
                 self.memoLabel.numberOfLines = self.isExpanded ? 0 : 1
             } else {
                 self.memoLabel.numberOfLines = 1
             }
-            
-            //행간조절을 위한 extension적용
+
+            // 텍스트 적용 및 라벨 스타일 설정
             self.memoLabel.applyDesignFont(.Pretendard_Medium12, text: self.fullText, color: DesignSystemColor.Gray400.value)
             self.memoLabel.textAlignment = .center
-            
-            // 메모 뷰 업데이트
+
+            // 메모 뷰의 높이 갱신
             self.updateMemoViewHeight()
-            
-            // 테이블 뷰 레이아웃 업데이트
+
+            // 셀 레이아웃 갱신
             if let tableView = self.superview as? UITableView {
                 tableView.beginUpdates()
                 tableView.endUpdates()
@@ -622,14 +603,23 @@ class AlarmTableViewCell : UITableViewCell, UISheetPresentationControllerDelegat
     
     //MARK: - 메모View 높이 계산
     func updateMemoViewHeight() {
-        let calculatedHeight = calculateMemoViewHeight()
-        let baseHeight: CGFloat = 49
+        // 메모 라벨의 크기 계산
+        let maxWidth = contentView.frame.width - 96
+        let size = memoLabel.sizeThatFits(CGSize(width: maxWidth, height: .greatestFiniteMagnitude))
         
-        // 여기서 .updateConstraints를 사용하여 기존의 제약 조건을 업데이트합니다.
-        memoView.snp.updateConstraints{ make in
-            self.memoViewHeightConstraint?.update(offset: max(calculatedHeight, baseHeight))
+        // 실제 줄 수 계산 (lineHeight에 맞춰서)
+        let lineHeight = memoLabel.font.lineHeight
+
+        // 실제 높이를 계산하여 업데이트
+        let calculatedHeight = max(size.height, 49) // 최소 높이 설정
+        
+        // 제약 조건 업데이트
+        memoView.snp.updateConstraints { make in
+            self.memoViewHeightConstraint?.update(offset: calculatedHeight)
         }
         
+        // 레이아웃 갱신
+        self.memoView.superview?.layoutIfNeeded()
     }
     
     //MARK: - 메모 더 보기
@@ -637,8 +627,8 @@ class AlarmTableViewCell : UITableViewCell, UISheetPresentationControllerDelegat
         isExpanded.toggle()
         self.Expandclosure?(self.isExpanded)
         updateMemoLabel()
-        
     }
+
     
     
     //MARK: - objc func
@@ -811,6 +801,7 @@ class AlarmTableViewCell : UITableViewCell, UISheetPresentationControllerDelegat
         
                 //데이터 present를 하기 전에 데이터를 먼저 옮긴 후 present를 해야함
                 // - 라영님 -
+        
                 Uservc.modalPresentationStyle = .formSheet
                 parentViewController.present(Uservc, animated: true)
         
@@ -827,11 +818,11 @@ class AlarmTableViewCell : UITableViewCell, UISheetPresentationControllerDelegat
                 }
         
 //        if selectedUser.isDisturbBanMode == true{
-//            
+//
 //            parentVC?.showToast(message: "\(selectedUser.nickname)님은 현재 방해금지 모드에요!")
-//            
+//
 //        }else{
-//            
+//
 //            if selectedUser.nickname == UserDefaults.standard.string(forKey: "nickname"){
 //                Myvc.nicknameLabel.text = selectedUser.nickname
 //                Myvc.userphoneNum = selectedUser.phone
@@ -841,7 +832,7 @@ class AlarmTableViewCell : UITableViewCell, UISheetPresentationControllerDelegat
 //                Myvc.groupId = self.groupId
 //                Myvc.modalPresentationStyle = .formSheet
 //                parentViewController.present(Myvc, animated: true)
-//                
+//
 //                if let vc = Myvc.sheetPresentationController{
 //                    if #available(iOS 16.0, *) {
 //                        vc.detents = [.custom { context in
@@ -851,9 +842,9 @@ class AlarmTableViewCell : UITableViewCell, UISheetPresentationControllerDelegat
 //                        vc.prefersGrabberVisible = false
 //                        vc.preferredCornerRadius = 16
 //                    }
-//                    
+//
 //                }
-//                
+//
 //            }else{
 //                print("남이에용")
 //                Uservc.nicknameLabel.text = selectedUser.nickname
@@ -861,12 +852,12 @@ class AlarmTableViewCell : UITableViewCell, UISheetPresentationControllerDelegat
 //                Uservc.userId = selectedUser.userID
 //                Uservc.isagree = selectedUser.isAgree
 //                Uservc.imageURL = selectedUser.imageURL
-//                
+//
 //                //데이터 present를 하기 전에 데이터를 먼저 옮긴 후 present를 해야함
 //                // - 라영님 -
 //                Uservc.modalPresentationStyle = .formSheet
 //                parentViewController.present(Uservc, animated: true)
-//                
+//
 //                if let vc = Uservc.sheetPresentationController{
 //                    if #available(iOS 16.0, *) {
 //                        vc.detents = [.custom { context in
@@ -876,9 +867,9 @@ class AlarmTableViewCell : UITableViewCell, UISheetPresentationControllerDelegat
 //                        vc.prefersGrabberVisible = false
 //                        vc.preferredCornerRadius = 16
 //                    }
-//                    
+//
 //                }
-//                
+//
 //            }
 //        }
         
