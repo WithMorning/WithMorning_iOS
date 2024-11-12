@@ -220,7 +220,7 @@ class AlarmTableViewCell : UITableViewCell, UISheetPresentationControllerDelegat
     
     private lazy var memoView : UIView = {
         let view = UIView()
-        view.addSubviews(memoLabel,moreButton)
+        view.addSubviews(memoLabel)
         view.backgroundColor = DesignSystemColor.Gray100.value
         view.layer.cornerRadius = 4
         return view
@@ -238,13 +238,6 @@ class AlarmTableViewCell : UITableViewCell, UISheetPresentationControllerDelegat
         return label
     }()
     
-    lazy var moreButton: UIButton = {
-        let button = UIButton()
-        button.setTitle("더보기", for: .normal)
-        button.titleLabel?.font = DesignSystemFont.Pretendard_Medium12.value
-        button.setTitleColor(DesignSystemColor.Gray600.value, for: .normal)
-        return button
-    }()
     
     
     //MARK: - LifeCycle
@@ -368,13 +361,6 @@ class AlarmTableViewCell : UITableViewCell, UISheetPresentationControllerDelegat
             $0.top.equalTo(memberCollectionView.snp.bottom).offset(12)
             $0.leading.trailing.equalToSuperview().inset(20)
         }
-        
-        //        moreButton.snp.makeConstraints{
-        //            $0.centerY.equalToSuperview()
-        //            $0.leading.equalTo(memoLabel.snp.trailing).offset(10)
-        //            $0.trailing.equalToSuperview().inset(48)
-        //        }
-        
         
         memoLabel.snp.makeConstraints{
             $0.edges.equalToSuperview().inset(UIEdgeInsets(top: 16, left: 48, bottom: 16, right: 48))
@@ -600,15 +586,14 @@ class AlarmTableViewCell : UITableViewCell, UISheetPresentationControllerDelegat
             }
         }
     }
+
     
     //MARK: - 메모View 높이 계산
     func updateMemoViewHeight() {
         // 메모 라벨의 크기 계산
         let maxWidth = contentView.frame.width - 96
         let size = memoLabel.sizeThatFits(CGSize(width: maxWidth, height: .greatestFiniteMagnitude))
-        
-        // 실제 줄 수 계산 (lineHeight에 맞춰서)
-        let lineHeight = memoLabel.font.lineHeight
+    
 
         // 실제 높이를 계산하여 업데이트
         let calculatedHeight = max(size.height, 49) // 최소 높이 설정

@@ -474,7 +474,7 @@ extension MainViewController : UITableViewDelegate, UITableViewDataSource{
         
         let baseHeight: CGFloat = 130  // 기본 높이
         let extraHeight: CGFloat = 237 // 멤버 컬렉션 뷰 등의 추가 높이
-
+        
         // 메모 라벨의 너비 계산 (패딩 고려)
         let maxWidth = tableView.frame.width - 96
         let font = UIFont.systemFont(ofSize: 17)  // memoLabel의 폰트 크기와 동일하게 설정
@@ -485,10 +485,10 @@ extension MainViewController : UITableViewDelegate, UITableViewDataSource{
             attributes: [.font: font],
             context: nil
         )
-
+        
         let lineHeight = font.lineHeight
         let numberOfLines = ceil(memoSize.height / lineHeight)
-
+        
         let memoHeight: CGFloat
         switch Int(numberOfLines) {
         case 1:
@@ -498,7 +498,7 @@ extension MainViewController : UITableViewDelegate, UITableViewDataSource{
         default:
             memoHeight = 40
         }
-
+        
         // 방해 금지 모드 처리
         if alarm.isDisturbBanGroup {
             return baseHeight
@@ -506,40 +506,15 @@ extension MainViewController : UITableViewDelegate, UITableViewDataSource{
             return (cell?.isExpanded ?? false) ? baseHeight + extraHeight + memoHeight : baseHeight + extraHeight
         }
     }
-
+    
     // 셀 확장/축소 처리
     func toggleExpansion(for indexPath: IndexPath) {
         // 해당 셀의 확장 상태를 토글
         isExpandedStates[indexPath.row] = !(isExpandedStates[indexPath.row] ?? false)
         
-        // 셀의 높이를 갱신하기 위해 테이블 뷰 리로드
-        AlarmTableView.reloadRows(at: [indexPath], with: .automatic)
     }
-
-
     
-//    func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-//        let cell = AlarmTableViewCell()
-//        
-//        let alarm = alarmData[indexPath.row]
-//        let isExpanded = (tableView.cellForRow(at: indexPath) as? AlarmTableViewCell)?.isExpanded ?? false
-//
-//        let baseHeight: CGFloat = 130  // 기본 높이
-//        let extraHeight: CGFloat = 237 // 멤버 컬렉션 뷰 등의 추가 높이
-//        let memoHeight = cell.calculateMemoViewHeight()
-//
-//        // 메모가 한 줄일 때만 높이를 추가하지 않도록 조정
-//        if alarm.isDisturbBanGroup {
-//            return baseHeight // 방해 금지 모드
-//        } else {
-//            if isExpanded {
-//                return baseHeight + extraHeight + memoHeight
-//            } else {
-//                // 메모 높이가 0이거나 줄 수가 1줄일 때 extraHeight 제외
-//                return memoHeight > 0 ? baseHeight + extraHeight : baseHeight
-//            }
-//        }
-//    }
+    
     
     func tableView(_ tableView: UITableView, didEndDisplaying cell: UITableViewCell, forRowAt indexPath: IndexPath) {
         
