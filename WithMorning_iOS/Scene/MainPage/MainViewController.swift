@@ -480,7 +480,7 @@ extension MainViewController : UITableViewDelegate, UITableViewDataSource{
             return baseHeight
         }
         
-        let characterLimit = 20 //1줄 최대 글자 수
+        let characterLimit = 19 //1줄 최대 글자 수
         let lines = memo.components(separatedBy: "\n")
         var actualNumberOfLines = lines.count
         
@@ -526,7 +526,6 @@ extension MainViewController : UITableViewDelegate, UITableViewDataSource{
         
         if let alarmCell = cell as? AlarmTableViewCell {
             alarmCell.isExpanded = false
-            alarmCell.updateMemoLabel()
         }
     }
 }
@@ -538,6 +537,7 @@ struct MainViewControllerRepresentable: UIViewControllerRepresentable {
     func updateUIViewController(_ uiView: UIViewController,context: Context) {
         // leave this empty
     }
+    
     @available(iOS 13.0.0, *)
     func makeUIViewController(context: Context) -> UIViewController{
         MainViewController()

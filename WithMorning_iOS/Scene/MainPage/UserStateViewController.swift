@@ -162,14 +162,28 @@ class UserStateViewController : UIViewController{
             userImage.image = UIImage(named: "profile")
         }
         
-        //전화번호 공개 비공개
-        if isagree == true{
-            subLabel.text = "전화를 걸어 친구를 깨워주세요."
-            callButton.backgroundColor =  DesignSystemColor.Orange500.value
-        }else{
-            subLabel.text = "콕 찔러 깨우기를 선호하는 유저입니다."
+        let fullText: String
+        let targetText: String
+        let color = DesignSystemColor.Orange500.value // 강조할 텍스트의 색상
+        
+        if isagree ?? true{
+            fullText = "전화를 걸어 친구를 깨워주세요."
+            targetText = "전화"
+            callButton.backgroundColor = DesignSystemColor.Orange500.value
+        } else {
+            fullText = "콕 찔러 깨우기를 선호하는 유저입니다."
+            targetText = "콕 찔러 깨우기"
             callButton.backgroundColor = DesignSystemColor.Gray300.value
         }
+        
+        // NSMutableAttributedString을 사용하여 특정 텍스트의 속성 변경
+        let attributedString = NSMutableAttributedString(string: fullText)
+        if let range = fullText.range(of: targetText) {
+            let nsRange = NSRange(range, in: fullText)
+            attributedString.addAttribute(.foregroundColor, value: color, range: nsRange)
+        }
+        
+        subLabel.attributedText = attributedString
         
     }
     

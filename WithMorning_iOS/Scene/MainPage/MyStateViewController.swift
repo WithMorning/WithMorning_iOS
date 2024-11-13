@@ -96,7 +96,7 @@ class MyStateViewController : UIViewController{
     
     
     //MARK: - UI
-
+    
     func SetUI(){
         view.addSubviews(userImage,nicknameLabel,subLabel,opencallButton,closecallButton,DoneButton)
         
@@ -137,7 +137,7 @@ class MyStateViewController : UIViewController{
             $0.top.equalToSuperview().offset(20)
         }
     }
-
+    
     func configureUserState(){
         print("isagree",isagree as Any)
         print("닉네임",nicknameLabel.text as Any)
@@ -166,15 +166,28 @@ class MyStateViewController : UIViewController{
             userImage.image = UIImage(named: "profile")
         }
         
+        let fullText: String
+        let targetText: String
+        let color = DesignSystemColor.Orange500.value // 강조할 텍스트의 색상
         
-        //전화번호 공개 비공개
-        if isagree == true{
-            subLabel.text = "전화번호를 공개한 그룹입니다."
+        if isagree ?? true{
+            fullText = "전화번호를 비공개한 그룹입니다."
+            targetText = "비공개"
             closecallButton.backgroundColor = DesignSystemColor.Gray300.value
-        }else{
-            subLabel.text = "전화번호를 공개한 그룹입니다."
+        } else {
+            fullText = "전화번호를 공개한 그룹입니다."
+            targetText = "공개"
             opencallButton.backgroundColor = DesignSystemColor.Gray300.value
         }
+        
+        // NSMutableAttributedString을 사용하여 특정 텍스트의 속성 변경
+        let attributedString = NSMutableAttributedString(string: fullText)
+        if let range = fullText.range(of: targetText) {
+            let nsRange = NSRange(range, in: fullText)
+            attributedString.addAttribute(.foregroundColor, value: color, range: nsRange)
+        }
+        
+        subLabel.attributedText = attributedString
         
         
         
@@ -192,7 +205,7 @@ class MyStateViewController : UIViewController{
         isagree = updatedAgreeStatus // 상태를 전환하여 반영
         
         let editphoneData = EditphoneMaindata(isAgree: updatedAgreeStatus)
-
+        
         // API 호출
         APInetwork.patchphoneagree(groupId: self.groupId, editphoneagree: editphoneData) { result in
             switch result {
@@ -207,7 +220,7 @@ class MyStateViewController : UIViewController{
             }
         }
     }
-
+    
     
     //MARK: - @objc func
     @objc func callclick() {

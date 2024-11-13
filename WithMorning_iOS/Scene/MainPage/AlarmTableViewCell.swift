@@ -525,7 +525,6 @@ class AlarmTableViewCell : UITableViewCell, UISheetPresentationControllerDelegat
     var fullText: String = ""
     var isExpanded = false
     
-    
     // 메모 라벨 초기 설정
     func setMemoText(_ text: String) {
         fullText = text
@@ -543,7 +542,7 @@ class AlarmTableViewCell : UITableViewCell, UISheetPresentationControllerDelegat
     // 메모라벨 업데이트를 위한 함수
     func updateMemoLabel() {
         DispatchQueue.main.async {
-            let characterLimit = 20 // 1줄 최대 글자 수
+            let characterLimit = 19 // 1줄 최대 글자 수
             
             // 실제 텍스트 줄 수 계산
             let lines = self.fullText.components(separatedBy: "\n")
@@ -831,62 +830,9 @@ class AlarmTableViewCell : UITableViewCell, UISheetPresentationControllerDelegat
         //데이터 present를 하기 전에 데이터를 먼저 옮긴 후 present를 해야함
         // - 라영님 -
         
-        //        Uservc.modalPresentationStyle = .formSheet
-        //        parentViewController.present(Uservc, animated: true)
-        
-        //        if let vc = Uservc.sheetPresentationController{
-        //            if #available(iOS 16.0, *) {
-        //                vc.detents = [.custom { context in
-        //                    return 330
-        //                }]
-        //                vc.delegate = self
-        //                vc.prefersGrabberVisible = false
-        //                vc.preferredCornerRadius = 16
-        //            }
-        //
-        //        }
-        
-        if selectedUser.isDisturbBanMode == true{
-            
-            parentVC?.showToast(message: "\(selectedUser.nickname)님은 현재 방해금지 모드에요!")
-            
-        }else{
-            
-            if selectedUser.nickname == UserDefaults.standard.string(forKey: "nickname"){
-                Myvc.nicknameLabel.text = selectedUser.nickname
-                Myvc.userphoneNum = selectedUser.phone
-                Myvc.userId = selectedUser.userID
-                Myvc.isagree = selectedUser.isAgree
-                Myvc.imageURL = selectedUser.imageURL
-                Myvc.groupId = self.groupId
-                Myvc.modalPresentationStyle = .formSheet
-                parentViewController.present(Myvc, animated: true)
-                
-                if let vc = Myvc.sheetPresentationController{
-                    if #available(iOS 16.0, *) {
-                        vc.detents = [.custom { context in
-                            return 330
-                        }]
-                        vc.delegate = self
-                        vc.prefersGrabberVisible = false
-                        vc.preferredCornerRadius = 16
-                    }
-                    
-                }
-                
-            }else{
-                print("남이에용")
-                Uservc.nicknameLabel.text = selectedUser.nickname
-                Uservc.userphoneNum = selectedUser.phone
-                Uservc.userId = selectedUser.userID
-                Uservc.isagree = selectedUser.isAgree
-                Uservc.imageURL = selectedUser.imageURL
-                
-                //데이터 present를 하기 전에 데이터를 먼저 옮긴 후 present를 해야함
-                // - 라영님 -
                 Uservc.modalPresentationStyle = .formSheet
                 parentViewController.present(Uservc, animated: true)
-                
+        
                 if let vc = Uservc.sheetPresentationController{
                     if #available(iOS 16.0, *) {
                         vc.detents = [.custom { context in
@@ -896,11 +842,64 @@ class AlarmTableViewCell : UITableViewCell, UISheetPresentationControllerDelegat
                         vc.prefersGrabberVisible = false
                         vc.preferredCornerRadius = 16
                     }
-                    
+        
                 }
-                
-            }
-        }
+        
+//        if selectedUser.isDisturbBanMode == true{
+//            
+//            parentVC?.showToast(message: "\(selectedUser.nickname)님은 현재 방해금지 모드에요!")
+//            
+//        }else{
+//            
+//            if selectedUser.nickname == UserDefaults.standard.string(forKey: "nickname"){
+//                Myvc.nicknameLabel.text = selectedUser.nickname
+//                Myvc.userphoneNum = selectedUser.phone
+//                Myvc.userId = selectedUser.userID
+//                Myvc.isagree = selectedUser.isAgree
+//                Myvc.imageURL = selectedUser.imageURL
+//                Myvc.groupId = self.groupId
+//                Myvc.modalPresentationStyle = .formSheet
+//                parentViewController.present(Myvc, animated: true)
+//                
+//                if let vc = Myvc.sheetPresentationController{
+//                    if #available(iOS 16.0, *) {
+//                        vc.detents = [.custom { context in
+//                            return 330
+//                        }]
+//                        vc.delegate = self
+//                        vc.prefersGrabberVisible = false
+//                        vc.preferredCornerRadius = 16
+//                    }
+//                    
+//                }
+//                
+//            }else{
+//                print("남이에용")
+//                Uservc.nicknameLabel.text = selectedUser.nickname
+//                Uservc.userphoneNum = selectedUser.phone
+//                Uservc.userId = selectedUser.userID
+//                Uservc.isagree = selectedUser.isAgree
+//                Uservc.imageURL = selectedUser.imageURL
+//                
+//                //데이터 present를 하기 전에 데이터를 먼저 옮긴 후 present를 해야함
+//                // - 라영님 -
+//                Uservc.modalPresentationStyle = .formSheet
+//                parentViewController.present(Uservc, animated: true)
+//                
+//                if let vc = Uservc.sheetPresentationController{
+//                    if #available(iOS 16.0, *) {
+//                        vc.detents = [.custom { context in
+//                            return 330
+//                        }]
+//                        vc.delegate = self
+//                        vc.prefersGrabberVisible = false
+//                        vc.preferredCornerRadius = 16
+//                    }
+//                    
+//                }
+//                
+//            }
+//        }
         
     }
     

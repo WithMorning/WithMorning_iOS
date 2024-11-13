@@ -22,6 +22,7 @@ class LoginViewController: UIViewController{
         button.addTarget(self, action: #selector(popclicked), for: .touchUpInside)
         return button
     }()
+    
     //MARK: - 메인 라벨
     private lazy var titleIMG : UIImageView = {
         let view = UIImageView()
@@ -80,8 +81,8 @@ class LoginViewController: UIViewController{
             $0.height.width.equalTo(24)
         }
         titleIMG.snp.makeConstraints{
-            $0.top.equalTo(view.safeAreaLayoutGuide).offset(70)
-            $0.leading.equalToSuperview().inset(24)
+            $0.top.equalTo(view.safeAreaLayoutGuide)
+            $0.leading.equalToSuperview()
         }
         
         appleButton.snp.makeConstraints{
