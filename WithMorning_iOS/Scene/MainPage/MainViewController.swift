@@ -473,38 +473,46 @@ extension MainViewController : UITableViewDelegate, UITableViewDataSource{
         let cell = tableView.cellForRow(at: indexPath) as? AlarmTableViewCell
         
         let baseHeight: CGFloat = 130  // 기본 높이
-        let extraHeight: CGFloat = 237 // 멤버 컬렉션 뷰 등의 추가 높이
+        let extraHeight: CGFloat = 250 // 멤버 컬렉션 뷰 등의 추가 높이
         
-        // 메모 라벨의 너비 계산 (패딩 고려)
-        let maxWidth = tableView.frame.width - 96
-        let font = UIFont.systemFont(ofSize: 17)  // memoLabel의 폰트 크기와 동일하게 설정
-        let memoText = alarm.memo as NSString? ?? ""
-        let memoSize = memoText.boundingRect(
-            with: CGSize(width: maxWidth, height: .greatestFiniteMagnitude),
-            options: .usesLineFragmentOrigin,
-            attributes: [.font: font],
-            context: nil
-        )
-        
-        let lineHeight = font.lineHeight
-        let numberOfLines = ceil(memoSize.height / lineHeight)
-        
-        let memoHeight: CGFloat
-        switch Int(numberOfLines) {
-        case 1:
-            memoHeight = 0
-        case 2:
-            memoHeight = 30
-        default:
-            memoHeight = 40
-        }
-        
-        // 방해 금지 모드 처리
-        if alarm.isDisturbBanGroup {
+        // 메모가 없거나 방해 금지 모드인 경우 기본 처리
+        guard let memo = alarm.memo as String?, !memo.isEmpty, !alarm.isDisturbBanGroup else {
             return baseHeight
-        } else {
-            return (cell?.isExpanded ?? false) ? baseHeight + extraHeight + memoHeight : baseHeight + extraHeight
         }
+        
+        let characterLimit = 20 //1줄 최대 글자 수
+        let lines = memo.components(separatedBy: "\n")
+        var actualNumberOfLines = lines.count
+        
+        // 각 줄이 characterLimit을 초과하는 경우 추가 줄 수 계산
+        for line in lines {
+            if line.count > characterLimit {
+                let additionalLines = Int(ceil(Double(line.count) / Double(characterLimit))) - 1
+                actualNumberOfLines += additionalLines
+            }
+        }
+        
+        // 접힌 상태에서는 추가 높이만
+        if !(cell?.isExpanded ?? false) {
+            return baseHeight + extraHeight
+        }
+        
+        // 펼쳐진 상태에서 메모 높이 계산
+        let memoHeight: CGFloat
+        if actualNumberOfLines == 1 && (memo.count <= characterLimit) {
+            memoHeight = 0  // 16글자 이하의 한 줄일 때는 추가 높이 없음
+        } else {
+            switch actualNumberOfLines {
+            case 1:
+                memoHeight = 20  // 16글자 초과하는 한 줄
+            case 2:
+                memoHeight = 30  // 두 줄
+            default:
+                memoHeight = 40  // 세 줄 이상
+            }
+        }
+        
+        return baseHeight + extraHeight + memoHeight
     }
     
     // 셀 확장/축소 처리
@@ -513,8 +521,6 @@ extension MainViewController : UITableViewDelegate, UITableViewDataSource{
         isExpandedStates[indexPath.row] = !(isExpandedStates[indexPath.row] ?? false)
         
     }
-    
-    
     
     func tableView(_ tableView: UITableView, didEndDisplaying cell: UITableViewCell, forRowAt indexPath: IndexPath) {
         

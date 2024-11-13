@@ -537,48 +537,92 @@ class AlarmTableViewCell : UITableViewCell, UISheetPresentationControllerDelegat
         memoView.snp.makeConstraints { make in
             make.top.equalTo(memberCollectionView.snp.bottom).offset(12)
             make.leading.trailing.equalToSuperview().inset(20)
-//            self.memoViewHeightConstraint = make.height.equalTo(49).constraint // 초기 높이 설정
         }
     }
-    
-    
     
     // 메모라벨 업데이트를 위한 함수
     func updateMemoLabel() {
         DispatchQueue.main.async {
-            let maxWidth = self.contentView.frame.width - 96  // memoView의 좌우 패딩을 고려한 너비
+            let characterLimit = 20 // 1줄 최대 글자 수
             
-            // 텍스트 크기 계산
-            let size = (self.fullText as NSString).boundingRect(
-                with: CGSize(width: maxWidth, height: .greatestFiniteMagnitude),
-                options: .usesLineFragmentOrigin,
-                attributes: [.font: self.memoLabel.font!],
-                context: nil
-            )
+            // 실제 텍스트 줄 수 계산
+            let lines = self.fullText.components(separatedBy: "\n")
+            var actualNumberOfLines = lines.count
             
-            // 줄 수 계산
-            let lineHeight = self.memoLabel.font.lineHeight
-            let numberOfLines = ceil(size.height / lineHeight)
-
-            print("메모 텍스트 줄 수: \(Int(numberOfLines))줄, \(String(describing: self.memoLabel.text))")
-            
-            // 텍스트가 한 줄을 넘는지 여부를 체크
-            let isMultiline = size.height > self.memoLabel.font.lineHeight
-            
-            // numberOfLines 설정, 텍스트가 길어지면 확장할 수 있도록 처리
-            if isMultiline {
-                self.memoLabel.numberOfLines = self.isExpanded ? 0 : 1
-            } else {
-                self.memoLabel.numberOfLines = 1
+            // 각 줄이 characterLimit을 초과하는 경우 추가 줄 수 계산
+            for line in lines {
+                if line.count > characterLimit {
+                    let additionalLines = Int(ceil(Double(line.count) / Double(characterLimit))) - 1
+                    actualNumberOfLines += additionalLines
+                }
             }
-
-            // 텍스트 적용 및 라벨 스타일 설정
-            self.memoLabel.applyDesignFont(.Pretendard_Medium12, text: self.fullText, color: DesignSystemColor.Gray400.value)
+            
+            print("메모 텍스트 줄 수: \(actualNumberOfLines)줄, \(String(describing: self.memoLabel.text))")
+            
+            var displayedText = self.fullText
+            
+            if self.isExpanded {
+                // 펼쳐진 상태: 16글자씩 줄바꿈 처리
+                if displayedText.count > characterLimit {
+                    var formattedText = ""
+                    var currentIndex = displayedText.startIndex
+                    
+                    while currentIndex < displayedText.endIndex {
+                        let endIndex = displayedText.index(currentIndex, offsetBy: characterLimit, limitedBy: displayedText.endIndex) ?? displayedText.endIndex
+                        let line = displayedText[currentIndex..<endIndex]
+                        formattedText += String(line)
+                        if endIndex != displayedText.endIndex {
+                            formattedText += "\n"
+                        }
+                        currentIndex = endIndex
+                    }
+                    displayedText = formattedText
+                }
+            } else {
+                // 접힌 상태: 첫 줄의 내용만 보여주고 ... 더보기 추가
+                if displayedText.contains("\n") {
+                    if let firstLineEndIndex = displayedText.firstIndex(of: "\n") {
+                        let firstLine = String(displayedText[..<firstLineEndIndex])
+                        displayedText = firstLine + "... 더보기"
+                    }
+                } else if displayedText.count > characterLimit {
+                    let firstLine = String(displayedText.prefix(characterLimit))
+                    displayedText = firstLine + "... 더보기"
+                }
+            }
+            
+            // numberOfLines 설정
+            self.memoLabel.numberOfLines = self.isExpanded ? 0 : 1
+            
+            if !self.isExpanded && displayedText.contains("... 더보기") {
+                if let dotRange = displayedText.range(of: "... ") {
+                    let mainText = String(displayedText[..<dotRange.lowerBound])
+                    
+                    self.memoLabel.applyDesignFont(.Pretendard_Medium12, text: mainText + "... ", color: DesignSystemColor.Gray400.value)
+                    let mainAttributedText = self.memoLabel.attributedText
+                    
+                    self.memoLabel.applyDesignFont(.Pretendard_SemiBold12, text: "더보기", color: DesignSystemColor.Gray600.value)
+                    let moreAttributedText = self.memoLabel.attributedText
+                    
+                    let finalAttributedString = NSMutableAttributedString()
+                    if let mainText = mainAttributedText {
+                        finalAttributedString.append(mainText)
+                    }
+                    if let moreText = moreAttributedText {
+                        finalAttributedString.append(moreText)
+                    }
+                    
+                    self.memoLabel.attributedText = finalAttributedString
+                }
+            } else {
+                self.memoLabel.applyDesignFont(.Pretendard_Medium12, text: displayedText, color: DesignSystemColor.Gray400.value)
+            }
+            
             self.memoLabel.textAlignment = .center
-
+            
             // 메모 뷰의 높이 갱신
             self.updateMemoViewHeight()
-
+            
             // 셀 레이아웃 갱신
             if let tableView = self.superview as? UITableView {
                 tableView.beginUpdates()
@@ -586,15 +630,15 @@ class AlarmTableViewCell : UITableViewCell, UISheetPresentationControllerDelegat
             }
         }
     }
-
+    
     
     //MARK: - 메모View 높이 계산
     func updateMemoViewHeight() {
         // 메모 라벨의 크기 계산
         let maxWidth = contentView.frame.width - 96
         let size = memoLabel.sizeThatFits(CGSize(width: maxWidth, height: .greatestFiniteMagnitude))
-    
-
+        
+        
         // 실제 높이를 계산하여 업데이트
         let calculatedHeight = max(size.height, 49) // 최소 높이 설정
         
@@ -613,7 +657,7 @@ class AlarmTableViewCell : UITableViewCell, UISheetPresentationControllerDelegat
         self.Expandclosure?(self.isExpanded)
         updateMemoLabel()
     }
-
+    
     
     
     //MARK: - objc func
@@ -778,18 +822,71 @@ class AlarmTableViewCell : UITableViewCell, UISheetPresentationControllerDelegat
         
         let selectedUser = userData[indexPath.item]
         
+        Uservc.nicknameLabel.text = selectedUser.nickname
+        Uservc.userphoneNum = selectedUser.phone
+        Uservc.userId = selectedUser.userID
+        Uservc.isagree = selectedUser.isAgree
+        Uservc.imageURL = selectedUser.imageURL
+        
+        //데이터 present를 하기 전에 데이터를 먼저 옮긴 후 present를 해야함
+        // - 라영님 -
+        
+        //        Uservc.modalPresentationStyle = .formSheet
+        //        parentViewController.present(Uservc, animated: true)
+        
+        //        if let vc = Uservc.sheetPresentationController{
+        //            if #available(iOS 16.0, *) {
+        //                vc.detents = [.custom { context in
+        //                    return 330
+        //                }]
+        //                vc.delegate = self
+        //                vc.prefersGrabberVisible = false
+        //                vc.preferredCornerRadius = 16
+        //            }
+        //
+        //        }
+        
+        if selectedUser.isDisturbBanMode == true{
+            
+            parentVC?.showToast(message: "\(selectedUser.nickname)님은 현재 방해금지 모드에요!")
+            
+        }else{
+            
+            if selectedUser.nickname == UserDefaults.standard.string(forKey: "nickname"){
+                Myvc.nicknameLabel.text = selectedUser.nickname
+                Myvc.userphoneNum = selectedUser.phone
+                Myvc.userId = selectedUser.userID
+                Myvc.isagree = selectedUser.isAgree
+                Myvc.imageURL = selectedUser.imageURL
+                Myvc.groupId = self.groupId
+                Myvc.modalPresentationStyle = .formSheet
+                parentViewController.present(Myvc, animated: true)
+                
+                if let vc = Myvc.sheetPresentationController{
+                    if #available(iOS 16.0, *) {
+                        vc.detents = [.custom { context in
+                            return 330
+                        }]
+                        vc.delegate = self
+                        vc.prefersGrabberVisible = false
+                        vc.preferredCornerRadius = 16
+                    }
+                    
+                }
+                
+            }else{
+                print("남이에용")
                 Uservc.nicknameLabel.text = selectedUser.nickname
                 Uservc.userphoneNum = selectedUser.phone
                 Uservc.userId = selectedUser.userID
                 Uservc.isagree = selectedUser.isAgree
                 Uservc.imageURL = selectedUser.imageURL
-        
+                
                 //데이터 present를 하기 전에 데이터를 먼저 옮긴 후 present를 해야함
                 // - 라영님 -
-        
                 Uservc.modalPresentationStyle = .formSheet
                 parentViewController.present(Uservc, animated: true)
-        
+                
                 if let vc = Uservc.sheetPresentationController{
                     if #available(iOS 16.0, *) {
                         vc.detents = [.custom { context in
@@ -799,64 +896,11 @@ class AlarmTableViewCell : UITableViewCell, UISheetPresentationControllerDelegat
                         vc.prefersGrabberVisible = false
                         vc.preferredCornerRadius = 16
                     }
-        
+                    
                 }
-        
-//        if selectedUser.isDisturbBanMode == true{
-//
-//            parentVC?.showToast(message: "\(selectedUser.nickname)님은 현재 방해금지 모드에요!")
-//
-//        }else{
-//
-//            if selectedUser.nickname == UserDefaults.standard.string(forKey: "nickname"){
-//                Myvc.nicknameLabel.text = selectedUser.nickname
-//                Myvc.userphoneNum = selectedUser.phone
-//                Myvc.userId = selectedUser.userID
-//                Myvc.isagree = selectedUser.isAgree
-//                Myvc.imageURL = selectedUser.imageURL
-//                Myvc.groupId = self.groupId
-//                Myvc.modalPresentationStyle = .formSheet
-//                parentViewController.present(Myvc, animated: true)
-//
-//                if let vc = Myvc.sheetPresentationController{
-//                    if #available(iOS 16.0, *) {
-//                        vc.detents = [.custom { context in
-//                            return 330
-//                        }]
-//                        vc.delegate = self
-//                        vc.prefersGrabberVisible = false
-//                        vc.preferredCornerRadius = 16
-//                    }
-//
-//                }
-//
-//            }else{
-//                print("남이에용")
-//                Uservc.nicknameLabel.text = selectedUser.nickname
-//                Uservc.userphoneNum = selectedUser.phone
-//                Uservc.userId = selectedUser.userID
-//                Uservc.isagree = selectedUser.isAgree
-//                Uservc.imageURL = selectedUser.imageURL
-//
-//                //데이터 present를 하기 전에 데이터를 먼저 옮긴 후 present를 해야함
-//                // - 라영님 -
-//                Uservc.modalPresentationStyle = .formSheet
-//                parentViewController.present(Uservc, animated: true)
-//
-//                if let vc = Uservc.sheetPresentationController{
-//                    if #available(iOS 16.0, *) {
-//                        vc.detents = [.custom { context in
-//                            return 330
-//                        }]
-//                        vc.delegate = self
-//                        vc.prefersGrabberVisible = false
-//                        vc.preferredCornerRadius = 16
-//                    }
-//
-//                }
-//
-//            }
-//        }
+                
+            }
+        }
         
     }
     
