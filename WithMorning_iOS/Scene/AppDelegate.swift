@@ -8,11 +8,12 @@
 import UIKit
 import Firebase
 import AVFoundation
-
-
+import AudioToolbox
 
 @main
 class AppDelegate:UIResponder, UIApplicationDelegate {
+    
+    var audioPlayer : AVAudioPlayer?
     
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
         
@@ -61,14 +62,8 @@ class AppDelegate:UIResponder, UIApplicationDelegate {
     func userNotificationCenter(_ center: UNUserNotificationCenter, willPresent notification: UNNotification, withCompletionHandler completionHandler: @escaping (UNNotificationPresentationOptions) -> Void) {
         let userInfo = notification.request.content.userInfo
         handleNotification(userInfo)
-        completionHandler([.banner, .list, .sound])
+        completionHandler([.banner, .list/*, .sound*/])
         
-        // 전체 데이터가 필요한 경우 JSON 형식으로 예쁘게 출력
-        if let jsonData = try? JSONSerialization.data(withJSONObject: userInfo, options: .prettyPrinted),
-           let jsonString = String(data: jsonData, encoding: .utf8) {
-            print("📋 전체 알림 데이터:")
-            print(jsonString)
-        }
     }
     
     //MARK: - Background(앱 꺼진 상태)에서도 알림 오는 설정
@@ -77,23 +72,21 @@ class AppDelegate:UIResponder, UIApplicationDelegate {
         handleNotification(userInfo)
         completionHandler()
         
-        // 전체 데이터가 필요한 경우 JSON 형식으로 예쁘게 출력
-        if let jsonData = try? JSONSerialization.data(withJSONObject: userInfo, options: .prettyPrinted),
-           let jsonString = String(data: jsonData, encoding: .utf8) {
-            print("📋 전체 알림 데이터:")
-            print(jsonString)
-        }
     }
     
+    
+    //MARK: - 알림 타입
     private func handleNotification(_ userInfo: [AnyHashable: Any]) {
         if let aps = userInfo["aps"] as? [String: Any],
            let alert = aps["alert"] as? [String: Any],
            let title = alert["title"] as? String {
+            
             switch title {
             case "기상 알람":
                 handlewakeup(userInfo)
             case "콕 찌르기":
                 handleprick(userInfo)
+                playNotificationSound(named: "ThirdSound")
             case "취침 알람":
                 handlebedtime(userInfo)
             default:
@@ -101,6 +94,46 @@ class AppDelegate:UIResponder, UIApplicationDelegate {
             }
         }
     }
+    
+    private var notificationVolume: Float {
+            // 0-100 스케일을 0-1 스케일로 변환
+            return UserDefaults.standard.float(forKey: "volume") / 100.0
+        }
+    
+    // 진동 설정 값을 가져오는 프로퍼티
+        private var isVibrateEnabled: Bool {
+            return UserDefaults.standard.bool(forKey: "vibrate")
+        }
+    
+    //MARK: - 알림 소리를 위한 메서드(알림 이름을 대입)
+        private func playNotificationSound(named soundName: String) {
+            guard let soundURL = Bundle.main.url(forResource: soundName, withExtension: "wav") else {
+                print("Sound file not found")
+                return
+            }
+            
+            do {
+                
+                // AVAudioSession 설정
+                // playback - 무음모드일때도 소리남
+                // ambient - 무음모드일때는 소리 안남
+                
+                try AVAudioSession.sharedInstance().setCategory(.ambient, mode: .default)
+                try AVAudioSession.sharedInstance().setActive(true)
+                
+                audioPlayer = try AVAudioPlayer(contentsOf: soundURL)
+                audioPlayer?.volume = notificationVolume // UserDefaults에서 가져온 볼륨 적용
+                
+                // 진동 설정이 켜져있으면 진동 실행
+                if isVibrateEnabled {
+                    AudioServicesPlaySystemSound(kSystemSoundID_Vibrate)
+                }
+                
+                audioPlayer?.play()
+            } catch {
+                print("Error playing sound: \(error.localizedDescription)")
+            }
+        }
     
     private func handlewakeup(_ userInfo: [AnyHashable: Any]) {
         print("기상알람")
@@ -110,6 +143,11 @@ class AppDelegate:UIResponder, UIApplicationDelegate {
     
     private func handleprick(_ userInfo: [AnyHashable: Any]) {
         print("콕 찌르기")
+        if let jsonData = try? JSONSerialization.data(withJSONObject: userInfo, options: .prettyPrinted),
+           let jsonString = String(data: jsonData, encoding: .utf8) {
+            print("📋 전체 알림 데이터:")
+            print(jsonString)
+        }
         
     }
     private func handlebedtime(_ userInfo: [AnyHashable: Any]) {
