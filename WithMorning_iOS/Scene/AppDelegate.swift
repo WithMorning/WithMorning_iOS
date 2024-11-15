@@ -45,6 +45,7 @@ class AppDelegate:UIResponder, UIApplicationDelegate {
         return true
     }
     
+    
     // MARK: UISceneSession Lifecycle
     func application(_ application: UIApplication, configurationForConnecting connectingSceneSession: UISceneSession, options: UIScene.ConnectionOptions) -> UISceneConfiguration {
         // Called when a new scene session is being created.
@@ -58,6 +59,8 @@ class AppDelegate:UIResponder, UIApplicationDelegate {
         // Use this method to release any resources that were specific to the discarded scenes, as they will not return.
     }
     
+    
+    
     //MARK: - Foreground(앱 켜진 상태)에서도 알림 오는 설정
     func userNotificationCenter(_ center: UNUserNotificationCenter, willPresent notification: UNNotification, withCompletionHandler completionHandler: @escaping (UNNotificationPresentationOptions) -> Void) {
         let userInfo = notification.request.content.userInfo
@@ -67,12 +70,26 @@ class AppDelegate:UIResponder, UIApplicationDelegate {
     }
     
     //MARK: - Background(앱 꺼진 상태)에서도 알림 오는 설정
+    /// 기상알람의 경우 앱 진입시 뷰가 바뀌기 때문에 설정 필요함. 근디? 아직? 모름ㅋㅋ
+    /// 실행되는 메서드를 옮기면 될거 같기도 한데 일단 대기 ㅋㅋ
+    ///
     func userNotificationCenter(_ center: UNUserNotificationCenter, didReceive response: UNNotificationResponse, withCompletionHandler completionHandler: @escaping () -> Void) {
         let userInfo = response.notification.request.content.userInfo
         handleNotification(userInfo)
         completionHandler()
         
     }
+    
+    //MARK: - silent remote push
+    //아마 백그라운드에 있거나, 앱이 켜져있지 않은 상태에서 호출되는 부분으로 추정
+    //자세한건 진형이가 하고 나서 설정해야함
+    
+    func application(_ application: UIApplication, didReceiveRemoteNotification userInfo: [AnyHashable : Any], fetchCompletionHandler completionHandler: @escaping (UIBackgroundFetchResult) -> Void) {
+        print(userInfo)
+        print("silent push")
+        completionHandler(.newData)
+    }
+    
     
     
     //MARK: - 알림 타입
@@ -84,6 +101,7 @@ class AppDelegate:UIResponder, UIApplicationDelegate {
             switch title {
             case "기상 알람":
                 handlewakeup(userInfo)
+                playNotificationSound(named: "ThirdSound")
             case "콕 찌르기":
                 handleprick(userInfo)
                 playNotificationSound(named: "ThirdSound")
@@ -96,44 +114,44 @@ class AppDelegate:UIResponder, UIApplicationDelegate {
     }
     
     private var notificationVolume: Float {
-            // 0-100 스케일을 0-1 스케일로 변환
-            return UserDefaults.standard.float(forKey: "volume") / 100.0
-        }
+        // 0-100 스케일을 0-1 스케일로 변환
+        return UserDefaults.standard.float(forKey: "volume") / 100.0
+    }
     
     // 진동 설정 값을 가져오는 프로퍼티
-        private var isVibrateEnabled: Bool {
-            return UserDefaults.standard.bool(forKey: "vibrate")
-        }
+    private var isVibrateEnabled: Bool {
+        return UserDefaults.standard.bool(forKey: "vibrate")
+    }
     
     //MARK: - 알림 소리를 위한 메서드(알림 이름을 대입)
-        private func playNotificationSound(named soundName: String) {
-            guard let soundURL = Bundle.main.url(forResource: soundName, withExtension: "wav") else {
-                print("Sound file not found")
-                return
+    private func playNotificationSound(named soundName: String) {
+        guard let soundURL = Bundle.main.url(forResource: soundName, withExtension: "wav") else {
+            print("Sound file not found")
+            return
+        }
+        
+        do {
+            
+            // AVAudioSession 설정
+            // playback - 무음모드일때도 소리남
+            // ambient - 무음모드일때는 소리 안남
+            
+            try AVAudioSession.sharedInstance().setCategory(.ambient, mode: .default)
+            try AVAudioSession.sharedInstance().setActive(true)
+            
+            audioPlayer = try AVAudioPlayer(contentsOf: soundURL)
+            audioPlayer?.volume = notificationVolume // UserDefaults에서 가져온 볼륨 적용
+            
+            // 진동 설정이 켜져있으면 진동 실행
+            if isVibrateEnabled {
+                AudioServicesPlaySystemSound(kSystemSoundID_Vibrate)
             }
             
-            do {
-                
-                // AVAudioSession 설정
-                // playback - 무음모드일때도 소리남
-                // ambient - 무음모드일때는 소리 안남
-                
-                try AVAudioSession.sharedInstance().setCategory(.ambient, mode: .default)
-                try AVAudioSession.sharedInstance().setActive(true)
-                
-                audioPlayer = try AVAudioPlayer(contentsOf: soundURL)
-                audioPlayer?.volume = notificationVolume // UserDefaults에서 가져온 볼륨 적용
-                
-                // 진동 설정이 켜져있으면 진동 실행
-                if isVibrateEnabled {
-                    AudioServicesPlaySystemSound(kSystemSoundID_Vibrate)
-                }
-                
-                audioPlayer?.play()
-            } catch {
-                print("Error playing sound: \(error.localizedDescription)")
-            }
+            audioPlayer?.play()
+        } catch {
+            print("Error playing sound: \(error.localizedDescription)")
         }
+    }
     
     private func handlewakeup(_ userInfo: [AnyHashable: Any]) {
         print("기상알람")
