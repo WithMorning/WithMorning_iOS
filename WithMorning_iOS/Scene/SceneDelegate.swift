@@ -73,7 +73,7 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         case "termsagree":
             setRootViewController(windowScene, type: .termAgree)
         case "register":
-            if let token = refreshToken, !token.isEmpty{
+            if let token = refreshToken, !token.isEmpty, UserDefaults.standard.bool(forKey: "isExistingUser"){
                 setRootViewController(windowScene, type: .main)
             } else {
                 setRootViewController(windowScene, type: .register) // 회원가입 화면

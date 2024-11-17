@@ -18,7 +18,7 @@ final class AppleLoginManager : NSObject {
     
     static let shared = AppleLoginManager()
     
-    //MARK: - ID토큰이 명시적으로 부여되었는지 확인
+    //MARK: - ID 토큰이 명시적으로 부여되었는지 확인
     private func randomNonceString(length: Int = 32) -> String {
         precondition(length > 0)
         var randomBytes = [UInt8](repeating: 0, count: length)
@@ -83,50 +83,47 @@ extension AppleLoginManager : ASAuthorizationControllerDelegate {
         if let appleIDCredential = authorization.credential as? ASAuthorizationAppleIDCredential {
             print(#fileID, #function, #line, "- 애플 로그인 성공🍎")
             
-            //            guard let nonce = currentNonce else
             guard currentNonce != nil else {
                 fatalError(" - Invalid state: A login callback was received, but no login request was sent.")
             }
             
-            guard let appleIDToken = appleIDCredential.identityToken else {
-                print(#fileID, #function, #line," - Unable to fetch identity token")
+            guard let appleIDToken = appleIDCredential.identityToken,
+                  let idTokenString = String(data: appleIDToken, encoding: .utf8),
+                  let authorizationCode = appleIDCredential.authorizationCode,
+                  let codeString = String(data: authorizationCode, encoding: .utf8) else {
+                print("Failed to get required tokens")
                 return
             }
             
-            guard let idTokenString = String(data: appleIDToken, encoding: .utf8) else {
-                print(#fileID, #function, #line," - Unable to serialize token string from data: \(appleIDToken.debugDescription)")
-                return
-            }
+            let loginRequestTokenData = AppleloginRequest(identityToken: idTokenString, code: codeString) //id토큰, auth토큰 전송할 데이터 셋
             
-            if let authorizationCode = appleIDCredential.authorizationCode,
-               
-                let codeString = String(data: authorizationCode, encoding: .utf8) {
-                print(#fileID, #function, #line, "- codeString🔥: \(codeString)")
-                
-                let loginRequestTokenData = AppleloginRequest(identityToken: idTokenString/*, code: codeString*/) //id토큰, auth토큰 전송할 데이터 셋
-                
-                
-                //MARK: - 로그인 요청
-                AF.request(LoginRouter.AppleLogin(data: loginRequestTokenData))
-                    .responseDecodable(of: AppleloginResponse.self) { (response: DataResponse<AppleloginResponse, AFError> ) in
-                        switch response.result {
-                        case .failure(let error):
-                            print(#fileID, #function, #line, "- error: \(error.localizedDescription)")
-                            
-                        case .success(let data):
-                            guard let dataResult = data.result else {
-                                print("로그인 응답에 결과 데이터가 없습니다.")
-                                return
+            print(#fileID, #function, #line, "- codeString🔥: \(codeString)")
+            print(#fileID, #function, #line, "- idTokenString🔥: \(idTokenString)")
+            
+            //MARK: - 로그인 요청
+            AF.request(LoginRouter.AppleLogin(data: loginRequestTokenData))
+                .responseDecodable(of: AppleloginResponse.self) { (response: DataResponse<AppleloginResponse, AFError> ) in
+                    switch response.result {
+                    case .failure(let error):
+                        print(#fileID, #function, #line, "- error: \(error.localizedDescription)")
+                    case .success(let data):
+                        guard let dataResult = data.result else {
+                            if let data = response.data, let str = String(data: data, encoding: .utf8) {
+                                print("서버 응답:", str)
                             }
-                            
-                            self.handleLoginSuccess(with: dataResult)
-                            
+                            return
                         }
+                        
+                        self.handleLoginSuccess(with: dataResult)
+                        
                     }
-            }
+                }
+            
         }
     }
+    
     private func handleLoginSuccess(with data: AppleLoginData) {
+        
         // 토큰 저장
         KeyChain.create(key: "accessToken", token: data.accessToken)
         KeyChain.create(key: "refreshToken", token: data.refreshToken)
@@ -137,6 +134,7 @@ extension AppleLoginManager : ASAuthorizationControllerDelegate {
         UserDefaults.setUserState("register")
         NotificationCenter.default.post(name: NSNotification.Name("UserStateChanged"), object: nil)
         
+        
     }
     
     
@@ -145,48 +143,5 @@ extension AppleLoginManager : ASAuthorizationControllerDelegate {
         print("로그인 실패 - \(error.localizedDescription)")
     }
     
-    func appleLoginDeleteUser(completion: @escaping (Result<Void, Error>) -> Void) {
-        
-//        guard let clientSecret = generateClientSecret() else {
-//            completion(.failure(NSError(domain: "AppleLogin", code: 0, userInfo: [NSLocalizedDescriptionKey: "Failed to get client ID or generate client secret"])))
-//            return
-//        }
-        
-        guard let refreshToken = KeyChain.read(key: "refreshToken") else {
-            completion(.failure(NSError(domain: "AppleLogin", code: 1, userInfo: [NSLocalizedDescriptionKey: "No refresh token found"])))
-            return
-        }
-        
-        let clientId = "com.ash-amad.WithMorning-iOS"
-        let url = "https://appleid.apple.com/auth/revoke"
-        let parameters: [String: Any] = [
-            "client_id": clientId,
-//            "client_secret": clientSecret,
-            "token": refreshToken,
-            "token_type_hint": "refresh_token"
-        ]
-        
-        AF.request(url, method: .post, parameters: parameters)
-            .validate()
-            .response { response in
-                switch response.result {
-                case .success:
-                    print(#fileID, #function, #line, "- revokeToken success⭐️")
-                    completion(.success(()))
-                case .failure(let error):
-                    print(#fileID, #function, #line, "- revoke token error🔥: \(error.localizedDescription)")
-                    completion(.failure(error))
-                }
-            }
-    }
-    
-    private func generateClientSecret(){
-        //        // TODO: Implement the logic to generate the client secret
-        //        // This typically involves creating a JWT (JSON Web Token)
-        //        // You'll need to use your Apple Developer Team ID, Service ID, and private key
-        //        // The exact implementation depends on your setup and the libraries you're using
-        //
-        //        // This is a placeholder. You need to implement the actual JWT generation.
-    }
 }
 

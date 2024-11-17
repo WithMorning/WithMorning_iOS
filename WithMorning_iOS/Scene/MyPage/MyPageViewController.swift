@@ -713,6 +713,7 @@ class MyPageViewController : UIViewController, UIScrollViewDelegate {
                     KeyChain.delete(key: "accessToken")
                     KeyChain.delete(key: "refreshToken")
                     UserDefaults.setUserState("logout")
+                    
                     NotificationCenter.default.post(name: NSNotification.Name("UserStateChanged"), object: nil)
                 }
                 LoadingIndicator.hideLoading()

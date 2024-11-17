@@ -26,7 +26,7 @@ enum UserRouter : URLRequestConvertible{
         case .RegisterProfile : return "/user/profile"
             
         case .deletelogout: return "/logout"
-        case .deleteaccount: return "/account"
+        case .deleteaccount: return "/account/apple"
         }
     }
     

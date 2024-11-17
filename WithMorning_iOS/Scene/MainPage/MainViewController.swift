@@ -10,6 +10,7 @@ import SnapKit
 import Then
 import Alamofire
 import Kingfisher
+import UserNotifications
 
 class MainViewController: UIViewController, UISheetPresentationControllerDelegate {
     
@@ -137,6 +138,7 @@ class MainViewController: UIViewController, UISheetPresentationControllerDelegat
         super.viewWillAppear(animated)
         getMainpage()
         updateSoundButtonImage()
+        checkNotificationPermission()
     }
     
     //MARK: - UI
@@ -230,6 +232,45 @@ class MainViewController: UIViewController, UISheetPresentationControllerDelegat
         
     }
     
+    //MARK: - 알람 권한 설정 유무
+    func checkNotificationPermission() {
+        UNUserNotificationCenter.current().getNotificationSettings { settings in
+            DispatchQueue.main.async {
+                switch settings.authorizationStatus {
+                case .authorized:
+                    print("🔔 알림 권한 허용됨")
+                case .denied:
+                    print("🔕 알림 권한 거부됨")
+                    self.presentSetting()
+                case .notDetermined:
+                    print("❓ 알림 권한 아직 결정되지 않음")
+                    self.presentSetting()
+                case .provisional:
+                    print("📳 알림 권한 임시 허용")
+                case .ephemeral:
+                    print("⏳ 알림 권한 임시 허용 (앱 클립)")
+                @unknown default:
+                    print("❌ 알림 권한 상태 알 수 없음")
+                    self.presentSetting()
+                }
+            }
+        }
+    }
+    
+//MARK: - 알람권한 설정 present
+    func presentSetting(){
+        let vc = NotificationPermission()
+        vc.modalPresentationStyle = .overFullScreen
+        vc.modalTransitionStyle = .crossDissolve
+        
+        // 애니메이션과 함께 표시
+        UIView.animate(withDuration: 0.3) {
+            self.present(vc, animated: true)
+        }
+    }
+    
+    
+    
     //MARK: - objc func
     @objc func refreshControl(){
         DispatchQueue.main.asyncAfter(deadline: .now() + 1.0) {
@@ -297,7 +338,6 @@ class MainViewController: UIViewController, UISheetPresentationControllerDelegat
     
     
     //MARK: - API
-    
     //메인페이지
     func getMainpage() {
         LoadingIndicator.showLoading()
@@ -340,7 +380,6 @@ class MainViewController: UIViewController, UISheetPresentationControllerDelegat
         }
     }
     //MARK: - 텅 뷰
-    
     func emptycellcheck(){
         emptyView.isHidden = !alarmData.isEmpty
     }
@@ -368,6 +407,8 @@ class MainViewController: UIViewController, UISheetPresentationControllerDelegat
         guard let leader = userList.first else { return false }
         return leader.nickname == currentUserNickname
     }
+    
+    
 }
 
 extension MainViewController : UITableViewDelegate, UITableViewDataSource{

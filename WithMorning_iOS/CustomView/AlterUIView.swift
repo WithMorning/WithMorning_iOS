@@ -48,7 +48,6 @@ class AlterUIView: UIViewController {
         let view = UIView()
         view.backgroundColor = .white
         view.layer.cornerRadius = 16
-        
         view.addSubviews(MainLabel, SubLabel, confirmButton, cancelButton)
         return view
     }()
@@ -266,10 +265,8 @@ class AlterUIView: UIViewController {
         LoadingIndicator.showLoading()
         guard let groupId = groupId else{return}
         APInetwork.deleteleaveGroup(groupId: groupId){ result in
-            
             switch result{
             case .success(let data):
-                
                 DispatchQueue.main.async {
                     self.dismiss(animated: true) {
                         self.confirmAction?()
@@ -288,39 +285,31 @@ class AlterUIView: UIViewController {
     //MARK: - 회원 탈퇴
     func quitaccount(completion: @escaping (Result<Void, Error>) -> Void){
         LoadingIndicator.showLoading()
-        AppleLoginManager.shared.appleLoginDeleteUser(){
-            [weak self] result in
+        USERnetwork.deleteaccount{ result in
             switch result{
             case .success:
-                self?.deleteAccountOnServer { serverResult in
-                    switch serverResult {
-                    case .success:
-                        // Step 3: Clean up local data
-                        self?.cleanUpLocalData()
-                        LoadingIndicator.hideLoading()
-                        completion(.success(()))
-                    case .failure(let error):
-                        LoadingIndicator.hideLoading()
-                        completion(.failure(error))
-                    }
-                }
+                self.cleanUpLocalData()
+                LoadingIndicator.hideLoading()
                 completion(.success(()))
             case .failure(let error):
+                LoadingIndicator.hideLoading()
                 completion(.failure(error))
             }
         }
     }
     
-    private func deleteAccountOnServer(completion: @escaping (Result<Void, Error>) -> Void) {
-        USERnetwork.deleteaccount { result in
-            switch result {
-            case .success:
-                completion(.success(()))
-            case .failure(let error):
-                completion(.failure(error))
-            }
-        }
-    }
+    
+    //    private func deleteAccountOnServer(completion: @escaping (Result<Void, Error>) -> Void) {
+    //        USERnetwork.deleteaccount { result in
+    //            switch result {
+    //            case .success:
+    //                completion(.success(()))
+    //            case .failure(let error):
+    //                completion(.failure(error))
+    //            }
+    //        }
+    //    }
+    
     private func cleanUpLocalData() {
         // Remove tokens
         KeyChain.delete(key: "accessToken")

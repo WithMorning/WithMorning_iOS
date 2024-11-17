@@ -65,14 +65,14 @@ class AppDelegate:UIResponder, UIApplicationDelegate {
     func userNotificationCenter(_ center: UNUserNotificationCenter, willPresent notification: UNNotification, withCompletionHandler completionHandler: @escaping (UNNotificationPresentationOptions) -> Void) {
         let userInfo = notification.request.content.userInfo
         handleNotification(userInfo)
-        completionHandler([.banner, .list/*, .sound*/])
+        completionHandler([.banner, .list, .sound])
         
     }
     
     //MARK: - Background(앱 꺼진 상태)에서도 알림 오는 설정
     /// 기상알람의 경우 앱 진입시 뷰가 바뀌기 때문에 설정 필요함. 근디? 아직? 모름ㅋㅋ
     /// 실행되는 메서드를 옮기면 될거 같기도 한데 일단 대기 ㅋㅋ
-    ///
+
     func userNotificationCenter(_ center: UNUserNotificationCenter, didReceive response: UNNotificationResponse, withCompletionHandler completionHandler: @escaping () -> Void) {
         let userInfo = response.notification.request.content.userInfo
         handleNotification(userInfo)
@@ -101,10 +101,10 @@ class AppDelegate:UIResponder, UIApplicationDelegate {
             switch title {
             case "기상 알람":
                 handlewakeup(userInfo)
-                playNotificationSound(named: "ThirdSound")
+//                playNotificationSound(named: "ThirdSound")
             case "콕 찌르기":
                 handleprick(userInfo)
-                playNotificationSound(named: "ThirdSound")
+//                playNotificationSound(named: "ThirdSound")
             case "취침 알람":
                 handlebedtime(userInfo)
             default:
@@ -124,6 +124,7 @@ class AppDelegate:UIResponder, UIApplicationDelegate {
     }
     
     //MARK: - 알림 소리를 위한 메서드(알림 이름을 대입)
+    //앱이 켜져있는 상태에서만 소리가 나는 것으로 예상
     private func playNotificationSound(named soundName: String) {
         guard let soundURL = Bundle.main.url(forResource: soundName, withExtension: "wav") else {
             print("Sound file not found")
@@ -157,6 +158,12 @@ class AppDelegate:UIResponder, UIApplicationDelegate {
         print("기상알람")
         UserDefaults.standard.set(true, forKey: "isWakeUpAlarmActive")
         NotificationCenter.default.post(name: NSNotification.Name("WakeUpAlarmReceived"), object: nil)
+        
+        if let jsonData = try? JSONSerialization.data(withJSONObject: userInfo, options: .prettyPrinted),
+           let jsonString = String(data: jsonData, encoding: .utf8) {
+            print("📋 전체 알림 데이터:")
+            print(jsonString)
+        }
     }
     
     private func handleprick(_ userInfo: [AnyHashable: Any]) {

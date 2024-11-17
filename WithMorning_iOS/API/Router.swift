@@ -23,7 +23,7 @@ enum Router : URLRequestConvertible{
     case postprick(userId : prickRequest) //콕찌르기
     case patchwakeup(groupId : Int) //기상 상태로 변경
     case patcheditgroup(groupId : Int, data : EditGroupMaindata) //그룹 수정
-    case patchphoneagree(groupId : Int, data : EditphoneMaindata)
+    case patchphoneagree(groupId : Int, data : EditphoneMaindata) //휴대폰 공개/비공개
     
     
     

@@ -10,7 +10,7 @@ import Foundation
 //MARK: - 애플로그인
 struct AppleloginRequest: Codable {
     let identityToken : String
-//    let code : String
+    let code : String
 }
 
 struct AppleloginResponse: Codable {

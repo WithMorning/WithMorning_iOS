@@ -135,11 +135,11 @@ class UserStateViewController : UIViewController{
     }
     
     func configureUserState(){
-        print("isagree",isagree as Any)
-        print("닉네임",nicknameLabel.text as Any)
-        print("폰번호",userphoneNum)
-        print("유저아이디",userId)
-        print("이미지 url", imageURL as Any)
+//        print("isagree",isagree as Any)
+//        print("닉네임",nicknameLabel.text as Any)
+//        print("폰번호",userphoneNum)
+//        print("유저아이디",userId)
+//        print("이미지 url", imageURL as Any)
         
         // 유저 이미지 설정
         if let imageURLString = imageURL, !imageURLString.isEmpty, let url = URL(string: imageURLString) {
@@ -170,6 +170,7 @@ class UserStateViewController : UIViewController{
             fullText = "전화를 걸어 친구를 깨워주세요."
             targetText = "전화"
             callButton.backgroundColor = DesignSystemColor.Orange500.value
+            
         } else {
             fullText = "콕 찔러 깨우기를 선호하는 유저입니다."
             targetText = "콕 찔러 깨우기"
