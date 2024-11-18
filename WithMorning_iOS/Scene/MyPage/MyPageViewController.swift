@@ -712,6 +712,7 @@ class MyPageViewController : UIViewController, UIScrollViewDelegate {
                     self.navigateToLoginViewController()
                     KeyChain.delete(key: "accessToken")
                     KeyChain.delete(key: "refreshToken")
+                    UserDefaults.standard.set(true, forKey: "isExistingUser")
                     UserDefaults.setUserState("logout")
                     
                     NotificationCenter.default.post(name: NSNotification.Name("UserStateChanged"), object: nil)

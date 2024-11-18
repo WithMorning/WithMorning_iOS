@@ -68,26 +68,53 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
     }
     
     private func updateViewControllerForUserState(_ userState: String?, windowScene: UIWindowScene, refreshToken: String?) {
-        
         switch userState {
         case "termsagree":
             setRootViewController(windowScene, type: .termAgree)
         case "register":
-            if let token = refreshToken, !token.isEmpty, UserDefaults.standard.bool(forKey: "isExistingUser"){
+            if let token = refreshToken,
+               !token.isEmpty,
+               UserDefaults.standard.bool(forKey: "isExistingUser") {
                 setRootViewController(windowScene, type: .main)
             } else {
-                setRootViewController(windowScene, type: .register) // 회원가입 화면
+                setRootViewController(windowScene, type: .register)
             }
         case "login":
-            setRootViewController(windowScene, type: .main) // 메인 화면
+            setRootViewController(windowScene, type: .main)
         case "logout":
-            setRootViewController(windowScene, type: .login) // 로그인 화면
+            setRootViewController(windowScene, type: .login)
         case "deleteaccount":
-            setRootViewController(windowScene, type: .termAgree) // 약관 동의 화면
+            // 회원탈퇴 상태에서는 무조건 약관 동의부터 시작
+            UserDefaults.standard.removeObject(forKey: "isExistingUser")
+            setRootViewController(windowScene, type: .termAgree)
         default:
-            setRootViewController(windowScene, type: .termAgree) // 기본적으로 약관 동의 화면
+            setRootViewController(windowScene, type: .termAgree)
         }
     }
+    
+//    private func updateViewControllerForUserState(_ userState: String?, windowScene: UIWindowScene, refreshToken: String?) {
+//        
+//        switch userState {
+//        case "termsagree":
+//            setRootViewController(windowScene, type: .termAgree) //약관 동의 화면
+//        case "register":
+//            if let token = refreshToken,
+//               !token.isEmpty,
+//               UserDefaults.standard.bool(forKey: "isExistingUser"){
+//                setRootViewController(windowScene, type: .main) //메인 화면
+//            } else {
+//                setRootViewController(windowScene, type: .register) // 회원가입 화면
+//            }
+//        case "login":
+//            setRootViewController(windowScene, type: .main) // 메인 화면
+//        case "logout":
+//            setRootViewController(windowScene, type: .login) // 로그인 화면
+//        case "deleteaccount":
+//            setRootViewController(windowScene, type: .termAgree) // 약관 동의 화면
+//        default:
+//            setRootViewController(windowScene, type: .termAgree) // 기본적으로 약관 동의 화면
+//        }
+//    }
     
     private func setRootViewController(_ scene: UIWindowScene, type: StartViewControllerType) {
         // 새로운 window 설정 전에 기존 window를 nil로 설정

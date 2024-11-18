@@ -123,18 +123,25 @@ extension AppleLoginManager : ASAuthorizationControllerDelegate {
     }
     
     private func handleLoginSuccess(with data: AppleLoginData) {
-        
         // 토큰 저장
         KeyChain.create(key: "accessToken", token: data.accessToken)
         KeyChain.create(key: "refreshToken", token: data.refreshToken)
         
         print("🔐 KeyChain에 저장된 accessToken: \(KeyChain.read(key: "accessToken") ?? "")")
         print("🔐 KeyChain에 저장된 refreshToken: \(KeyChain.read(key: "refreshToken") ?? "")")
+        print("🔐 KeyChain에 저장된 fcmToken: \(KeyChain.read(key: "fcmToken") ?? "")")
         
-        UserDefaults.setUserState("register")
+        // 회원탈퇴 상태가 아닐 경우에만 isExistingUser를 true로 설정
+        if UserDefaults.getUserState() != "deleteaccount" {
+            UserDefaults.standard.set(true, forKey: "isExistingUser")
+            UserDefaults.setUserState("login")  // 바로 로그인 상태로 변경
+        } else {
+            // 회원탈퇴 후 재로그인의 경우
+            UserDefaults.standard.removeObject(forKey: "isExistingUser")
+            UserDefaults.setUserState("register")  // 회원가입 절차로 이동
+        }
+        
         NotificationCenter.default.post(name: NSNotification.Name("UserStateChanged"), object: nil)
-        
-        
     }
     
     

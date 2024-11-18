@@ -90,7 +90,6 @@ class TutorialViewController : UIViewController{
         skiphidden()
     }
 
-    
     //MARK: - Autolayout
     
     func setUI(){
@@ -141,11 +140,13 @@ class TutorialViewController : UIViewController{
     //MARK: - objc func
     
     @objc func nextbtn(){
+        
         if pageControl.currentPage == 1{
             navigateToMainViewController()
         }
         
         if pageControl.currentPage < 1 {
+            skipButton.isHidden = true
             pageControl.currentPage += 1
             
             let nextViewController: UIViewController?
@@ -218,8 +219,10 @@ extension TutorialViewController : UIPageViewControllerDelegate, UIPageViewContr
                 switch currentViewController {
                 case is TutorialFirstViewController:
                     pageControl.currentPage = 0
+                    skiphidden()
                 case is TutorialSecondViewController:
                     pageControl.currentPage = 1
+                    skiphidden()
                 default:
                     break
                 }

@@ -237,7 +237,6 @@ class AlterUIView: UIViewController {
     //MARK: - 알람삭제 API
     private func deleteAlarm(){
         LoadingIndicator.showLoading()
-        
         guard let groupId = groupId else{return}
         APInetwork.deleteGroup(groupId: groupId){ result in
             switch result {
@@ -298,28 +297,23 @@ class AlterUIView: UIViewController {
         }
     }
     
-    
-    //    private func deleteAccountOnServer(completion: @escaping (Result<Void, Error>) -> Void) {
-    //        USERnetwork.deleteaccount { result in
-    //            switch result {
-    //            case .success:
-    //                completion(.success(()))
-    //            case .failure(let error):
-    //                completion(.failure(error))
-    //            }
-    //        }
-    //    }
-    
     private func cleanUpLocalData() {
         // Remove tokens
         KeyChain.delete(key: "accessToken")
         KeyChain.delete(key: "refreshToken")
-        KeyChain.delete(key: "fcmToken")
         
         // Remove user defaults
         UserDefaults.standard.removeObject(forKey: "nickname")
         UserDefaults.standard.removeObject(forKey: "volume")
         UserDefaults.standard.removeObject(forKey: "vibrate")
+        UserDefaults.standard.removeObject(forKey: "isExistingUser")  // 추가
+        UserDefaults.standard.removeObject(forKey: "isFirstTime")     // 추가
+        
+        // 모든 UserDefaults 데이터 초기화를 위해 도메인 자체를 삭제
+        if let bundleIdentifier = Bundle.main.bundleIdentifier {
+            UserDefaults.standard.removePersistentDomain(forName: bundleIdentifier)
+        }
+        UserDefaults.standard.synchronize()
         
         // Update user state
         UserDefaults.setUserState("deleteaccount")
