@@ -25,7 +25,7 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         
         NotificationCenter.default.addObserver(self, selector: #selector(handleWakeUpAlarm), name: NSNotification.Name("WakeUpAlarmReceived"), object: nil)
         
-        //MARK: - 컴바인 최고ㅜㅜㅜㅜ
+        //MARK: - 컴바인 최고
         RegisterUserInfo.shared.$loginState.sink { loginState in
             DispatchQueue.main.async {
                 self.wakeupAlarm(windowScene, loginState: loginState)

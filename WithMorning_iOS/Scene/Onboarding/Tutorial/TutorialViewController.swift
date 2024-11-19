@@ -14,7 +14,7 @@ class TutorialViewController : UIViewController{
     //MARK: - properties
     private lazy var mainLabel : UILabel = {
         let label = UILabel()
-        label.text = "튜토리얼"
+        label.text = "취침 시간 알림"
         label.tintColor = DesignSystemColor.Black.value
         label.font = DesignSystemFont.Pretendard_Bold16.value
         return label
@@ -99,23 +99,23 @@ class TutorialViewController : UIViewController{
             $0.centerX.equalToSuperview()
             $0.top.equalTo(view.safeAreaLayoutGuide).offset(20)
         }
-        popButton.snp.makeConstraints{
-            $0.centerY.equalTo(mainLabel)
-            $0.leading.equalToSuperview().offset(16)
-            $0.height.width.equalTo(24)
-        }
+//        popButton.snp.makeConstraints{
+//            $0.centerY.equalTo(mainLabel)
+//            $0.leading.equalToSuperview().offset(16)
+//            $0.height.width.equalTo(24)
+//        }
+        
         skipButton.snp.makeConstraints{
             $0.trailing.equalToSuperview().inset(16)
             $0.centerY.equalTo(mainLabel)
         }
         
         pageViewController.view.snp.makeConstraints{
-            $0.top.equalTo(mainLabel.snp.bottom).offset(36)
+            $0.top.equalTo(mainLabel.snp.bottom).offset(21)
             $0.leading.trailing.equalToSuperview()
             $0.bottom.equalTo(nextButton.snp.top)
             
         }
-        
         nextButton.snp.makeConstraints{
             $0.leading.trailing.bottom.equalToSuperview()
             $0.height.equalTo(92)
@@ -129,7 +129,7 @@ class TutorialViewController : UIViewController{
     
     //MARK: - 건너뛰기 버튼 히든
     func skiphidden(){
-        if pageControl.currentPage == 1{
+        if pageControl.currentPage == 0{
             skipButton.isHidden = true
         }else{
             skipButton.isHidden = false
@@ -138,15 +138,13 @@ class TutorialViewController : UIViewController{
 
     
     //MARK: - objc func
-    
     @objc func nextbtn(){
-        
         if pageControl.currentPage == 1{
             navigateToMainViewController()
+            skipButton.isHidden = true
         }
         
         if pageControl.currentPage < 1 {
-            skipButton.isHidden = true
             pageControl.currentPage += 1
             
             let nextViewController: UIViewController?
@@ -168,7 +166,7 @@ class TutorialViewController : UIViewController{
     }
     
     @objc func skip(){
-        print("skipButton.ishidden = false")
+        print("아직 스킵버튼 구현 안함. 경고창 하나 띄우는게 낫다아닌가.")
     }
     
     //MARK: - 회원가입 성공 후 튜토리얼 종료시 모든 뷰 삭제 후 메인으로 넘어감

@@ -17,7 +17,7 @@ class TutorialSecondViewController : UIViewController {
         let view = UIView()
         view.backgroundColor = .white
         view.layer.cornerRadius = 8
-        view.addSubview(timePicker)
+        view.addSubviews(timePicker,bar1,repeatStackView)
         return view
     }()
     
@@ -30,17 +30,103 @@ class TutorialSecondViewController : UIViewController {
         return picker
     }()
     
+    private lazy var bar1 : UIView = {
+        let view = UIView()
+        view.backgroundColor = DesignSystemColor.Gray200.value
+        return view
+    }()
+    
+    private lazy var repeatStackView: UIStackView = {
+        let stackView = UIStackView()
+        stackView.axis = .horizontal
+        stackView.alignment = .fill
+        stackView.addSubviews(repeatLabel,repeatDayLabel,repeatDayLabel1)
+        stackView.isUserInteractionEnabled = true
+//        let tapGestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(repeatDay))
+//        stackView.addGestureRecognizer(tapGestureRecognizer)
+        return stackView
+    }()
+    
+    private lazy var repeatLabel : UILabel = {
+        let label = UILabel()
+        label.text = "반복 요일"
+        label.font = DesignSystemFont.Pretendard_Bold14.value
+        label.textColor = .black
+        label.textAlignment = .left
+        
+        return label
+    }()
+    
+    private lazy var repeatDayLabel : UILabel = {
+        let attributedString1 = NSMutableAttributedString(string: "")
+        let imageAttachment1 = NSTextAttachment()
+        imageAttachment1.image = UIImage(systemName: "greaterthan")
+        imageAttachment1.bounds = CGRect(x: 0, y: -3, width: 10, height: 16)
+        attributedString1.append(NSAttributedString(attachment: imageAttachment1))
+        
+        let label = UILabel()
+        label.attributedText = attributedString1
+        label.textAlignment = .right
+        label.textColor = DesignSystemColor.Gray400.value
+        label.font = DesignSystemFont.Pretendard_Medium14.value
+        return label
+    }()
+    
+    private lazy var repeatDayLabel1 : UILabel = {
+        let label = UILabel()
+        label.text = "없음"
+        label.textColor = DesignSystemColor.Gray400.value
+        label.font = DesignSystemFont.Pretendard_Medium14.value
+        return label
+    }()
+    
     var hour = Array(1...12)
     var min = Array(0...59)
     var AMPM = ["AM","PM"]
     
-    //MARK: - life cycle
+    //MARK: - 알람 받기
+    private lazy var baseView2 : UIView = {
+        let view = UIView()
+        view.backgroundColor = .white
+        view.layer.cornerRadius = 8
+        view.addSubviews(notiLabel,notiImage)
+        return view
+    }()
+    
+    private lazy var notiLabel : UILabel = {
+        let label = UILabel()
+        label.text = "알림 받기"
+        label.font = DesignSystemFont.Pretendard_Bold14.value
+        label.textColor = .black
+        label.textAlignment = .left
+        return label
+    }()
+    
+    private lazy var notiImage : UIButton = {
+        let button = UIButton()
+        let imageConfig = UIImage.SymbolConfiguration(pointSize: 20, weight: .light)
+        let image = UIImage(systemName: "checkmark.square.fill", withConfiguration: imageConfig)
+        button.setImage(image, for: .normal)
+        button.addTarget(self, action: #selector(notisetting), for: .touchUpInside)
+        return button
+    }()
+    
+    //MARK: - 마이 페이지에서 설정할 수 있어요!
+    private lazy var setLabel : UILabel = {
+        let label = UILabel()
+        label.text = "마이 페이지에서 설정할 수 있어요!"
+        label.textColor = DesignSystemColor.Gray500.value
+        label.font = DesignSystemFont.Pretendard_Medium14.value
+        return label
+    }()
 
+    //MARK: - life cycle
     override func viewDidLoad() {
         super.viewDidLoad()
         view.backgroundColor = DesignSystemColor.Gray150.value
         setUI()
         setCurrentTimeOnPicker()
+        allowAlarmTintColor()
     }
     
     override func viewDidLayoutSubviews() {
@@ -49,24 +135,66 @@ class TutorialSecondViewController : UIViewController {
     }
     
     //MARK: - autolayout
-
+    
     func setUI(){
-        view.addSubviews(timerView)
-
+        view.addSubviews(timerView,baseView2,setLabel)
+        
         timerView.snp.makeConstraints{
             $0.leading.trailing.equalToSuperview().inset(16)
             $0.top.equalToSuperview()
-            $0.height.equalTo(152)
+            $0.height.equalTo(208)
         }
         timePicker.snp.makeConstraints{
             $0.top.equalToSuperview()
-            $0.bottom.equalToSuperview()
+            $0.bottom.equalTo(bar1.snp.top)
             $0.centerY.equalToSuperview()
             $0.leading.trailing.equalToSuperview()
         }
+        bar1.snp.makeConstraints{
+            $0.leading.trailing.equalToSuperview().inset(16)
+            $0.height.equalTo(1)
+            $0.bottom.equalTo(repeatStackView.snp.top).offset(-16)
+        }
+        repeatStackView.snp.makeConstraints{
+            $0.height.equalTo(24)
+            $0.leading.trailing.equalToSuperview().inset(16)
+            $0.bottom.equalToSuperview().inset(16)
+        }
+        repeatLabel.snp.makeConstraints {
+            $0.leading.centerY.equalToSuperview()
+        }
+        repeatDayLabel.snp.makeConstraints {
+            $0.trailing.centerY.equalToSuperview()
+        }
+        repeatDayLabel1.snp.makeConstraints{
+            $0.centerY.equalTo(repeatDayLabel)
+            $0.trailing.equalTo(repeatDayLabel.snp.leading).offset(-12)
+        }
+        
+        
+        baseView2.snp.makeConstraints{
+            $0.top.equalTo(timerView.snp.bottom).offset(8)
+            $0.leading.trailing.equalToSuperview().inset(16)
+            $0.height.equalTo(56)
+        }
+        notiLabel.snp.makeConstraints{
+            $0.leading.equalToSuperview().inset(16)
+            $0.centerY.equalToSuperview()
+        }
+        notiImage.snp.makeConstraints{
+            $0.trailing.equalToSuperview().inset(16)
+            $0.centerY.equalToSuperview()
+            $0.width.height.equalTo(24)
+        }
+        
+        setLabel.snp.makeConstraints{
+            $0.centerX.equalToSuperview()
+            $0.top.equalTo(baseView2.snp.bottom).offset(16)
+        }
+        
+        
     }
     //MARK: - picker SET
-
     func pickerviewUI(){
         timePicker.subviews[1].isHidden = true
         
@@ -108,6 +236,31 @@ class TutorialSecondViewController : UIViewController {
         timePicker.selectRow(middleAMPM + ampm, inComponent: 2, animated: false)
     }
     
+    //MARK: - 알람받기 색상
+    var allowAlarm : Bool = false
+    
+    func allowAlarmTintColor(){
+        if allowAlarm == true{
+            notiImage.tintColor = DesignSystemColor.Orange500.value
+        }else{
+            notiImage.tintColor = DesignSystemColor.Gray200.value
+        }
+    }
+    
+    
+    //MARK: - objc func
+
+    @objc func notisetting(){
+        if allowAlarm == false{
+            notiImage.tintColor = DesignSystemColor.Gray200.value
+            allowAlarm = true
+            allowAlarmTintColor()
+        }else{
+            notiImage.tintColor = DesignSystemColor.Orange500.value
+            allowAlarm = false
+            allowAlarmTintColor()
+        }
+    }
 }
 
 

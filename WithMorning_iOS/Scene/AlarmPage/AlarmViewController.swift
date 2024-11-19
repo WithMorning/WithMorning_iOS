@@ -53,11 +53,8 @@ class AlarmViewController: UIViewController {
         return label
     }()
     
-    private lazy var messagetextLabel : UILabel = {
+    lazy var messagetextLabel : UILabel = {
         let label = UILabel()
-        label.applyDesignFont(.Pretendard_Medium14, text: "나에게 불가능은 없다.\n나는 모든걸 실현할 수 있는 힘이 있다.",color: DesignSystemColor.Gray600.value)
-        label.numberOfLines = 0
-        label.textAlignment = .center
         return label
     }()
     
@@ -85,6 +82,7 @@ class AlarmViewController: UIViewController {
         view.backgroundColor = UIColor(red: 0.96, green: 0.96, blue: 0.96, alpha: 1)
         setupUI()
         updateTimeAndDate()
+        alarmMessage()
     }
     
     func setupUI() {
@@ -167,6 +165,17 @@ class AlarmViewController: UIViewController {
             }
         }
     }
+    
+    //MARK: - 오늘의 메시지 랜덤으로 돌리도록 하시오.
+    func alarmMessage(){
+        let alarmText = "나에게 불가능은 없다.\n나는 모든걸 실현할 수 있는 힘이 있다."
+        
+        messagetextLabel.applyDesignFont(.Pretendard_Medium14, text: alarmText ,color: DesignSystemColor.Gray600.value)
+        
+        messagetextLabel.numberOfLines = 0
+        messagetextLabel.textAlignment = .center
+    }
+    
     
     //MARK: - @objc func
     @objc func turnoffalarm(){

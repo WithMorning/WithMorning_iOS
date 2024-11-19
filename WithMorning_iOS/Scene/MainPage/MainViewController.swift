@@ -455,7 +455,6 @@ extension MainViewController : UITableViewDelegate, UITableViewDataSource{
             }
         }
         
-        
         //알람 삭제 후 실행되는 클로저
         cell.onAlarmDelete = { [weak self] in
             self?.getMainpage()
@@ -549,7 +548,7 @@ extension MainViewController : UITableViewDelegate, UITableViewDataSource{
             case 2:
                 memoHeight = 30  // 두 줄
             default:
-                memoHeight = 40  // 세 줄 이상
+                memoHeight = 30  // 세 줄 이상
             }
         }
         
