@@ -41,7 +41,7 @@ enum Router : URLRequestConvertible{
         case .patchwakeup(let groupId): return "/user/\(groupId)/wake-status"
         case .deleteleavegroup(let groupId): return "/groups/\(groupId)/leave"
         case .patcheditgroup(let groupId, _): return "/groups/\(groupId)"
-        case .patchphoneagree: return "/api/user/phone-agree"
+        case .patchphoneagree(let groupId, _): return "/user/\(groupId)/phone-agree"
             
         }
     }

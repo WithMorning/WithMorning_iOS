@@ -232,6 +232,7 @@ class CertificateViewController : UIViewController{
             responseSMS()
         }
     }
+    
     //MARK: - 휴대폰 번호 변경 후 메인으로 루트 뷰컨을 변경
     func navigateToMainViewController() {
         let mainVC = MainViewController()

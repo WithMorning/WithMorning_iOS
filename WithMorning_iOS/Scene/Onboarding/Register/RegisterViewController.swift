@@ -17,7 +17,6 @@ enum ViewType {
 }
 
 class RegisterViewController : UIViewController{
-    
     let APInetwork = UserNetwork.shared
     var viewType: ViewType = .register
     
@@ -151,7 +150,6 @@ class RegisterViewController : UIViewController{
                     vc.viewType = .changeNumber
                     self.navigationController?.pushViewController(vc, animated: true)
                 }else{
-                    
                     self.navigationController?.pushViewController(vc, animated: true)
                 }
                 
@@ -164,7 +162,7 @@ class RegisterViewController : UIViewController{
             
         }
     }
-    
+    //FCMtoken을 여기서 발급 받습니다. (로그인 후)
     private func requestFCM(){
         Messaging.messaging().token { token, error in
             if let error = error {
@@ -202,7 +200,6 @@ class RegisterViewController : UIViewController{
         let phoneNumberWithoutDash = text.replacingOccurrences(of: "-", with: "")
         
         phonenumber = phoneNumberWithoutDash
-        
         print("Phone number without dash: \(phonenumber)")
         
     }
