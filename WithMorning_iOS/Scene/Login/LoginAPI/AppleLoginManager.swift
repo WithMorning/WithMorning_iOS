@@ -129,7 +129,6 @@ extension AppleLoginManager : ASAuthorizationControllerDelegate {
         
         print("🔐 KeyChain에 저장된 accessToken: \(KeyChain.read(key: "accessToken") ?? "")")
         print("🔐 KeyChain에 저장된 refreshToken: \(KeyChain.read(key: "refreshToken") ?? "")")
-        print("🔐 KeyChain에 저장된 fcmToken: \(KeyChain.read(key: "fcmToken") ?? "")")
         
         // 회원탈퇴 상태가 아닐 경우에만 isExistingUser를 true로 설정
         if UserDefaults.getUserState() != "deleteaccount" {

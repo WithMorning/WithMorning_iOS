@@ -160,12 +160,13 @@ class MainViewController: UIViewController, UISheetPresentationControllerDelegat
             $0.width.equalTo(36)
             $0.height.equalTo(36)
         }
-        
-        soundButton.snp.makeConstraints{
-            $0.centerY.equalTo(profileButton)
-            $0.height.width.equalTo(36)
-            $0.trailing.equalTo(profileButton.snp.leading).offset(-16)
-        }
+//MARK: - 사운드버튼 추후 추가예정
+
+//        soundButton.snp.makeConstraints{
+//            $0.centerY.equalTo(profileButton)
+//            $0.height.width.equalTo(36)
+//            $0.trailing.equalTo(profileButton.snp.leading).offset(-16)
+//        }
         
         headerStackView.snp.makeConstraints{
             $0.top.equalToSuperview()
@@ -287,7 +288,7 @@ class MainViewController: UIViewController, UISheetPresentationControllerDelegat
     @objc func clickedmakeAlarm(){ //새로운 알람 설정
         let vc = MakeAlarmViewController()
         vc.mode = .createMode
-        vc.username = nameLabel.text ?? ""
+        vc.username = UserDefaults.standard.string(forKey: "nickname") ?? ""
         self.navigationController?.pushViewController(vc, animated: true)
     }
     

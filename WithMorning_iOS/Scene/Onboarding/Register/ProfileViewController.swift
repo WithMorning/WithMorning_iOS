@@ -183,10 +183,6 @@ class ProfileViewController : UIViewController, UIImagePickerControllerDelegate 
     private var selectedIMG : UIImage?
     private func registerProfile() {
         LoadingIndicator.showLoading()
-        //        guard profileImage.image != nil else {
-        //            print("프로필 이미지를 선택하세요.")
-        //            return
-        //        }
         
         let fcmToken = KeyChain.read(key: "fcmToken") ?? ""
         

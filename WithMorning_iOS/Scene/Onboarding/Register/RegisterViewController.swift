@@ -9,10 +9,17 @@ import UIKit
 import Then
 import SnapKit
 import JSPhoneFormat
+import Firebase
+
+enum ViewType {
+    case changeNumber
+    case register
+}
 
 class RegisterViewController : UIViewController{
     
     let APInetwork = UserNetwork.shared
+    var viewType: ViewType = .register
     
     //MARK: - properties
     
@@ -25,7 +32,7 @@ class RegisterViewController : UIViewController{
     
     private lazy var mainLabel : UILabel = {
         let label = UILabel()
-        label.text = "회원가입"
+        //        label.text = "회원가입"
         label.tintColor = DesignSystemColor.Black.value
         label.font = DesignSystemFont.Pretendard_Bold16.value
         return label
@@ -74,7 +81,7 @@ class RegisterViewController : UIViewController{
         button.addTarget(self, action: #selector(nextclick), for: .touchUpInside)
         return button
     }()
-
+    
     
     
     override func viewDidLoad() {
@@ -82,6 +89,7 @@ class RegisterViewController : UIViewController{
         view.backgroundColor = DesignSystemColor.Gray150.value
         self.navigationController?.isNavigationBarHidden = true
         setUI()
+        mainLabelType()
         hideKeyboardWhenTappedAround()
     }
     
@@ -92,7 +100,7 @@ class RegisterViewController : UIViewController{
             $0.centerX.equalToSuperview()
             $0.top.equalTo(view.safeAreaLayoutGuide).offset(20)
         }
-
+        
         subLabel.snp.makeConstraints{
             $0.top.equalTo(mainLabel.snp.bottom).offset(29)
             $0.centerX.equalToSuperview()
@@ -108,6 +116,18 @@ class RegisterViewController : UIViewController{
             $0.height.equalTo(62)
         }
     }
+    //MARK: - 회원가입, 연락처 변경
+    
+    func mainLabelType(){
+        switch viewType.self{
+        case .changeNumber:
+            mainLabel.text = "연락처 변경"
+        case .register:
+            mainLabel.text = "회원가입"
+        }
+        
+    }
+    
     
     //MARK: - API
     var phonenumber = ""
@@ -118,16 +138,22 @@ class RegisterViewController : UIViewController{
         let vc = CertificateViewController()
         
         APInetwork.requestSMS(phoneNumber: data){result in
-            
             switch result{
             case .success(let data):
                 print(data)
+                self.requestFCM()
                 vc.phonenumber = self.phonenumber
                 LoadingIndicator.hideLoading()
-                
                 self.showToast(message: "인증번호를 전송했습니다.")
                 
-                self.navigationController?.pushViewController(vc, animated: true)
+                //회원가입, 연락처 변경 구분
+                if self.viewType == .changeNumber{
+                    vc.viewType = .changeNumber
+                    self.navigationController?.pushViewController(vc, animated: true)
+                }else{
+                    
+                    self.navigationController?.pushViewController(vc, animated: true)
+                }
                 
             case .failure(let error):
                 LoadingIndicator.hideLoading()
@@ -135,10 +161,25 @@ class RegisterViewController : UIViewController{
                 print(error.localizedDescription)
                 
             }
-        
+            
         }
     }
-
+    
+    private func requestFCM(){
+        Messaging.messaging().token { token, error in
+            if let error = error {
+                print("토큰발급 실패 ㅠㅠ: \(error.localizedDescription)")
+            } else if let token = token {
+                print("토큰발급성공 FCM token: \(token)")
+                
+                // 필요 시 토큰 저장 (예: KeyChain 또는 UserDefaults)
+                KeyChain.create(key: "fcmToken", token: token)
+                print("🔐 KeyChain에 저장된 fcmToken: \(KeyChain.read(key: "fcmToken") ?? "")")
+            }
+            
+        }
+    }
+    
     
     //MARK: - @objc func
     @objc func editchange(_ sender: Any){
@@ -162,7 +203,7 @@ class RegisterViewController : UIViewController{
         
         phonenumber = phoneNumberWithoutDash
         
-            print("Phone number without dash: \(phonenumber)")
+        print("Phone number without dash: \(phonenumber)")
         
     }
     
@@ -171,7 +212,7 @@ class RegisterViewController : UIViewController{
             requestSMS()
         }
     }
-
+    
 }
 
 
@@ -212,7 +253,7 @@ struct RegisterViewControllerRepresentable: UIViewControllerRepresentable {
     }
     @available(iOS 13.0.0, *)
     func makeUIViewController(context: Context) -> UIViewController{
-       RegisterViewController()
+        RegisterViewController()
     }
 }
 @available(iOS 13.0, *)

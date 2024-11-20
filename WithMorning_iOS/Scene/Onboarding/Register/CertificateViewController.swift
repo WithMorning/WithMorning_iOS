@@ -10,9 +10,12 @@ import Then
 import SnapKit
 import Alamofire
 
+
+
 class CertificateViewController : UIViewController{
     
     let APInetwork = UserNetwork.shared
+    var viewType: ViewType = .register
     
     //MARK: - properties
     
@@ -70,7 +73,7 @@ class CertificateViewController : UIViewController{
         label.text = "3:00"
         return label
     }()
-
+    
     private lazy var nextButton : UIButton = {
         let button = UIButton()
         button.setTitle("다음", for: .normal)
@@ -84,12 +87,13 @@ class CertificateViewController : UIViewController{
     
     
     //MARK: - life cycle
-
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         view.backgroundColor = DesignSystemColor.Gray150.value
         self.navigationController?.isNavigationBarHidden = true
         setUI()
+        mainLabelType()
         hideKeyboardWhenTappedAround()
     }
     
@@ -131,6 +135,16 @@ class CertificateViewController : UIViewController{
         }
     }
     
+    func mainLabelType(){
+        switch viewType.self{
+        case .changeNumber:
+            mainLabel.text = "연락처 변경"
+        case .register:
+            mainLabel.text = "회원가입"
+        }
+        
+    }
+    
     //MARK: - API
     var phonenumber = ""
     var code = ""
@@ -148,11 +162,15 @@ class CertificateViewController : UIViewController{
                 print(data)
                 LoadingIndicator.hideLoading()
                 
-                self.showToast(message: "인증번호가 확인되었습니다.")
-                
-                UserDefaults.standard.set(false, forKey: "isFirstTime")
-                
-                self.navigationController?.pushViewController(vc, animated: true)
+                if self.viewType == .changeNumber{
+                    self.navigateToMainViewController()
+                    self.showToast(message: "인증번호가 확인되었습니다.")
+                    
+                }else{
+                    UserDefaults.standard.set(false, forKey: "isFirstTime")
+                    self.navigationController?.pushViewController(vc, animated: true)
+                    self.showToast(message: "인증번호가 확인되었습니다.")
+                }
                 
             case .failure(let error):
                 LoadingIndicator.hideLoading()
@@ -191,7 +209,7 @@ class CertificateViewController : UIViewController{
             self.navigationController?.popViewController(animated: true)
         }
     }
-
+    
     //MARK: - @objc func
     @objc func editchange(_ sender: Any){
         guard let txtfield = sender as? UITextField, let text = txtfield.text else {return}
@@ -212,6 +230,22 @@ class CertificateViewController : UIViewController{
     @objc func nextclick(){
         if nextButton.backgroundColor == DesignSystemColor.Orange500.value{
             responseSMS()
+        }
+    }
+    //MARK: - 휴대폰 번호 변경 후 메인으로 루트 뷰컨을 변경
+    func navigateToMainViewController() {
+        let mainVC = MainViewController()
+        let navController = UINavigationController(rootViewController: mainVC)
+        navController.modalPresentationStyle = .fullScreen
+        navController.navigationBar.isHidden = true
+        
+        if let keyWindow = UIApplication.shared.connectedScenes
+            .compactMap({ $0 as? UIWindowScene })
+            .flatMap({ $0.windows })
+            .first(where: { $0.isKeyWindow }) {
+            
+            keyWindow.rootViewController = navController
+            keyWindow.makeKeyAndVisible()
         }
     }
     

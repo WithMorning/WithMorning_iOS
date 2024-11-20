@@ -91,11 +91,13 @@ class MyPageViewController : UIViewController, UIScrollViewDelegate {
     
     private lazy var ContectButton : UIButton = {
         let button = UIButton()
-        button.setTitle("연락처 연동", for: .normal)
-        button.backgroundColor = DesignSystemColor.Orange500.value
-        button.setTitleColor(DesignSystemColor.White.value, for: .normal)
+        button.setTitle("연락처 변경", for: .normal)
+        button.backgroundColor = DesignSystemColor.Gray200.value
+        button.setTitleColor(DesignSystemColor.Gray600.value, for: .normal)
         button.titleLabel?.font = DesignSystemFont.Pretendard_SemiBold14.value
+        button.addTarget(self, action: #selector(changephone), for: .touchUpInside)
         button.layer.cornerRadius = 4
+        
         return button
     }()
     
@@ -270,6 +272,7 @@ class MyPageViewController : UIViewController, UIScrollViewDelegate {
         label.font = DesignSystemFont.Pretendard_Medium14.value
         return label
     }()
+    
     //MARK: - 개인정보 처리방침
     private lazy var privacyStackView: UIStackView = {
         let stackView = UIStackView()
@@ -614,6 +617,7 @@ class MyPageViewController : UIViewController, UIScrollViewDelegate {
         self.navigationController?.pushViewController(vc, animated: true)
         LoadingIndicator.hideLoading()
     }
+    
     //취침시간
     @objc func sleeptime(){
         let vc = SleepTimeViewController()
@@ -621,8 +625,14 @@ class MyPageViewController : UIViewController, UIScrollViewDelegate {
         vc.selectedDayOfWeek = self.dayOfWeekList
         vc.allowAlarm = self.noti
         self.navigationController?.pushViewController(vc, animated: true)
-        
     }
+    //연락처 변경
+    @objc func changephone(){
+        let vc = RegisterViewController()
+        vc.viewType = .changeNumber
+        self.navigationController?.pushViewController(vc, animated: true)
+    }
+    
     
     //MARK: - 설정으로 이동
     @objc func pushnoti(){

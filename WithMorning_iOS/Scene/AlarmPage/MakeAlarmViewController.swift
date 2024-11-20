@@ -394,11 +394,11 @@ class MakeAlarmViewController : UIViewController, UIScrollViewDelegate, UISheetP
         
         // 비어있을 경우 기본값 설정
         let groupName = groupTextfield.text?.isEmpty == true ?
-            "\(self.username)님의 윗모닝" : groupTextfield.text!
-            
+        "\(username)님의 윗모닝" : groupTextfield.text!
+        
         let memo = memoTextView.text?.isEmpty == true ?
-            "아침에 하고 싶은 말 또는 패널티를 정해주세요." : memoTextView.text!
-
+        "아침에 하고 싶은 말 또는 패널티를 정해주세요." : memoTextView.text!
+        
         let data = MakeGroupMaindata(
             name: groupName,
             wakeupTime: selectedTime24,
@@ -585,64 +585,6 @@ class MakeAlarmViewController : UIViewController, UIScrollViewDelegate, UISheetP
         
     }
 }
-
-//MARK: - 키보드 세팅, textfield세팅
-extension MakeAlarmViewController : UITextFieldDelegate {
-    
-    func hideKeyboardWhenTappedAround() {
-        let tap = UITapGestureRecognizer(target: self, action: #selector(MakeAlarmViewController.dismissKeyboard))
-        tap.cancelsTouchesInView = false
-        view.addGestureRecognizer(tap)
-    }
-    
-    @objc func dismissKeyboard() {
-        view.endEditing(true)
-    }
-    
-    func textFieldDidBeginEditing(_ textField: UITextField) {
-        textField.layer.borderWidth = 1
-        textField.layer.borderColor = DesignSystemColor.Orange500.value.cgColor
-        
-    }
-    
-    func textFieldDidEndEditing(_ textField: UITextField) {
-        textField.layer.borderWidth = 0
-        
-    }
-    
-    func setUpKeyboard() {
-        NotificationCenter.default.addObserver(self,
-                                               selector: #selector(keyboardWillShow),
-                                               name: UIResponder.keyboardWillShowNotification,
-                                               object: nil)
-        
-        NotificationCenter.default.addObserver(self,
-                                               selector: #selector(keyboardWillHide),
-                                               name: UIResponder.keyboardWillHideNotification,
-                                               object: nil)
-    }
-    
-    @objc func keyboardWillShow(notification: NSNotification) {
-        if let keyboardSize = (notification.userInfo?[UIResponder.keyboardFrameEndUserInfoKey] as? NSValue)?.cgRectValue {
-            let keyboardFrame = view.convert(keyboardSize, from: nil)
-            let notiLabelFrame = view.convert(notiLabel.frame, from: notiLabel.superview)
-            if notiLabelFrame.maxY > keyboardFrame.minY {
-                let offset = notiLabelFrame.maxY - keyboardFrame.minY + 10
-                self.alarmScrollVeiw.contentOffset.y += offset
-                self.saveButton.isHidden = true
-                
-                
-            }
-        }
-    }
-    
-    @objc func keyboardWillHide(notification: NSNotification) {
-        
-        self.alarmScrollVeiw.contentOffset.y = .zero
-        self.saveButton.isHidden = false
-        
-    }
-}
 //MARK: - pickerView custom
 
 extension MakeAlarmViewController : UIPickerViewDelegate, UIPickerViewDataSource {
@@ -745,6 +687,78 @@ extension MakeAlarmViewController : UIPickerViewDelegate, UIPickerViewDataSource
     }
 }
 
+//MARK: - 키보드 세팅, textfield세팅
+extension MakeAlarmViewController : UITextFieldDelegate {
+    
+    func hideKeyboardWhenTappedAround() {
+        let tap = UITapGestureRecognizer(target: self, action: #selector(MakeAlarmViewController.dismissKeyboard))
+        tap.cancelsTouchesInView = false
+        view.addGestureRecognizer(tap)
+    }
+    
+    @objc func dismissKeyboard() {
+        view.endEditing(true)
+    }
+    
+    func textFieldDidBeginEditing(_ textField: UITextField) {
+        textField.layer.borderWidth = 1
+        textField.layer.borderColor = DesignSystemColor.Orange500.value.cgColor
+        
+    }
+    
+    func textFieldDidEndEditing(_ textField: UITextField) {
+        textField.layer.borderWidth = 0
+        
+    }
+    
+    func textField(_ textField: UITextField, shouldChangeCharactersIn range: NSRange, replacementString string: String) -> Bool {
+        let textfieldText = groupTextfield.text
+        let newLength = (textfieldText?.count ?? 0) + string.count - range.length
+        
+        if newLength > 20 {
+            showToast(message: "모임명은 20글자 이하로 입력해주세요")
+        }
+        
+        return newLength <= 20
+        
+    }
+    
+    
+    func setUpKeyboard() {
+        NotificationCenter.default.addObserver(self,
+                                               selector: #selector(keyboardWillShow),
+                                               name: UIResponder.keyboardWillShowNotification,
+                                               object: nil)
+        
+        NotificationCenter.default.addObserver(self,
+                                               selector: #selector(keyboardWillHide),
+                                               name: UIResponder.keyboardWillHideNotification,
+                                               object: nil)
+    }
+    
+    @objc func keyboardWillShow(notification: NSNotification) {
+        if let keyboardSize = (notification.userInfo?[UIResponder.keyboardFrameEndUserInfoKey] as? NSValue)?.cgRectValue {
+            let keyboardFrame = view.convert(keyboardSize, from: nil)
+            let notiLabelFrame = view.convert(notiLabel.frame, from: notiLabel.superview)
+            if notiLabelFrame.maxY > keyboardFrame.minY {
+                let offset = notiLabelFrame.maxY - keyboardFrame.minY + 10
+                self.alarmScrollVeiw.contentOffset.y += offset
+                self.saveButton.isHidden = true
+                
+                
+            }
+        }
+    }
+    
+    @objc func keyboardWillHide(notification: NSNotification) {
+        
+        self.alarmScrollVeiw.contentOffset.y = .zero
+        self.saveButton.isHidden = false
+        
+    }
+}
+
+//MARK: - textViewDelegate
 
 extension MakeAlarmViewController: UITextViewDelegate, UIGestureRecognizerDelegate {
     

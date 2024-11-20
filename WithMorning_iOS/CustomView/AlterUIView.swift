@@ -301,7 +301,7 @@ class AlterUIView: UIViewController {
         // Remove tokens
         KeyChain.delete(key: "accessToken")
         KeyChain.delete(key: "refreshToken")
-        
+        KeyChain.delete(key: "fcmToken")
         // Remove user defaults
         UserDefaults.standard.removeObject(forKey: "nickname")
         UserDefaults.standard.removeObject(forKey: "volume")

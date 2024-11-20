@@ -11,7 +11,7 @@ import AVFoundation
 import AudioToolbox
 
 @main
-class AppDelegate:UIResponder, UIApplicationDelegate {
+class AppDelegate:UIResponder, UIApplicationDelegate, MessagingDelegate {
     
     var audioPlayer : AVAudioPlayer?
     
@@ -199,27 +199,6 @@ extension AppDelegate: UNUserNotificationCenterDelegate {
         Messaging.messaging().apnsToken = deviceToken
         
         
-    }
-    
-}
-
-extension AppDelegate: MessagingDelegate {
-    
-    // 파이어베이스 MessagingDelegate 설정
-    func messaging(_ messaging: Messaging, didReceiveRegistrationToken fcmToken: String?) {
-        
-        let dataDict: [String: String] = ["token": fcmToken ?? ""]
-        
-        NotificationCenter.default.post(
-            name: Notification.Name("FCMToken"),
-            object: nil,
-            userInfo: dataDict
-        )
-        
-        KeyChain.create(key: "fcmToken", token: fcmToken ?? "")
-        print("🔥키체인에 들어있는 fcmToken",KeyChain.read(key: "fcmToken") ?? "")
-        // TODO: If necessary send token to applicㄴation server.
-        // Note: This callback is fired at each app startup and whenever a new token is generated.
     }
     
 }
