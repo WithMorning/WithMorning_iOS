@@ -298,6 +298,8 @@ class TutorialViewController : UIViewController, UISheetPresentationControllerDe
         timePicker.selectRow(middleHour + hourForPicker - 1, inComponent: 0, animated: false)
         timePicker.selectRow(middleMinute + minute, inComponent: 1, animated: false)
         timePicker.selectRow(ampm, inComponent: 2, animated: false)
+        
+        selectedTime24 = String(format: "%02d:%02d", hour, minute)
     }
     
     //MARK: - 반복 요일 설정
@@ -393,7 +395,26 @@ class TutorialViewController : UIViewController, UISheetPresentationControllerDe
     }
     
     @objc func saveclicked() {
-        navigateToMainViewController()
+        editBedtime()
+    }
+    
+    //MARK: - API
+    func editBedtime(){
+        LoadingIndicator.showLoading()
+        let bedtime = BedtimeMaindata(bedTime: selectedTime24, bedDayOfWeekList: selectedDayOfWeek, isAllowBedTimeAlarm: allowAlarm)
+        
+        APInetwork.postBedtime(bedtimedata: bedtime){ result in
+            switch result {
+            case .success(let bed):
+                print("취침시간",bed)
+                LoadingIndicator.hideLoading()
+                self.navigateToMainViewController()
+            case .failure(let error):
+                LoadingIndicator.hideLoading()
+                print(error.localizedDescription)
+            }
+            
+        }
     }
 }
 
@@ -471,6 +492,27 @@ extension TutorialViewController : UIPickerViewDelegate, UIPickerViewDataSource 
         default:
             return 45
         }
+    }
+    
+    func pickerView(_ pickerView: UIPickerView, didSelectRow row: Int, inComponent component: Int) {
+        let selectedHour = hour[pickerView.selectedRow(inComponent: 0) % hour.count]
+        let selectedMinute = min[pickerView.selectedRow(inComponent: 1) % min.count]
+        let selectedAMPM = AMPM[pickerView.selectedRow(inComponent: 2) % AMPM.count]
+        
+        // 24시간제로 변환
+        var hour24 = selectedHour
+        if selectedAMPM == "PM" {
+            if selectedHour != 12 {
+                hour24 += 12
+            }
+        } else { // AM
+            if selectedHour == 12 {
+                hour24 = 0
+            }
+        }
+        
+        selectedTime24 = String(format: "%02d:%02d", hour24, selectedMinute)
+        print("Selected time (24h): \(selectedTime24)")
     }
     
     func navigateToMainViewController() {

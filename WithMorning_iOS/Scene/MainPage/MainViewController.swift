@@ -345,6 +345,7 @@ class MainViewController: UIViewController, UISheetPresentationControllerDelegat
         
         print("🔥키체인에 들어있는 refreshToken",KeyChain.read(key: "refreshToken") ?? "")
         print("🔥키체인에 들어있는 accessToken",KeyChain.read(key: "accessToken") ?? "")
+        print("🔥키체인에 들어있는 fcmToken",KeyChain.read(key: "fcmToken") ?? "")
         
         APInetwork.getMainpage() { result in
             switch result {
