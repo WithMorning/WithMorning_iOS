@@ -181,7 +181,7 @@ class Network{
     //MARK: - 기상
     func patchWakeup(groupId: Int, completionHandler: @escaping (Result<wakeupResponse, Error>) -> Void){
         
-        print("보내는 groupId: \(groupId)")
+        print("기상알람에서 보내는 groupId: \(groupId)")
         AF.request(Router.patchwakeup(groupId: groupId), interceptor: AuthInterceptor())
         
             .validate(statusCode: 200..<300)

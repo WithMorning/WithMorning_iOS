@@ -23,11 +23,12 @@
 		D135377D2C3285AD004B49BB /* AlterUIView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D135377C2C3285AD004B49BB /* AlterUIView.swift */; };
 		D138F0B32C48090300233AFA /* TermsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D138F0B22C48090300233AFA /* TermsViewController.swift */; };
 		D13B6B802C4FAB2B00D963DC /* CertificateViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D13B6B7F2C4FAB2B00D963DC /* CertificateViewController.swift */; };
+		D1447A1E2CEE2A7400F98C9C /* DefaultSound.wav in Resources */ = {isa = PBXBuildFile; fileRef = D1447A1D2CEE2A7400F98C9C /* DefaultSound.wav */; };
+		D1447A202CEE2A7A00F98C9C /* ThirdSound.wav in Resources */ = {isa = PBXBuildFile; fileRef = D1447A1F2CEE2A7A00F98C9C /* ThirdSound.wav */; };
 		D146706B2BEA8FF9007B7132 /* MyPageViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D146706A2BEA8FF9007B7132 /* MyPageViewController.swift */; };
 		D14967F62C6FB3F5000E8C1B /* RegisterUserInfo.swift in Sources */ = {isa = PBXBuildFile; fileRef = D14967F52C6FB3F5000E8C1B /* RegisterUserInfo.swift */; };
 		D14967F92C70864D000E8C1B /* KeyChain.swift in Sources */ = {isa = PBXBuildFile; fileRef = D14967F82C70864D000E8C1B /* KeyChain.swift */; };
 		D14A2D6C2BC8EB810087E0CB /* DesignSystem.swift in Sources */ = {isa = PBXBuildFile; fileRef = D14A2D6B2BC8EB810087E0CB /* DesignSystem.swift */; };
-		D14C32662CE5E11A0097957D /* DefaultSound.wav in Resources */ = {isa = PBXBuildFile; fileRef = D14C32652CE5E11A0097957D /* DefaultSound.wav */; };
 		D14F61032CB90C700094777B /* NetworkErrorHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = D14F61022CB90C6A0094777B /* NetworkErrorHandler.swift */; };
 		D15534A32C943C8E0087AED7 /* UserModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = D12D51302C60BBFF00D3F1A9 /* UserModel.swift */; };
 		D15AE7342BC990DA00024CE3 /* Pretendard-Bold.otf in Resources */ = {isa = PBXBuildFile; fileRef = D15AE7332BC990DA00024CE3 /* Pretendard-Bold.otf */; };
@@ -54,10 +55,10 @@
 		D19A9CB22C26901100748CE8 /* MakeAlarmViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D19A9CB12C26901100748CE8 /* MakeAlarmViewController.swift */; };
 		D19E7FAA2C4A47C10053ACA8 /* LoginViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D19E7FA92C4A47C10053ACA8 /* LoginViewController.swift */; };
 		D1A095DB2CB56D7A002EEF6E /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = D1A095DA2CB56D7A002EEF6E /* GoogleService-Info.plist */; };
-		D1ABF7922C5239C7008B5084 /* TutorialSecondViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D1ABF7912C5239C7008B5084 /* TutorialSecondViewController.swift */; };
+		D1ABF7922C5239C7008B5084 /* TutorialViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D1ABF7912C5239C7008B5084 /* TutorialViewController.swift */; };
 		D1ABF7962C5239E4008B5084 /* TutorialFirstViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D1ABF7952C5239E4008B5084 /* TutorialFirstViewController.swift */; };
 		D1AD15AC2C7AF19F003EE342 /* UILabel_Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = D1AD15AB2C7AF19F003EE342 /* UILabel_Extension.swift */; };
-		D1B12F2F2C50E7770041288C /* TutorialViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D1B12F2E2C50E7770041288C /* TutorialViewController.swift */; };
+		D1B12F2F2C50E7770041288C /* TutorialPageViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D1B12F2E2C50E7770041288C /* TutorialPageViewController.swift */; };
 		D1B86A012C6D12710052F528 /* UserStateViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D1B86A002C6D12710052F528 /* UserStateViewController.swift */; };
 		D1B86A032C6D13D20052F528 /* UICell_Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = D1B86A022C6D13D20052F528 /* UICell_Extension.swift */; };
 		D1B86A052C6F2EAC0052F528 /* LoginModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = D1B86A042C6F2EAC0052F528 /* LoginModel.swift */; };
@@ -109,11 +110,12 @@
 		D135377C2C3285AD004B49BB /* AlterUIView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AlterUIView.swift; sourceTree = "<group>"; };
 		D138F0B22C48090300233AFA /* TermsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TermsViewController.swift; sourceTree = "<group>"; };
 		D13B6B7F2C4FAB2B00D963DC /* CertificateViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CertificateViewController.swift; sourceTree = "<group>"; };
+		D1447A1D2CEE2A7400F98C9C /* DefaultSound.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; path = DefaultSound.wav; sourceTree = "<group>"; };
+		D1447A1F2CEE2A7A00F98C9C /* ThirdSound.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; path = ThirdSound.wav; sourceTree = "<group>"; };
 		D146706A2BEA8FF9007B7132 /* MyPageViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyPageViewController.swift; sourceTree = "<group>"; };
 		D14967F52C6FB3F5000E8C1B /* RegisterUserInfo.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RegisterUserInfo.swift; sourceTree = "<group>"; };
 		D14967F82C70864D000E8C1B /* KeyChain.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KeyChain.swift; sourceTree = "<group>"; };
 		D14A2D6B2BC8EB810087E0CB /* DesignSystem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DesignSystem.swift; sourceTree = "<group>"; };
-		D14C32652CE5E11A0097957D /* DefaultSound.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; path = DefaultSound.wav; sourceTree = "<group>"; };
 		D14F61022CB90C6A0094777B /* NetworkErrorHandler.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NetworkErrorHandler.swift; sourceTree = "<group>"; };
 		D15AE7332BC990DA00024CE3 /* Pretendard-Bold.otf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Pretendard-Bold.otf"; sourceTree = "<group>"; };
 		D15AE7352BC990E200024CE3 /* Pretendard-Medium.otf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Pretendard-Medium.otf"; sourceTree = "<group>"; };
@@ -138,10 +140,10 @@
 		D19A9CB12C26901100748CE8 /* MakeAlarmViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MakeAlarmViewController.swift; sourceTree = "<group>"; };
 		D19E7FA92C4A47C10053ACA8 /* LoginViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginViewController.swift; sourceTree = "<group>"; };
 		D1A095DA2CB56D7A002EEF6E /* GoogleService-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
-		D1ABF7912C5239C7008B5084 /* TutorialSecondViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TutorialSecondViewController.swift; sourceTree = "<group>"; };
+		D1ABF7912C5239C7008B5084 /* TutorialViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TutorialViewController.swift; sourceTree = "<group>"; };
 		D1ABF7952C5239E4008B5084 /* TutorialFirstViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TutorialFirstViewController.swift; sourceTree = "<group>"; };
 		D1AD15AB2C7AF19F003EE342 /* UILabel_Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UILabel_Extension.swift; sourceTree = "<group>"; };
-		D1B12F2E2C50E7770041288C /* TutorialViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TutorialViewController.swift; sourceTree = "<group>"; };
+		D1B12F2E2C50E7770041288C /* TutorialPageViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TutorialPageViewController.swift; sourceTree = "<group>"; };
 		D1B86A002C6D12710052F528 /* UserStateViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserStateViewController.swift; sourceTree = "<group>"; };
 		D1B86A022C6D13D20052F528 /* UICell_Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UICell_Extension.swift; sourceTree = "<group>"; };
 		D1B86A042C6F2EAC0052F528 /* LoginModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginModel.swift; sourceTree = "<group>"; };
@@ -333,7 +335,8 @@
 		D14C32672CE5E1580097957D /* Sounds */ = {
 			isa = PBXGroup;
 			children = (
-				D14C32652CE5E11A0097957D /* DefaultSound.wav */,
+				D1447A1D2CEE2A7400F98C9C /* DefaultSound.wav */,
+				D1447A1F2CEE2A7A00F98C9C /* ThirdSound.wav */,
 			);
 			path = Sounds;
 			sourceTree = "<group>";
@@ -384,6 +387,7 @@
 			isa = PBXGroup;
 			children = (
 				D1E672C32BC4FD3500A32790 /* Assets.xcassets */,
+				D14C32672CE5E1580097957D /* Sounds */,
 				D15AE72C2BC98F8900024CE3 /* Fonts */,
 			);
 			name = Resource;
@@ -403,9 +407,9 @@
 		D1ABF7902C52399D008B5084 /* Tutorial */ = {
 			isa = PBXGroup;
 			children = (
-				D1B12F2E2C50E7770041288C /* TutorialViewController.swift */,
+				D1ABF7912C5239C7008B5084 /* TutorialViewController.swift */,
+				D1B12F2E2C50E7770041288C /* TutorialPageViewController.swift */,
 				D1ABF7952C5239E4008B5084 /* TutorialFirstViewController.swift */,
-				D1ABF7912C5239C7008B5084 /* TutorialSecondViewController.swift */,
 			);
 			path = Tutorial;
 			sourceTree = "<group>";
@@ -441,13 +445,12 @@
 		D1E672B92BC4FD3300A32790 /* WithMorning_iOS */ = {
 			isa = PBXGroup;
 			children = (
-				D14C32672CE5E1580097957D /* Sounds */,
 				D10978402C48E31B00CBF9E3 /* WithMorning_iOS.entitlements */,
+				D16F5FCF2BC6562A006640F9 /* Resource */,
 				D13178992C635412002C368A /* CustomView */,
 				D14A2D6A2BC8EB6D0087E0CB /* DesignSystem */,
 				D14967F72C7065D8000E8C1B /* Services */,
 				D10F846D2BC7E72000F3A172 /* Extension */,
-				D16F5FCF2BC6562A006640F9 /* Resource */,
 				D1652D792BC653AF00F80F6F /* API */,
 				D1652D782BC653A700F80F6F /* Scene */,
 				D1E672C82BC4FD3500A32790 /* Info.plist */,
@@ -536,10 +539,11 @@
 				D1DECB232BE54B37009AC667 /* Pretendard-ExtraBold.otf in Resources */,
 				D1DECB242BE54B37009AC667 /* Pretendard-Thin.otf in Resources */,
 				D1A095DB2CB56D7A002EEF6E /* GoogleService-Info.plist in Resources */,
+				D1447A202CEE2A7A00F98C9C /* ThirdSound.wav in Resources */,
 				D1DECB262BE54B37009AC667 /* Pretendard-Light.otf in Resources */,
 				D15AE7342BC990DA00024CE3 /* Pretendard-Bold.otf in Resources */,
-				D14C32662CE5E11A0097957D /* DefaultSound.wav in Resources */,
 				D15AE7382BC990E900024CE3 /* Pretendard-SemiBold.otf in Resources */,
+				D1447A1E2CEE2A7400F98C9C /* DefaultSound.wav in Resources */,
 				D1E672C72BC4FD3500A32790 /* Base in Resources */,
 				D1DECB222BE54B37009AC667 /* Pretendard-Black.otf in Resources */,
 				D15AE7362BC990E200024CE3 /* Pretendard-Medium.otf in Resources */,
@@ -624,8 +628,8 @@
 				D14A2D6C2BC8EB810087E0CB /* DesignSystem.swift in Sources */,
 				D12D51332C60BC0900D3F1A9 /* UserRouter.swift in Sources */,
 				D1ABF7962C5239E4008B5084 /* TutorialFirstViewController.swift in Sources */,
-				D1ABF7922C5239C7008B5084 /* TutorialSecondViewController.swift in Sources */,
-				D1B12F2F2C50E7770041288C /* TutorialViewController.swift in Sources */,
+				D1ABF7922C5239C7008B5084 /* TutorialViewController.swift in Sources */,
+				D1B12F2F2C50E7770041288C /* TutorialPageViewController.swift in Sources */,
 				D129AC772C75A99C00C83DB9 /* PushNotificationHelper.swift in Sources */,
 				D16F5FD52BC65680006640F9 /* Router.swift in Sources */,
 				D13B6B802C4FAB2B00D963DC /* CertificateViewController.swift in Sources */,

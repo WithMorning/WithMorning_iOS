@@ -219,7 +219,7 @@ class UserStateViewController : UIViewController{
                 }
             })
         }else{
-            showToast(message: "전화가 꺼져있는 상태")
+            showToast(message: "전화를 비공개한 유저입니다")
         }
     }
     

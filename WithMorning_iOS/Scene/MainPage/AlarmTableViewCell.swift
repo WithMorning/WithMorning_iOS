@@ -1028,48 +1028,85 @@ class memberCollectioViewCell: UICollectionViewCell {
     }
     
     //MARK: - 닉네임, 유저 스테이트 설정
+//    func configureMember(with nickname: String, imageURL: String, isDisturbBanMode: Bool, isWakeup: Bool) {
+//        
+//        memberLabel.text = nickname
+//        
+//        //이미지URL 다운
+//        if imageURL == imageURL, !imageURL.isEmpty {
+//            let url = URL(string: imageURL)
+//            let placeholderImage = UIImage(named: "profile")
+//            let processor = RoundCornerImageProcessor(cornerRadius: 29)
+//            memberIMG.kf.setImage(with: url, placeholder: placeholderImage, options: [.processor(processor)])
+//            
+//        } else {
+//            memberIMG.image = UIImage(named: "profile")
+//        }
+//        
+//        //meView
+//        if nickname == UserDefaults.standard.string(forKey: "nickname"){
+//            meView.isHidden = false
+//        } else {
+//            meView.isHidden = true
+//        }
+//        
+//        
+//        //방해금지모드
+//        if isDisturbBanMode{
+//            memberView.backgroundColor = DesignSystemColor.Gray150.value
+//            memberLabel.textColor = DesignSystemColor.Gray500.value
+//            meView.backgroundColor = DesignSystemColor.Gray150.value
+//            
+//        }else{
+//            memberView.backgroundColor = DesignSystemColor.Orange500.value
+//            memberLabel.textColor = .black
+//            meView.backgroundColor = DesignSystemColor.Orange500.value
+//        }
+//        
+//        //일어났나
+//        if isWakeup{
+//            sleepView.isHidden = true //일어났으니 자는중 hidden
+//        } else {
+//            sleepView.isHidden = false //안일어났으니 자는중 !hidden
+//        }
+//        
+//        
+//        setNeedsLayout()
+//        layoutIfNeeded()
+//    }
+    
     func configureMember(with nickname: String, imageURL: String, isDisturbBanMode: Bool, isWakeup: Bool) {
-        
         memberLabel.text = nickname
         
-        //이미지URL 다운
+        // Image URL download
         if imageURL == imageURL, !imageURL.isEmpty {
             let url = URL(string: imageURL)
             let placeholderImage = UIImage(named: "profile")
             let processor = RoundCornerImageProcessor(cornerRadius: 29)
             memberIMG.kf.setImage(with: url, placeholder: placeholderImage, options: [.processor(processor)])
-            
         } else {
             memberIMG.image = UIImage(named: "profile")
         }
-        
-        //meView
-        if nickname == UserDefaults.standard.string(forKey: "nickname"){
+
+        if nickname == UserDefaults.standard.string(forKey: "nickname") {
             meView.isHidden = false
         } else {
             meView.isHidden = true
         }
         
-        
-        //방해금지모드
-        if isDisturbBanMode{
+        if isDisturbBanMode {
             memberView.backgroundColor = DesignSystemColor.Gray150.value
             memberLabel.textColor = DesignSystemColor.Gray500.value
             meView.backgroundColor = DesignSystemColor.Gray150.value
-            
-        }else{
+            sleepView.isHidden = true 
+        } else {
             memberView.backgroundColor = DesignSystemColor.Orange500.value
             memberLabel.textColor = .black
             meView.backgroundColor = DesignSystemColor.Orange500.value
+            
+            // Show sleep status based on wake-up state
+            sleepView.isHidden = isWakeup
         }
-        
-        //일어났나
-        if isWakeup{
-            sleepView.isHidden = true //일어났으니 자는중 hidden
-        } else {
-            sleepView.isHidden = false //안일어났으니 자는중 !hidden
-        }
-        
         
         setNeedsLayout()
         layoutIfNeeded()

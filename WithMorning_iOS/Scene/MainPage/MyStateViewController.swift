@@ -171,13 +171,16 @@ class MyStateViewController : UIViewController{
         let color = DesignSystemColor.Orange500.value // 강조할 텍스트의 색상
         
         if isagree ?? true{
-            fullText = "전화번호를 비공개한 그룹입니다."
-            targetText = "비공개"
-            closecallButton.backgroundColor = DesignSystemColor.Gray300.value
-        } else {
             fullText = "전화번호를 공개한 그룹입니다."
             targetText = "공개"
+            closecallButton.backgroundColor = DesignSystemColor.Gray300.value
+            opencallButton.backgroundColor = DesignSystemColor.Orange500.value
+            
+        } else {
+            fullText = "전화번호를 비공개한 그룹입니다."
+            targetText = "비공개"
             opencallButton.backgroundColor = DesignSystemColor.Gray300.value
+            closecallButton.backgroundColor = DesignSystemColor.Orange500.value
         }
         
         // NSMutableAttributedString을 사용하여 특정 텍스트의 속성 변경
@@ -188,35 +191,72 @@ class MyStateViewController : UIViewController{
         }
         
         subLabel.attributedText = attributedString
-        
-        
-        
+    }
+    
+    func openCall(button: UIButton) {
+        if button == opencallButton {
+            // 공개 버튼을 눌렀을 경우
+            if isagree ?? false {
+                showToast(message: "이미 전화번호를 공개한 그룹입니다.")
+            } else {
+                showToast(message: "전화번호를 공개합니다.")
+            }
+        } else if button == closecallButton {
+            // 비공개 버튼을 눌렀을 경우
+            if isagree ?? false {
+                showToast(message: "전화번호를 비공개합니다.")
+            } else {
+                showToast(message: "이미 전화번호를 비공개한 그룹입니다.")
+            }
+        }
     }
     
     //MARK: - API
     var userId : Int = 0
     var groupId : Int = 0
     
-    func editphoneagree() {
+//    func editphoneagree() {
+//        LoadingIndicator.showLoading()
+//        
+//        // 현재 isagree 값을 반전하여 API에 전송할 값 설정
+//        let updatedAgreeStatus = !(isagree ?? false)
+//        isagree = updatedAgreeStatus // 상태를 전환하여 반영
+//        
+//        let editphoneData = EditphoneMaindata(isAgree: updatedAgreeStatus)
+//        
+//        // API 호출
+//        APInetwork.patchphoneagree(groupId: self.groupId, editphoneagree: editphoneData) { result in
+//            switch result {
+//            case .success(let data):
+//                LoadingIndicator.hideLoading()
+//                print("전화번호 공개 상태 변경 성공: \(data)")
+//                self.configureUserState()
+//                
+//            case .failure(let error):
+//                LoadingIndicator.hideLoading()
+//                print("오류 발생: \(error.localizedDescription)")
+//            }
+//        }
+//    }
+    
+    func editphoneagree(completion: @escaping () -> Void) {
         LoadingIndicator.showLoading()
         
-        // 현재 isagree 값을 반전하여 API에 전송할 값 설정
         let updatedAgreeStatus = !(isagree ?? false)
         isagree = updatedAgreeStatus // 상태를 전환하여 반영
         
         let editphoneData = EditphoneMaindata(isAgree: updatedAgreeStatus)
         
-        // API 호출
         APInetwork.patchphoneagree(groupId: self.groupId, editphoneagree: editphoneData) { result in
+            LoadingIndicator.hideLoading()
             switch result {
             case .success(let data):
-                LoadingIndicator.hideLoading()
                 print("전화번호 공개 상태 변경 성공: \(data)")
-                self.configureUserState()
-                
+                self.configureUserState() // 상태에 따른 UI 갱신
+                completion() // 상태 변경 후 메시지 호출
             case .failure(let error):
-                LoadingIndicator.hideLoading()
                 print("오류 발생: \(error.localizedDescription)")
+                completion() // 오류 발생 시에도 메시지 호출
             }
         }
     }
@@ -224,11 +264,23 @@ class MyStateViewController : UIViewController{
     
     //MARK: - @objc func
     @objc func callclick() {
-        editphoneagree()
+        if self.isagree ?? false {
+            self.showToast(message: "이미 전화번호를 공개한 그룹입니다.")
+        } else {
+            editphoneagree {
+                self.showToast(message: "전화번호를 공개합니다.")
+            }
+        }
     }
-    
+
     @objc func nocallclick() {
-        editphoneagree()
+        if !(self.isagree ?? true) {
+            self.showToast(message: "이미 전화번호를 비공개한 그룹입니다.")
+        } else {
+            editphoneagree {
+                self.showToast(message: "전화번호를 비공개합니다.")
+            }
+        }
     }
     
     

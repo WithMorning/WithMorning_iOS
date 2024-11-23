@@ -114,13 +114,18 @@ class IntroViewController : UIViewController{
     }
     
     //MARK: - objc func
-    
     @objc func skip() {
-        guard pageControl.currentPage != 2 else { return }
+        guard pageControl.currentPage != 2 else{
+            let vc = TutorialViewController()
+            self.navigationController?.pushViewController(vc, animated: true)
+            return
+        }
+        
         let vc = IntroThridViewContoller()
         pageViewController.setViewControllers([vc], direction: .forward, animated: true) { [weak self] _ in
             self?.pageControl.currentPage = 2
         }
+        
     }
     
     @objc func nextbtn() {

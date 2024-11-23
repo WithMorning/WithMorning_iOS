@@ -208,8 +208,8 @@ class MyPageViewController : UIViewController, UIScrollViewDelegate {
         stackView.alignment = .fill
         stackView.addSubviews(noticeLabel,noticeLabel2)
         stackView.isUserInteractionEnabled = true
-        //        let tapGestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(repeatDay))
-        //        stackView.addGestureRecognizer(tapGestureRecognizer)
+        let tapGestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(notice))
+        stackView.addGestureRecognizer(tapGestureRecognizer)
         return stackView
     }()
     
@@ -641,6 +641,9 @@ class MyPageViewController : UIViewController, UIScrollViewDelegate {
                 UIApplication.shared.open(url, options: [:], completionHandler: nil)
             }
         }
+    }
+    @objc func notice(){
+        showToast(message: "공지사항은 준비중입니다.")
     }
     
     
