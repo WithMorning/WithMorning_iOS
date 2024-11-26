@@ -786,14 +786,18 @@ extension MakeAlarmViewController: UITextViewDelegate, UIGestureRecognizerDelega
                   replacementText text: String) -> Bool {
         
         let currentText = memoTextView.text ?? ""
-        let newLength = currentText.count + text.count - range.length
+        guard let stringRange = Range(range, in: currentText) else { return false }
         
-        if newLength > 48 {
-            showToast(message: "메모는 48자 이하로 작성해주세요.")
+        let updatedText = currentText.replacingCharacters(in: stringRange, with: text)
+        
+        let lines = updatedText.components(separatedBy: .newlines)
+        
+        if lines.count > 3 || updatedText.count > 48 {
+            showToast(message: "메모는 3줄 이하, 48자 이하로 작성해주세요.")
+            return false
         }
         
-        
-        return newLength <= 48
+        return true
     }
 }
 

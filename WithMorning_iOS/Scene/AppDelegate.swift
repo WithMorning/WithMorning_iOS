@@ -15,10 +15,10 @@ class AppDelegate:UIResponder, UIApplicationDelegate, MessagingDelegate {
     
     var audioPlayer : AVAudioPlayer?
     
+    //MARK: - 앱이 종료되어 있는 경우 (Terminated)
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
         
         sleep(1)
-        
         
         //파이어베이스 설정
         FirebaseApp.configure()
@@ -46,7 +46,7 @@ class AppDelegate:UIResponder, UIApplicationDelegate, MessagingDelegate {
     }
     
     
-    // MARK: UISceneSession Lifecycle
+    //MARK: - : UISceneSession Lifecycle
     func application(_ application: UIApplication, configurationForConnecting connectingSceneSession: UISceneSession, options: UIScene.ConnectionOptions) -> UISceneConfiguration {
         // Called when a new scene session is being created.
         // Use this method to select a configuration to create the new scene with.
@@ -61,32 +61,36 @@ class AppDelegate:UIResponder, UIApplicationDelegate, MessagingDelegate {
     
     
     
-    //MARK: - Foreground(앱 켜진 상태)에서도 알림 오는 설정
+    //MARK: - 앱이 실행 중인 경우 (Foreground)
     func userNotificationCenter(_ center: UNUserNotificationCenter, willPresent notification: UNNotification, withCompletionHandler completionHandler: @escaping (UNNotificationPresentationOptions) -> Void) {
         let userInfo = notification.request.content.userInfo
-        handleNotification(userInfo)
+//        handleNotification(userInfo)
+        print("Appdelegate : foreground에서 실행")
         completionHandler([.banner, .list, .sound])
         
     }
     
-    //MARK: - Background(앱 꺼진 상태)에서도 알림 오는 설정
-    /// 기상알람의 경우 앱 진입시 뷰가 바뀌기 때문에 설정 필요함. 근디? 아직? 모름ㅋㅋ
-    /// 실행되는 메서드를 옮기면 될거 같기도 한데 일단 대기 ㅋㅋ
-
+    //MARK: - 앱이 백그라운드인 경우 (Background) & 사용자가 푸시를 탭한 경우
     func userNotificationCenter(_ center: UNUserNotificationCenter, didReceive response: UNNotificationResponse, withCompletionHandler completionHandler: @escaping () -> Void) {
         let userInfo = response.notification.request.content.userInfo
         handleNotification(userInfo)
+        print("Appdelegate : background에서 실행")
         completionHandler()
         
     }
     
-    //MARK: - silent remote push
-    //아마 백그라운드에 있거나, 앱이 켜져있지 않은 상태에서 호출되는 부분으로 추정
-    //자세한건 진형이가 하고 나서 설정해야함
-    
+    //MARK: - 앱이 종료되어 있을 때 (Terminated) 푸시를 탭한 경우
     func application(_ application: UIApplication, didReceiveRemoteNotification userInfo: [AnyHashable : Any], fetchCompletionHandler completionHandler: @escaping (UIBackgroundFetchResult) -> Void) {
         print(userInfo)
-        print("silent push")
+        
+        handleNotification(userInfo)
+        
+//        if let aps = userInfo["aps"] as? [String: Any],
+//           let sound = aps["sound"] as? String, sound == "default" {
+//            // 알림에 소리가 포함되었으면 소리를 울리도록 설정
+//            AudioServicesPlaySystemSound(SystemSoundID(kSystemSoundID_Vibrate))
+//        }
+        
         completionHandler(.newData)
     }
     
@@ -101,10 +105,8 @@ class AppDelegate:UIResponder, UIApplicationDelegate, MessagingDelegate {
             switch title {
             case "기상 알람":
                 handlewakeup(userInfo)
-//                playNotificationSound(named: "ThirdSound")
             case "콕 찌르기":
                 handleprick(userInfo)
-//                playNotificationSound(named: "ThirdSound")
             case "취침 알람":
                 handlebedtime(userInfo)
             default:
@@ -113,50 +115,10 @@ class AppDelegate:UIResponder, UIApplicationDelegate, MessagingDelegate {
         }
     }
     
-    private var notificationVolume: Float {
-        // 0-100 스케일을 0-1 스케일로 변환
-        return UserDefaults.standard.float(forKey: "volume") / 100.0
-    }
-    
-    // 진동 설정 값을 가져오는 프로퍼티
-    private var isVibrateEnabled: Bool {
-        return UserDefaults.standard.bool(forKey: "vibrate")
-    }
-    
-    //MARK: - 알림 소리를 위한 메서드(알림 이름을 대입)
-    //앱이 켜져있는 상태에서만 소리가 나는 것으로 예상
-    private func playNotificationSound(named soundName: String) {
-        guard let soundURL = Bundle.main.url(forResource: soundName, withExtension: "wav") else {
-            print("Sound file not found")
-            return
-        }
-        
-        do {
-            
-            // AVAudioSession 설정
-            // playback - 무음모드일때도 소리남
-            // ambient - 무음모드일때는 소리 안남
-            
-            try AVAudioSession.sharedInstance().setCategory(.ambient, mode: .default)
-            try AVAudioSession.sharedInstance().setActive(true)
-            
-            audioPlayer = try AVAudioPlayer(contentsOf: soundURL)
-            audioPlayer?.volume = notificationVolume // UserDefaults에서 가져온 볼륨 적용
-            
-            // 진동 설정이 켜져있으면 진동 실행
-            if isVibrateEnabled {
-                AudioServicesPlaySystemSound(kSystemSoundID_Vibrate)
-            }
-            
-            audioPlayer?.play()
-        } catch {
-            print("Error playing sound: \(error.localizedDescription)")
-        }
-    }
-    
     private func handlewakeup(_ userInfo: [AnyHashable: Any]) {
         print("기상알람")
         UserDefaults.standard.set(true, forKey: "isWakeUpAlarmActive")
+        
         NotificationCenter.default.post(name: NSNotification.Name("WakeUpAlarmReceived"), object: nil)
         
         if let jsonData = try? JSONSerialization.data(withJSONObject: userInfo, options: .prettyPrinted),
@@ -175,22 +137,21 @@ class AppDelegate:UIResponder, UIApplicationDelegate, MessagingDelegate {
         }
         
     }
+    
     private func handlebedtime(_ userInfo: [AnyHashable: Any]) {
         print("취침 알람")
         
     }
+    
     private func handleDefault(_ userInfo: [AnyHashable: Any]) {
         print("기본 알람")
         
     }
     
-    
 }
-
 
 extension AppDelegate: UNUserNotificationCenterDelegate {
     
-    // 백그라운드에서 푸시 알림을 탭했을 때 실행
     func application(_ application: UIApplication,
                      didRegisterForRemoteNotificationsWithDeviceToken deviceToken: Data) {
         

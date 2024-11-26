@@ -956,19 +956,18 @@ class memberCollectioViewCell: UICollectionViewCell {
     
     
     //MARK: - 자는중 일 경우 view
-    
     private lazy var sleepView : UIView = {
         let view = UIView()
         view.backgroundColor = UIColor(red: 0, green: 0, blue: 0, alpha: 0.4)
         view.clipsToBounds = true
-        view.layer.cornerRadius = 31
+        view.layer.cornerRadius = 30
         view.addSubview(sleepLabel)
         return view
     }()
     
     private lazy var sleepLabel : UILabel = {
         let label = UILabel()
-        label.text = "자는 중..."
+        label.text = "자는 중.."
         label.font = DesignSystemFont.Pretendard_SemiBold10.value
         label.textColor = .white
         return label
@@ -986,7 +985,7 @@ class memberCollectioViewCell: UICollectionViewCell {
     }
     
     func setUI() {
-        contentView.addSubviews(memberView, memberLabel, meView, sleepView)
+        contentView.addSubviews(memberView, memberLabel, sleepView, meView)
         
         memberView.snp.makeConstraints {
             $0.top.equalToSuperview().inset(1)
@@ -1005,19 +1004,20 @@ class memberCollectioViewCell: UICollectionViewCell {
             $0.bottom.lessThanOrEqualToSuperview()
         }
         
+        sleepView.snp.makeConstraints{
+            $0.height.width.equalTo(60)
+            $0.center.equalTo(memberView)
+        }
+        
         meView.snp.makeConstraints{
             $0.height.equalTo(14)
             $0.width.equalTo(20)
             $0.centerX.equalToSuperview()
             $0.bottom.equalTo(memberView.snp.bottom).offset(4)
         }
+        
         meLabel.snp.makeConstraints{
             $0.center.equalToSuperview()
-        }
-        
-        sleepView.snp.makeConstraints{
-            $0.height.width.equalTo(62)
-            $0.center.equalTo(memberView)
         }
         
         sleepLabel.snp.makeConstraints{
@@ -1028,88 +1028,41 @@ class memberCollectioViewCell: UICollectionViewCell {
     }
     
     //MARK: - 닉네임, 유저 스테이트 설정
-//    func configureMember(with nickname: String, imageURL: String, isDisturbBanMode: Bool, isWakeup: Bool) {
-//        
-//        memberLabel.text = nickname
-//        
-//        //이미지URL 다운
-//        if imageURL == imageURL, !imageURL.isEmpty {
-//            let url = URL(string: imageURL)
-//            let placeholderImage = UIImage(named: "profile")
-//            let processor = RoundCornerImageProcessor(cornerRadius: 29)
-//            memberIMG.kf.setImage(with: url, placeholder: placeholderImage, options: [.processor(processor)])
-//            
-//        } else {
-//            memberIMG.image = UIImage(named: "profile")
-//        }
-//        
-//        //meView
-//        if nickname == UserDefaults.standard.string(forKey: "nickname"){
-//            meView.isHidden = false
-//        } else {
-//            meView.isHidden = true
-//        }
-//        
-//        
-//        //방해금지모드
-//        if isDisturbBanMode{
-//            memberView.backgroundColor = DesignSystemColor.Gray150.value
-//            memberLabel.textColor = DesignSystemColor.Gray500.value
-//            meView.backgroundColor = DesignSystemColor.Gray150.value
-//            
-//        }else{
-//            memberView.backgroundColor = DesignSystemColor.Orange500.value
-//            memberLabel.textColor = .black
-//            meView.backgroundColor = DesignSystemColor.Orange500.value
-//        }
-//        
-//        //일어났나
-//        if isWakeup{
-//            sleepView.isHidden = true //일어났으니 자는중 hidden
-//        } else {
-//            sleepView.isHidden = false //안일어났으니 자는중 !hidden
-//        }
-//        
-//        
-//        setNeedsLayout()
-//        layoutIfNeeded()
-//    }
-    
     func configureMember(with nickname: String, imageURL: String, isDisturbBanMode: Bool, isWakeup: Bool) {
-        memberLabel.text = nickname
-        
-        // Image URL download
-        if imageURL == imageURL, !imageURL.isEmpty {
-            let url = URL(string: imageURL)
-            let placeholderImage = UIImage(named: "profile")
-            let processor = RoundCornerImageProcessor(cornerRadius: 29)
-            memberIMG.kf.setImage(with: url, placeholder: placeholderImage, options: [.processor(processor)])
-        } else {
-            memberIMG.image = UIImage(named: "profile")
-        }
+           memberLabel.text = nickname
+           
+           // Image URL download
+           if imageURL == imageURL, !imageURL.isEmpty {
+               let url = URL(string: imageURL)
+               let placeholderImage = UIImage(named: "profile")
+               let processor = RoundCornerImageProcessor(cornerRadius: 29)
+               memberIMG.kf.setImage(with: url, placeholder: placeholderImage, options: [.processor(processor)])
+           } else {
+               memberIMG.image = UIImage(named: "profile")
+           }
 
-        if nickname == UserDefaults.standard.string(forKey: "nickname") {
-            meView.isHidden = false
-        } else {
-            meView.isHidden = true
-        }
+           if nickname == UserDefaults.standard.string(forKey: "nickname") {
+               meView.isHidden = false
+           } else {
+               meView.isHidden = true
+           }
+           
         
         if isDisturbBanMode {
             memberView.backgroundColor = DesignSystemColor.Gray150.value
             memberLabel.textColor = DesignSystemColor.Gray500.value
             meView.backgroundColor = DesignSystemColor.Gray150.value
-            sleepView.isHidden = true 
+            sleepView.isHidden = true
         } else {
-            memberView.backgroundColor = DesignSystemColor.Orange500.value
+            memberView.backgroundColor = isWakeup ? DesignSystemColor.Orange500.value : .clear // true, false
             memberLabel.textColor = .black
             meView.backgroundColor = DesignSystemColor.Orange500.value
-            
-            // Show sleep status based on wake-up state
             sleepView.isHidden = isWakeup
         }
-        
-        setNeedsLayout()
-        layoutIfNeeded()
-    }
+           
+           setNeedsLayout()
+           layoutIfNeeded()
+       }
+    
 }
 

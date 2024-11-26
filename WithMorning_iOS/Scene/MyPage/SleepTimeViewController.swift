@@ -12,7 +12,6 @@ import Alamofire
 
 class SleepTimeViewController : UIViewController, UISheetPresentationControllerDelegate {
     
-    let sleepNoti = PushNotificationHelper.shared
     let APInetwork = Network.shared
     
     //MARK: - properties

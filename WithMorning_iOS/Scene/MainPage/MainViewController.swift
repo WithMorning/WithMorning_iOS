@@ -347,37 +347,39 @@ class MainViewController: UIViewController, UISheetPresentationControllerDelegat
         print("🔥키체인에 들어있는 accessToken",KeyChain.read(key: "accessToken") ?? "")
         print("🔥키체인에 들어있는 fcmToken",KeyChain.read(key: "fcmToken") ?? "")
         
-        APInetwork.getMainpage() { result in
-            switch result {
-            case .success(let mainpage):
-                self.MainpageUpdate(with: mainpage)
-                print(mainpage)
-                
-                self.nameLabel.text = "Hi, \(mainpage.connectorNickname)"
-                
-                if ((mainpage.connectorProfileURL?.isEmpty) != nil) {
-                    // 이미지 URL이 유효한 경우: 이미지 다운로드 처리
-                    let url = URL(string: mainpage.connectorProfileURL ?? "")
-                    let placeholderImage = UIImage(named: "profile")
-                    let processor = RoundCornerImageProcessor(cornerRadius: 29)
+        UIView.performWithoutAnimation{
+            APInetwork.getMainpage() { result in
+                switch result {
+                case .success(let mainpage):
+                    self.MainpageUpdate(with: mainpage)
+                    print(mainpage)
                     
-                    self.profileButton.kf.setImage(with: url, placeholder: placeholderImage, options: [.processor(processor)])
+                    self.nameLabel.text = "Hi, \(mainpage.connectorNickname)"
                     
-                } else {
+                    if ((mainpage.connectorProfileURL?.isEmpty) != nil) {
+                        // 이미지 URL이 유효한 경우: 이미지 다운로드 처리
+                        let url = URL(string: mainpage.connectorProfileURL ?? "")
+                        let placeholderImage = UIImage(named: "profile")
+                        let processor = RoundCornerImageProcessor(cornerRadius: 29)
+                        
+                        self.profileButton.kf.setImage(with: url, placeholder: placeholderImage, options: [.processor(processor)])
+                        
+                    } else {
+                        
+                        self.profileButton.image = UIImage(named: "profile") // 기본 이미지로 설정
+                    }
+                    self.AlarmTableView.reloadData()
+                    self.emptycellcheck()
                     
-                    self.profileButton.image = UIImage(named: "profile") // 기본 이미지로 설정
+                    LoadingIndicator.hideLoading()
+                case .failure(let error):
+                    
+                    self.AlarmTableView.reloadData()
+                    LoadingIndicator.hideLoading()
+                    self.showToast(message: "오류가 발생했습니다. 잠시후 다시 시도해주세요.")
+                    print(error)
+                    
                 }
-                self.AlarmTableView.reloadData()
-                self.emptycellcheck()
-                
-                LoadingIndicator.hideLoading()
-            case .failure(let error):
-                
-                self.AlarmTableView.reloadData()
-                LoadingIndicator.hideLoading()
-                self.showToast(message: "오류가 발생했습니다. 잠시후 다시 시도해주세요.")
-                print(error)
-                
             }
         }
     }
