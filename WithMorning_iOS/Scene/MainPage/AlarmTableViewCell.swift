@@ -418,25 +418,27 @@ class AlarmTableViewCell : UITableViewCell, UISheetPresentationControllerDelegat
     func configureCell(with alarm: GroupList, currentUserNickname: String) {
         
         if let currentUser = alarm.userList?.first(where: { $0.nickname == currentUserNickname }) {
-            
-            disturb = currentUser.isDisturbBanMode
-            toggleButton.isOn = !disturb
-            self.bottomView.isHidden = self.disturb
-            
-            DispatchQueue.main.async {
+            UIView.performWithoutAnimation {
+                
+                disturb = currentUser.isDisturbBanMode
+                toggleButton.isOn = !disturb
                 self.bottomView.isHidden = self.disturb
-                let (time, amPm) = self.convertTimeTo12HourFormat(alarm.wakeupTime)
                 
-                // timeLabel 에는 시간만, noonLabel 에는 AM/PM을 넣음
-                self.timeLabel.text = time
-                self.noonLabel.text = amPm
-                
-                let dayLabels = [self.MonLabel, self.TueLabel, self.WedLabel, self.ThuLabel, self.FriLabel, self.SatLabel, self.SunLabel]
-                
-                for label in dayLabels {
-                    if self.disturb {
-                        label.backgroundColor = DesignSystemColor.Gray100.value
-                        label.textColor = DesignSystemColor.Gray300.value
+                DispatchQueue.main.async {
+                    self.bottomView.isHidden = self.disturb
+                    let (time, amPm) = self.convertTimeTo12HourFormat(alarm.wakeupTime)
+                    
+                    // timeLabel 에는 시간만, noonLabel 에는 AM/PM을 넣음
+                    self.timeLabel.text = time
+                    self.noonLabel.text = amPm
+                    
+                    let dayLabels = [self.MonLabel, self.TueLabel, self.WedLabel, self.ThuLabel, self.FriLabel, self.SatLabel, self.SunLabel]
+                    
+                    for label in dayLabels {
+                        if self.disturb {
+                            label.backgroundColor = DesignSystemColor.Gray100.value
+                            label.textColor = DesignSystemColor.Gray300.value
+                        }
                     }
                 }
                 
@@ -650,6 +652,34 @@ class AlarmTableViewCell : UITableViewCell, UISheetPresentationControllerDelegat
         self.memoView.superview?.layoutIfNeeded()
     }
     
+    
+    //MARK: - 모두 깨있을때, 아닐때
+    func bottomViewLabelUpdate(isAllAwake: Bool) {
+        let newText = "대단해요! 모두 기상했어요."
+        
+        let attributeLabel = NSMutableAttributedString()
+        let attachImage = NSTextAttachment()
+        if isAllAwake {
+            // 모든 멤버가 깨어났을 때의 텍스트
+            let newText = "대단해요! 모두 기상했어요."
+            attachImage.image = UIImage(named: "thumb")
+            attributeLabel.append(NSAttributedString(string: newText))
+            attachImage.bounds = CGRect(x: 0, y: -3, width: 15, height: 15)
+            let imageString = NSAttributedString(attachment: attachImage)
+            attributeLabel.insert(imageString, at: 0)
+        } else {
+            // 하나라도 깨어나지 않았을 때의 텍스트
+            let newText = "프로필을 누르면 친구를 깨울 수 있어요!"
+            attachImage.image = UIImage(named: "Check")
+            attributeLabel.append(NSAttributedString(string: newText))
+            attachImage.bounds = CGRect(x: 0, y: -3, width: 15, height: 15)
+            let imageString = NSAttributedString(attachment: attachImage)
+            attributeLabel.insert(imageString, at: 0)
+        }
+        
+        bottomViewLabel.attributedText = attributeLabel
+    }
+    
     //MARK: - 메모 더 보기
     @objc func memoLabelTapped() {
         isExpanded.toggle()
@@ -664,12 +694,10 @@ class AlarmTableViewCell : UITableViewCell, UISheetPresentationControllerDelegat
     @objc func clicktoggle() {
         patchDisturb(newDisturbMode: !disturb)
     }
-    
     var editweek: [String] = []
-    
     var selectedTime24 : String = ""
-    
     var isLeader : Bool = false
+    var wakeupGroupDict: [Int: [Bool]] = [:] //int는 키 bool은 값들
     
     @objc func clickSetting() {
         guard let parentViewController = self.parentVC else {
@@ -787,7 +815,20 @@ class AlarmTableViewCell : UITableViewCell, UISheetPresentationControllerDelegat
         
         let userlistData = userData[indexPath.item]
         
-        cell.configureMember(with: userlistData.nickname,imageURL: userlistData.imageURL ?? "",isDisturbBanMode: userlistData.isDisturbBanMode,isWakeup: userlistData.isWakeup)
+        cell.configureMember(with: userlistData.nickname,imageURL: userlistData.imageURL ?? "",isDisturbBanMode: userlistData.isDisturbBanMode, isWakeup: userlistData.isWakeup)
+        
+        if indexPath.item == 0 {
+            // 첫 번째 셀이 렌더링되기 전에 해당 그룹을 초기화
+            wakeupGroupDict[groupId] = []
+        }
+        
+        wakeupGroupDict[groupId]?.append(userlistData.isWakeup)
+        
+        if let allTrue = wakeupGroupDict[groupId]?.allSatisfy({ $0 }), allTrue {
+            bottomViewLabelUpdate(isAllAwake: true)
+        } else {
+            bottomViewLabelUpdate(isAllAwake: false)
+        }
         
         return cell
     }
@@ -821,86 +862,85 @@ class AlarmTableViewCell : UITableViewCell, UISheetPresentationControllerDelegat
         
         let selectedUser = userData[indexPath.item]
         
-//        Uservc.nicknameLabel.text = selectedUser.nickname
-//        Uservc.userphoneNum = selectedUser.phone
-//        Uservc.userId = selectedUser.userID
-//        Uservc.isagree = selectedUser.isAgree
-//        Uservc.imageURL = selectedUser.imageURL
-//        
-//        //데이터 present를 하기 전에 데이터를 먼저 옮긴 후 present를 해야함
-//        // - 라영님 -
-//        
-//        Uservc.modalPresentationStyle = .formSheet
-//        parentViewController.present(Uservc, animated: true)
-//        
-//        if let vc = Uservc.sheetPresentationController{
-//            if #available(iOS 16.0, *) {
-//                vc.detents = [.custom { context in
-//                    return 330
-//                }]
-//                vc.delegate = self
-//                vc.prefersGrabberVisible = false
-//                vc.preferredCornerRadius = 16
-//            }
-//            
-//        }
+        //        Uservc.nicknameLabel.text = selectedUser.nickname
+        //        Uservc.userphoneNum = selectedUser.phone
+        //        Uservc.userId = selectedUser.userID
+        //        Uservc.isagree = selectedUser.isAgree
+        //        Uservc.imageURL = selectedUser.imageURL
+        //
+        //        //데이터 present를 하기 전에 데이터를 먼저 옮긴 후 present를 해야함
+        //        // - 라영님 -
+        //
+        //        Uservc.modalPresentationStyle = .formSheet
+        //        parentViewController.present(Uservc, animated: true)
+        //
+        //        if let vc = Uservc.sheetPresentationController{
+        //            if #available(iOS 16.0, *) {
+        //                vc.detents = [.custom { context in
+        //                    return 330
+        //                }]
+        //                vc.delegate = self
+        //                vc.prefersGrabberVisible = false
+        //                vc.preferredCornerRadius = 16
+        //            }
+        //
+        //        }
         
-                if selectedUser.isDisturbBanMode == true{
-        
-                    parentVC?.showToast(message: "\(selectedUser.nickname)님은 현재 방해금지 모드에요!")
-        
-                }else{
-        
-                    if selectedUser.nickname == UserDefaults.standard.string(forKey: "nickname"){
-                        Myvc.nicknameLabel.text = selectedUser.nickname
-                        Myvc.userphoneNum = selectedUser.phone
-                        Myvc.userId = selectedUser.userID
-                        Myvc.isagree = selectedUser.isAgree
-                        Myvc.imageURL = selectedUser.imageURL
-                        Myvc.groupId = self.groupId
-                        Myvc.modalPresentationStyle = .formSheet
-                        parentViewController.present(Myvc, animated: true)
-        
-                        if let vc = Myvc.sheetPresentationController{
-                            if #available(iOS 16.0, *) {
-                                vc.detents = [.custom { context in
-                                    return 330
-                                }]
-                                vc.delegate = self
-                                vc.prefersGrabberVisible = false
-                                vc.preferredCornerRadius = 16
-                            }
-        
-                        }
-        
-                    }else{
-                        print("남이에용")
-                        Uservc.nicknameLabel.text = selectedUser.nickname
-                        Uservc.userphoneNum = selectedUser.phone
-                        Uservc.userId = selectedUser.userID
-                        Uservc.isagree = selectedUser.isAgree
-                        Uservc.imageURL = selectedUser.imageURL
-        
-                        //데이터 present를 하기 전에 데이터를 먼저 옮긴 후 present를 해야함
-                        // - 라영님 -
-                        Uservc.modalPresentationStyle = .formSheet
-                        parentViewController.present(Uservc, animated: true)
-        
-                        if let vc = Uservc.sheetPresentationController{
-                            if #available(iOS 16.0, *) {
-                                vc.detents = [.custom { context in
-                                    return 330
-                                }]
-                                vc.delegate = self
-                                vc.prefersGrabberVisible = false
-                                vc.preferredCornerRadius = 16
-                            }
-        
-                        }
-        
+        if selectedUser.isDisturbBanMode == true{
+            
+            parentVC?.showToast(message: "\(selectedUser.nickname)님은 현재 방해금지 모드에요!")
+            
+        }else{
+            
+            if selectedUser.nickname == UserDefaults.standard.string(forKey: "nickname"){
+                Myvc.nicknameLabel.text = selectedUser.nickname
+                Myvc.userphoneNum = selectedUser.phone
+                Myvc.userId = selectedUser.userID
+                Myvc.isagree = selectedUser.isAgree
+                Myvc.imageURL = selectedUser.imageURL
+                Myvc.groupId = self.groupId
+                Myvc.modalPresentationStyle = .formSheet
+                parentViewController.present(Myvc, animated: true)
+                
+                if let vc = Myvc.sheetPresentationController{
+                    if #available(iOS 16.0, *) {
+                        vc.detents = [.custom { context in
+                            return 330
+                        }]
+                        vc.delegate = self
+                        vc.prefersGrabberVisible = false
+                        vc.preferredCornerRadius = 16
                     }
+                    
                 }
-        
+                
+            }else{
+                print("남이에용")
+                Uservc.nicknameLabel.text = selectedUser.nickname
+                Uservc.userphoneNum = selectedUser.phone
+                Uservc.userId = selectedUser.userID
+                Uservc.isagree = selectedUser.isAgree
+                Uservc.imageURL = selectedUser.imageURL
+                
+                //데이터 present를 하기 전에 데이터를 먼저 옮긴 후 present를 해야함
+                // - 라영님 -
+                Uservc.modalPresentationStyle = .formSheet
+                parentViewController.present(Uservc, animated: true)
+                
+                if let vc = Uservc.sheetPresentationController{
+                    if #available(iOS 16.0, *) {
+                        vc.detents = [.custom { context in
+                            return 330
+                        }]
+                        vc.delegate = self
+                        vc.prefersGrabberVisible = false
+                        vc.preferredCornerRadius = 16
+                    }
+                    
+                }
+                
+            }
+        }
     }
     
 }
@@ -1029,24 +1069,24 @@ class memberCollectioViewCell: UICollectionViewCell {
     
     //MARK: - 닉네임, 유저 스테이트 설정
     func configureMember(with nickname: String, imageURL: String, isDisturbBanMode: Bool, isWakeup: Bool) {
-           memberLabel.text = nickname
-           
-           // Image URL download
-           if imageURL == imageURL, !imageURL.isEmpty {
-               let url = URL(string: imageURL)
-               let placeholderImage = UIImage(named: "profile")
-               let processor = RoundCornerImageProcessor(cornerRadius: 29)
-               memberIMG.kf.setImage(with: url, placeholder: placeholderImage, options: [.processor(processor)])
-           } else {
-               memberIMG.image = UIImage(named: "profile")
-           }
-
-           if nickname == UserDefaults.standard.string(forKey: "nickname") {
-               meView.isHidden = false
-           } else {
-               meView.isHidden = true
-           }
-           
+        memberLabel.text = nickname
+        
+        // Image URL download
+        if imageURL == imageURL, !imageURL.isEmpty {
+            let url = URL(string: imageURL)
+            let placeholderImage = UIImage(named: "profile")
+            let processor = RoundCornerImageProcessor(cornerRadius: 29)
+            memberIMG.kf.setImage(with: url, placeholder: placeholderImage, options: [.processor(processor)])
+        } else {
+            memberIMG.image = UIImage(named: "profile")
+        }
+        
+        if nickname == UserDefaults.standard.string(forKey: "nickname") {
+            meView.isHidden = false
+        } else {
+            meView.isHidden = true
+        }
+        
         
         if isDisturbBanMode {
             memberView.backgroundColor = DesignSystemColor.Gray150.value
@@ -1059,10 +1099,10 @@ class memberCollectioViewCell: UICollectionViewCell {
             meView.backgroundColor = DesignSystemColor.Orange500.value
             sleepView.isHidden = isWakeup
         }
-           
-           setNeedsLayout()
-           layoutIfNeeded()
-       }
+        
+        setNeedsLayout()
+        layoutIfNeeded()
+    }
     
 }
 
