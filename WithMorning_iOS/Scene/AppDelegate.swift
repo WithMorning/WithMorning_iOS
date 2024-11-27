@@ -15,7 +15,6 @@ class AppDelegate:UIResponder, UIApplicationDelegate, MessagingDelegate {
     
     var audioPlayer : AVAudioPlayer?
     
-    //MARK: - 앱이 종료되어 있는 경우 (Terminated)
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
         
         sleep(1)
@@ -64,7 +63,7 @@ class AppDelegate:UIResponder, UIApplicationDelegate, MessagingDelegate {
     //MARK: - 앱이 실행 중인 경우 (Foreground)
     func userNotificationCenter(_ center: UNUserNotificationCenter, willPresent notification: UNNotification, withCompletionHandler completionHandler: @escaping (UNNotificationPresentationOptions) -> Void) {
         let userInfo = notification.request.content.userInfo
-//        handleNotification(userInfo)
+        handleNotification(userInfo)
         print("Appdelegate : foreground에서 실행")
         completionHandler([.banner, .list, .sound])
         
@@ -84,12 +83,6 @@ class AppDelegate:UIResponder, UIApplicationDelegate, MessagingDelegate {
         print(userInfo)
         
         handleNotification(userInfo)
-        
-//        if let aps = userInfo["aps"] as? [String: Any],
-//           let sound = aps["sound"] as? String, sound == "default" {
-//            // 알림에 소리가 포함되었으면 소리를 울리도록 설정
-//            AudioServicesPlaySystemSound(SystemSoundID(kSystemSoundID_Vibrate))
-//        }
         
         completionHandler(.newData)
     }
@@ -123,6 +116,15 @@ class AppDelegate:UIResponder, UIApplicationDelegate, MessagingDelegate {
         
         if let jsonData = try? JSONSerialization.data(withJSONObject: userInfo, options: .prettyPrinted),
            let jsonString = String(data: jsonData, encoding: .utf8) {
+            
+            if let groupId = userInfo["groupId"] as? String {
+                print("🔑 그룹 ID: \(groupId)")
+                UserDefaults.standard.set(groupId, forKey: "groupId")
+                
+            } else {
+                print("❌ groupId가 없습니다.")
+            }
+            
             print("📋 전체 알림 데이터:")
             print(jsonString)
         }

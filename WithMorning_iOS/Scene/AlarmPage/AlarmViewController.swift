@@ -15,6 +15,12 @@ class AlarmViewController: UIViewController {
     let APInetwork = Network.shared
     
     //MARK: - 스택뷰
+    private lazy var backgroundView : UIImageView = {
+        let view = UIImageView()
+        view.addSubviews(timeStackView, dayLabel, messageLabel, messagetextLabel)
+        return view
+    }()
+    
     private lazy var timeStackView: UIStackView = {
         let stackView = UIStackView()
         stackView.axis = .horizontal
@@ -27,20 +33,21 @@ class AlarmViewController: UIViewController {
     private lazy var timeLabel: UILabel = {
         let label = UILabel()
         label.font = DesignSystemFont.Pretendard_Bold70.value
-        label.textColor = .black
+        label.textColor = .white
         return label
     }()
     
     private lazy var AMPMLabel: UILabel = {
         let label = UILabel()
         label.font = DesignSystemFont.Pretendard_Bold20.value
-        label.textColor = .black
+        label.textColor = .white
         return label
     }()
     
     private lazy var dayLabel: UILabel = {
         let label = UILabel()
         label.font = DesignSystemFont.Pretendard_Medium18.value
+        label.textColor = .white
         return label
     }()
     
@@ -50,6 +57,7 @@ class AlarmViewController: UIViewController {
         let label = UILabel()
         label.text = "오늘의 메시지 💬"
         label.font = DesignSystemFont.Pretendard_Bold16.value
+        label.textColor = .white
         return label
     }()
     
@@ -79,17 +87,20 @@ class AlarmViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        view.backgroundColor = UIColor(red: 0.96, green: 0.96, blue: 0.96, alpha: 1)
+        view.backgroundColor = .clear
+        setRandomBackgroundImage()
         setupUI()
         updateTimeAndDate()
         alarmMessage()
     }
     
     func setupUI() {
+//        NotificationCenter.default.addObserver(self, selector: #selector(receiveGroupId(_:)), name: Notification.Name("PassGroupId"), object: nil)
+        
         timeStackView.addArrangedSubview(timeLabel)
         timeStackView.addArrangedSubview(AMPMLabel)
         
-        view.addSubviews(timeStackView, dayLabel, messageLabel, messagetextLabel, turnoffButton)
+        view.addSubviews(backgroundView, turnoffButton)
         
         timeStackView.snp.makeConstraints {
             $0.centerX.equalToSuperview()
@@ -128,6 +139,27 @@ class AlarmViewController: UIViewController {
         buttonLabel.snp.makeConstraints{
             $0.center.equalToSuperview()
         }
+        
+        backgroundView.snp.makeConstraints{
+            $0.edges.equalToSuperview()
+        }
+    }
+    
+    //MARK: - 랜덤 배경화면
+    func setRandomBackgroundImage() {
+        let randomImageNumber = Int.random(in: 1...9)
+        backgroundView.image = UIImage(named: "alarmIMG\(randomImageNumber)")
+    }
+    
+    //MARK: - 오늘의 메시지 랜덤
+    func alarmMessage(){
+        let textArray = ["당신의 가능성은 무한해요! 믿고 도전해보세요!","실패는 끝이 아니에요. 새로운 시작이니 계속 나아가요!","작은 한 걸음이 큰 변화를 만들어요. 오늘부터 시작해보세요!","당신은 이미 충분히 훌륭한 사람이에요. 자신감을 가져요!","어제의 당신과 비교하면 오늘의 당신이 더 나아졌어요!","성공은 준비된 사람에게 찾아와요. 항상 준비해 두세요!","당신의 꿈은 당신이 만든 현실이에요. 꿈꾸고 행동해보세요!","매일 조금씩 성장하는 당신을 느껴보세요. 그게 진짜 성공이에요.","당신의 감정을 존중해 주세요. 당신의 목소리는 정말 중요해요!","당신은 당신의 이야기를 쓸 수 있는 작가예요. 원하는 대로 만들어가세요!","어려운 순간이 와도 그게 당신을 더 강하게 만들어줄 거예요.","자신에게 친절해져요. 당신은 당신의 가장 큰 지지자예요.","당신의 한 마디가 누군가의 하루를 밝힐 수 있어요. 긍정적으로 말해보세요!","과거는 지나갔어요. 지금부터 시작하세요!","당신의 열정이 당신을 이끌 거예요. 그 열정을 따라가세요!","변화는 두려운 게 아니에요. 새로운 기회니까요!","당신의 강점을 찾아서 최대한 활용해보세요.","오늘이 당신의 인생을 바꿀 수 있는 날이에요. 행동해보세요!","당신이 할 수 있다고 믿는 그 순간이 시작이에요.","작은 성취도 큰 의미가 있어요. 매일매일 자신을 격려하세요!","당신의 노력은 결코 헛되지 않아요. 성과는 반드시 따라올 거예요.","당신의 한계를 넘어서는 게 진짜 성장이에요. 도전해보세요!","당신은 혼자가 아니에요. 주변의 지지에 감사하세요!","당신의 가치와 가능성을 스스로 인정해요!","인생은 한 번뿐이에요. 후회 없는 선택을 하세요!","어떤 일이든 시작하는 게 가장 중요해요. 지금 시작해보세요!","당신의 꿈을 향해 나아가는 여정이 소중해요. 즐겨보세요!","긍정적인 에너지가 당신의 길을 밝힐 거예요!","자신을 믿고, 당신의 길을 가세요! 당신은 할 수 있어요!"]
+        
+        let randomMessage = textArray.randomElement() ?? "성공은 준비된 사람에게 찾아와요. 항상 준비해 두세요!"
+        
+        messagetextLabel.applyDesignFont(.Pretendard_Medium14, text: randomMessage, color: .white)
+        messagetextLabel.numberOfLines = 0
+        messagetextLabel.textAlignment = .center
     }
     
     func updateTimeAndDate() {
@@ -150,42 +182,35 @@ class AlarmViewController: UIViewController {
     }
     
     //MARK: - 일어나기 API
-    var groupId : Int = 0
-    
-    func Wakeup(){
+    func Wakeup(groupId: String){
         LoadingIndicator.showLoading()
-        APInetwork.patchWakeup(groupId: groupId){ result in
+        print("🚀 API 호출 전 groupId: \(groupId)")
+        APInetwork.patchWakeup(groupId: Int(groupId) ?? 0){ result in
             switch result{
             case .success(let data):
                 LoadingIndicator.hideLoading()
                 print(data)
+                UserDefaults.standard.removeObject(forKey: "groupId")
             case .failure(let error):
                 print(error.localizedDescription)
+                UserDefaults.standard.removeObject(forKey: "groupId")
                 LoadingIndicator.hideLoading()
             }
         }
     }
     
-    //MARK: - 오늘의 메시지 랜덤으로 돌리도록 하시오.
-    func alarmMessage(){
-        let alarmText = "나에게 불가능은 없다.\n나는 모든걸 실현할 수 있는 힘이 있다."
-        
-        messagetextLabel.applyDesignFont(.Pretendard_Medium14, text: alarmText ,color: DesignSystemColor.Gray600.value)
-        
-        messagetextLabel.numberOfLines = 0
-        messagetextLabel.textAlignment = .center
-    }
-    
     
     //MARK: - @objc func
-    @objc func turnoffalarm(){
-        print("turnoff")
-        Wakeup()
-        UserDefaults.standard.set(false, forKey: "isWakeUpAlarmActive")
+    @objc func turnoffalarm() {
+        // UserDefaults에서 groupId를 가져오기
+        guard let groupId = UserDefaults.standard.string(forKey: "groupId") else {
+            print("❌ 저장된 groupId가 없습니다.")
+            return
+        }
+        Wakeup(groupId: groupId)
         mainViewController()
-        
     }
-    
+
     
     func mainViewController() {
         let mainVC = MainViewController()

@@ -5,7 +5,6 @@
 //  Created by 안세훈 on 4/9/24.
 //
 
-
 import UIKit
 import Combine
 import AuthenticationServices
@@ -25,11 +24,20 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         
         NotificationCenter.default.addObserver(self, selector: #selector(handleWakeUpAlarm), name: NSNotification.Name("WakeUpAlarmReceived"), object: nil)
         
+        if UserDefaults.standard.bool(forKey: "isWakeUpAlarmActive") {
+            setRootViewController(windowScene, type: .alarmON)
+            return
+        }
+        
         //MARK: - 컴바인 최고
         RegisterUserInfo.shared.$loginState.sink { loginState in
             DispatchQueue.main.async {
-                self.wakeupAlarm(windowScene, loginState: loginState)
+                // 로그인 상태에서도 알람 상태 확인
+                if UserDefaults.standard.bool(forKey: "isWakeUpAlarmActive") {
+                    self.setRootViewController(windowScene, type: .alarmON)
+                }
             }
+            
         }
         .store(in: &cancellables)
         
@@ -38,11 +46,6 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
     }
     
     func wakeupAlarm(_ scene: UIWindowScene, loginState: LoginStatus?){
-        if let windowScene = window?.windowScene {
-            // 알람 상태로 화면 전환
-            setRootViewController(windowScene, type: .alarmON)
-        }
-        
         if UserDefaults.standard.bool(forKey: "isWakeUpAlarmActive") {
             setRootViewController(scene, type: .alarmON)
             return
@@ -83,6 +86,8 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
             setRootViewController(windowScene, type: .main)
         case "logout":
             setRootViewController(windowScene, type: .login)
+        case "alarmON":
+            setRootViewController(windowScene, type: .alarmON)
         case "deleteaccount":
             // 회원탈퇴 상태에서는 무조건 약관 동의부터 시작
             UserDefaults.standard.removeObject(forKey: "isExistingUser")

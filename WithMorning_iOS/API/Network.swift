@@ -182,6 +182,7 @@ class Network{
     func patchWakeup(groupId: Int, completionHandler: @escaping (Result<wakeupResponse, Error>) -> Void){
         
         print("기상알람에서 보내는 groupId: \(groupId)")
+        
         AF.request(Router.patchwakeup(groupId: groupId), interceptor: AuthInterceptor())
         
             .validate(statusCode: 200..<300)
@@ -191,7 +192,7 @@ class Network{
                     NetworkErrorHandler.shared.handleNetworkError(error, data: response.data, retryRequest: {
                         self.patchWakeup(groupId: groupId, completionHandler: completionHandler)
                     }, completion: completionHandler)
-                   
+                    print("groupId: \(groupId)")
                 case .success(let data):
                     print(#fileID, #function, #line, "- ⭐️\(groupId)의 방 기상완료맨")
                     completionHandler(.success(data))

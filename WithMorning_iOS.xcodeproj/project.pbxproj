@@ -22,8 +22,8 @@
 		D135377D2C3285AD004B49BB /* AlterUIView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D135377C2C3285AD004B49BB /* AlterUIView.swift */; };
 		D138F0B32C48090300233AFA /* TermsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D138F0B22C48090300233AFA /* TermsViewController.swift */; };
 		D13B6B802C4FAB2B00D963DC /* CertificateViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D13B6B7F2C4FAB2B00D963DC /* CertificateViewController.swift */; };
-		D1447A1E2CEE2A7400F98C9C /* DefaultSound.wav in Resources */ = {isa = PBXBuildFile; fileRef = D1447A1D2CEE2A7400F98C9C /* DefaultSound.wav */; };
-		D1447A202CEE2A7A00F98C9C /* ThirdSound.wav in Resources */ = {isa = PBXBuildFile; fileRef = D1447A1F2CEE2A7A00F98C9C /* ThirdSound.wav */; };
+		D1447A1E2CEE2A7400F98C9C /* wakeupalarm.wav in Resources */ = {isa = PBXBuildFile; fileRef = D1447A1D2CEE2A7400F98C9C /* wakeupalarm.wav */; };
+		D1447A202CEE2A7A00F98C9C /* pricksound.wav in Resources */ = {isa = PBXBuildFile; fileRef = D1447A1F2CEE2A7A00F98C9C /* pricksound.wav */; };
 		D146706B2BEA8FF9007B7132 /* MyPageViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D146706A2BEA8FF9007B7132 /* MyPageViewController.swift */; };
 		D14967F62C6FB3F5000E8C1B /* RegisterUserInfo.swift in Sources */ = {isa = PBXBuildFile; fileRef = D14967F52C6FB3F5000E8C1B /* RegisterUserInfo.swift */; };
 		D14967F92C70864D000E8C1B /* KeyChain.swift in Sources */ = {isa = PBXBuildFile; fileRef = D14967F82C70864D000E8C1B /* KeyChain.swift */; };
@@ -108,8 +108,8 @@
 		D135377C2C3285AD004B49BB /* AlterUIView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AlterUIView.swift; sourceTree = "<group>"; };
 		D138F0B22C48090300233AFA /* TermsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TermsViewController.swift; sourceTree = "<group>"; };
 		D13B6B7F2C4FAB2B00D963DC /* CertificateViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CertificateViewController.swift; sourceTree = "<group>"; };
-		D1447A1D2CEE2A7400F98C9C /* DefaultSound.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; path = DefaultSound.wav; sourceTree = "<group>"; };
-		D1447A1F2CEE2A7A00F98C9C /* ThirdSound.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; path = ThirdSound.wav; sourceTree = "<group>"; };
+		D1447A1D2CEE2A7400F98C9C /* wakeupalarm.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; path = wakeupalarm.wav; sourceTree = "<group>"; };
+		D1447A1F2CEE2A7A00F98C9C /* pricksound.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; path = pricksound.wav; sourceTree = "<group>"; };
 		D146706A2BEA8FF9007B7132 /* MyPageViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyPageViewController.swift; sourceTree = "<group>"; };
 		D14967F52C6FB3F5000E8C1B /* RegisterUserInfo.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RegisterUserInfo.swift; sourceTree = "<group>"; };
 		D14967F82C70864D000E8C1B /* KeyChain.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KeyChain.swift; sourceTree = "<group>"; };
@@ -332,8 +332,8 @@
 		D14C32672CE5E1580097957D /* Sounds */ = {
 			isa = PBXGroup;
 			children = (
-				D1447A1D2CEE2A7400F98C9C /* DefaultSound.wav */,
-				D1447A1F2CEE2A7A00F98C9C /* ThirdSound.wav */,
+				D1447A1D2CEE2A7400F98C9C /* wakeupalarm.wav */,
+				D1447A1F2CEE2A7A00F98C9C /* pricksound.wav */,
 			);
 			path = Sounds;
 			sourceTree = "<group>";
@@ -536,11 +536,11 @@
 				D1DECB232BE54B37009AC667 /* Pretendard-ExtraBold.otf in Resources */,
 				D1DECB242BE54B37009AC667 /* Pretendard-Thin.otf in Resources */,
 				D1A095DB2CB56D7A002EEF6E /* GoogleService-Info.plist in Resources */,
-				D1447A202CEE2A7A00F98C9C /* ThirdSound.wav in Resources */,
+				D1447A202CEE2A7A00F98C9C /* pricksound.wav in Resources */,
 				D1DECB262BE54B37009AC667 /* Pretendard-Light.otf in Resources */,
 				D15AE7342BC990DA00024CE3 /* Pretendard-Bold.otf in Resources */,
 				D15AE7382BC990E900024CE3 /* Pretendard-SemiBold.otf in Resources */,
-				D1447A1E2CEE2A7400F98C9C /* DefaultSound.wav in Resources */,
+				D1447A1E2CEE2A7400F98C9C /* wakeupalarm.wav in Resources */,
 				D1E672C72BC4FD3500A32790 /* Base in Resources */,
 				D1DECB222BE54B37009AC667 /* Pretendard-Black.otf in Resources */,
 				D15AE7362BC990E200024CE3 /* Pretendard-Medium.otf in Resources */,
