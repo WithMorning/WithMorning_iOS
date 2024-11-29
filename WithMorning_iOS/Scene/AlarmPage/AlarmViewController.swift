@@ -95,7 +95,6 @@ class AlarmViewController: UIViewController {
     }
     
     func setupUI() {
-//        NotificationCenter.default.addObserver(self, selector: #selector(receiveGroupId(_:)), name: Notification.Name("PassGroupId"), object: nil)
         
         timeStackView.addArrangedSubview(timeLabel)
         timeStackView.addArrangedSubview(AMPMLabel)
@@ -184,16 +183,17 @@ class AlarmViewController: UIViewController {
     //MARK: - 일어나기 API
     func Wakeup(groupId: String){
         LoadingIndicator.showLoading()
-        print("🚀 API 호출 전 groupId: \(groupId)")
         APInetwork.patchWakeup(groupId: Int(groupId) ?? 0){ result in
             switch result{
             case .success(let data):
                 LoadingIndicator.hideLoading()
                 print(data)
-                UserDefaults.standard.removeObject(forKey: "groupId")
+                UserDefaults.standard.removeObject(forKey: "wakeupGroupId")
+                UserDefaults.standard.set(false, forKey: "isWakeUpAlarmActive")
             case .failure(let error):
                 print(error.localizedDescription)
-                UserDefaults.standard.removeObject(forKey: "groupId")
+                UserDefaults.standard.removeObject(forKey: "wakeupGroupId")
+                UserDefaults.standard.set(false, forKey: "isWakeUpAlarmActive")
                 LoadingIndicator.hideLoading()
             }
         }
@@ -203,12 +203,11 @@ class AlarmViewController: UIViewController {
     //MARK: - @objc func
     @objc func turnoffalarm() {
         // UserDefaults에서 groupId를 가져오기
-        guard let groupId = UserDefaults.standard.string(forKey: "groupId") else {
+        guard let groupId = UserDefaults.standard.string(forKey: "wakeupGroupId") else {
             print("❌ 저장된 groupId가 없습니다.")
             return
         }
         Wakeup(groupId: groupId)
-        mainViewController()
     }
 
     

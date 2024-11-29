@@ -67,6 +67,8 @@ class AppDelegate:UIResponder, UIApplicationDelegate, MessagingDelegate {
         print("Appdelegate : foreground에서 실행")
         completionHandler([.banner, .list, .sound])
         
+        
+        
     }
     
     //MARK: - 앱이 백그라운드인 경우 (Background) & 사용자가 푸시를 탭한 경우
@@ -119,7 +121,7 @@ class AppDelegate:UIResponder, UIApplicationDelegate, MessagingDelegate {
             
             if let groupId = userInfo["groupId"] as? String {
                 print("🔑 그룹 ID: \(groupId)")
-                UserDefaults.standard.set(groupId, forKey: "groupId")
+                UserDefaults.standard.set(groupId, forKey: "wakeupGroupId")
                 
             } else {
                 print("❌ groupId가 없습니다.")
