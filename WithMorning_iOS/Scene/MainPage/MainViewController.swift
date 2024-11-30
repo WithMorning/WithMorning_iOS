@@ -353,9 +353,7 @@ class MainViewController: UIViewController, UISheetPresentationControllerDelegat
                 case .success(let mainpage):
                     self.MainpageUpdate(with: mainpage)
                     print(mainpage)
-                    
                     self.nameLabel.text = "Hi, \(mainpage.connectorNickname)"
-                    
                     if ((mainpage.connectorProfileURL?.isEmpty) != nil) {
                         // 이미지 URL이 유효한 경우: 이미지 다운로드 처리
                         let url = URL(string: mainpage.connectorProfileURL ?? "")
