@@ -11,8 +11,14 @@ import SnapKit
 import AuthenticationServices
 import Alamofire
 
+enum loginViewType {
+    case session
+    case register
+}
+
 class LoginViewController: UIViewController{
     
+    var loginviewtype : loginViewType = .register
     
     //MARK: - properties
     private lazy var popButton : UIButton = {
@@ -68,6 +74,7 @@ class LoginViewController: UIViewController{
         view.backgroundColor = DesignSystemColor.Gray150.value
         self.navigationController?.isNavigationBarHidden = true
         setUI()
+        loginviewcheck()
     }
     
     //MARK: - setUI
@@ -96,6 +103,12 @@ class LoginViewController: UIViewController{
 //            $0.leading.trailing.equalToSuperview().inset(16)
 //            $0.bottom.equalTo(view.safeAreaLayoutGuide).inset(80)
 //        }
+    }
+    
+    func loginviewcheck(){
+        if loginviewtype == .session{
+            self.showToast(message: "세션이 만료되었습니다!")
+        }
     }
     
     //MARK: - objc func

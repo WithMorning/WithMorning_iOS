@@ -86,6 +86,9 @@ class NetworkErrorHandler {
     //MARK: - refreshToken만료시 로그인 페이지로 이동맨
     private func navigateToLoginViewController() {
         let loginVC = LoginViewController()
+        
+        loginVC.loginviewtype = .session
+        
         let navController = UINavigationController(rootViewController: loginVC)
         navController.modalPresentationStyle = .fullScreen
         navController.navigationBar.isHidden = true

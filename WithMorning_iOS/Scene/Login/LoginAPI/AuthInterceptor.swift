@@ -81,6 +81,7 @@ class NewAccessToken {
         let navController = UINavigationController(rootViewController: loginVC)
         navController.modalPresentationStyle = .fullScreen
         navController.navigationBar.isHidden = true
+        loginVC.loginviewtype = .session
         if let keyWindow = UIApplication.shared.connectedScenes
             .compactMap({ $0 as? UIWindowScene })
             .flatMap({ $0.windows })

@@ -116,7 +116,6 @@ class RegisterViewController : UIViewController{
         }
     }
     //MARK: - 회원가입, 연락처 변경
-    
     func mainLabelType(){
         switch viewType.self{
         case .changeNumber:
