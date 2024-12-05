@@ -242,10 +242,13 @@ class WeekChoiceViewController : UIViewController, UIScrollViewDelegate {
         let button = UIButton()
         button.setTitle("주중", for: .normal)
         button.setTitleColor(DesignSystemColor.Gray500.value, for: .normal)
-        button.backgroundColor = DesignSystemColor.Gray200.value
+        button.setBackgroundColor(DesignSystemColor.Gray200.value, for: .normal)
+        button.setBackgroundColor(DesignSystemColor.Gray200.value.adjustBrightness(by: 0.8), for: .highlighted)
         button.layer.cornerRadius = 8
         button.titleLabel?.font = DesignSystemFont.Pretendard_Bold14.value
         button.addTarget(self, action: #selector(weekdayclick), for: .touchUpInside)
+        button.layer.masksToBounds = true
+        button.clipsToBounds = true
         return button
     }()
     
@@ -254,10 +257,13 @@ class WeekChoiceViewController : UIViewController, UIScrollViewDelegate {
         let button = UIButton()
         button.setTitle("주말", for: .normal)
         button.setTitleColor(DesignSystemColor.Gray500.value, for: .normal)
-        button.backgroundColor = DesignSystemColor.Gray200.value
+        button.setBackgroundColor(DesignSystemColor.Gray200.value, for: .normal)
+        button.setBackgroundColor(DesignSystemColor.Gray200.value.adjustBrightness(by: 0.8), for: .highlighted)
         button.layer.cornerRadius = 8
         button.titleLabel?.font = DesignSystemFont.Pretendard_Bold14.value
         button.addTarget(self, action: #selector(weekendclick), for: .touchUpInside)
+        button.layer.masksToBounds = true
+        button.clipsToBounds = true
         return button
     }()
     
@@ -265,8 +271,11 @@ class WeekChoiceViewController : UIViewController, UIScrollViewDelegate {
     private lazy var DoneButton : UIButton = {
         let button = UIButton()
         button.addSubview(buttonLabel)
-        button.backgroundColor = DesignSystemColor.Black.value
+        button.setBackgroundColor(DesignSystemColor.Black.value, for: .normal)
+        button.setBackgroundColor(DesignSystemColor.Black.value.adjustBrightness(by: 0.8), for: .highlighted)
         button.addTarget(self, action: #selector(doneclick), for: .touchUpInside)
+        button.layer.masksToBounds = true
+        button.clipsToBounds = true
         return button
     }()
     
@@ -425,19 +434,23 @@ class WeekChoiceViewController : UIViewController, UIScrollViewDelegate {
     //MARK: - 주중, 주말 색 변화
     func updateweeklycolor(){
         if [MonIMG, TueIMG, WedIMG, ThrIMG, FriIMG].allSatisfy({ $0.tintColor == DesignSystemColor.Orange500.value }) {
-            weekdayButton.backgroundColor = DesignSystemColor.Orange500.value
+            weekdayButton.setBackgroundColor(DesignSystemColor.Orange500.value, for: .normal)
+            weekdayButton.setBackgroundColor(DesignSystemColor.Orange500.value.adjustBrightness(by: 0.8), for: .highlighted)
             weekdayButton.setTitleColor(.white, for: .normal)
         }else{
             weekdayButton.setTitleColor(DesignSystemColor.Gray500.value, for: .normal)
-            weekdayButton.backgroundColor = DesignSystemColor.Gray200.value
+            weekdayButton.setBackgroundColor(DesignSystemColor.Gray200.value, for: .normal)
+            weekdayButton.setBackgroundColor(DesignSystemColor.Gray200.value.adjustBrightness(by: 0.8), for: .highlighted)
         }
         
         if [SatIMG,SunIMG].allSatisfy({$0.tintColor == DesignSystemColor.Orange500.value}) {
-            weekendButton.backgroundColor = DesignSystemColor.Orange500.value
+            weekendButton.setBackgroundColor(DesignSystemColor.Orange500.value, for: .normal)
+            weekendButton.setBackgroundColor(DesignSystemColor.Orange500.value.adjustBrightness(by: 0.8), for: .highlighted)
             weekendButton.setTitleColor(.white, for: .normal)
         }else{
             weekendButton.setTitleColor(DesignSystemColor.Gray500.value, for: .normal)
-            weekendButton.backgroundColor = DesignSystemColor.Gray200.value
+            weekendButton.setBackgroundColor(DesignSystemColor.Gray200.value, for: .normal)
+            weekendButton.setBackgroundColor(DesignSystemColor.Gray200.value.adjustBrightness(by: 0.8), for: .highlighted)
         }
         
         

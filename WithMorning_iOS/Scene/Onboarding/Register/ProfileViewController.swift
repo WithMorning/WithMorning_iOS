@@ -94,6 +94,8 @@ class ProfileViewController : UIViewController, UIImagePickerControllerDelegate 
         button.layer.cornerRadius = 8
         button.titleLabel?.font = DesignSystemFont.Pretendard_Bold16.value
         button.addTarget(self, action: #selector(doneclick), for: .touchUpInside)
+        button.layer.masksToBounds = true
+        button.clipsToBounds = true
         return button
     }()
     
@@ -269,7 +271,13 @@ extension ProfileViewController : UITextFieldDelegate {
     
     private func updateDoneButtonState(for text: String? = nil) {
         let textToCheck = text ?? nicknameTextfield.text ?? ""
-        doneButton.backgroundColor = textToCheck.isEmpty ? DesignSystemColor.Gray300.value : DesignSystemColor.Orange500.value
+        
+        if textToCheck.isEmpty {
+            doneButton.backgroundColor = DesignSystemColor.Gray300.value
+        } else {
+            doneButton.setBackgroundColor(DesignSystemColor.Orange500.value, for: .normal)
+            doneButton.setBackgroundColor(DesignSystemColor.Orange500.value.adjustBrightness(by: 0.8), for: .highlighted)
+        }
     }
     
     
@@ -296,13 +304,6 @@ extension ProfileViewController : UITextFieldDelegate {
     }
     
     func textField(_ textField: UITextField, shouldChangeCharactersIn range: NSRange, replacementString string: String) -> Bool {
-//        if let char = string.cString(using: String.Encoding.utf8) {
-//            let isBackSpace = strcmp(char, "\\b")
-//            if isBackSpace == -92 {
-//                updateDoneButtonState()
-//                return true
-//            }
-//        }
         
         let maxLength = 10
         let currentString: NSString = textField.text as NSString? ?? ""

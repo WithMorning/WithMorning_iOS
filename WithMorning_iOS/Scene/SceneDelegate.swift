@@ -59,6 +59,7 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         }
     }
     
+    //기상알람을 받음
     @objc private func handleUserStateChange() {
         let userState = UserDefaults.getUserState()
         print(#fileID, #function, #line, "- 현재 사용자 상태: \(userState ?? "nil")")

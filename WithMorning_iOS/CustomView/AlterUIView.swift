@@ -71,20 +71,26 @@ class AlterUIView: UIViewController {
     private lazy var cancelButton: UIButton = {
         let button = UIButton()
         button.setTitle("취소", for: .normal)
-        button.backgroundColor = DesignSystemColor.Gray200.value
+        button.setBackgroundColor(DesignSystemColor.Gray200.value, for: .normal)
+        button.setBackgroundColor(DesignSystemColor.Gray200.value.adjustBrightness(by: 0.8), for: .highlighted)
         button.setTitleColor(DesignSystemColor.Gray500.value, for: .normal)
         button.addTarget(self, action: #selector(cancelclicked), for: .touchUpInside)
         button.layer.cornerRadius = 8
+        button.layer.masksToBounds = true
+        button.clipsToBounds = true
         return button
     }()
     
     private lazy var confirmButton: UIButton = {
         let button = UIButton()
         button.setTitle("확인", for: .normal)
-        button.backgroundColor = DesignSystemColor.Orange500.value
+        button.setBackgroundColor(DesignSystemColor.Orange500.value, for: .normal)
+        button.setBackgroundColor(DesignSystemColor.Orange500.value.adjustBrightness(by: 0.8), for: .highlighted)
         button.setTitleColor(.white, for: .normal)
         button.addTarget(self, action: #selector(confirmclicked), for: .touchUpInside)
         button.layer.cornerRadius = 8
+        button.layer.masksToBounds = true
+        button.clipsToBounds = true
         return button
     }()
     

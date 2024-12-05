@@ -148,6 +148,8 @@ class TermsViewController: UIViewController{
         button.addSubview(buttonLabel)
         button.backgroundColor = DesignSystemColor.Gray300.value
         button.addTarget(self, action: #selector(nextbtn), for: .touchUpInside)
+        button.layer.masksToBounds = true
+        button.clipsToBounds = true
         return button
     }()
     
@@ -238,7 +240,8 @@ class TermsViewController: UIViewController{
     func setallagree(){
         if [agecheckButton,serviceButton,infoButton].allSatisfy({$0.tintColor == DesignSystemColor.Orange500.value}){
             allagreeButton.tintColor = DesignSystemColor.Orange500.value
-            nextButton.backgroundColor = DesignSystemColor.Orange500.value
+            nextButton.setBackgroundColor(DesignSystemColor.Orange500.value, for: .normal)
+            nextButton.setBackgroundColor(DesignSystemColor.Orange500.value.adjustBrightness(by: 0.8), for: .highlighted)
         }else{
             allagreeButton.tintColor = DesignSystemColor.Gray200.value
             nextButton.backgroundColor = DesignSystemColor.Gray300.value
@@ -283,9 +286,9 @@ class TermsViewController: UIViewController{
     
     @objc func allbtn(){
         if allagreeButton.tintColor == DesignSystemColor.Gray200.value{
-            
             [agecheckButton,serviceButton,infoButton,maketingButton].forEach({$0.tintColor = DesignSystemColor.Orange500.value})
-            nextButton.backgroundColor = DesignSystemColor.Orange500.value
+            nextButton.setBackgroundColor(DesignSystemColor.Orange500.value, for: .normal)
+            nextButton.setBackgroundColor(DesignSystemColor.Orange500.value.adjustBrightness(by: 0.8), for: .highlighted)
             allagreeButton.tintColor = DesignSystemColor.Orange500.value
             
         }else{
@@ -295,15 +298,18 @@ class TermsViewController: UIViewController{
         }
     }
     
-    @objc func nextbtn(){
-        if nextButton.backgroundColor == DesignSystemColor.Gray300.value {
-            self.showToast(message: "약관에 모두 동의해주세요.")
-        }else{
+    @objc func nextbtn() {
+        let requiredButtons = [agecheckButton, serviceButton, infoButton]
+        let allRequiredButtonsSelected = requiredButtons.allSatisfy { $0.tintColor == DesignSystemColor.Orange500.value }
+
+        if allRequiredButtonsSelected {
             let vc = LoginViewController()
             self.navigationController?.pushViewController(vc, animated: true)
-            
+        } else {
+            self.showToast(message: "약관에 모두 동의해주세요.")
         }
     }
+
     
 }
 

@@ -44,26 +44,40 @@ class MyStateViewController : UIViewController{
     
     lazy var opencallButton : UIButton = {
         let button = UIButton()
-        button.backgroundColor = DesignSystemColor.Orange500.value
         button.setTitle("전화번호 공개", for: .normal)
         button.titleLabel?.font = DesignSystemFont.Pretendard_SemiBold14.value
         button.titleLabel?.textAlignment = .center
+        
         button.setTitleColor(.white, for: .normal)
+        button.setTitleColor(.white, for: .highlighted)
+        
         button.layer.cornerRadius = 8
+        button.layer.masksToBounds = true
+        button.clipsToBounds = true
+        
         button.setImage(UIImage(named: "phone"), for: .normal)
+        button.setImage(UIImage(named: "phone"), for: .highlighted)
+        
         button.addTarget(self, action: #selector(callclick), for: .touchUpInside)
         return button
     }()
     
     lazy var closecallButton : UIButton = {
         let button = UIButton()
-        button.backgroundColor = DesignSystemColor.Orange500.value
         button.setTitle("전화번호 비공개", for: .normal)
         button.titleLabel?.font = DesignSystemFont.Pretendard_SemiBold14.value
         button.titleLabel?.textAlignment = .center
+        
         button.setTitleColor(.white, for: .normal)
+        button.setTitleColor(.white, for: .highlighted)
+        
         button.layer.cornerRadius = 8
         button.setImage(UIImage(named: "pick"), for: .normal)
+        button.setImage(UIImage(named: "pick"), for: .highlighted)
+        
+        button.layer.masksToBounds = true
+        button.clipsToBounds = true
+        
         button.addTarget(self, action: #selector(nocallclick), for: .touchUpInside)
         return button
     }()
@@ -72,8 +86,11 @@ class MyStateViewController : UIViewController{
     private lazy var DoneButton : UIButton = {
         let button = UIButton()
         button.addSubview(buttonLabel)
-        button.backgroundColor = .black
+        button.setBackgroundColor(DesignSystemColor.Black.value, for: .normal)
+        button.setBackgroundColor(DesignSystemColor.Black.value.adjustBrightness(by: 0.8), for: .highlighted)
         button.addTarget(self, action: #selector(doneclick), for: .touchUpInside)
+        button.layer.masksToBounds = true
+        button.clipsToBounds = true
         return button
     }()
     
@@ -173,14 +190,17 @@ class MyStateViewController : UIViewController{
         if isagree ?? true{
             fullText = "전화번호를 공개한 그룹입니다."
             targetText = "공개"
-            closecallButton.backgroundColor = DesignSystemColor.Gray300.value
-            opencallButton.backgroundColor = DesignSystemColor.Orange500.value
-            
+            closecallButton.setBackgroundColor(DesignSystemColor.Gray300.value, for: .normal)
+            closecallButton.setBackgroundColor(DesignSystemColor.Gray300.value.adjustBrightness(by: 0.8), for: .highlighted)
+            opencallButton.setBackgroundColor(DesignSystemColor.Orange500.value, for: .normal)
+            opencallButton.setBackgroundColor(DesignSystemColor.Orange500.value.adjustBrightness(by: 0.8), for: .highlighted)
         } else {
             fullText = "전화번호를 비공개한 그룹입니다."
             targetText = "비공개"
-            opencallButton.backgroundColor = DesignSystemColor.Gray300.value
-            closecallButton.backgroundColor = DesignSystemColor.Orange500.value
+            closecallButton.setBackgroundColor(DesignSystemColor.Orange500.value, for: .normal)
+            closecallButton.setBackgroundColor(DesignSystemColor.Orange500.value.adjustBrightness(by: 0.8), for: .highlighted)
+            opencallButton.setBackgroundColor(DesignSystemColor.Gray300.value, for: .normal)
+            opencallButton.setBackgroundColor(DesignSystemColor.Gray300.value.adjustBrightness(by: 0.8), for: .highlighted)
         }
         
         // NSMutableAttributedString을 사용하여 특정 텍스트의 속성 변경
@@ -214,30 +234,6 @@ class MyStateViewController : UIViewController{
     //MARK: - API
     var userId : Int = 0
     var groupId : Int = 0
-    
-//    func editphoneagree() {
-//        LoadingIndicator.showLoading()
-//        
-//        // 현재 isagree 값을 반전하여 API에 전송할 값 설정
-//        let updatedAgreeStatus = !(isagree ?? false)
-//        isagree = updatedAgreeStatus // 상태를 전환하여 반영
-//        
-//        let editphoneData = EditphoneMaindata(isAgree: updatedAgreeStatus)
-//        
-//        // API 호출
-//        APInetwork.patchphoneagree(groupId: self.groupId, editphoneagree: editphoneData) { result in
-//            switch result {
-//            case .success(let data):
-//                LoadingIndicator.hideLoading()
-//                print("전화번호 공개 상태 변경 성공: \(data)")
-//                self.configureUserState()
-//                
-//            case .failure(let error):
-//                LoadingIndicator.hideLoading()
-//                print("오류 발생: \(error.localizedDescription)")
-//            }
-//        }
-//    }
     
     func editphoneagree(completion: @escaping () -> Void) {
         LoadingIndicator.showLoading()

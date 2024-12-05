@@ -43,7 +43,6 @@ class UserStateViewController : UIViewController{
     
     lazy var callButton : UIButton = {
         let button = UIButton()
-        button.backgroundColor = DesignSystemColor.Orange500.value
         button.setTitle("전화로 깨우기", for: .normal)
         button.titleLabel?.font = DesignSystemFont.Pretendard_SemiBold14.value
         button.titleLabel?.textAlignment = .center
@@ -51,12 +50,15 @@ class UserStateViewController : UIViewController{
         button.layer.cornerRadius = 8
         button.setImage(UIImage(named: "phone"), for: .normal)
         button.addTarget(self, action: #selector(callclick), for: .touchUpInside)
+        button.layer.masksToBounds = true
+        button.clipsToBounds = true
         return button
     }()
     
     lazy var pickButton : UIButton = {
         let button = UIButton()
-        button.backgroundColor = DesignSystemColor.Orange500.value
+        button.setBackgroundColor(DesignSystemColor.Orange500.value, for: .normal)
+        button.setBackgroundColor(DesignSystemColor.Orange500.value.adjustBrightness(by: 0.8), for: .highlighted)
         button.setTitle("콕 찔러 깨우기", for: .normal)
         button.titleLabel?.font = DesignSystemFont.Pretendard_SemiBold14.value
         button.titleLabel?.textAlignment = .center
@@ -64,6 +66,8 @@ class UserStateViewController : UIViewController{
         button.layer.cornerRadius = 8
         button.setImage(UIImage(named: "pick"), for: .normal)
         button.addTarget(self, action: #selector(pickup), for: .touchUpInside)
+        button.layer.masksToBounds = true
+        button.clipsToBounds = true
         return button
     }()
     
@@ -71,8 +75,11 @@ class UserStateViewController : UIViewController{
     private lazy var DoneButton : UIButton = {
         let button = UIButton()
         button.addSubview(buttonLabel)
-        button.backgroundColor = .black
+        button.setBackgroundColor(DesignSystemColor.Black.value, for: .normal)
+        button.setBackgroundColor(DesignSystemColor.Black.value.adjustBrightness(by: 0.8), for: .highlighted)
         button.addTarget(self, action: #selector(doneclick), for: .touchUpInside)
+        button.layer.masksToBounds = true
+        button.clipsToBounds = true
         return button
     }()
     
@@ -135,12 +142,6 @@ class UserStateViewController : UIViewController{
     }
     
     func configureUserState(){
-//        print("isagree",isagree as Any)
-//        print("닉네임",nicknameLabel.text as Any)
-//        print("폰번호",userphoneNum)
-//        print("유저아이디",userId)
-//        print("이미지 url", imageURL as Any)
-        
         // 유저 이미지 설정
         if let imageURLString = imageURL, !imageURLString.isEmpty, let url = URL(string: imageURLString) {
             // Kingfisher를 사용하여 이미지 다운로드 및 둥근 모서리 적용 처리
@@ -169,12 +170,14 @@ class UserStateViewController : UIViewController{
         if isagree ?? true{
             fullText = "전화를 걸어 친구를 깨워주세요."
             targetText = "전화"
-            callButton.backgroundColor = DesignSystemColor.Orange500.value
+            callButton.setBackgroundColor(DesignSystemColor.Orange500.value, for: .normal)
+            callButton.setBackgroundColor(DesignSystemColor.Orange500.value.adjustBrightness(by: 0.8), for: .highlighted)
             
         } else {
             fullText = "콕 찔러 깨우기를 선호하는 유저입니다."
             targetText = "콕 찔러 깨우기"
-            callButton.backgroundColor = DesignSystemColor.Gray300.value
+            callButton.setBackgroundColor(DesignSystemColor.Gray300.value, for: .normal)
+            callButton.setBackgroundColor(DesignSystemColor.Gray300.value.adjustBrightness(by: 0.8), for: .highlighted)
         }
         
         // NSMutableAttributedString을 사용하여 특정 텍스트의 속성 변경
@@ -189,20 +192,15 @@ class UserStateViewController : UIViewController{
     }
     
     var userId : Int = 0
-    
     func prickUser(){
         LoadingIndicator.showLoading()
-        
         let useridData = prickRequest(userID: userId)
-        
         APInetwork.postprick(userId: useridData){ result in
             switch result{
             case .success(let data):
                 print(data)
-                
                 LoadingIndicator.hideLoading()
                 self.showToast(message: "\(self.nicknameLabel.text ?? "")  님을 콕! 찔렀어요.")
-                
             case .failure(let error):
                 print(error.localizedDescription)
                 LoadingIndicator.hideLoading()

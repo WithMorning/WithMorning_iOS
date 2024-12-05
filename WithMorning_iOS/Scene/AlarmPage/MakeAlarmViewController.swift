@@ -224,7 +224,9 @@ class MakeAlarmViewController : UIViewController, UIScrollViewDelegate, UISheetP
     private lazy var saveButton : UIButton = {
         let button = UIButton()
         button.addSubview(buttonLabel)
-        button.backgroundColor = DesignSystemColor.Orange500.value
+        button.setBackgroundColor(DesignSystemColor.Orange500.value, for: .normal)
+        button.setBackgroundColor(DesignSystemColor.Orange500.value.adjustBrightness(by: 0.8), for: .highlighted)
+        
         button.addTarget(self, action: #selector(saveclicked), for: .touchUpInside)
         return button
     }()
@@ -447,16 +449,18 @@ class MakeAlarmViewController : UIViewController, UIScrollViewDelegate, UISheetP
     //MARK: - picker SET
     func pickerviewUI(){
         timePicker.subviews[1].isHidden = true
-        
         let colonLabel = UILabel()
         colonLabel.text = ":"
         colonLabel.font = DesignSystemFont.Pretendard_Bold30.value
-        timePicker.addSubview(colonLabel)
-        
-        colonLabel.snp.makeConstraints{
-            $0.centerY.equalToSuperview().offset(-3)
-            $0.centerX.equalToSuperview().offset(-16.5)
+        UIView.performWithoutAnimation {
+            timePicker.addSubview(colonLabel)
+            colonLabel.snp.makeConstraints{
+                $0.centerY.equalToSuperview().offset(-3)
+                $0.centerX.equalToSuperview().offset(-16.5)
+            }
+            timePicker.layoutIfNeeded()
         }
+        
     }
     
     //알람만들기할때

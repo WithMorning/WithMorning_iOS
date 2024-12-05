@@ -164,8 +164,7 @@ class CertificateViewController : UIViewController{
                 
                 if self.viewType == .changeNumber{
                     self.navigateToMainViewController()
-                    self.showToast(message: "인증번호가 확인되었습니다.")
-                    
+                    self.showToast(message: "연락처가 변경되었습니다.")
                 }else{
                     UserDefaults.standard.set(false, forKey: "isFirstTime")
                     self.navigationController?.pushViewController(vc, animated: true)
@@ -222,14 +221,17 @@ class CertificateViewController : UIViewController{
             nextButton.backgroundColor = DesignSystemColor.Gray300.value
         }
         if text.count == 6{
-            nextButton.backgroundColor = DesignSystemColor.Orange500.value
+            nextButton.setBackgroundColor(DesignSystemColor.Orange500.value, for: .normal)
+            nextButton.setBackgroundColor(DesignSystemColor.Orange500.value.adjustBrightness(by: 0.8), for: .highlighted)
         }
         code = text
     }
     
     @objc func nextclick(){
-        if nextButton.backgroundColor == DesignSystemColor.Orange500.value{
+        if numberTextfield.text?.count == 6 {
             responseSMS()
+        } else {
+            self.showToast(message: "인증번호를 입력해주세요.")
         }
     }
     

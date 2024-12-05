@@ -67,8 +67,11 @@ class LeaderMenuViewController: UIViewController, AlterDelegate {
     private lazy var closeButton : UIButton = {
         let button = UIButton()
         button.addSubview(buttonLabel)
-        button.backgroundColor = DesignSystemColor.Black.value
+        button.setBackgroundColor(DesignSystemColor.Black.value, for: .normal)
+        button.setBackgroundColor(DesignSystemColor.Black.value.adjustBrightness(by: 0.8), for: .highlighted)
         button.addTarget(self, action: #selector(closeClicked), for: .touchUpInside)
+        button.layer.masksToBounds = true
+        button.clipsToBounds = true
         return button
     }()
     

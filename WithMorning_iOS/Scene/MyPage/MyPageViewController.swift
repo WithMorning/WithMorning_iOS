@@ -81,22 +81,30 @@ class MyPageViewController : UIViewController, UIScrollViewDelegate {
     private lazy var editProfileButton : UIButton = {
         let button = UIButton()
         button.setTitle("프로필 수정", for: .normal)
-        button.backgroundColor = DesignSystemColor.Gray200.value
+        button.setBackgroundColor(DesignSystemColor.Gray200.value, for: .normal)
+        button.setBackgroundColor(DesignSystemColor.Gray200.value.adjustBrightness(by: 0.8), for: .highlighted)
         button.setTitleColor(DesignSystemColor.Gray600.value, for: .normal)
         button.titleLabel?.font = DesignSystemFont.Pretendard_SemiBold14.value
         button.layer.cornerRadius = 4
         button.addTarget(self, action: #selector(editprofile), for: .touchUpInside)
+        button.clipsToBounds = true
+        button.layer.masksToBounds = true
         return button
     }()
     
     private lazy var ContectButton : UIButton = {
         let button = UIButton()
         button.setTitle("연락처 변경", for: .normal)
-        button.backgroundColor = DesignSystemColor.Gray200.value
+        
+        button.setBackgroundColor(DesignSystemColor.Gray200.value, for: .normal)
+        button.setBackgroundColor(DesignSystemColor.Gray200.value.adjustBrightness(by: 0.8), for: .highlighted)
+        
         button.setTitleColor(DesignSystemColor.Gray600.value, for: .normal)
         button.titleLabel?.font = DesignSystemFont.Pretendard_SemiBold14.value
         button.addTarget(self, action: #selector(changephone), for: .touchUpInside)
         button.layer.cornerRadius = 4
+        button.clipsToBounds = true
+        button.layer.masksToBounds = true
         
         return button
     }()
@@ -556,7 +564,6 @@ class MyPageViewController : UIViewController, UIScrollViewDelegate {
             $0.trailing.equalToSuperview()
         }
         
-        
         bottomView.snp.makeConstraints{
             $0.top.equalTo(middleView.snp.bottom).offset(8)
             $0.leading.trailing.equalToSuperview()
@@ -643,7 +650,9 @@ class MyPageViewController : UIViewController, UIScrollViewDelegate {
         }
     }
     @objc func notice(){
-        showToast(message: "공지사항은 준비중입니다.")
+        if let url = URL(string: "https://www.instagram.com/with_morning.io/#") {
+            UIApplication.shared.open(url, options: [:], completionHandler: nil)
+        }
     }
     
     
@@ -723,7 +732,6 @@ class MyPageViewController : UIViewController, UIScrollViewDelegate {
         alterVC.modalPresentationStyle = .overFullScreen
         alterVC.modalTransitionStyle = .crossDissolve
         present(alterVC, animated: true, completion: nil)
-        
     }
     
     //MARK: - API
@@ -735,10 +743,8 @@ class MyPageViewController : UIViewController, UIScrollViewDelegate {
     func getMypage(){
         LoadingIndicator.showLoading()
         APInetwork.getMypage(){ result in
-            
             switch result{
             case.success(let mypage):
-                
                 self.nickNameLabel.text = mypage.nickname
                 self.updateSleepTimeLabel(with: mypage.bedtime ?? "", dayOfWeekList: mypage.dayOfWeekList ?? [])
                 self.bedtime = mypage.bedtime ?? ""
@@ -766,6 +772,7 @@ class MyPageViewController : UIViewController, UIScrollViewDelegate {
             }
         }
     }
+    
     //MARK: - 로그아웃
     func logout(){
         LoadingIndicator.showLoading()
@@ -790,6 +797,7 @@ class MyPageViewController : UIViewController, UIScrollViewDelegate {
             }
         }
     }
+    
     //MARK: - Device Identifier 찾기
     func getDeviceIdentifier() -> String {
         var systemInfo = utsname()
@@ -799,7 +807,6 @@ class MyPageViewController : UIViewController, UIScrollViewDelegate {
             guard let value = element.value as? Int8, value != 0 else { return identifier }
             return identifier + String(UnicodeScalar(UInt8(value)))
         }
-        
         return identifier
     }
     

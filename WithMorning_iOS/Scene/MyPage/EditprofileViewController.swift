@@ -60,10 +60,13 @@ class EditprofileViewController : UIViewController,UIImagePickerControllerDelega
         let imageConfig = UIImage.SymbolConfiguration(pointSize: 18, weight: .light)
         let image = UIImage(systemName: "camera",withConfiguration: imageConfig)
         button.setImage(image , for: .normal)
+        button.setImage(image , for: .highlighted)
         button.layer.cornerRadius = 20
         button.tintColor = .white
         button.backgroundColor = .black
         button.addTarget(self, action: #selector(galleryclick), for: .touchUpInside)
+        button.clipsToBounds = true
+        button.layer.masksToBounds = true
         return button
     }()
     
@@ -90,10 +93,14 @@ class EditprofileViewController : UIViewController,UIImagePickerControllerDelega
         let button = UIButton()
         button.setTitle("완료", for: .normal)
         button.setTitleColor(.white, for: .normal)
-        button.backgroundColor = DesignSystemColor.Orange500.value
+        button.setBackgroundColor(DesignSystemColor.Orange500.value, for: .normal)
+        button.setBackgroundColor(DesignSystemColor.Orange500.value.adjustBrightness(by: 0.8), for: .highlighted)
+        
         button.layer.cornerRadius = 8
         button.titleLabel?.font = DesignSystemFont.Pretendard_Bold16.value
         button.addTarget(self, action: #selector(doneclick), for: .touchUpInside)
+        button.clipsToBounds = true
+        button.layer.masksToBounds = true
         return button
     }()
     
@@ -242,7 +249,7 @@ class EditprofileViewController : UIViewController,UIImagePickerControllerDelega
                 self.selectedIMG = editedImage
             }
         } else if info[UIImagePickerController.InfoKey.originalImage] is UIImage {
-
+            
             DispatchQueue.main.async {
                 self.profileImage.image = UIImage(named: "profile")
                 self.selectedIMG = nil
@@ -275,7 +282,13 @@ extension EditprofileViewController : UITextFieldDelegate,UIGestureRecognizerDel
         
         let textToCheck = text ?? nicknameTextfield.text ?? ""
         
-        doneButton.backgroundColor = textToCheck.isEmpty ? DesignSystemColor.Gray300.value : DesignSystemColor.Orange500.value
+        if textToCheck.isEmpty {
+            doneButton.backgroundColor = DesignSystemColor.Gray300.value
+        } else {
+            doneButton.setBackgroundColor(DesignSystemColor.Orange500.value, for: .normal)
+            doneButton.setBackgroundColor(DesignSystemColor.Orange500.value.adjustBrightness(by: 0.8), for: .highlighted)
+            
+        }
     }
     
     func hideKeyboardWhenTappedAround() {
@@ -289,7 +302,6 @@ extension EditprofileViewController : UITextFieldDelegate,UIGestureRecognizerDel
     }
     
     func textFieldDidBeginEditing(_ textField: UITextField) {
-        
         textField.layer.borderWidth = 1
         textField.layer.borderColor = DesignSystemColor.Orange500.value.cgColor
         updateDoneButtonState()

@@ -140,7 +140,8 @@ class TutorialViewController : UIViewController, UISheetPresentationControllerDe
     private lazy var saveButton : UIButton = {
         let button = UIButton()
         button.addSubview(buttonLabel)
-        button.backgroundColor = .black
+        button.setBackgroundColor(DesignSystemColor.Black.value, for: .normal)
+        button.setBackgroundColor(DesignSystemColor.Black.value.adjustBrightness(by: 0.8), for: .highlighted)
         button.addTarget(self, action: #selector(saveclicked), for: .touchUpInside)
         return button
     }()

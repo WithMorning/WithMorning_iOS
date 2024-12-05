@@ -9,6 +9,7 @@ import UIKit
 import Firebase
 import AVFoundation
 import AudioToolbox
+import UserNotifications
 
 @main
 class AppDelegate:UIResponder, UIApplicationDelegate, MessagingDelegate {
@@ -89,6 +90,13 @@ class AppDelegate:UIResponder, UIApplicationDelegate, MessagingDelegate {
         completionHandler(.newData)
     }
     
+    //MARK: - 앱이 백그라운드 상태로 갔을 때
+    //UNTimeIntervalNotificationTrigger <- 몇초 후 알람
+    //UNCalendarNotificationTrigger <- 10시30분 에 알람
+
+//    func applicationWillTerminate(_ application: UIApplication) {
+//        <#code#>
+//    }
     
     
     //MARK: - 알림 타입

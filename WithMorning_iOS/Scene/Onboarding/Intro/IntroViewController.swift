@@ -57,7 +57,10 @@ class IntroViewController : UIViewController{
     private lazy var nextButton : UIButton = {
         let button = UIButton()
         button.addSubview(buttonLabel)
-        button.backgroundColor = DesignSystemColor.Black.value
+        button.setBackgroundColor(DesignSystemColor.Black.value, for: .normal)
+        button.setBackgroundColor(DesignSystemColor.Black.value.adjustBrightness(by: 0.8), for: .highlighted)
+        button.clipsToBounds = true
+        button.layer.masksToBounds = true
         button.addTarget(self, action: #selector(nextbtn), for: .touchUpInside)
         return button
     }()

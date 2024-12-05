@@ -65,33 +65,51 @@ class MainViewController: UIViewController, UISheetPresentationControllerDelegat
     
     private lazy var alarmButton : UIButton = {
         let button = UIButton()
-        button.backgroundColor = DesignSystemColor.Orange500.value
+        button.setBackgroundColor(DesignSystemColor.Orange500.value, for: .normal)
+        button.setBackgroundColor(DesignSystemColor.Orange500.value.adjustBrightness(by: 0.8), for: .highlighted)
         button.titleLabel?.font = DesignSystemFont.Pretendard_Bold14.value
+        
         button.setTitle("  새로운 알람 설정", for: .normal)
         button.setTitleColor(.white, for: .normal)
+        button.setTitleColor(.white, for: .highlighted)
+        
+        button.setImage(UIImage(named: "plus"), for: .normal)
+        button.setImage(UIImage(named: "plus"), for: .highlighted)
+        
         button.tintColor = .white
+        button.clipsToBounds = true
+        
         button.layer.cornerRadius = 8
-        button.setImage(UIImage(systemName: "plus"), for: .normal)
         button.layer.shadowColor = UIColor(red: 0, green: 0, blue: 0, alpha: 0.01).cgColor
         button.layer.shadowOpacity = 1
         button.layer.shadowRadius = 4
         button.layer.shadowOffset = CGSize(width: 0, height: 4)
+        button.layer.masksToBounds = true
+        
         button.addTarget(self, action: #selector(clickedmakeAlarm), for: .touchUpInside)
         return button
     }()
     
     private lazy var codeButton : UIButton = {
         let button = UIButton()
-        button.backgroundColor = .white
+        button.setBackgroundColor(.white, for: .normal)
+        button.setBackgroundColor(.white.adjustBrightness(by: 0.8), for: .highlighted)
+        
         button.setTitle("   참여 코드 입력", for: .normal)
-        button.titleLabel?.font = DesignSystemFont.Pretendard_Bold14.value
-        button.setTitleColor(DesignSystemColor.Black.value, for: .normal)
+        button.setTitleColor(.black, for: .normal)
+        button.setTitleColor(.black, for: .highlighted)
+        
+        button.titleLabel?.font = DesignSystemFont.Pretendard_SemiBold14.value
         button.layer.cornerRadius = 8
         button.setImage(UIImage(named: "codebutton"), for: .normal)
+        button.setImage(UIImage(named: "codebutton"), for: .highlighted)
+        button.clipsToBounds = true
+        
         button.layer.shadowColor = UIColor(red: 0, green: 0, blue: 0, alpha: 0.05).cgColor
         button.layer.shadowOpacity = 1
         button.layer.shadowRadius = 4
         button.layer.shadowOffset = CGSize(width: 0, height: 4)
+        button.layer.masksToBounds = true
         button.addTarget(self, action: #selector(clickedcode), for: .touchUpInside)
         return button
     }()
@@ -160,13 +178,13 @@ class MainViewController: UIViewController, UISheetPresentationControllerDelegat
             $0.width.equalTo(36)
             $0.height.equalTo(36)
         }
-//MARK: - 사운드버튼 추후 추가예정
-
-//        soundButton.snp.makeConstraints{
-//            $0.centerY.equalTo(profileButton)
-//            $0.height.width.equalTo(36)
-//            $0.trailing.equalTo(profileButton.snp.leading).offset(-16)
-//        }
+        //MARK: - 사운드버튼 추후 추가예정
+        
+        //        soundButton.snp.makeConstraints{
+        //            $0.centerY.equalTo(profileButton)
+        //            $0.height.width.equalTo(36)
+        //            $0.trailing.equalTo(profileButton.snp.leading).offset(-16)
+        //        }
         
         headerStackView.snp.makeConstraints{
             $0.top.equalToSuperview()
@@ -258,7 +276,7 @@ class MainViewController: UIViewController, UISheetPresentationControllerDelegat
         }
     }
     
-//MARK: - 알람권한 설정 present
+    //MARK: - 알람권한 설정 present
     func presentSetting(){
         let vc = NotificationPermission()
         vc.modalPresentationStyle = .overFullScreen

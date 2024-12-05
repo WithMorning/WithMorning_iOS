@@ -28,3 +28,22 @@ extension UIColor {
                   alpha: 1.0)
     }
 }
+
+
+extension UIColor {
+    /// 색상의 밝기를 조정 (factor > 1.0이면 밝아짐, < 1.0이면 어두워짐)
+    func adjustBrightness(by factor: CGFloat) -> UIColor {
+        var hue: CGFloat = 0
+        var saturation: CGFloat = 0
+        var brightness: CGFloat = 0
+        var alpha: CGFloat = 0
+        
+        // 색상의 HSB 값 추출
+        if self.getHue(&hue, saturation: &saturation, brightness: &brightness, alpha: &alpha) {
+            let adjustedBrightness = min(max(brightness * factor, 0.0), 1.0)
+            return UIColor(hue: hue, saturation: saturation, brightness: adjustedBrightness, alpha: alpha)
+        }
+        
+        return self // HSB 값 추출 실패 시 원본 색상 반환
+    }
+}

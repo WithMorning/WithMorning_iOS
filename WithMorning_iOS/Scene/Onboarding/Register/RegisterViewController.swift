@@ -78,6 +78,8 @@ class RegisterViewController : UIViewController{
         button.titleLabel?.font = DesignSystemFont.Pretendard_Bold16.value
         button.layer.cornerRadius = 8
         button.addTarget(self, action: #selector(nextclick), for: .touchUpInside)
+        button.clipsToBounds = true
+        button.layer.masksToBounds = true
         return button
     }()
     
@@ -187,6 +189,8 @@ class RegisterViewController : UIViewController{
         if text.count > 13{
             txtfield.deleteBackward()
             nextButton.backgroundColor = DesignSystemColor.Orange500.value
+            nextButton.setBackgroundColor(DesignSystemColor.Orange500.value, for: .normal)
+            nextButton.setBackgroundColor(DesignSystemColor.Orange500.value, for: .highlighted)
         }
         if text.count < 13{
             nextButton.backgroundColor = DesignSystemColor.Gray300.value
@@ -194,6 +198,8 @@ class RegisterViewController : UIViewController{
         
         if text.count == 13{
             nextButton.backgroundColor = DesignSystemColor.Orange500.value
+            nextButton.setBackgroundColor(DesignSystemColor.Orange500.value, for: .normal)
+            nextButton.setBackgroundColor(DesignSystemColor.Orange500.value.adjustBrightness(by: 0.8), for: .highlighted)
         }
         
         let phoneNumberWithoutDash = text.replacingOccurrences(of: "-", with: "")
@@ -203,9 +209,11 @@ class RegisterViewController : UIViewController{
         
     }
     
-    @objc func nextclick(){
-        if nextButton.backgroundColor == DesignSystemColor.Orange500.value{
+    @objc func nextclick() {
+        if numberTextfield.text?.count == 13 {
             requestSMS()
+        } else {
+            self.showToast(message: "전화번호를 입력해주세요.")
         }
     }
     
