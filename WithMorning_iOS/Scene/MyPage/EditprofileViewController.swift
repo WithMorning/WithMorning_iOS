@@ -167,7 +167,7 @@ class EditprofileViewController : UIViewController,UIImagePickerControllerDelega
         if let inputNickname = nicknameTextfield.text, !inputNickname.isEmpty {
             nickname = inputNickname
         } else {
-            nickname = UserDefaults.standard.string(forKey: "nickname") ?? "오류"
+            nickname = UserDefaults.standard.string(forKey: "nickname") ?? "닉네임을 입력해주세요."
         }
         
         let requestProfile = Requestprofile(nickname: nickname, fcmToken: fcmToken)

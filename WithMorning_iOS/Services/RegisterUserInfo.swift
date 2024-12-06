@@ -12,6 +12,7 @@ import UIKit
 enum LoginStatus {
     case logout//로그아웃
     case login //로그인
+    case alarmOn //알람
 }
 
 //컴바인을 이용함.
@@ -23,11 +24,9 @@ class RegisterUserInfo {
     
     //MARK: - 로그인 후
     @Published var loginState: LoginStatus? = nil
-    @Published var userIsRegistered : Bool = false
     @Published var nickName : String? = ""
     @Published var profileImage : UIImage? = nil
     @Published var privateNumber : Bool = false
-    
     private init() {}
 }
 
@@ -37,3 +36,4 @@ class RegisterUserInfo {
 //UserDefaults.standard.string(forKey: "name")
 //3. remove
 //UserDefaults.standard.removeObject(forKey: "name")
+

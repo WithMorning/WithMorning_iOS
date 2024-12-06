@@ -237,16 +237,27 @@ class TermsViewController: UIViewController{
         }
     }
     //MARK: - 모두 동의 함수
+//    func setallagree(){
+//        if [agecheckButton,serviceButton,infoButton].allSatisfy({$0.tintColor == DesignSystemColor.Orange500.value}){
+//            allagreeButton.tintColor = DesignSystemColor.Orange500.value
+//            nextButton.setBackgroundColor(DesignSystemColor.Orange500.value, for: .normal)
+//            nextButton.setBackgroundColor(DesignSystemColor.Orange500.value.adjustBrightness(by: 0.8), for: .highlighted)
+//        }else{
+//            allagreeButton.tintColor = DesignSystemColor.Gray200.value
+//            nextButton.backgroundColor = DesignSystemColor.Gray300.value
+//        }
+//        
+//    }
     func setallagree(){
-        if [agecheckButton,serviceButton,infoButton].allSatisfy({$0.tintColor == DesignSystemColor.Orange500.value}){
+        if [agecheckButton, serviceButton, infoButton].allSatisfy({$0.tintColor == DesignSystemColor.Orange500.value}) {
             allagreeButton.tintColor = DesignSystemColor.Orange500.value
             nextButton.setBackgroundColor(DesignSystemColor.Orange500.value, for: .normal)
             nextButton.setBackgroundColor(DesignSystemColor.Orange500.value.adjustBrightness(by: 0.8), for: .highlighted)
-        }else{
+        } else {
             allagreeButton.tintColor = DesignSystemColor.Gray200.value
-            nextButton.backgroundColor = DesignSystemColor.Gray300.value
+            nextButton.setBackgroundColor(DesignSystemColor.Gray300.value, for: .normal)
+            nextButton.setBackgroundColor(DesignSystemColor.Gray300.value, for: .highlighted)
         }
-        
     }
     
     //MARK: - @objc func
@@ -267,6 +278,7 @@ class TermsViewController: UIViewController{
         }
         setallagree()
     }
+    
     @objc func infobtn(){
         if infoButton.tintColor == DesignSystemColor.Gray200.value{
             infoButton.tintColor = DesignSystemColor.Orange500.value
@@ -275,6 +287,7 @@ class TermsViewController: UIViewController{
         }
         setallagree()
     }
+    
     @objc func maketingbtn(){
         if maketingButton.tintColor == DesignSystemColor.Gray200.value{
             maketingButton.tintColor = DesignSystemColor.Orange500.value
@@ -296,6 +309,7 @@ class TermsViewController: UIViewController{
             nextButton.backgroundColor = DesignSystemColor.Gray300.value
             allagreeButton.tintColor = DesignSystemColor.Gray200.value
         }
+        setallagree()
     }
     
     @objc func nextbtn() {

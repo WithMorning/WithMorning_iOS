@@ -71,9 +71,13 @@ class AlarmViewController: UIViewController {
     private lazy var turnoffButton : UIButton = {
         let button = UIButton()
         button.addSubview(buttonLabel)
-        button.backgroundColor = DesignSystemColor.Orange500.value
+        button.setBackgroundColor(DesignSystemColor.Orange500.value, for: .normal)
+        button.setBackgroundColor(DesignSystemColor.Orange500.value.adjustBrightness(by: 0.8), for: .highlighted)
+        
         button.layer.cornerRadius = 8
         button.addTarget(self, action: #selector(turnoffalarm), for: .touchUpInside)
+        button.clipsToBounds = true
+        button.layer.masksToBounds = true
         return button
     }()
     
@@ -190,6 +194,7 @@ class AlarmViewController: UIViewController {
                 print(data)
                 UserDefaults.standard.removeObject(forKey: "wakeupGroupId")
                 UserDefaults.standard.set(false, forKey: "isWakeUpAlarmActive")
+                self.mainViewController()
             case .failure(let error):
                 print(error.localizedDescription)
                 UserDefaults.standard.removeObject(forKey: "wakeupGroupId")

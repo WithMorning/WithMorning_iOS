@@ -8,6 +8,7 @@
 import UIKit
 import Combine
 import AuthenticationServices
+import UserNotifications
 
 class SceneDelegate: UIResponder, UIWindowSceneDelegate {
     
@@ -17,10 +18,6 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
     func scene(_ scene: UIScene, willConnectTo session: UISceneSession, options connectionOptions: UIScene.ConnectionOptions) {
         guard let windowScene = scene as? UIWindowScene else { return }
         
-        let refreshToken = KeyChain.read(key: "refreshToken")
-        
-        // 사용자 상태 변경 및 알람 이벤트 옵저버 등록
-        NotificationCenter.default.addObserver(self, selector: #selector(handleUserStateChange), name: NSNotification.Name("UserStateChanged"), object: nil)
         
         NotificationCenter.default.addObserver(self, selector: #selector(handleWakeUpAlarm), name: NSNotification.Name("WakeUpAlarmReceived"), object: nil)
         
@@ -29,10 +26,14 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
             return
         }
         
+        NotificationCenter.default.addObserver(self, selector: #selector(handleUserStateChange), name: NSNotification.Name("UserStateChanged"), object: nil)
+        
+        let userState = UserDefaults.getUserState()
+        updateViewControllerForUserState(userState, windowScene: windowScene, refreshToken: nil)
+        
         //MARK: - 컴바인 최고
         RegisterUserInfo.shared.$loginState.sink { loginState in
             DispatchQueue.main.async {
-                // 로그인 상태에서도 알람 상태 확인
                 if UserDefaults.standard.bool(forKey: "isWakeUpAlarmActive") {
                     self.setRootViewController(windowScene, type: .alarmON)
                 }
@@ -40,9 +41,6 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
             
         }
         .store(in: &cancellables)
-        
-        let userState = UserDefaults.getUserState()
-        updateViewControllerForUserState(userState, windowScene: windowScene, refreshToken: refreshToken)
     }
     
     func wakeupAlarm(_ scene: UIWindowScene, loginState: LoginStatus?){
@@ -54,7 +52,6 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
     
     @objc private func handleWakeUpAlarm() {
         if let windowScene = window?.windowScene {
-            // 알람 상태로 화면 전환
             setRootViewController(windowScene, type: .alarmON)
         }
     }
@@ -119,7 +116,6 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
             newWindow.rootViewController = viewController
         }
         
-        // 키보드 관련 문제 해결을 위한 딜레이 추가
         DispatchQueue.main.async { [weak self] in
             self?.window = newWindow
             newWindow.makeKeyAndVisible()
@@ -127,11 +123,41 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
     }
     
     // 필수 SceneDelegate 메서드들
-    func sceneDidDisconnect(_ scene: UIScene) {}
-    func sceneDidBecomeActive(_ scene: UIScene) {}
-    func sceneWillResignActive(_ scene: UIScene) {}
-    func sceneWillEnterForeground(_ scene: UIScene) {}
-    func sceneDidEnterBackground(_ scene: UIScene) {}
+    func sceneDidDisconnect(_ scene: UIScene) {
+        print("sceneDidDisconnect")
+        
+        let content = UNMutableNotificationContent()
+        content.title = "진동을 위해 앱을 실행해주세요!"
+        content.body = "무음모드를 해지하지 않으면 소리가 나지 않아요 !"
+        content.sound = .default
+        
+        // 트리거 설정 (5초 후 알림)
+        let trigger = UNTimeIntervalNotificationTrigger(timeInterval: 5, repeats: false)
+        
+        // 요청 생성
+        let request = UNNotificationRequest(identifier: "appTerminationNotification", content: content, trigger: trigger)
+        
+        // 알림 등록
+        UNUserNotificationCenter.current().add(request) { error in
+            if let error = error {
+                print("Local Notification Error: \(error.localizedDescription)")
+            } else {
+                print("Local Notification Scheduled")
+            }
+        }
+    }
+    
+    func sceneDidBecomeActive(_ scene: UIScene) {
+    }
+    func sceneWillResignActive(_ scene: UIScene) {
+        print("sceneWillResignActive")
+    }
+    func sceneWillEnterForeground(_ scene: UIScene) {
+        print("sceneWillEnterForeground")
+    }
+    func sceneDidEnterBackground(_ scene: UIScene) {
+        print("sceneDidEnterBackground")
+    }
 }
 
 enum StartViewControllerType {
@@ -163,4 +189,6 @@ public class Storage {
         }
     }
 }
+
+
 

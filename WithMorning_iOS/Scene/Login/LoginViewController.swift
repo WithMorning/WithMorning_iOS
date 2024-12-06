@@ -40,8 +40,8 @@ class LoginViewController: UIViewController{
     //MARK: - 애플로 로그인
     private lazy var appleButton : UIButton = {
         let button = UIButton()
-        button.setBackgroundColor(.black, for: .normal)
-        button.setBackgroundColor(.black.adjustBrightness(by: 0.8), for: .highlighted)
+        button.setBackgroundColor(DesignSystemColor.Black.value, for: .normal)
+        button.setBackgroundColor(DesignSystemColor.Black.value.adjustBrightness(by: 0.8), for: .highlighted)
         button.setTitle("  Apple로 로그인", for: .normal)
         
         button.titleLabel?.font = DesignSystemFont.Pretendard_SemiBold16.value
@@ -50,6 +50,8 @@ class LoginViewController: UIViewController{
         
         button.setTitleColor(.white, for: .normal)
         button.setTitleColor(.white, for: .highlighted)
+        button.layer.masksToBounds = true
+        button.clipsToBounds = true
         
         button.tintColor = .white
         button.layer.cornerRadius = 8

@@ -81,6 +81,8 @@ class CertificateViewController : UIViewController{
         button.backgroundColor = DesignSystemColor.Gray300.value
         button.titleLabel?.font = DesignSystemFont.Pretendard_Bold16.value
         button.layer.cornerRadius = 8
+        button.layer.masksToBounds = true
+        button.clipsToBounds = true
         button.addTarget(self, action: #selector(nextclick), for: .touchUpInside)
         return button
     }()

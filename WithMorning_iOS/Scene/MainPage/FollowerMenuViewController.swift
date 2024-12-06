@@ -98,7 +98,7 @@ class FollowerMenuViewController: UIViewController, AlterDelegate {
         closeButton.snp.makeConstraints{
             $0.top.equalTo(deleteButton.snp.bottom)
             $0.leading.trailing.equalToSuperview()
-            $0.height.equalTo(100)
+            $0.height.equalTo(300)
         }
         buttonLabel.snp.makeConstraints{
             $0.centerX.equalToSuperview()

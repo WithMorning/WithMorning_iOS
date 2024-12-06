@@ -641,21 +641,20 @@ class AlarmTableViewCell : UITableViewCell, UISheetPresentationControllerDelegat
         
         // 레이아웃 갱신
         self.memoView.superview?.layoutIfNeeded()
+       // print("메모 높이 : ",size.height)
     }
     
     
     //MARK: - 모두 깨있을때, 아닐때
     func bottomViewLabelUpdate(isAllAwake: Bool) {
-        let newText = "대단해요! 모두 기상했어요."
-        
         let attributeLabel = NSMutableAttributedString()
         let attachImage = NSTextAttachment()
         if isAllAwake {
             // 모든 멤버가 깨어났을 때의 텍스트
-            let newText = "대단해요! 모두 기상했어요."
+            let newText = " 대단해요! 모두 기상했어요."
             attachImage.image = UIImage(named: "thumb")
             attributeLabel.append(NSAttributedString(string: newText))
-            attachImage.bounds = CGRect(x: 0, y: -3, width: 15, height: 15)
+            attachImage.bounds = CGRect(x: -0, y: -3, width: 15, height: 15)
             let imageString = NSAttributedString(attachment: attachImage)
             attributeLabel.insert(imageString, at: 0)
         } else {

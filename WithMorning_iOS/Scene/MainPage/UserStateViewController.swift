@@ -49,6 +49,7 @@ class UserStateViewController : UIViewController{
         button.setTitleColor(.white, for: .normal)
         button.layer.cornerRadius = 8
         button.setImage(UIImage(named: "phone"), for: .normal)
+        button.setImage(UIImage(named: "phone"), for: .highlighted)
         button.addTarget(self, action: #selector(callclick), for: .touchUpInside)
         button.layer.masksToBounds = true
         button.clipsToBounds = true
@@ -65,6 +66,7 @@ class UserStateViewController : UIViewController{
         button.setTitleColor(.white, for: .normal)
         button.layer.cornerRadius = 8
         button.setImage(UIImage(named: "pick"), for: .normal)
+        button.setImage(UIImage(named: "pick"), for: .highlighted)
         button.addTarget(self, action: #selector(pickup), for: .touchUpInside)
         button.layer.masksToBounds = true
         button.clipsToBounds = true
