@@ -566,7 +566,7 @@ extension MainViewController : UITableViewDelegate, UITableViewDataSource{
             case 1:
                 memoHeight = 20  // 16글자 초과하는 한 줄
             case 2:
-                memoHeight = 25  // 두 줄
+                memoHeight = 23  // 두 줄
             case 3:
                 memoHeight = 40  // 세 줄 이상
             default :

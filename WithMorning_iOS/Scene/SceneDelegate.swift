@@ -127,12 +127,12 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         print("sceneDidDisconnect")
         
         let content = UNMutableNotificationContent()
-        content.title = "진동을 위해 앱을 실행해주세요!"
-        content.body = "무음모드를 해지하지 않으면 소리가 나지 않아요 !"
+        content.title = "혹시 무음모드를 켜두지는 않으셨나요?"
+        content.body = "무음모드를 해지하지 않으면 소리가 나지 않아요!"
         content.sound = .default
         
         // 트리거 설정 (5초 후 알림)
-        let trigger = UNTimeIntervalNotificationTrigger(timeInterval: 5, repeats: false)
+        let trigger = UNTimeIntervalNotificationTrigger(timeInterval: 30, repeats: false)
         
         // 요청 생성
         let request = UNNotificationRequest(identifier: "appTerminationNotification", content: content, trigger: trigger)

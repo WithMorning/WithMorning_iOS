@@ -59,6 +59,31 @@ class AppDelegate:UIResponder, UIApplicationDelegate, MessagingDelegate {
         // Use this method to release any resources that were specific to the discarded scenes, as they will not return.
     }
     
+    //MARK: - 앱이 실행 중인 경우 (Foreground) & 포어그라운드에서 사용자가 푸시를 탭한 경우
+    func userNotificationCenter(_ center: UNUserNotificationCenter, willPresent notification: UNNotification, withCompletionHandler completionHandler: @escaping (UNNotificationPresentationOptions) -> Void) {
+        let userInfo = notification.request.content.userInfo
+        handleNotification(userInfo)
+        print("Appdelegate : foreground에서 실행")
+        completionHandler([.banner, .list, .sound])
+        
+    }
+    
+    //MARK: - 앱이 백그라운드인 경우 (Background) & 백그라운드에서 사용자가 푸시를 탭한 경우
+    func userNotificationCenter(_ center: UNUserNotificationCenter, didReceive response: UNNotificationResponse, withCompletionHandler completionHandler: @escaping () -> Void) {
+        let userInfo = response.notification.request.content.userInfo
+        print("Appdelegate : background에서 실행")
+        handleNotification(userInfo)
+        
+        if let jsonData = try? JSONSerialization.data(withJSONObject: userInfo, options: .prettyPrinted),
+           let jsonString = String(data: jsonData, encoding: .utf8) {
+            print("📋 전체 알림 데이터:")
+            print(jsonString)
+        }
+        
+        completionHandler()
+        
+    }
+    
     //MARK: - 알림 타입
     private func handleNotification(_ userInfo: [AnyHashable: Any]) {
         if let aps = userInfo["aps"] as? [String: Any],
@@ -68,6 +93,7 @@ class AppDelegate:UIResponder, UIApplicationDelegate, MessagingDelegate {
             switch title {
             case "기상 알람":
                 handlewakeup(userInfo)
+                //scheduleLocalNotification(title: title)
             case "콕 찌르기":
                 handleprick(userInfo)
             case "취침 알람":
@@ -90,6 +116,7 @@ class AppDelegate:UIResponder, UIApplicationDelegate, MessagingDelegate {
                 print("🔑 그룹 ID: \(groupId)")
                 UserDefaults.standard.set(groupId, forKey: "wakeupGroupId")
                 UserDefaults.standard.set(true, forKey: "isWakeUpAlarmActive")
+                
             } else {
                 print("❌ groupId가 없습니다.")
             }
@@ -117,6 +144,26 @@ class AppDelegate:UIResponder, UIApplicationDelegate, MessagingDelegate {
         
     }
     
+    // MARK: - 로컬 알림 예약
+//        private func scheduleLocalNotification(title: String) {
+//            print("local알림")
+//            let content = UNMutableNotificationContent()
+//            content.title = "로컬 알림"
+//            content.body = "\(title) 알림이 도착한 후 20초가 지났습니다."
+//            content.sound = .default
+//            
+//            let trigger = UNTimeIntervalNotificationTrigger(timeInterval: 20, repeats: false)
+//            let request = UNNotificationRequest(identifier: UUID().uuidString, content: content, trigger: trigger)
+//            
+//            UNUserNotificationCenter.current().add(request) { error in
+//                if let error = error {
+//                    print("❌ 로컬 알림 등록 실패: \(error.localizedDescription)")
+//                } else {
+//                    print("✅ 로컬 알림 등록 성공")
+//                }
+//            }
+//        }
+    
 }
 
 extension AppDelegate: UNUserNotificationCenterDelegate {
@@ -131,30 +178,6 @@ extension AppDelegate: UNUserNotificationCenterDelegate {
         
     }
     
-    //MARK: - 앱이 실행 중인 경우 (Foreground) & 포어그라운드에서 사용자가 푸시를 탭한 경우
-    func userNotificationCenter(_ center: UNUserNotificationCenter, willPresent notification: UNNotification, withCompletionHandler completionHandler: @escaping (UNNotificationPresentationOptions) -> Void) {
-        let userInfo = notification.request.content.userInfo
-        handleNotification(userInfo)
-        print("Appdelegate : foreground에서 실행")
-        completionHandler([.banner, .list, .sound])
-        
-    }
-    
-    //MARK: - 앱이 백그라운드인 경우 (Background) & 백그라운드에서 사용자가 푸시를 탭한 경우
-    func userNotificationCenter(_ center: UNUserNotificationCenter, didReceive response: UNNotificationResponse, withCompletionHandler completionHandler: @escaping () -> Void) {
-        let userInfo = response.notification.request.content.userInfo
-        print("Appdelegate : background에서 실행")
-        handleNotification(userInfo)
-        
-        if let jsonData = try? JSONSerialization.data(withJSONObject: userInfo, options: .prettyPrinted),
-           let jsonString = String(data: jsonData, encoding: .utf8) {
-            print("📋 전체 알림 데이터:")
-            print(jsonString)
-        }
-        
-        completionHandler()
-        
-    }
     
     
     
