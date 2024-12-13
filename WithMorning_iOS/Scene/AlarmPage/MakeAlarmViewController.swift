@@ -436,6 +436,7 @@ class MakeAlarmViewController : UIViewController, UIScrollViewDelegate, UISheetP
             case .success(let data):
                 print("알람 수정",data)
                 self.navigationController?.popViewController(animated: true)
+                self.showToast(message: "수정이 완료되었습니다.")
                 LoadingIndicator.hideLoading()
             case .failure(let error):
                 print(error.localizedDescription)

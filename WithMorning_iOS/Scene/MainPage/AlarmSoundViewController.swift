@@ -71,7 +71,7 @@ class AlarmSoundViewController: UIViewController {
         slider.maximumValue = 100
         slider.tintColor = DesignSystemColor.Orange500.value
         slider.thumbTintColor = .white
-        slider.value = UserDefaults.standard.float(forKey: "volume", default: defaultVolumeValue) // UserDefaults 값
+        slider.value = UserDefaults.standard.float(forKey: "volume", default: defaultVolumeValue)
         slider.addTarget(self, action: #selector(sliderValueChanged(_:)), for: .valueChanged)
         return slider
     }()
@@ -108,17 +108,46 @@ class AlarmSoundViewController: UIViewController {
         return button
     }()
     
+    //MARK: - 알람 선택
     private lazy var alarmView: UIView = {
         let view = UIView()
         view.backgroundColor = .white
         view.layer.cornerRadius = 8
+        view.addSubviews(alarmtitleLabel,alarm1Label,alarm1Image)
         return view
     }()
+    
+    private lazy var alarmtitleLabel : UILabel = {
+        let label = UILabel()
+        label.text = "알람음"
+        label.font = DesignSystemFont.Pretendard_Bold14.value
+        label.textColor = .black
+        return label
+    }()
+    
+    private lazy var alarm1Label : UILabel = {
+        let label = UILabel()
+        label.text = "알람벨 1"
+        label.textColor = DesignSystemColor.Gray500.value
+        label.font = DesignSystemFont.Pretendard_Medium14.value
+        return label
+    }()
+    
+    private lazy var alarm1Image: UIButton = {
+        let button = UIButton()
+        button.setImage(UIImage(systemName: "checkmark.square.fill"), for: .normal)
+        button.tintColor =  DesignSystemColor.Orange500.value
+        button.addTarget(self, action: #selector(alarm1set), for: .touchUpInside)
+        return button
+    }()
+
+    
     
     private lazy var DoneButton: UIButton = {
         let button = UIButton()
         button.addSubview(buttonLabel)
-        button.backgroundColor = DesignSystemColor.Orange500.value
+        button.setBackgroundColor(DesignSystemColor.Orange500.value, for: .normal)
+        button.setBackgroundColor(DesignSystemColor.Orange500.value.adjustBrightness(by: 0.8), for: .highlighted)
         button.addTarget(self, action: #selector(doneclick), for: .touchUpInside)
         return button
     }()
@@ -192,6 +221,19 @@ class AlarmSoundViewController: UIViewController {
             $0.leading.trailing.equalToSuperview().inset(16)
             $0.height.equalTo(332)
         }
+        alarmtitleLabel.snp.makeConstraints{
+            $0.top.equalToSuperview().offset(16)
+            $0.leading.equalToSuperview().offset(16)
+        }
+        alarm1Label.snp.makeConstraints{
+            $0.top.equalTo(alarmtitleLabel.snp.bottom).offset(19.5)
+            $0.leading.equalToSuperview().offset(16)
+        }
+        alarm1Image.snp.makeConstraints{
+            $0.centerY.equalTo(alarm1Label)
+            $0.trailing.equalToSuperview().inset(16)
+        }
+        
         DoneButton.snp.makeConstraints {
             $0.height.equalTo(92)
             $0.leading.trailing.bottom.equalToSuperview()
@@ -228,6 +270,9 @@ class AlarmSoundViewController: UIViewController {
         isVibrateOn.toggle()
         vibrateImage.tintColor = isVibrateOn ? DesignSystemColor.Orange500.value : DesignSystemColor.Gray200.value
         
+    }
+    @objc func alarm1set(){
+        self.showToast(message: "새로운 알람음이 업데이트 될 예정입니다 !")
     }
     
     @objc func doneclick() {

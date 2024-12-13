@@ -55,9 +55,9 @@
 		D19E7FAA2C4A47C10053ACA8 /* LoginViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D19E7FA92C4A47C10053ACA8 /* LoginViewController.swift */; };
 		D1A095DB2CB56D7A002EEF6E /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = D1A095DA2CB56D7A002EEF6E /* GoogleService-Info.plist */; };
 		D1ABF7922C5239C7008B5084 /* TutorialViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D1ABF7912C5239C7008B5084 /* TutorialViewController.swift */; };
-		D1ABF7962C5239E4008B5084 /* TutorialFirstViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D1ABF7952C5239E4008B5084 /* TutorialFirstViewController.swift */; };
+		D1ABF7962C5239E4008B5084 /* TutorialSecondViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D1ABF7952C5239E4008B5084 /* TutorialSecondViewController.swift */; };
 		D1AD15AC2C7AF19F003EE342 /* UILabel_Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = D1AD15AB2C7AF19F003EE342 /* UILabel_Extension.swift */; };
-		D1B12F2F2C50E7770041288C /* TutorialPageViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D1B12F2E2C50E7770041288C /* TutorialPageViewController.swift */; };
+		D1B12F2F2C50E7770041288C /* TutorialFirstViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D1B12F2E2C50E7770041288C /* TutorialFirstViewController.swift */; };
 		D1B86A012C6D12710052F528 /* UserStateViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D1B86A002C6D12710052F528 /* UserStateViewController.swift */; };
 		D1B86A032C6D13D20052F528 /* UICell_Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = D1B86A022C6D13D20052F528 /* UICell_Extension.swift */; };
 		D1B86A052C6F2EAC0052F528 /* LoginModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = D1B86A042C6F2EAC0052F528 /* LoginModel.swift */; };
@@ -71,6 +71,7 @@
 		D1D891F62C42684B00ED8092 /* FirebaseInAppMessaging-Beta in Frameworks */ = {isa = PBXBuildFile; productRef = D1D891F52C42684B00ED8092 /* FirebaseInAppMessaging-Beta */; };
 		D1D891F82C42684B00ED8092 /* FirebaseInAppMessagingSwift-Beta in Frameworks */ = {isa = PBXBuildFile; productRef = D1D891F72C42684B00ED8092 /* FirebaseInAppMessagingSwift-Beta */; };
 		D1DB46E32C4BA10C00BDC3D8 /* RegisterViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D1DB46E22C4BA10C00BDC3D8 /* RegisterViewController.swift */; };
+		D1DB4F692D0BF83000E9B590 /* AlarmManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = D1DB4F682D0BF82B00E9B590 /* AlarmManager.swift */; };
 		D1DECB212BE54B37009AC667 /* Pretendard-Regular.otf in Resources */ = {isa = PBXBuildFile; fileRef = D1DECB1B2BE54B37009AC667 /* Pretendard-Regular.otf */; };
 		D1DECB222BE54B37009AC667 /* Pretendard-Black.otf in Resources */ = {isa = PBXBuildFile; fileRef = D1DECB1C2BE54B37009AC667 /* Pretendard-Black.otf */; };
 		D1DECB232BE54B37009AC667 /* Pretendard-ExtraBold.otf in Resources */ = {isa = PBXBuildFile; fileRef = D1DECB1D2BE54B37009AC667 /* Pretendard-ExtraBold.otf */; };
@@ -140,9 +141,9 @@
 		D19E7FA92C4A47C10053ACA8 /* LoginViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginViewController.swift; sourceTree = "<group>"; };
 		D1A095DA2CB56D7A002EEF6E /* GoogleService-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		D1ABF7912C5239C7008B5084 /* TutorialViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TutorialViewController.swift; sourceTree = "<group>"; };
-		D1ABF7952C5239E4008B5084 /* TutorialFirstViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TutorialFirstViewController.swift; sourceTree = "<group>"; };
+		D1ABF7952C5239E4008B5084 /* TutorialSecondViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TutorialSecondViewController.swift; sourceTree = "<group>"; };
 		D1AD15AB2C7AF19F003EE342 /* UILabel_Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UILabel_Extension.swift; sourceTree = "<group>"; };
-		D1B12F2E2C50E7770041288C /* TutorialPageViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TutorialPageViewController.swift; sourceTree = "<group>"; };
+		D1B12F2E2C50E7770041288C /* TutorialFirstViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TutorialFirstViewController.swift; sourceTree = "<group>"; };
 		D1B86A002C6D12710052F528 /* UserStateViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserStateViewController.swift; sourceTree = "<group>"; };
 		D1B86A022C6D13D20052F528 /* UICell_Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UICell_Extension.swift; sourceTree = "<group>"; };
 		D1B86A042C6F2EAC0052F528 /* LoginModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginModel.swift; sourceTree = "<group>"; };
@@ -150,6 +151,7 @@
 		D1BCF7D12C99752800FC4FD5 /* IntroViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IntroViewController.swift; sourceTree = "<group>"; };
 		D1C823632C77363F00787CB4 /* AuthInterceptor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthInterceptor.swift; sourceTree = "<group>"; };
 		D1DB46E22C4BA10C00BDC3D8 /* RegisterViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RegisterViewController.swift; sourceTree = "<group>"; };
+		D1DB4F682D0BF82B00E9B590 /* AlarmManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AlarmManager.swift; sourceTree = "<group>"; };
 		D1DECB1B2BE54B37009AC667 /* Pretendard-Regular.otf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Pretendard-Regular.otf"; sourceTree = "<group>"; };
 		D1DECB1C2BE54B37009AC667 /* Pretendard-Black.otf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Pretendard-Black.otf"; sourceTree = "<group>"; };
 		D1DECB1D2BE54B37009AC667 /* Pretendard-ExtraBold.otf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Pretendard-ExtraBold.otf"; sourceTree = "<group>"; };
@@ -285,6 +287,7 @@
 		D14967F72C7065D8000E8C1B /* Services */ = {
 			isa = PBXGroup;
 			children = (
+				D1DB4F682D0BF82B00E9B590 /* AlarmManager.swift */,
 				D14967F52C6FB3F5000E8C1B /* RegisterUserInfo.swift */,
 				D14967F82C70864D000E8C1B /* KeyChain.swift */,
 			);
@@ -408,8 +411,8 @@
 			isa = PBXGroup;
 			children = (
 				D1ABF7912C5239C7008B5084 /* TutorialViewController.swift */,
-				D1B12F2E2C50E7770041288C /* TutorialPageViewController.swift */,
-				D1ABF7952C5239E4008B5084 /* TutorialFirstViewController.swift */,
+				D1B12F2E2C50E7770041288C /* TutorialFirstViewController.swift */,
+				D1ABF7952C5239E4008B5084 /* TutorialSecondViewController.swift */,
 			);
 			path = Tutorial;
 			sourceTree = "<group>";
@@ -621,6 +624,7 @@
 				D16F5FD12BC65671006640F9 /* Network.swift in Sources */,
 				D18288CB2C7EF45800BDAB3A /* Error.swift in Sources */,
 				D12C73B22CA538DC00E3B245 /* FollowerMenuViewController.swift in Sources */,
+				D1DB4F692D0BF83000E9B590 /* AlarmManager.swift in Sources */,
 				D1FC698D2C74EA69006B93C8 /* MyPageWebViewController.swift in Sources */,
 				D1DB46E32C4BA10C00BDC3D8 /* RegisterViewController.swift in Sources */,
 				D12D513A2C60BC6300D3F1A9 /* AppleLoginManager.swift in Sources */,
@@ -628,9 +632,9 @@
 				D16F5FD32BC65679006640F9 /* Model.swift in Sources */,
 				D14A2D6C2BC8EB810087E0CB /* DesignSystem.swift in Sources */,
 				D12D51332C60BC0900D3F1A9 /* UserRouter.swift in Sources */,
-				D1ABF7962C5239E4008B5084 /* TutorialFirstViewController.swift in Sources */,
+				D1ABF7962C5239E4008B5084 /* TutorialSecondViewController.swift in Sources */,
 				D1ABF7922C5239C7008B5084 /* TutorialViewController.swift in Sources */,
-				D1B12F2F2C50E7770041288C /* TutorialPageViewController.swift in Sources */,
+				D1B12F2F2C50E7770041288C /* TutorialFirstViewController.swift in Sources */,
 				D16F5FD52BC65680006640F9 /* Router.swift in Sources */,
 				D13B6B802C4FAB2B00D963DC /* CertificateViewController.swift in Sources */,
 				D175A2142CA3C83E0001F99C /* AlarmViewController.swift in Sources */,

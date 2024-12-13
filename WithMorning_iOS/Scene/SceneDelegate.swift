@@ -18,45 +18,20 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
     func scene(_ scene: UIScene, willConnectTo session: UISceneSession, options connectionOptions: UIScene.ConnectionOptions) {
         guard let windowScene = scene as? UIWindowScene else { return }
         
-        
-        NotificationCenter.default.addObserver(self, selector: #selector(handleWakeUpAlarm), name: NSNotification.Name("WakeUpAlarmReceived"), object: nil)
-        
-        if UserDefaults.standard.bool(forKey: "isWakeUpAlarmActive") {
-            setRootViewController(windowScene, type: .alarmON)
-            return
-        }
-        
-        NotificationCenter.default.addObserver(self, selector: #selector(handleUserStateChange), name: NSNotification.Name("UserStateChanged"), object: nil)
-        
-        let userState = UserDefaults.getUserState()
-        updateViewControllerForUserState(userState, windowScene: windowScene, refreshToken: nil)
-        
         //MARK: - 컴바인 최고
         RegisterUserInfo.shared.$loginState.sink { loginState in
             DispatchQueue.main.async {
-                if UserDefaults.standard.bool(forKey: "isWakeUpAlarmActive") {
-                    self.setRootViewController(windowScene, type: .alarmON)
-                }
+                
+                NotificationCenter.default.addObserver(self, selector: #selector(self.handleUserStateChange), name: NSNotification.Name("UserStateChanged"), object: nil)
+                
+                let userState = UserDefaults.getUserState()
+                self.updateViewControllerForUserState(userState, windowScene: windowScene, refreshToken: nil)
             }
             
         }
         .store(in: &cancellables)
     }
     
-    func wakeupAlarm(_ scene: UIWindowScene, loginState: LoginStatus?){
-        if UserDefaults.standard.bool(forKey: "isWakeUpAlarmActive") {
-            setRootViewController(scene, type: .alarmON)
-            return
-        }
-    }
-    
-    @objc private func handleWakeUpAlarm() {
-        if let windowScene = window?.windowScene {
-            setRootViewController(windowScene, type: .alarmON)
-        }
-    }
-    
-    //기상알람을 받음
     @objc private func handleUserStateChange() {
         let userState = UserDefaults.getUserState()
         print(#fileID, #function, #line, "- 현재 사용자 상태: \(userState ?? "nil")")
@@ -84,8 +59,8 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
             setRootViewController(windowScene, type: .main)
         case "logout":
             setRootViewController(windowScene, type: .login)
-        case "alarmON":
-            setRootViewController(windowScene, type: .alarmON)
+//        case "alarmON":
+//            setRootViewController(windowScene, type: .alarmON)
         case "deleteaccount":
             // 회원탈퇴 상태에서는 무조건 약관 동의부터 시작
             UserDefaults.standard.removeObject(forKey: "isExistingUser")
@@ -112,8 +87,6 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
                 navigationController.navigationBar.isHidden = true
             }
             newWindow.rootViewController = navigationController
-        default:
-            newWindow.rootViewController = viewController
         }
         
         DispatchQueue.main.async { [weak self] in
@@ -122,32 +95,13 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         }
     }
     
+    //MARK: - 앱이 꺼져있을시 local push notification
     // 필수 SceneDelegate 메서드들
     func sceneDidDisconnect(_ scene: UIScene) {
-        print("sceneDidDisconnect")
-        
-        let content = UNMutableNotificationContent()
-        content.title = "혹시 무음모드를 켜두지는 않으셨나요?"
-        content.body = "무음모드를 해지하지 않으면 소리가 나지 않아요!"
-        content.sound = .default
-        
-        // 트리거 설정 (5초 후 알림)
-        let trigger = UNTimeIntervalNotificationTrigger(timeInterval: 30, repeats: false)
-        
-        // 요청 생성
-        let request = UNNotificationRequest(identifier: "appTerminationNotification", content: content, trigger: trigger)
-        
-        // 알림 등록
-        UNUserNotificationCenter.current().add(request) { error in
-            if let error = error {
-                print("Local Notification Error: \(error.localizedDescription)")
-            } else {
-                print("Local Notification Scheduled")
-            }
-        }
     }
     
     func sceneDidBecomeActive(_ scene: UIScene) {
+        print("sceneDidBecomeActive")
     }
     func sceneWillResignActive(_ scene: UIScene) {
         print("sceneWillResignActive")
@@ -165,7 +119,7 @@ enum StartViewControllerType {
     case termAgree
     case main
     case register
-    case alarmON
+//    case alarmON
     
     var vc: UIViewController {
         switch self {
@@ -173,7 +127,7 @@ enum StartViewControllerType {
         case .termAgree: return TermsViewController()
         case .main: return MainViewController()
         case .register: return RegisterViewController()
-        case .alarmON: return AlarmViewController()
+//        case .alarmON: return AlarmViewController()
         }
     }
 }

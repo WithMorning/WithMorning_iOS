@@ -47,11 +47,24 @@ class KeyChain{
     
     //MARK: - delete
     class func delete(key: String) {
+        // Keychain 쿼리 정의
         let query: NSDictionary = [
             kSecClass: kSecClassGenericPassword,
             kSecAttrAccount: key
         ]
-        let status = SecItemDelete(query)
-        assert(status == noErr, "값을 지울 수 없습니다., status code = \(status)")
+        
+        // 해당 키가 존재하는지 확인
+        let queryCopy = query
+        var result: AnyObject?
+        
+        let status = SecItemCopyMatching(queryCopy, &result)
+        
+        // Keychain에 해당 항목이 존재할 경우에만 삭제
+        if status == errSecSuccess {
+            let deleteStatus = SecItemDelete(query)
+            assert(deleteStatus == noErr, "값을 지울 수 없습니다., status code = \(deleteStatus)")
+        } else {
+            print("해당 항목이 Keychain에 존재하지 않습니다. status code = \(status)")
+        }
     }
 }

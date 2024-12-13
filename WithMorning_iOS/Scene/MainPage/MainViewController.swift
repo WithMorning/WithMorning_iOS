@@ -178,13 +178,12 @@ class MainViewController: UIViewController, UISheetPresentationControllerDelegat
             $0.width.equalTo(36)
             $0.height.equalTo(36)
         }
-        //MARK: - 사운드버튼 추후 추가예정
         
-        //        soundButton.snp.makeConstraints{
-        //            $0.centerY.equalTo(profileButton)
-        //            $0.height.width.equalTo(36)
-        //            $0.trailing.equalTo(profileButton.snp.leading).offset(-16)
-        //        }
+        soundButton.snp.makeConstraints{
+            $0.centerY.equalTo(profileButton)
+            $0.height.width.equalTo(36)
+            $0.trailing.equalTo(profileButton.snp.leading).offset(-16)
+        }
         
         headerStackView.snp.makeConstraints{
             $0.top.equalToSuperview()
@@ -357,7 +356,6 @@ class MainViewController: UIViewController, UISheetPresentationControllerDelegat
     
     
     //MARK: - API
-    //메인페이지
     func getMainpage() {
         LoadingIndicator.showLoading()
         
@@ -381,15 +379,14 @@ class MainViewController: UIViewController, UISheetPresentationControllerDelegat
                         self.profileButton.kf.setImage(with: url, placeholder: placeholderImage, options: [.processor(processor)])
                         
                     } else {
-                        
                         self.profileButton.image = UIImage(named: "profile") // 기본 이미지로 설정
                     }
+                    AlarmManager.shared.updateAlarm(from: self.alarmData)
                     self.AlarmTableView.reloadData()
                     self.emptycellcheck()
-                    
                     LoadingIndicator.hideLoading()
-                case .failure(let error):
                     
+                case .failure(let error):
                     self.AlarmTableView.reloadData()
                     LoadingIndicator.hideLoading()
                     self.showToast(message: "오류가 발생했습니다. 잠시후 다시 시도해주세요.")
@@ -409,17 +406,14 @@ class MainViewController: UIViewController, UISheetPresentationControllerDelegat
     var isExpanded: Bool = false
     var isExpandedStates: [Int: Bool] = [:]  // indexPath.row를 키로 사용
     
-    //API뿌려주기.
     func MainpageUpdate(with mainpage: MainpageResponse){
         guard let groupList = mainpage.groupList else {
             return
         }
-        
         self.alarmData = groupList
         DispatchQueue.main.async {
             self.AlarmTableView.reloadData()
         }
-        
     }
     
     func checkIfCurrentUserIsLeader(userList: [UserList], currentUserNickname: String) -> Bool {
@@ -466,7 +460,6 @@ extension MainViewController : UITableViewDelegate, UITableViewDataSource{
             if let dayOfWeekList = alarm.dayOfWeekList, dayOfWeekList.contains(days[index]) {
                 dayLabel.backgroundColor = DesignSystemColor.Orange500.value
                 dayLabel.textColor = .white
-                
                 cell.editweek = alarm.dayOfWeekList ?? []
                 
             } else {
@@ -487,7 +480,6 @@ extension MainViewController : UITableViewDelegate, UITableViewDataSource{
         
         //토클 클릭시 실행되는 클로저
         cell.toggleclicked = { [weak self] in
-            
             if alarm.isDisturbBanGroup{
                 cell.bottomView.isHidden = true
                 self?.getMainpage()
@@ -516,7 +508,6 @@ extension MainViewController : UITableViewDelegate, UITableViewDataSource{
         
         //더보기
         cell.Expandclosure = { [weak tableView] isExpanded in
-            
             UIView.performWithoutAnimation {
                 tableView?.beginUpdates()
                 tableView?.endUpdates()
@@ -526,7 +517,7 @@ extension MainViewController : UITableViewDelegate, UITableViewDataSource{
         return cell
     }
     
-    //cell높이 지정
+    //MARK: - cell높이 지정
     // heightForRowAt에서 isExpanded 상태를 기반으로 셀 높이 계산
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
         let alarm = alarmData[indexPath.row]

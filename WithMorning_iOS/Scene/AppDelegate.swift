@@ -44,7 +44,7 @@ class AppDelegate:UIResponder, UIApplicationDelegate, MessagingDelegate {
         
         return true
     }
-
+    
     
     //MARK: - : UISceneSession Lifecycle
     func application(_ application: UIApplication, configurationForConnecting connectingSceneSession: UISceneSession, options: UIScene.ConnectionOptions) -> UISceneConfiguration {
@@ -61,108 +61,19 @@ class AppDelegate:UIResponder, UIApplicationDelegate, MessagingDelegate {
     
     //MARK: - 앱이 실행 중인 경우 (Foreground) & 포어그라운드에서 사용자가 푸시를 탭한 경우
     func userNotificationCenter(_ center: UNUserNotificationCenter, willPresent notification: UNNotification, withCompletionHandler completionHandler: @escaping (UNNotificationPresentationOptions) -> Void) {
-        let userInfo = notification.request.content.userInfo
-        handleNotification(userInfo)
-        print("Appdelegate : foreground에서 실행")
+//        let userInfo = notification.request.content.userInfo
+//        handleNotification(userInfo)
+//        print("Appdelegate : foreground에서 실행")
         completionHandler([.banner, .list, .sound])
         
     }
     
     //MARK: - 앱이 백그라운드인 경우 (Background) & 백그라운드에서 사용자가 푸시를 탭한 경우
     func userNotificationCenter(_ center: UNUserNotificationCenter, didReceive response: UNNotificationResponse, withCompletionHandler completionHandler: @escaping () -> Void) {
-        let userInfo = response.notification.request.content.userInfo
-        print("Appdelegate : background에서 실행")
-        handleNotification(userInfo)
-        
-        if let jsonData = try? JSONSerialization.data(withJSONObject: userInfo, options: .prettyPrinted),
-           let jsonString = String(data: jsonData, encoding: .utf8) {
-            print("📋 전체 알림 데이터:")
-            print(jsonString)
-        }
         
         completionHandler()
         
     }
-    
-    //MARK: - 알림 타입
-    private func handleNotification(_ userInfo: [AnyHashable: Any]) {
-        if let aps = userInfo["aps"] as? [String: Any],
-           let alert = aps["alert"] as? [String: Any],
-           let title = alert["title"] as? String {
-            
-            switch title {
-            case "기상 알람":
-                handlewakeup(userInfo)
-                //scheduleLocalNotification(title: title)
-            case "콕 찌르기":
-                handleprick(userInfo)
-            case "취침 알람":
-                handlebedtime(userInfo)
-            default:
-                handleDefault(userInfo)
-            }
-        }
-    }
-    
-    private func handlewakeup(_ userInfo: [AnyHashable: Any]) {
-        print("기상알람")
-        UserDefaults.standard.set(true, forKey: "isWakeUpAlarmActive")
-        NotificationCenter.default.post(name: NSNotification.Name("WakeUpAlarmReceived"), object: nil)
-        
-        if let jsonData = try? JSONSerialization.data(withJSONObject: userInfo, options: .prettyPrinted),
-           let jsonString = String(data: jsonData, encoding: .utf8) {
-            
-            if let groupId = userInfo["groupId"] as? String {
-                print("🔑 그룹 ID: \(groupId)")
-                UserDefaults.standard.set(groupId, forKey: "wakeupGroupId")
-                UserDefaults.standard.set(true, forKey: "isWakeUpAlarmActive")
-                
-            } else {
-                print("❌ groupId가 없습니다.")
-            }
-            print("📋 전체 알림 데이터:")
-            print(jsonString)
-        }
-    }
-    
-    private func handleprick(_ userInfo: [AnyHashable: Any]) {
-        print("콕 찌르기")
-        if let jsonData = try? JSONSerialization.data(withJSONObject: userInfo, options: .prettyPrinted),
-           let jsonString = String(data: jsonData, encoding: .utf8) {
-            print("📋 전체 알림 데이터:")
-            print(jsonString)
-        }
-        
-    }
-    
-    private func handlebedtime(_ userInfo: [AnyHashable: Any]) {
-        print("취침 알람")
-    }
-    
-    private func handleDefault(_ userInfo: [AnyHashable: Any]) {
-        print("기본 알람")
-        
-    }
-    
-    // MARK: - 로컬 알림 예약
-//        private func scheduleLocalNotification(title: String) {
-//            print("local알림")
-//            let content = UNMutableNotificationContent()
-//            content.title = "로컬 알림"
-//            content.body = "\(title) 알림이 도착한 후 20초가 지났습니다."
-//            content.sound = .default
-//            
-//            let trigger = UNTimeIntervalNotificationTrigger(timeInterval: 20, repeats: false)
-//            let request = UNNotificationRequest(identifier: UUID().uuidString, content: content, trigger: trigger)
-//            
-//            UNUserNotificationCenter.current().add(request) { error in
-//                if let error = error {
-//                    print("❌ 로컬 알림 등록 실패: \(error.localizedDescription)")
-//                } else {
-//                    print("✅ 로컬 알림 등록 성공")
-//                }
-//            }
-//        }
     
 }
 
