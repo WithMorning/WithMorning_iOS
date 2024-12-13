@@ -59,8 +59,6 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
             setRootViewController(windowScene, type: .main)
         case "logout":
             setRootViewController(windowScene, type: .login)
-//        case "alarmON":
-//            setRootViewController(windowScene, type: .alarmON)
         case "deleteaccount":
             // 회원탈퇴 상태에서는 무조건 약관 동의부터 시작
             UserDefaults.standard.removeObject(forKey: "isExistingUser")
@@ -99,7 +97,6 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
     // 필수 SceneDelegate 메서드들
     func sceneDidDisconnect(_ scene: UIScene) {
     }
-    
     func sceneDidBecomeActive(_ scene: UIScene) {
         print("sceneDidBecomeActive")
     }
@@ -119,7 +116,6 @@ enum StartViewControllerType {
     case termAgree
     case main
     case register
-//    case alarmON
     
     var vc: UIViewController {
         switch self {
@@ -127,7 +123,6 @@ enum StartViewControllerType {
         case .termAgree: return TermsViewController()
         case .main: return MainViewController()
         case .register: return RegisterViewController()
-//        case .alarmON: return AlarmViewController()
         }
     }
 }

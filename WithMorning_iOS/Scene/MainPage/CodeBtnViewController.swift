@@ -166,7 +166,6 @@ class CodeBtnViewController: UIViewController {
                     self?.dismiss(animated: true){
                         self?.participantClosure?()
                     }
-                    
                 }
                 else {
                     self?.showToast(message: "참여 코드를 다시 확인해주세요.")

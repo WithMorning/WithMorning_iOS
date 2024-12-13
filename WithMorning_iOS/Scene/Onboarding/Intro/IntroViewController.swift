@@ -85,11 +85,11 @@ class IntroViewController : UIViewController{
     func setUI(){
         view.addSubviews(popButton,skipButton,pageViewController.view,nextButton)
         
-        popButton.snp.makeConstraints{
-            $0.top.equalTo(view.safeAreaLayoutGuide).offset(20)
-            $0.leading.equalToSuperview().offset(16)
-            $0.height.width.equalTo(24)
-        }
+//        popButton.snp.makeConstraints{
+//            $0.top.equalTo(view.safeAreaLayoutGuide).offset(20)
+//            $0.leading.equalToSuperview().offset(16)
+//            $0.height.width.equalTo(24)
+//        }
         
         skipButton.snp.makeConstraints{
             $0.top.equalTo(view.safeAreaLayoutGuide).offset(20)

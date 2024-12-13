@@ -13,216 +13,214 @@ import Alamofire
 class TutorialViewController : UIViewController, UISheetPresentationControllerDelegate {
     
     //MARK: - properties
-        private lazy var mainLabel : UILabel = {
-            let label = UILabel()
-            label.text = "취침 시간 알림"
-            label.tintColor = DesignSystemColor.Black.value
-            label.font = DesignSystemFont.Pretendard_Bold16.value
-            return label
-        }()
+    private lazy var mainLabel : UILabel = {
+        let label = UILabel()
+        label.text = "취침 시간 알림"
+        label.tintColor = DesignSystemColor.Black.value
+        label.font = DesignSystemFont.Pretendard_Bold16.value
+        return label
+    }()
+    
+    private lazy var popButton : UIButton = {
+        let button = UIButton()
+        button.setImage(UIImage(systemName: "chevron.backward"), for: .normal)
+        button.tintColor = .black
+        //        button.addTarget(self, action: #selector(popclicked), for: .touchUpInside)
+        return button
+    }()
+    
+    private lazy var skipButton : UIButton = {
+        let button = UIButton()
+        button.setTitle("건너뛰기", for: .normal)
+        button.titleLabel?.font = DesignSystemFont.Pretendard_Medium16.value
+        button.setTitleColor(DesignSystemColor.Gray400.value, for: .normal)
+        button.addTarget(self, action: #selector(skip), for: .touchUpInside)
+        button.isHidden = true
+        return button
+    }()
+    
+    //MARK: - 온보딩 페이지 컨트롤러
+    
+    lazy var pages = [UIViewController]()
+    
+    private lazy var pageControl : UIPageControl = {
+        let page = UIPageControl()
+        page.pageIndicatorTintColor = DesignSystemColor.Gray150.value
+        page.currentPageIndicatorTintColor = DesignSystemColor.Gray150.value
+        page.numberOfPages = 2
+        page.currentPage = 0
+        page.isUserInteractionEnabled = false
+        return page
+    }()
+    
+    
+    private lazy var pageViewController : UIPageViewController = {
+        let view = UIPageViewController(transitionStyle: .scroll, navigationOrientation: .horizontal, options: nil)
+        view.view.backgroundColor = .clear
+        view.delegate = self
+        view.dataSource = self
         
-        private lazy var popButton : UIButton = {
-            let button = UIButton()
-            button.setImage(UIImage(systemName: "chevron.backward"), for: .normal)
-            button.tintColor = .black
-            //        button.addTarget(self, action: #selector(popclicked), for: .touchUpInside)
-            return button
-        }()
+        let vc = [TutorialFirstViewController()]
         
-        private lazy var skipButton : UIButton = {
-            let button = UIButton()
-            button.setTitle("건너뛰기", for: .normal)
-            button.titleLabel?.font = DesignSystemFont.Pretendard_Medium16.value
-            button.setTitleColor(DesignSystemColor.Gray400.value, for: .normal)
-            button.addTarget(self, action: #selector(skip), for: .touchUpInside)
-            button.isHidden = true
-            return button
-        }()
+        view.setViewControllers(vc, direction: .reverse, animated: true)
+        return view
+    }()
+    
+    //MARK: - 다음 버튼
+    private lazy var nextButton : UIButton = {
+        let button = UIButton()
+        button.addSubview(buttonLabel)
+        button.setBackgroundColor(DesignSystemColor.Black.value, for: .normal)
+        button.setBackgroundColor(DesignSystemColor.Black.value.adjustBrightness(by: 0.8), for: .highlighted)
+        button.addTarget(self, action: #selector(nextbtn), for: .touchUpInside)
+        return button
+    }()
+    
+    private lazy var buttonLabel : UILabel = {
+        let label = UILabel()
+        label.text = "다음"
+        label.textColor = .white
+        label.font = DesignSystemFont.Pretendard_Bold16.value
+        return label
+    }()
+    
+    //MARK: - life cycle
+    override func viewDidLoad() {
+        super.viewDidLoad()
+        self.view.backgroundColor = DesignSystemColor.Gray150.value
+        setUI()
+        skiphidden()
+    }
+    
+    //MARK: - Autolayout
+    
+    func setUI(){
+        view.addSubviews(mainLabel,popButton,skipButton,pageControl,pageViewController.view,nextButton)
         
-        //MARK: - 온보딩 페이지 컨트롤러
-        
-        lazy var pages = [UIViewController]()
-        
-        private lazy var pageControl : UIPageControl = {
-            let page = UIPageControl()
-            page.pageIndicatorTintColor = DesignSystemColor.Gray150.value
-            page.currentPageIndicatorTintColor = DesignSystemColor.Gray150.value
-            page.numberOfPages = 2
-            page.currentPage = 0
-            page.isUserInteractionEnabled = false
-            return page
-        }()
-        
-        
-        private lazy var pageViewController : UIPageViewController = {
-            let view = UIPageViewController(transitionStyle: .scroll, navigationOrientation: .horizontal, options: nil)
-            view.view.backgroundColor = .clear
-            view.delegate = self
-            view.dataSource = self
-            
-            let vc = [TutorialFirstViewController()]
-            
-            view.setViewControllers(vc, direction: .reverse, animated: true)
-            return view
-        }()
-        
-        //MARK: - 다음 버튼
-        private lazy var nextButton : UIButton = {
-            let button = UIButton()
-            button.addSubview(buttonLabel)
-            button.setBackgroundColor(DesignSystemColor.Black.value, for: .normal)
-            button.setBackgroundColor(DesignSystemColor.Black.value.adjustBrightness(by: 0.8), for: .highlighted)
-            button.addTarget(self, action: #selector(nextbtn), for: .touchUpInside)
-            return button
-        }()
-        
-        private lazy var buttonLabel : UILabel = {
-            let label = UILabel()
-            label.text = "다음"
-            label.textColor = .white
-            label.font = DesignSystemFont.Pretendard_Bold16.value
-            return label
-        }()
-        
-        //MARK: - life cycle
-        override func viewDidLoad() {
-            super.viewDidLoad()
-            self.view.backgroundColor = DesignSystemColor.Gray150.value
-            setUI()
-            skiphidden()
+        mainLabel.snp.makeConstraints{
+            $0.centerX.equalToSuperview()
+            $0.top.equalTo(view.safeAreaLayoutGuide).offset(20)
         }
-
-        //MARK: - Autolayout
         
-        func setUI(){
-            view.addSubviews(mainLabel,popButton,skipButton,pageControl,pageViewController.view,nextButton)
+        skipButton.snp.makeConstraints{
+            $0.trailing.equalToSuperview().inset(16)
+            $0.centerY.equalTo(mainLabel)
+        }
+        
+        pageViewController.view.snp.makeConstraints{
+            $0.top.equalTo(mainLabel.snp.bottom).offset(21)
+            $0.leading.trailing.equalToSuperview()
+            $0.bottom.equalTo(nextButton.snp.top)
             
-            mainLabel.snp.makeConstraints{
-                $0.centerX.equalToSuperview()
-                $0.top.equalTo(view.safeAreaLayoutGuide).offset(20)
+        }
+        nextButton.snp.makeConstraints{
+            $0.leading.trailing.bottom.equalToSuperview()
+            $0.height.equalTo(92)
+        }
+        buttonLabel.snp.makeConstraints{
+            $0.centerX.equalToSuperview()
+            $0.top.equalToSuperview().offset(20)
+            $0.bottom.equalToSuperview().inset(50)
+        }
+    }
+    
+    //MARK: - 건너뛰기 버튼 히든
+    func skiphidden(){
+        if pageControl.currentPage == 0{
+            skipButton.isHidden = true
+        }else{
+            skipButton.isHidden = false
+        }
+    }
+    
+    
+    //MARK: - objc func
+    @objc func nextbtn(){
+        if pageControl.currentPage == 1{
+            navigateToMainViewController()
+            skipButton.isHidden = true
+        }
+        
+        if pageControl.currentPage < 1 {
+            pageControl.currentPage += 1
+            
+            let nextViewController: UIViewController?
+            switch pageControl.currentPage {
+            case 0:
+                nextViewController = TutorialFirstViewController()
+            case 1:
+                nextViewController = TutorialSecondViewController()
+            default:
+                nextViewController = nil
             }
             
-            skipButton.snp.makeConstraints{
-                $0.trailing.equalToSuperview().inset(16)
-                $0.centerY.equalTo(mainLabel)
-            }
-            
-            pageViewController.view.snp.makeConstraints{
-                $0.top.equalTo(mainLabel.snp.bottom).offset(21)
-                $0.leading.trailing.equalToSuperview()
-                $0.bottom.equalTo(nextButton.snp.top)
+            if let nextViewController = nextViewController {
                 
-            }
-            nextButton.snp.makeConstraints{
-                $0.leading.trailing.bottom.equalToSuperview()
-                $0.height.equalTo(92)
-            }
-            buttonLabel.snp.makeConstraints{
-                $0.centerX.equalToSuperview()
-                $0.top.equalToSuperview().offset(20)
-                $0.bottom.equalToSuperview().inset(50)
+                pageViewController.setViewControllers([nextViewController], direction: .forward, animated: true, completion: nil)
             }
         }
-        
-        //MARK: - 건너뛰기 버튼 히든
-        func skiphidden(){
-            if pageControl.currentPage == 0{
-                skipButton.isHidden = true
-            }else{
-                skipButton.isHidden = false
-            }
-        }
-
-        
-        //MARK: - objc func
-        @objc func nextbtn(){
-            if pageControl.currentPage == 1{
-                navigateToMainViewController()
-                skipButton.isHidden = true
-            }
-            
-            if pageControl.currentPage < 1 {
-                pageControl.currentPage += 1
-                
-                let nextViewController: UIViewController?
-                switch pageControl.currentPage {
-                case 0:
-                    nextViewController = TutorialFirstViewController()
-                case 1:
-                    nextViewController = TutorialSecondViewController()
-                default:
-                    nextViewController = nil
-                }
-                
-                if let nextViewController = nextViewController {
-                    
-                    pageViewController.setViewControllers([nextViewController], direction: .forward, animated: true, completion: nil)
-                }
-            }
-            
-        }
-        
-        @objc func skip(){
-            print("아직 스킵버튼 구현 안함. 경고창 하나 띄우는게 낫다아닌가.")
-        }
-        
-        //MARK: - 회원가입 성공 후 튜토리얼 종료시 모든 뷰 삭제 후 메인으로 넘어감
-        func navigateToMainViewController() {
-            let mainVC = MainViewController()
-            let navController = UINavigationController(rootViewController: mainVC)
-            navController.modalPresentationStyle = .fullScreen
-            navController.navigationBar.isHidden = true
-            
-            if let keyWindow = UIApplication.shared.connectedScenes
-                .compactMap({ $0 as? UIWindowScene })
-                .flatMap({ $0.windows })
-                .first(where: { $0.isKeyWindow }) {
-                
-                keyWindow.rootViewController = navController
-                keyWindow.makeKeyAndVisible()
-            }
-        }
-        
         
     }
-
-    //MARK: - UIpageVC 메서드
-
-    extension TutorialViewController : UIPageViewControllerDelegate, UIPageViewControllerDataSource{
+    
+    @objc func skip(){
+        print("아직 스킵버튼 구현 안함. 경고창 하나 띄우는게 낫다아닌가.")
+    }
+    
+    //MARK: - 회원가입 성공 후 튜토리얼 종료시 모든 뷰 삭제 후 메인으로 넘어감
+    func navigateToMainViewController() {
+        let mainVC = MainViewController()
+        let navController = UINavigationController(rootViewController: mainVC)
+        navController.modalPresentationStyle = .fullScreen
+        navController.navigationBar.isHidden = true
         
-        func pageViewController(_ pageViewController: UIPageViewController, viewControllerBefore viewController: UIViewController) -> UIViewController? {
-                switch viewController {
-                case is TutorialSecondViewController:
-                    return TutorialFirstViewController()
-                default:
-                    return nil
-                }
-            }
+        if let keyWindow = UIApplication.shared.connectedScenes
+            .compactMap({ $0 as? UIWindowScene })
+            .flatMap({ $0.windows })
+            .first(where: { $0.isKeyWindow }) {
             
-            func pageViewController(_ pageViewController: UIPageViewController, viewControllerAfter viewController: UIViewController) -> UIViewController? {
-                switch viewController {
-                case is TutorialFirstViewController:
-                    return TutorialSecondViewController()
-                default:
-                    return nil
-                }
+            keyWindow.rootViewController = navController
+            keyWindow.makeKeyAndVisible()
+        }
+    }
+    
+    
+}
+
+//MARK: - UIpageVC 메서드
+extension TutorialViewController : UIPageViewControllerDelegate, UIPageViewControllerDataSource{
+    func pageViewController(_ pageViewController: UIPageViewController, viewControllerBefore viewController: UIViewController) -> UIViewController? {
+        switch viewController {
+        case is TutorialSecondViewController:
+            return TutorialFirstViewController()
+        default:
+            return nil
+        }
+    }
+    
+    func pageViewController(_ pageViewController: UIPageViewController, viewControllerAfter viewController: UIViewController) -> UIViewController? {
+        switch viewController {
+        case is TutorialFirstViewController:
+            return TutorialSecondViewController()
+        default:
+            return nil
+        }
+    }
+    
+    func pageViewController(_ pageViewController: UIPageViewController, didFinishAnimating finished: Bool, previousViewControllers: [UIViewController], transitionCompleted completed: Bool) {
+        if completed,
+           let currentViewController = pageViewController.viewControllers?.first {
+            switch currentViewController {
+            case is TutorialFirstViewController:
+                pageControl.currentPage = 0
+                skiphidden()
+            case is TutorialSecondViewController:
+                pageControl.currentPage = 1
+                skiphidden()
+            default:
+                break
             }
-            
-            func pageViewController(_ pageViewController: UIPageViewController, didFinishAnimating finished: Bool, previousViewControllers: [UIViewController], transitionCompleted completed: Bool) {
-                if completed,
-                   let currentViewController = pageViewController.viewControllers?.first {
-                    switch currentViewController {
-                    case is TutorialFirstViewController:
-                        pageControl.currentPage = 0
-                        skiphidden()
-                    case is TutorialSecondViewController:
-                        pageControl.currentPage = 1
-                        skiphidden()
-                    default:
-                        break
-                    }
-                }
-            }
+        }
+    }
 }
 
 

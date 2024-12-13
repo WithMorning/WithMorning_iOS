@@ -61,16 +61,12 @@ class AppDelegate:UIResponder, UIApplicationDelegate, MessagingDelegate {
     
     //MARK: - 앱이 실행 중인 경우 (Foreground) & 포어그라운드에서 사용자가 푸시를 탭한 경우
     func userNotificationCenter(_ center: UNUserNotificationCenter, willPresent notification: UNNotification, withCompletionHandler completionHandler: @escaping (UNNotificationPresentationOptions) -> Void) {
-//        let userInfo = notification.request.content.userInfo
-//        handleNotification(userInfo)
-//        print("Appdelegate : foreground에서 실행")
         completionHandler([.banner, .list, .sound])
         
     }
     
     //MARK: - 앱이 백그라운드인 경우 (Background) & 백그라운드에서 사용자가 푸시를 탭한 경우
     func userNotificationCenter(_ center: UNUserNotificationCenter, didReceive response: UNNotificationResponse, withCompletionHandler completionHandler: @escaping () -> Void) {
-        
         completionHandler()
         
     }
