@@ -89,6 +89,8 @@ class AlarmViewController: UIViewController {
         return label
     }()
     
+    
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         view.backgroundColor = .clear
@@ -185,20 +187,19 @@ class AlarmViewController: UIViewController {
     }
     
     //MARK: - 일어나기 API
-    func Wakeup(groupId: String){
+    func Wakeup(groupId: Int){
         LoadingIndicator.showLoading()
-        APInetwork.patchWakeup(groupId: Int(groupId) ?? 0){ result in
+        APInetwork.patchWakeup(groupId: Int(groupId)){ result in
             switch result{
             case .success(let data):
                 LoadingIndicator.hideLoading()
                 print(data)
                 UserDefaults.standard.removeObject(forKey: "wakeupGroupId")
-                UserDefaults.standard.set(false, forKey: "isWakeUpAlarmActive")
                 self.mainViewController()
             case .failure(let error):
                 print(error.localizedDescription)
                 UserDefaults.standard.removeObject(forKey: "wakeupGroupId")
-                UserDefaults.standard.set(false, forKey: "isWakeUpAlarmActive")
+                self.mainViewController()
                 LoadingIndicator.hideLoading()
             }
         }
@@ -207,14 +208,10 @@ class AlarmViewController: UIViewController {
     
     //MARK: - @objc func
     @objc func turnoffalarm() {
-        // UserDefaults에서 groupId를 가져오기
-        guard let groupId = UserDefaults.standard.string(forKey: "wakeupGroupId") else {
-            print("❌ 저장된 groupId가 없습니다.")
-            return
-        }
+        let groupId = UserDefaults.standard.integer(forKey: "wakeupGroupId")
+        print("저장된 groupId",groupId)
         Wakeup(groupId: groupId)
     }
-
     
     func mainViewController() {
         let mainVC = MainViewController()

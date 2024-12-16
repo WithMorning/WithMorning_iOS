@@ -15,6 +15,7 @@ import UserNotifications
 class AppDelegate:UIResponder, UIApplicationDelegate, MessagingDelegate {
     
     var audioPlayer : AVAudioPlayer?
+    var window: UIWindow?
     
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
         
@@ -38,7 +39,6 @@ class AppDelegate:UIResponder, UIApplicationDelegate, MessagingDelegate {
         // 파이어베이스 Meesaging 설정
         Messaging.messaging().delegate = self
         
-        var window: UIWindow?
         window = UIWindow()
         window?.makeKeyAndVisible()
         
@@ -59,33 +59,38 @@ class AppDelegate:UIResponder, UIApplicationDelegate, MessagingDelegate {
         // Use this method to release any resources that were specific to the discarded scenes, as they will not return.
     }
     
+    
     //MARK: - 앱이 실행 중인 경우 (Foreground) & 포어그라운드에서 사용자가 푸시를 탭한 경우
     func userNotificationCenter(_ center: UNUserNotificationCenter, willPresent notification: UNNotification, withCompletionHandler completionHandler: @escaping (UNNotificationPresentationOptions) -> Void) {
+        let userInfo = notification.request.content.userInfo
+        handleNotificationResponse(userInfo)
         completionHandler([.banner, .list, .sound])
         
     }
     
     //MARK: - 앱이 백그라운드인 경우 (Background) & 백그라운드에서 사용자가 푸시를 탭한 경우
     func userNotificationCenter(_ center: UNUserNotificationCenter, didReceive response: UNNotificationResponse, withCompletionHandler completionHandler: @escaping () -> Void) {
+        let userInfo = response.notification.request.content.userInfo
+        handleNotificationResponse(userInfo)
         completionHandler()
         
     }
     
+    //MARK: -  알림을 처리하고 AlarmViewController로 이동하는 함수
+    func handleNotificationResponse(_ userInfo: [AnyHashable: Any]) {
+        if let groupID = userInfo["groupID"] as? Int {
+            UserDefaults.standard.set(groupID, forKey: "wakeupGroupId")
+            print("🔥 groupID 저장: \(UserDefaults.standard.integer(forKey: "wakeupGroupId"))")
+            NotificationCenter.default.post(name: NSNotification.Name("UserStateChanged"), object: nil)
+            UserDefaults.setUserState("alarm")
+        }
+    }
 }
 
 extension AppDelegate: UNUserNotificationCenterDelegate {
-    
     func application(_ application: UIApplication,
                      didRegisterForRemoteNotificationsWithDeviceToken deviceToken: Data) {
-        
         print("APNS token: \(deviceToken)")
-        
         Messaging.messaging().apnsToken = deviceToken
-        
-        
     }
-    
-    
-    
-    
 }

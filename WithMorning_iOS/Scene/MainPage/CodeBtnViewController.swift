@@ -62,6 +62,7 @@ class CodeBtnViewController: UIViewController {
     private lazy var openButton : UIButton = {
         let button = UIButton()
         button.setImage(UIImage(systemName: "checkmark.square.fill"), for: .normal)
+        button.setImage(UIImage(systemName: "checkmark.square.fill"), for: .highlighted)
         button.backgroundColor = .white
         button.layer.cornerRadius = 5
         button.addTarget(self, action: #selector(numberclicked), for: .touchUpInside)
@@ -111,7 +112,6 @@ class CodeBtnViewController: UIViewController {
     //MARK: - SetUI
     
     func SetUI(){
-        
         codeTextfield.delegate = self
         
         view.addSubviews(codeLabel,codeTextfield,numberLabel,openButton,notiLabel,DoneButton)
@@ -145,7 +145,7 @@ class CodeBtnViewController: UIViewController {
         DoneButton.snp.makeConstraints{
             $0.top.equalTo(notiLabel.snp.bottom).offset(24)
             $0.leading.trailing.equalToSuperview()
-            $0.height.equalTo(100)
+            $0.height.equalTo(300)
         }
         buttonLabel.snp.makeConstraints{
             $0.centerX.equalToSuperview()
@@ -184,9 +184,7 @@ class CodeBtnViewController: UIViewController {
     
     //MARK: - API
     func codeButton(completion: @escaping (Bool) -> Void){
-        let data = JoingroupMaindata(participationCode: codeTextfield.text ?? "", isAgree: UserDefaults.getPrivateNumber())
-        
-        print(data)
+        let data = JoingroupMaindata(participationCode: codeTextfield.text ?? "", isAgree: !UserDefaults.getPrivateNumber())
         
         APInetwork.joinGroup(joindata: data){ result in
             switch result{

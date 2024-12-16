@@ -123,7 +123,6 @@ extension AppleLoginManager : ASAuthorizationControllerDelegate {
     }
     
     private func handleLoginSuccess(with data: AppleLoginData) {
-        // 토큰 저장
         KeyChain.create(key: "accessToken", token: data.accessToken)
         KeyChain.create(key: "refreshToken", token: data.refreshToken)
         

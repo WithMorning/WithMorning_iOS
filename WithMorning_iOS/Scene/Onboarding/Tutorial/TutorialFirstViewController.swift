@@ -95,7 +95,7 @@ class TutorialFirstViewController : UIViewController {
         let view = UIView()
         view.backgroundColor = .white
         view.layer.cornerRadius = 8
-        view.addSubviews(alarmtitleLabel,alarm1Label,alarm1Image)
+        view.addSubviews(alarmtitleLabel,alarm1Label,alarm1Image,alarm2Label,alarm2Image,alarm3Label,alarm3Image,alarm4Label,alarm4Image,alarm5Label,alarm5Image,alarm6Label,alarm6Image,alarm7Label,alarm7Image)
         return view
     }()
     
@@ -119,6 +119,102 @@ class TutorialFirstViewController : UIViewController {
         let button = UIButton()
         button.setImage(UIImage(systemName: "checkmark.square.fill"), for: .normal)
         button.tintColor =  DesignSystemColor.Orange500.value
+        button.addTarget(self, action: #selector(alarm1set), for: .touchUpInside)
+        return button
+    }()
+    
+    private lazy var alarm2Label : UILabel = {
+        let label = UILabel()
+        label.text = "알람벨 2"
+        label.textColor = DesignSystemColor.Gray500.value
+        label.font = DesignSystemFont.Pretendard_Medium14.value
+        return label
+    }()
+    
+    private lazy var alarm2Image: UIButton = {
+        let button = UIButton()
+        button.setImage(UIImage(systemName: "checkmark.square.fill"), for: .normal)
+        button.tintColor =  DesignSystemColor.Gray200.value
+        button.addTarget(self, action: #selector(alarm1set), for: .touchUpInside)
+        return button
+    }()
+    
+    private lazy var alarm3Label : UILabel = {
+        let label = UILabel()
+        label.text = "알람벨 3"
+        label.textColor = DesignSystemColor.Gray500.value
+        label.font = DesignSystemFont.Pretendard_Medium14.value
+        return label
+    }()
+    
+    private lazy var alarm3Image: UIButton = {
+        let button = UIButton()
+        button.setImage(UIImage(systemName: "checkmark.square.fill"), for: .normal)
+        button.tintColor =  DesignSystemColor.Gray200.value
+        button.addTarget(self, action: #selector(alarm1set), for: .touchUpInside)
+        return button
+    }()
+    
+    private lazy var alarm4Label : UILabel = {
+        let label = UILabel()
+        label.text = "알람벨 4"
+        label.textColor = DesignSystemColor.Gray500.value
+        label.font = DesignSystemFont.Pretendard_Medium14.value
+        return label
+    }()
+    
+    private lazy var alarm4Image: UIButton = {
+        let button = UIButton()
+        button.setImage(UIImage(systemName: "checkmark.square.fill"), for: .normal)
+        button.tintColor =  DesignSystemColor.Gray200.value
+        button.addTarget(self, action: #selector(alarm1set), for: .touchUpInside)
+        return button
+    }()
+    
+    private lazy var alarm5Label : UILabel = {
+        let label = UILabel()
+        label.text = "알람벨 5"
+        label.textColor = DesignSystemColor.Gray500.value
+        label.font = DesignSystemFont.Pretendard_Medium14.value
+        return label
+    }()
+    
+    private lazy var alarm5Image: UIButton = {
+        let button = UIButton()
+        button.setImage(UIImage(systemName: "checkmark.square.fill"), for: .normal)
+        button.tintColor =  DesignSystemColor.Gray200.value
+        button.addTarget(self, action: #selector(alarm1set), for: .touchUpInside)
+        return button
+    }()
+    
+    private lazy var alarm6Label : UILabel = {
+        let label = UILabel()
+        label.text = "알람벨 6"
+        label.textColor = DesignSystemColor.Gray500.value
+        label.font = DesignSystemFont.Pretendard_Medium14.value
+        return label
+    }()
+    
+    private lazy var alarm6Image: UIButton = {
+        let button = UIButton()
+        button.setImage(UIImage(systemName: "checkmark.square.fill"), for: .normal)
+        button.tintColor =  DesignSystemColor.Gray200.value
+        button.addTarget(self, action: #selector(alarm1set), for: .touchUpInside)
+        return button
+    }()
+    
+    private lazy var alarm7Label : UILabel = {
+        let label = UILabel()
+        label.text = "알람벨 7"
+        label.textColor = DesignSystemColor.Gray500.value
+        label.font = DesignSystemFont.Pretendard_Medium14.value
+        return label
+    }()
+    
+    private lazy var alarm7Image: UIButton = {
+        let button = UIButton()
+        button.setImage(UIImage(systemName: "checkmark.square.fill"), for: .normal)
+        button.tintColor =  DesignSystemColor.Gray200.value
         button.addTarget(self, action: #selector(alarm1set), for: .touchUpInside)
         return button
     }()
@@ -183,6 +279,59 @@ class TutorialFirstViewController : UIViewController {
         }
         alarm1Image.snp.makeConstraints{
             $0.centerY.equalTo(alarm1Label)
+            $0.trailing.equalToSuperview().inset(16)
+        }
+        alarm2Label.snp.makeConstraints{
+            $0.top.equalTo(alarm1Label.snp.bottom).offset(23)
+            $0.leading.equalToSuperview().offset(16)
+        }
+        alarm2Image.snp.makeConstraints{
+            $0.centerY.equalTo(alarm2Label)
+            $0.trailing.equalToSuperview().inset(16)
+        }
+        
+        alarm3Label.snp.makeConstraints{
+            $0.top.equalTo(alarm2Label.snp.bottom).offset(23)
+            $0.leading.equalToSuperview().offset(16)
+        }
+        alarm3Image.snp.makeConstraints{
+            $0.centerY.equalTo(alarm3Label)
+            $0.trailing.equalToSuperview().inset(16)
+        }
+        
+        alarm4Label.snp.makeConstraints{
+            $0.top.equalTo(alarm3Label.snp.bottom).offset(23)
+            $0.leading.equalToSuperview().offset(16)
+        }
+        alarm4Image.snp.makeConstraints{
+            $0.centerY.equalTo(alarm4Label)
+            $0.trailing.equalToSuperview().inset(16)
+        }
+        
+        alarm5Label.snp.makeConstraints{
+            $0.top.equalTo(alarm4Label.snp.bottom).offset(23)
+            $0.leading.equalToSuperview().offset(16)
+        }
+        alarm5Image.snp.makeConstraints{
+            $0.centerY.equalTo(alarm5Label)
+            $0.trailing.equalToSuperview().inset(16)
+        }
+        
+        alarm6Label.snp.makeConstraints{
+            $0.top.equalTo(alarm5Label.snp.bottom).offset(23)
+            $0.leading.equalToSuperview().offset(16)
+        }
+        alarm6Image.snp.makeConstraints{
+            $0.centerY.equalTo(alarm6Label)
+            $0.trailing.equalToSuperview().inset(16)
+        }
+        
+        alarm7Label.snp.makeConstraints{
+            $0.top.equalTo(alarm6Label.snp.bottom).offset(23)
+            $0.leading.equalToSuperview().offset(16)
+        }
+        alarm7Image.snp.makeConstraints{
+            $0.centerY.equalTo(alarm7Label)
             $0.trailing.equalToSuperview().inset(16)
         }
     }

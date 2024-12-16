@@ -14,7 +14,7 @@ class AlarmManager {
     static let shared = AlarmManager()
     private init() {}
     
-    // 그룹 기반 알람 예약
+    //MARK: -  그룹 기반 알람 예약
     func scheduleLocalNotifications(for groups: [GroupList]) {
         let center = UNUserNotificationCenter.current()
         
@@ -45,9 +45,13 @@ class AlarmManager {
                     dateComponents.weekday = weekday + 1
                     
                     let content = UNMutableNotificationContent()
-                    content.title = "기상 알람"
+                    content.title = "기상 알람(local)"
                     content.body = "얼른 일어나서 다른 메이트들을 깨워주세요!"
                     content.sound = UNNotificationSound(named: UNNotificationSoundName(rawValue: "wakeupalarm.wav"))
+                    content.userInfo = [
+                        "groupID": group.groupID,
+                    ]
+                    
                     let identifier = "Group_\(group.groupID)_\(day)"
                     let trigger = UNCalendarNotificationTrigger(dateMatching: dateComponents, repeats: true)
                     
@@ -56,12 +60,6 @@ class AlarmManager {
                         content: content,
                         trigger: trigger
                     )
-                    
-                    // 예약된 알람의 정보를 출력
-                    print("알람 예약됨 - Identifier: \(identifier)")
-                    print("  Title: \(content.title)")
-                    print("  Body: \(content.body)")
-                    print("  Trigger: \(trigger.dateComponents.description)")
                     
                     center.add(request) { error in
                         if let error = error {
@@ -75,11 +73,9 @@ class AlarmManager {
     
     // API로부터 받은 데이터를 기반으로 알람을 갱신하는 함수
     func updateAlarm(from data: [GroupList]) {
-        // 기존 알람 삭제
         removeAllNotifications()
-        
-        // 새로운 알람 예약
         scheduleLocalNotifications(for: data)
+        playAlarmSound()
     }
     
     // 모든 예약된 알림 제거
@@ -87,39 +83,22 @@ class AlarmManager {
         UNUserNotificationCenter.current().removeAllPendingNotificationRequests()
     }
     
-    // 특정 그룹의 알림만 제거
-    func removeNotification(for groupId: Int) {
-        let identifiers = (0...6).map { "Group_\(groupId)_\($0)" } // 요일별 알림 제거
-        UNUserNotificationCenter.current().removePendingNotificationRequests(withIdentifiers: identifiers)
-    }
-    
     // 앱 내에서 소리 볼륨을 설정하는 함수
-    func setAppVolume(to volume: Float) {
-        do {
-            let audioSession = AVAudioSession.sharedInstance()
-            try audioSession.setCategory(.playback, mode: .default)
-            try audioSession.setActive(true)
-            
-            
-            let volume = UserDefaults.standard.float(forKey: "volume")
-            
-            print("설정된 볼륨: \(volume)")
-            
-        } catch {
-            print("오디오 세션 설정 실패: \(error)")
-        }
-    }
-    
     func playAlarmSound() {
-        
         do {
             let audioSession = AVAudioSession.sharedInstance()
-            try audioSession.setCategory(.playback, mode: .default) //.playback 무음모드에 관계없이 알람
+            // .playback 카테고리 사용 (무음 모드에서도 소리 나도록 설정)
+            try audioSession.setCategory(.playback, mode: .default, options: .mixWithOthers)
             try audioSession.setActive(true)
             
             // 알람 소리 파일 경로
             if let soundURL = Bundle.main.url(forResource: "wakeupalarm", withExtension: "wav") {
                 let player = try AVAudioPlayer(contentsOf: soundURL)
+                
+                // 볼륨 설정 (0.0 ~ 1.0 사이의 값)
+                let volume = UserDefaults.standard.float(forKey: "volume") / 100 // 설정된 볼륨 값을 가져옴
+                player.volume = volume  // AVAudioPlayer의 볼륨을 설정
+                
                 player.play()
             } else {
                 print("알람 소리 파일을 찾을 수 없습니다.")
@@ -128,5 +107,6 @@ class AlarmManager {
             print("알람 소리 재생 실패: \(error)")
         }
     }
+
 }
 

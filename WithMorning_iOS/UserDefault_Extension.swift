@@ -19,7 +19,7 @@ extension UserDefaults {
     }
     
     static func setUserState(_ state: String) {
-        UserDefaults.standard.set(state, forKey: "userState")
+        return UserDefaults.standard.set(state, forKey: "userState")
     }
     
     static func getUserState() -> String? {

@@ -16,18 +16,16 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
     var window: UIWindow?
     
     func scene(_ scene: UIScene, willConnectTo session: UISceneSession, options connectionOptions: UIScene.ConnectionOptions) {
+        
         guard let windowScene = scene as? UIWindowScene else { return }
         
         //MARK: - 컴바인 최고
         RegisterUserInfo.shared.$loginState.sink { loginState in
             DispatchQueue.main.async {
-                
                 NotificationCenter.default.addObserver(self, selector: #selector(self.handleUserStateChange), name: NSNotification.Name("UserStateChanged"), object: nil)
-                
                 let userState = UserDefaults.getUserState()
                 self.updateViewControllerForUserState(userState, windowScene: windowScene, refreshToken: nil)
             }
-            
         }
         .store(in: &cancellables)
     }
@@ -35,9 +33,7 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
     @objc private func handleUserStateChange() {
         let userState = UserDefaults.getUserState()
         print(#fileID, #function, #line, "- 현재 사용자 상태: \(userState ?? "nil")")
-        
         let refreshToken = KeyChain.read(key: "refreshToken")
-        
         if let windowScene = window?.windowScene {
             updateViewControllerForUserState(userState, windowScene: windowScene, refreshToken: refreshToken)
         }
@@ -60,33 +56,29 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         case "logout":
             setRootViewController(windowScene, type: .login)
         case "deleteaccount":
-            // 회원탈퇴 상태에서는 무조건 약관 동의부터 시작
             UserDefaults.standard.removeObject(forKey: "isExistingUser")
             setRootViewController(windowScene, type: .termAgree)
+        case "alarm":
+            setRootViewController(windowScene, type: .alarm)
         default:
             setRootViewController(windowScene, type: .termAgree)
         }
     }
     
     private func setRootViewController(_ scene: UIWindowScene, type: StartViewControllerType) {
-        // 새로운 window 설정 전에 기존 window를 nil로 설정
         window?.rootViewController = nil
-        
         let newWindow = UIWindow(windowScene: scene)
         print(#fileID, #function, #line, "- 설정된 화면 타입: \(type)")
-        
         let viewController = type.vc
         let navigationController: UINavigationController
-        
         switch type {
-        case .termAgree, .register, .main, .login:
+        case .termAgree, .register, .main, .login, .alarm:
             navigationController = UINavigationController(rootViewController: viewController)
             if type == .main {
                 navigationController.navigationBar.isHidden = true
             }
             newWindow.rootViewController = navigationController
         }
-        
         DispatchQueue.main.async { [weak self] in
             self?.window = newWindow
             newWindow.makeKeyAndVisible()
@@ -94,20 +86,15 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
     }
     
     //MARK: - 앱이 꺼져있을시 local push notification
-    // 필수 SceneDelegate 메서드들
     func sceneDidDisconnect(_ scene: UIScene) {
     }
     func sceneDidBecomeActive(_ scene: UIScene) {
-        print("sceneDidBecomeActive")
     }
     func sceneWillResignActive(_ scene: UIScene) {
-        print("sceneWillResignActive")
     }
     func sceneWillEnterForeground(_ scene: UIScene) {
-        print("sceneWillEnterForeground")
     }
     func sceneDidEnterBackground(_ scene: UIScene) {
-        print("sceneDidEnterBackground")
     }
 }
 
@@ -116,6 +103,7 @@ enum StartViewControllerType {
     case termAgree
     case main
     case register
+    case alarm
     
     var vc: UIViewController {
         switch self {
@@ -123,6 +111,7 @@ enum StartViewControllerType {
         case .termAgree: return TermsViewController()
         case .main: return MainViewController()
         case .register: return RegisterViewController()
+        case .alarm: return AlarmViewController()
         }
     }
 }

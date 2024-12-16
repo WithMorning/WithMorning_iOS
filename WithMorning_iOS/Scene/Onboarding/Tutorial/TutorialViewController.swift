@@ -155,15 +155,15 @@ class TutorialViewController : UIViewController, UISheetPresentationControllerDe
             }
             
             if let nextViewController = nextViewController {
-                
                 pageViewController.setViewControllers([nextViewController], direction: .forward, animated: true, completion: nil)
             }
+            
         }
-        
+        skiphidden()
     }
     
     @objc func skip(){
-        print("아직 스킵버튼 구현 안함. 경고창 하나 띄우는게 낫다아닌가.")
+        self.navigateToMainViewController()
     }
     
     //MARK: - 회원가입 성공 후 튜토리얼 종료시 모든 뷰 삭제 후 메인으로 넘어감

@@ -429,9 +429,7 @@ class MakeAlarmViewController : UIViewController, UIScrollViewDelegate, UISheetP
     private func editGroup(){
         LoadingIndicator.showLoading()
         let editdata = EditGroupMaindata(name: groupTextfield.text ?? "모임명이 없습니다.", wakeupTime: editTime, dayOfWeekList: selectedDayOfWeek, isAgree: true, memo: memoTextView.text)
-        
         APInetwork.patcheditGroup(groupId: groupId, editGroupdata: editdata){ result in
-            
             switch result {
             case .success(let data):
                 print("알람 수정",data)

@@ -12,7 +12,6 @@ import UIKit
 enum LoginStatus {
     case logout//로그아웃
     case login //로그인
-    case alarmOn //알람
 }
 
 //컴바인을 이용함.
@@ -27,6 +26,8 @@ class RegisterUserInfo {
     @Published var nickName : String? = ""
     @Published var profileImage : UIImage? = nil
     @Published var privateNumber : Bool = false
+    @Published var groupId : Int? = nil
+    
     private init() {}
 }
 
