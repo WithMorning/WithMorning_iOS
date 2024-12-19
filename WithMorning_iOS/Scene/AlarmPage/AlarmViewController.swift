@@ -9,10 +9,12 @@ import UIKit
 import SnapKit
 import Alamofire
 import Then
+import AVFoundation
 
 class AlarmViewController: UIViewController {
     
     let APInetwork = Network.shared
+    var audioPlayer : AVAudioPlayer?
     
     //MARK: - 스택뷰
     private lazy var backgroundView : UIImageView = {
@@ -195,13 +197,27 @@ class AlarmViewController: UIViewController {
                 LoadingIndicator.hideLoading()
                 print(data)
                 UserDefaults.standard.removeObject(forKey: "wakeupGroupId")
+                NotificationCenter.default.post(name: NSNotification.Name("UserStateChanged"), object: nil)
+                UserDefaults.setUserState("login")
+                self.stopAlarmSound()
                 self.mainViewController()
             case .failure(let error):
                 print(error.localizedDescription)
                 UserDefaults.standard.removeObject(forKey: "wakeupGroupId")
+                self.stopAlarmSound()
                 self.mainViewController()
                 LoadingIndicator.hideLoading()
             }
+        }
+    }
+    //MARK: - 알람 멈추기
+    private func stopAlarmSound() {
+        if let player = audioPlayer, player.isPlaying {
+            player.stop()
+            audioPlayer = nil
+            print("🔇 알람 소리 중단")
+        } else {
+            print("🔇 재생 중인 알람 소리가 없습니다.")
         }
     }
     

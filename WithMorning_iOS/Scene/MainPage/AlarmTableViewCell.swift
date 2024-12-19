@@ -549,7 +549,7 @@ class AlarmTableViewCell : UITableViewCell, UISheetPresentationControllerDelegat
                 }
             }
             
-            print("메모 텍스트 줄 수: \(actualNumberOfLines)줄, \(String(describing: self.memoLabel.text))")
+//            print("메모 텍스트 줄 수: \(actualNumberOfLines)줄, \(String(describing: self.memoLabel.text))")
             
             var displayedText = self.fullText
             

@@ -97,7 +97,7 @@ class LoginViewController: UIViewController{
             $0.height.width.equalTo(24)
         }
         titleIMG.snp.makeConstraints{
-            $0.top.equalTo(view.safeAreaLayoutGuide)
+            $0.top.equalTo(view.safeAreaLayoutGuide).offset(26)
             $0.leading.equalToSuperview()
         }
         

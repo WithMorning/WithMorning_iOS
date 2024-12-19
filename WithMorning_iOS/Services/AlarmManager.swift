@@ -45,7 +45,7 @@ class AlarmManager {
                     dateComponents.weekday = weekday + 1
                     
                     let content = UNMutableNotificationContent()
-                    content.title = "기상 알람(local)"
+                    content.title = "기상 알람"
                     content.body = "얼른 일어나서 다른 메이트들을 깨워주세요!"
                     content.sound = UNNotificationSound(named: UNNotificationSoundName(rawValue: "wakeupalarm.wav"))
                     content.userInfo = [
@@ -75,37 +75,11 @@ class AlarmManager {
     func updateAlarm(from data: [GroupList]) {
         removeAllNotifications()
         scheduleLocalNotifications(for: data)
-        playAlarmSound()
     }
     
     // 모든 예약된 알림 제거
     func removeAllNotifications() {
         UNUserNotificationCenter.current().removeAllPendingNotificationRequests()
-    }
-    
-    // 앱 내에서 소리 볼륨을 설정하는 함수
-    func playAlarmSound() {
-        do {
-            let audioSession = AVAudioSession.sharedInstance()
-            // .playback 카테고리 사용 (무음 모드에서도 소리 나도록 설정)
-            try audioSession.setCategory(.playback, mode: .default, options: .mixWithOthers)
-            try audioSession.setActive(true)
-            
-            // 알람 소리 파일 경로
-            if let soundURL = Bundle.main.url(forResource: "wakeupalarm", withExtension: "wav") {
-                let player = try AVAudioPlayer(contentsOf: soundURL)
-                
-                // 볼륨 설정 (0.0 ~ 1.0 사이의 값)
-                let volume = UserDefaults.standard.float(forKey: "volume") / 100 // 설정된 볼륨 값을 가져옴
-                player.volume = volume  // AVAudioPlayer의 볼륨을 설정
-                
-                player.play()
-            } else {
-                print("알람 소리 파일을 찾을 수 없습니다.")
-            }
-        } catch {
-            print("알람 소리 재생 실패: \(error)")
-        }
     }
 
 }
