@@ -39,8 +39,8 @@ class TermsViewController: UIViewController{
     
     private lazy var agecheckButton : UIButton = {
         let button = UIButton()
-        button.setImage(UIImage(systemName: "checkmark.square.fill"), for: .normal)
-        button.tintColor = DesignSystemColor.Gray200.value
+        button.setImage(UIImage(named: "checkboxgray"), for: .normal)
+        button.setImage(UIImage(named: "checkboxgray"), for: .highlighted)
         button.addTarget(self, action: #selector(agebtn), for: .touchUpInside)
         return button
     }()
@@ -57,8 +57,8 @@ class TermsViewController: UIViewController{
     
     private lazy var serviceButton : UIButton = {
         let button = UIButton()
-        button.setImage(UIImage(systemName: "checkmark.square.fill"), for: .normal)
-        button.tintColor = DesignSystemColor.Gray200.value
+        button.setImage(UIImage(named: "checkboxgray"), for: .normal)
+        button.setImage(UIImage(named: "checkboxgray"), for: .highlighted)
         button.addTarget(self, action: #selector(servicebtn), for: .touchUpInside)
         return button
     }()
@@ -75,9 +75,8 @@ class TermsViewController: UIViewController{
     
     private lazy var infoButton : UIButton = {
         let button = UIButton()
-        button.setImage(UIImage(systemName: "checkmark.square.fill"), for: .normal)
-        button.tintColor = DesignSystemColor.Gray200.value
-        
+        button.setImage(UIImage(named: "checkboxgray"), for: .normal)
+        button.setImage(UIImage(named: "checkboxgray"), for: .highlighted)
         button.addTarget(self, action: #selector(infobtn), for: .touchUpInside)
         return button
     }()
@@ -94,9 +93,8 @@ class TermsViewController: UIViewController{
     
     private lazy var maketingButton : UIButton = {
         let button = UIButton()
-        button.setImage(UIImage(systemName: "checkmark.square.fill"), for: .normal)
-        button.tintColor = DesignSystemColor.Gray200.value
-        
+        button.setImage(UIImage(named: "checkboxgray"), for: .normal)
+        button.setImage(UIImage(named: "checkboxgray"), for: .highlighted)
         button.addTarget(self, action: #selector(maketingbtn), for: .touchUpInside)
         return button
     }()
@@ -136,7 +134,8 @@ class TermsViewController: UIViewController{
     
     private lazy var allagreeButton : UIButton = {
         let button = UIButton()
-        button.setImage(UIImage(systemName: "checkmark.square.fill"), for: .normal)
+        button.setImage(UIImage(named: "checkboxgray"), for: .normal)
+        button.setImage(UIImage(named: "checkboxgray"), for: .highlighted)
         button.tintColor = DesignSystemColor.Gray200.value
         button.addTarget(self, action: #selector(allbtn), for: .touchUpInside)
         return button
@@ -187,6 +186,7 @@ class TermsViewController: UIViewController{
             $0.height.equalTo(20)
         }
         agecheckButton.snp.makeConstraints{
+            $0.width.height.equalTo(20)
             $0.trailing.equalToSuperview().inset(24)
             $0.centerY.equalTo(ageLabel)
         }
@@ -196,6 +196,7 @@ class TermsViewController: UIViewController{
             $0.height.equalTo(26)
         }
         serviceButton.snp.makeConstraints{
+            $0.width.height.equalTo(20)
             $0.centerY.equalTo(serviceLabel)
             $0.trailing.equalToSuperview().inset(24)
         }
@@ -205,6 +206,7 @@ class TermsViewController: UIViewController{
             $0.height.equalTo(26)
         }
         infoButton.snp.makeConstraints{
+            $0.width.height.equalTo(20)
             $0.centerY.equalTo(infoLabel)
             $0.trailing.equalToSuperview().inset(24)
         }
@@ -222,6 +224,7 @@ class TermsViewController: UIViewController{
             $0.leading.equalToSuperview().inset(24)
         }
         allagreeButton.snp.makeConstraints{
+            $0.width.height.equalTo(20)
             $0.trailing.equalToSuperview().inset(24)
             $0.centerY.equalToSuperview()
         }
@@ -237,84 +240,90 @@ class TermsViewController: UIViewController{
         }
     }
     //MARK: - 모두 동의 함수
-//    func setallagree(){
-//        if [agecheckButton,serviceButton,infoButton].allSatisfy({$0.tintColor == DesignSystemColor.Orange500.value}){
-//            allagreeButton.tintColor = DesignSystemColor.Orange500.value
-//            nextButton.setBackgroundColor(DesignSystemColor.Orange500.value, for: .normal)
-//            nextButton.setBackgroundColor(DesignSystemColor.Orange500.value.adjustBrightness(by: 0.8), for: .highlighted)
-//        }else{
-//            allagreeButton.tintColor = DesignSystemColor.Gray200.value
-//            nextButton.backgroundColor = DesignSystemColor.Gray300.value
-//        }
-//        
-//    }
     func setallagree(){
-        if [agecheckButton, serviceButton, infoButton].allSatisfy({$0.tintColor == DesignSystemColor.Orange500.value}) {
-            allagreeButton.tintColor = DesignSystemColor.Orange500.value
-            nextButton.setBackgroundColor(DesignSystemColor.Orange500.value, for: .normal)
-            nextButton.setBackgroundColor(DesignSystemColor.Orange500.value.adjustBrightness(by: 0.8), for: .highlighted)
-        } else {
-            allagreeButton.tintColor = DesignSystemColor.Gray200.value
-            nextButton.setBackgroundColor(DesignSystemColor.Gray300.value, for: .normal)
-            nextButton.setBackgroundColor(DesignSystemColor.Gray300.value, for: .highlighted)
-        }
+        if [agecheckButton, serviceButton, infoButton].allSatisfy({ $0.currentImage == UIImage(named: "checkboxorange") }) {
+            allagreeButton.setImage(UIImage(named: "checkboxorange"), for: .normal)
+                nextButton.setBackgroundColor(DesignSystemColor.Orange500.value, for: .normal)
+                nextButton.setBackgroundColor(DesignSystemColor.Orange500.value.adjustBrightness(by: 0.8), for: .highlighted)
+            } else {
+                allagreeButton.setImage(UIImage(named: "checkboxgray"), for: .normal)
+                nextButton.setBackgroundColor(DesignSystemColor.Gray300.value, for: .normal)
+                nextButton.setBackgroundColor(DesignSystemColor.Gray300.value, for: .highlighted)
+            }
     }
     
     //MARK: - @objc func
     @objc func agebtn(){
-        if agecheckButton.tintColor == DesignSystemColor.Gray200.value{
-            agecheckButton.tintColor = DesignSystemColor.Orange500.value
-        }else{
-            agecheckButton.tintColor = DesignSystemColor.Gray200.value
+        if agecheckButton.image(for: .normal) == UIImage(named: "checkboxgray") {
+            agecheckButton.setImage(UIImage(named: "checkboxorange"), for: .normal)
+            agecheckButton.setImage(UIImage(named: "checkboxorange"), for: .highlighted)
+        } else {
+            agecheckButton.setImage(UIImage(named: "checkboxgray"), for: .normal)
+            agecheckButton.setImage(UIImage(named: "checkboxgray"), for: .highlighted)
         }
         setallagree()
-        
     }
+    
     @objc func servicebtn(){
-        if serviceButton.tintColor == DesignSystemColor.Gray200.value{
-            serviceButton.tintColor = DesignSystemColor.Orange500.value
-        }else{
-            serviceButton.tintColor = DesignSystemColor.Gray200.value
+        if serviceButton.image(for: .normal) == UIImage(named: "checkboxgray") {
+            serviceButton.setImage(UIImage(named: "checkboxorange"), for: .normal)
+            serviceButton.setImage(UIImage(named: "checkboxorange"), for: .highlighted)
+        } else {
+            serviceButton.setImage(UIImage(named: "checkboxgray"), for: .normal)
+            serviceButton.setImage(UIImage(named: "checkboxgray"), for: .highlighted)
         }
         setallagree()
     }
     
     @objc func infobtn(){
-        if infoButton.tintColor == DesignSystemColor.Gray200.value{
-            infoButton.tintColor = DesignSystemColor.Orange500.value
-        }else{
-            infoButton.tintColor = DesignSystemColor.Gray200.value
+        if infoButton.image(for: .normal) == UIImage(named: "checkboxgray") {
+            infoButton.setImage(UIImage(named: "checkboxorange"), for: .normal)
+            infoButton.setImage(UIImage(named: "checkboxorange"), for: .highlighted)
+        } else {
+            infoButton.setImage(UIImage(named: "checkboxgray"), for: .normal)
+            infoButton.setImage(UIImage(named: "checkboxgray"), for: .highlighted)
         }
         setallagree()
     }
     
     @objc func maketingbtn(){
-        if maketingButton.tintColor == DesignSystemColor.Gray200.value{
-            maketingButton.tintColor = DesignSystemColor.Orange500.value
-        }else{
-            maketingButton.tintColor = DesignSystemColor.Gray200.value
+        if maketingButton.image(for: .normal) == UIImage(named: "checkboxgray") {
+            maketingButton.setImage(UIImage(named: "checkboxorange"), for: .normal)
+            maketingButton.setImage(UIImage(named: "checkboxorange"), for: .highlighted)
+        } else {
+            maketingButton.setImage(UIImage(named: "checkboxgray"), for: .normal)
+            maketingButton.setImage(UIImage(named: "checkboxgray"), for: .highlighted)
         }
         setallagree()
     }
     
-    @objc func allbtn(){
-        if allagreeButton.tintColor == DesignSystemColor.Gray200.value{
-            [agecheckButton,serviceButton,infoButton,maketingButton].forEach({$0.tintColor = DesignSystemColor.Orange500.value})
+    @objc func allbtn() {
+        if allagreeButton.image(for: .normal) == UIImage(named: "checkboxgray") { //모두 동의
+            [agecheckButton, serviceButton, infoButton, maketingButton].forEach { button in
+                button.setImage(UIImage(named: "checkboxorange"), for: .normal)
+                button.setImage(UIImage(named: "checkboxorange"), for: .highlighted)
+            }
+            allagreeButton.setImage(UIImage(named: "checkboxorange"), for: .normal)
+            allagreeButton.setImage(UIImage(named: "checkboxorange"), for: .highlighted)
             nextButton.setBackgroundColor(DesignSystemColor.Orange500.value, for: .normal)
             nextButton.setBackgroundColor(DesignSystemColor.Orange500.value.adjustBrightness(by: 0.8), for: .highlighted)
-            allagreeButton.tintColor = DesignSystemColor.Orange500.value
-            
-        }else{
-            [agecheckButton,serviceButton,infoButton,maketingButton].forEach({$0.tintColor = DesignSystemColor.Gray200.value})
-            nextButton.backgroundColor = DesignSystemColor.Gray300.value
-            allagreeButton.tintColor = DesignSystemColor.Gray200.value
+        } else {//모두동의 해제
+            [agecheckButton, serviceButton, infoButton, maketingButton].forEach { button in
+                button.setImage(UIImage(named: "checkboxgray"), for: .normal)
+                button.setImage(UIImage(named: "checkboxgray"), for: .highlighted)
+            }
+            allagreeButton.setImage(UIImage(named: "checkboxgray"), for: .normal)
+            allagreeButton.setImage(UIImage(named: "checkboxgray"), for: .highlighted)
+            nextButton.setBackgroundColor(DesignSystemColor.Gray300.value, for: .normal)
+            nextButton.setBackgroundColor(DesignSystemColor.Gray300.value, for: .highlighted)
         }
         setallagree()
     }
     
     @objc func nextbtn() {
         let requiredButtons = [agecheckButton, serviceButton, infoButton]
-        let allRequiredButtonsSelected = requiredButtons.allSatisfy { $0.tintColor == DesignSystemColor.Orange500.value }
+
+        let allRequiredButtonsSelected = requiredButtons.allSatisfy { $0.currentImage == UIImage(named: "checkboxorange")}
 
         if allRequiredButtonsSelected {
             let vc = LoginViewController()
@@ -323,7 +332,8 @@ class TermsViewController: UIViewController{
             self.showToast(message: "약관에 모두 동의해주세요.")
         }
     }
-
+    
+    
     
 }
 
