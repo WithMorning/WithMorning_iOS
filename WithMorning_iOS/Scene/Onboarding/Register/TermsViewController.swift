@@ -186,7 +186,7 @@ class TermsViewController: UIViewController{
             $0.height.equalTo(20)
         }
         agecheckButton.snp.makeConstraints{
-            $0.width.height.equalTo(20)
+            $0.width.height.equalTo(24)
             $0.trailing.equalToSuperview().inset(24)
             $0.centerY.equalTo(ageLabel)
         }
@@ -196,7 +196,7 @@ class TermsViewController: UIViewController{
             $0.height.equalTo(26)
         }
         serviceButton.snp.makeConstraints{
-            $0.width.height.equalTo(20)
+            $0.width.height.equalTo(24)
             $0.centerY.equalTo(serviceLabel)
             $0.trailing.equalToSuperview().inset(24)
         }
@@ -206,7 +206,7 @@ class TermsViewController: UIViewController{
             $0.height.equalTo(26)
         }
         infoButton.snp.makeConstraints{
-            $0.width.height.equalTo(20)
+            $0.width.height.equalTo(24)
             $0.centerY.equalTo(infoLabel)
             $0.trailing.equalToSuperview().inset(24)
         }
@@ -224,7 +224,7 @@ class TermsViewController: UIViewController{
             $0.leading.equalToSuperview().inset(24)
         }
         allagreeButton.snp.makeConstraints{
-            $0.width.height.equalTo(20)
+            $0.width.height.equalTo(24)
             $0.trailing.equalToSuperview().inset(24)
             $0.centerY.equalToSuperview()
         }

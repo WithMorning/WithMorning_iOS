@@ -58,15 +58,13 @@ class EditprofileViewController : UIViewController,UIImagePickerControllerDelega
     private lazy var galleryButton : UIButton = {
         let button = UIButton()
         let imageConfig = UIImage.SymbolConfiguration(pointSize: 18, weight: .light)
-        let image = UIImage(systemName: "camera",withConfiguration: imageConfig)
+        let image = UIImage(named: "Camera")
         button.setImage(image , for: .normal)
         button.setImage(image , for: .highlighted)
         button.layer.cornerRadius = 20
         button.tintColor = .white
         button.backgroundColor = .black
         button.addTarget(self, action: #selector(galleryclick), for: .touchUpInside)
-        button.clipsToBounds = true
-        button.layer.masksToBounds = true
         return button
     }()
     
@@ -77,7 +75,7 @@ class EditprofileViewController : UIViewController,UIImagePickerControllerDelega
         textfield.translatesAutoresizingMaskIntoConstraints = false
         textfield.placeholder = nickname
         textfield.backgroundColor = .white
-        textfield.font = DesignSystemFont.Pretendard_Medium14.value
+        textfield.font = DesignSystemFont.Pretendard_Medium18.value
         textfield.textColor = .black
         textfield.layer.cornerRadius = 8
         textfield.textAlignment = .center

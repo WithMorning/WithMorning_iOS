@@ -84,9 +84,8 @@ class TutorialFirstViewController : UIViewController {
     
     private lazy var vibrateImage : UIButton = {
         let button = UIButton()
-        button.setImage(UIImage(systemName: "checkmark.square.fill"), for: .normal)
-        button.tintColor = DesignSystemColor.Gray200.value
-        
+        button.setImage(UIImage(named: "checkboxgray"), for: .normal)
+        button.setImage(UIImage(named: "checkboxgray"), for: .highlighted)
         button.addTarget(self, action: #selector(vibratesetting), for: .touchUpInside)
         return button
     }()
@@ -117,8 +116,8 @@ class TutorialFirstViewController : UIViewController {
     
     private lazy var alarm1Image: UIButton = {
         let button = UIButton()
-        button.setImage(UIImage(systemName: "checkmark.square.fill"), for: .normal)
-        button.tintColor =  DesignSystemColor.Orange500.value
+        button.setImage(UIImage(named: "checkboxorange"), for: .normal)
+        button.setImage(UIImage(named: "checkboxorange"), for: .highlighted)
         button.addTarget(self, action: #selector(alarm1set), for: .touchUpInside)
         return button
     }()
@@ -133,8 +132,8 @@ class TutorialFirstViewController : UIViewController {
     
     private lazy var alarm2Image: UIButton = {
         let button = UIButton()
-        button.setImage(UIImage(systemName: "checkmark.square.fill"), for: .normal)
-        button.tintColor =  DesignSystemColor.Gray200.value
+        button.setImage(UIImage(named: "checkboxgray"), for: .normal)
+        button.setImage(UIImage(named: "checkboxgray"), for: .highlighted)
         button.addTarget(self, action: #selector(alarm1set), for: .touchUpInside)
         return button
     }()
@@ -149,8 +148,8 @@ class TutorialFirstViewController : UIViewController {
     
     private lazy var alarm3Image: UIButton = {
         let button = UIButton()
-        button.setImage(UIImage(systemName: "checkmark.square.fill"), for: .normal)
-        button.tintColor =  DesignSystemColor.Gray200.value
+        button.setImage(UIImage(named: "checkboxgray"), for: .normal)
+        button.setImage(UIImage(named: "checkboxgray"), for: .highlighted)
         button.addTarget(self, action: #selector(alarm1set), for: .touchUpInside)
         return button
     }()
@@ -165,8 +164,8 @@ class TutorialFirstViewController : UIViewController {
     
     private lazy var alarm4Image: UIButton = {
         let button = UIButton()
-        button.setImage(UIImage(systemName: "checkmark.square.fill"), for: .normal)
-        button.tintColor =  DesignSystemColor.Gray200.value
+        button.setImage(UIImage(named: "checkboxgray"), for: .normal)
+        button.setImage(UIImage(named: "checkboxgray"), for: .highlighted)
         button.addTarget(self, action: #selector(alarm1set), for: .touchUpInside)
         return button
     }()
@@ -181,8 +180,8 @@ class TutorialFirstViewController : UIViewController {
     
     private lazy var alarm5Image: UIButton = {
         let button = UIButton()
-        button.setImage(UIImage(systemName: "checkmark.square.fill"), for: .normal)
-        button.tintColor =  DesignSystemColor.Gray200.value
+        button.setImage(UIImage(named: "checkboxgray"), for: .normal)
+        button.setImage(UIImage(named: "checkboxgray"), for: .highlighted)
         button.addTarget(self, action: #selector(alarm1set), for: .touchUpInside)
         return button
     }()
@@ -197,8 +196,8 @@ class TutorialFirstViewController : UIViewController {
     
     private lazy var alarm6Image: UIButton = {
         let button = UIButton()
-        button.setImage(UIImage(systemName: "checkmark.square.fill"), for: .normal)
-        button.tintColor =  DesignSystemColor.Gray200.value
+        button.setImage(UIImage(named: "checkboxgray"), for: .normal)
+        button.setImage(UIImage(named: "checkboxgray"), for: .highlighted)
         button.addTarget(self, action: #selector(alarm1set), for: .touchUpInside)
         return button
     }()
@@ -213,8 +212,8 @@ class TutorialFirstViewController : UIViewController {
     
     private lazy var alarm7Image: UIButton = {
         let button = UIButton()
-        button.setImage(UIImage(systemName: "checkmark.square.fill"), for: .normal)
-        button.tintColor =  DesignSystemColor.Gray200.value
+        button.setImage(UIImage(named: "checkboxgray"), for: .normal)
+        button.setImage(UIImage(named: "checkboxgray"), for: .highlighted)
         button.addTarget(self, action: #selector(alarm1set), for: .touchUpInside)
         return button
     }()
@@ -253,6 +252,7 @@ class TutorialFirstViewController : UIViewController {
             $0.trailing.equalTo(vibrateImage.snp.leading).offset(-4)
         }
         vibrateImage.snp.makeConstraints{
+            $0.width.height.equalTo(24)
             $0.trailing.bottom.equalToSuperview().inset(16)
         }
         
@@ -278,6 +278,7 @@ class TutorialFirstViewController : UIViewController {
             $0.leading.equalToSuperview().offset(16)
         }
         alarm1Image.snp.makeConstraints{
+            $0.width.height.equalTo(24)
             $0.centerY.equalTo(alarm1Label)
             $0.trailing.equalToSuperview().inset(16)
         }
@@ -286,6 +287,7 @@ class TutorialFirstViewController : UIViewController {
             $0.leading.equalToSuperview().offset(16)
         }
         alarm2Image.snp.makeConstraints{
+            $0.width.height.equalTo(24)
             $0.centerY.equalTo(alarm2Label)
             $0.trailing.equalToSuperview().inset(16)
         }
@@ -295,6 +297,7 @@ class TutorialFirstViewController : UIViewController {
             $0.leading.equalToSuperview().offset(16)
         }
         alarm3Image.snp.makeConstraints{
+            $0.width.height.equalTo(24)
             $0.centerY.equalTo(alarm3Label)
             $0.trailing.equalToSuperview().inset(16)
         }
@@ -304,6 +307,7 @@ class TutorialFirstViewController : UIViewController {
             $0.leading.equalToSuperview().offset(16)
         }
         alarm4Image.snp.makeConstraints{
+            $0.width.height.equalTo(24)
             $0.centerY.equalTo(alarm4Label)
             $0.trailing.equalToSuperview().inset(16)
         }
@@ -313,6 +317,7 @@ class TutorialFirstViewController : UIViewController {
             $0.leading.equalToSuperview().offset(16)
         }
         alarm5Image.snp.makeConstraints{
+            $0.width.height.equalTo(24)
             $0.centerY.equalTo(alarm5Label)
             $0.trailing.equalToSuperview().inset(16)
         }
@@ -322,6 +327,7 @@ class TutorialFirstViewController : UIViewController {
             $0.leading.equalToSuperview().offset(16)
         }
         alarm6Image.snp.makeConstraints{
+            $0.width.height.equalTo(24)
             $0.centerY.equalTo(alarm6Label)
             $0.trailing.equalToSuperview().inset(16)
         }
@@ -331,6 +337,7 @@ class TutorialFirstViewController : UIViewController {
             $0.leading.equalToSuperview().offset(16)
         }
         alarm7Image.snp.makeConstraints{
+            $0.width.height.equalTo(24)
             $0.centerY.equalTo(alarm7Label)
             $0.trailing.equalToSuperview().inset(16)
         }
@@ -353,11 +360,14 @@ class TutorialFirstViewController : UIViewController {
         
     }
     
-    @objc func vibratesetting(){
-        if vibrateImage.tintColor == DesignSystemColor.Gray200.value{
-            vibrateImage.tintColor = DesignSystemColor.Orange500.value
-        }else{
-            vibrateImage.tintColor = DesignSystemColor.Gray200.value
+    @objc func vibratesetting() {
+        if vibrateImage.currentImage == UIImage(named: "checkboxorange") {
+            vibrateImage.setImage(UIImage(named: "checkboxgray"), for: .normal)
+            vibrateImage.setImage(UIImage(named: "checkboxgray"), for: .highlighted)
+            
+        } else {
+            vibrateImage.setImage(UIImage(named: "checkboxorange"), for: .normal)
+            vibrateImage.setImage(UIImage(named: "checkboxorange"), for: .highlighted)
         }
     }
     

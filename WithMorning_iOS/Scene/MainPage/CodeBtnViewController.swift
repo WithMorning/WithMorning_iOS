@@ -61,10 +61,6 @@ class CodeBtnViewController: UIViewController {
     
     private lazy var openButton : UIButton = {
         let button = UIButton()
-        button.setImage(UIImage(systemName: "checkmark.square.fill"), for: .normal)
-        button.setImage(UIImage(systemName: "checkmark.square.fill"), for: .highlighted)
-        button.backgroundColor = .white
-        button.layer.cornerRadius = 5
         button.addTarget(self, action: #selector(numberclicked), for: .touchUpInside)
         return button
     }()
@@ -105,7 +101,7 @@ class CodeBtnViewController: UIViewController {
         self.view.backgroundColor = .white
         SetUI()
         hideKeyboardWhenTappedAround()
-        updateButtonColor()
+        openbuttonColor()
         
     }
     
@@ -133,9 +129,9 @@ class CodeBtnViewController: UIViewController {
         }
         
         openButton.snp.makeConstraints{
-            $0.width.height.equalTo(25)
+            $0.width.height.equalTo(24)
             $0.centerY.equalTo(numberLabel)
-            $0.leading.equalTo(numberLabel.snp.trailing).offset(5)
+            $0.leading.equalTo(numberLabel.snp.trailing).offset(10)
         }
         
         notiLabel.snp.makeConstraints{
@@ -153,9 +149,9 @@ class CodeBtnViewController: UIViewController {
         }
     }
     
-    func updateButtonColor() {
+    func openbuttonColor() {
         let isPrivate = UserDefaults.getPrivateNumber()
-        openButton.tintColor = isPrivate ? DesignSystemColor.Orange500.value : DesignSystemColor.Gray200.value
+        isPrivate ? openButton.setImage(UIImage(named: "checkboxorange"), for: .normal) : openButton.setImage(UIImage(named: "checkboxgray"), for: .normal)
     }
     
     //MARK: - @objc func
@@ -179,7 +175,7 @@ class CodeBtnViewController: UIViewController {
         
         UserDefaults.setPrivateNumber(!currentSetting)
         
-        updateButtonColor()
+        openbuttonColor()
     }
     
     //MARK: - API
