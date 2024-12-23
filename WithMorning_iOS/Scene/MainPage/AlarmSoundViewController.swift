@@ -33,8 +33,8 @@ class AlarmSoundViewController: UIViewController {
     
     private lazy var popButton: UIButton = {
         let button = UIButton()
-        button.setImage(UIImage(systemName: "chevron.backward"), for: .normal)
         button.tintColor = .black
+        button.setImage(UIImage(named: "backward"), for: .normal)
         button.addTarget(self, action: #selector(popclick), for: .touchUpInside)
         return button
     }()
@@ -320,6 +320,7 @@ class AlarmSoundViewController: UIViewController {
             $0.top.equalToSuperview().offset(16)
             $0.leading.equalToSuperview().offset(16)
         }
+        
         //MARK: - 알람음 선택
         alarm1Label.snp.makeConstraints{
             $0.top.equalTo(alarmtitleLabel.snp.bottom).offset(19.5)
@@ -429,7 +430,6 @@ class AlarmSoundViewController: UIViewController {
         if vibrateImage.currentImage == UIImage(named: "checkboxorange") {
             vibrateImage.setImage(UIImage(named: "checkboxgray"), for: .normal)
             vibrateImage.setImage(UIImage(named: "checkboxgray"), for: .highlighted)
-            
         } else {
             vibrateImage.setImage(UIImage(named: "checkboxorange"), for: .normal)
             vibrateImage.setImage(UIImage(named: "checkboxorange"), for: .highlighted)

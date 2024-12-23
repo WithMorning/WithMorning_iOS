@@ -364,7 +364,7 @@ class TutorialFirstViewController : UIViewController {
         if vibrateImage.currentImage == UIImage(named: "checkboxorange") {
             vibrateImage.setImage(UIImage(named: "checkboxgray"), for: .normal)
             vibrateImage.setImage(UIImage(named: "checkboxgray"), for: .highlighted)
-            
+
         } else {
             vibrateImage.setImage(UIImage(named: "checkboxorange"), for: .normal)
             vibrateImage.setImage(UIImage(named: "checkboxorange"), for: .highlighted)
