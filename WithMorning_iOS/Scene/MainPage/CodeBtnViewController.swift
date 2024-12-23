@@ -129,7 +129,7 @@ class CodeBtnViewController: UIViewController {
         }
         
         openButton.snp.makeConstraints{
-            $0.width.height.equalTo(24)
+            $0.width.height.equalTo(20)
             $0.centerY.equalTo(numberLabel)
             $0.leading.equalTo(numberLabel.snp.trailing).offset(10)
         }

@@ -27,7 +27,7 @@ class ProfileViewController : UIViewController, UIImagePickerControllerDelegate 
     
     private lazy var popButton : UIButton = {
         let button = UIButton()
-        button.setImage(UIImage(systemName: "chevron.backward"), for: .normal)
+        button.setImage(UIImage(named: "backward"), for: .normal)
         button.tintColor = .black
         button.addTarget(self, action: #selector(popclicked), for: .touchUpInside)
         return button
@@ -58,7 +58,6 @@ class ProfileViewController : UIViewController, UIImagePickerControllerDelegate 
     
     private lazy var galleryButton : UIButton = {
         let button = UIButton()
-        let imageConfig = UIImage.SymbolConfiguration(pointSize: 18, weight: .light)
         let image = UIImage(named: "Camera")
         button.setImage(image , for: .normal)
         button.setImage(image , for: .highlighted)

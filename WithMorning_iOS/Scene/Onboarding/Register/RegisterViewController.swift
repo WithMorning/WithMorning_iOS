@@ -24,7 +24,7 @@ class RegisterViewController : UIViewController{
     
     private lazy var popButton : UIButton = {
         let button = UIButton()
-        button.setImage(UIImage(systemName: "chevron.backward"), for: .normal)
+        button.setImage(UIImage(named: "backward"), for: .normal)
         button.tintColor = .black
         return button
     }()

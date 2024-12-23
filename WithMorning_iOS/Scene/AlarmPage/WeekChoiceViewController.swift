@@ -61,8 +61,7 @@ class WeekChoiceViewController : UIViewController, UIScrollViewDelegate {
     
     private lazy var MonIMG : UIImageView = {
         let view = UIImageView()
-        view.image = UIImage(systemName: "checkmark.square.fill")
-        view.tintColor = DesignSystemColor.Gray200.value
+        view.image = UIImage(named: "checkboxgray")
         return view
     }()
     
@@ -91,8 +90,7 @@ class WeekChoiceViewController : UIViewController, UIScrollViewDelegate {
     
     private lazy var TueIMG : UIImageView = {
         let view = UIImageView()
-        view.image = UIImage(systemName: "checkmark.square.fill")
-        view.tintColor = DesignSystemColor.Gray200.value
+        view.image = UIImage(named: "checkboxgray")
         return view
     }()
     //MARK: - 수요일
@@ -104,7 +102,6 @@ class WeekChoiceViewController : UIViewController, UIScrollViewDelegate {
         stackView.isUserInteractionEnabled = true
         let tapGestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(wedclick))
         stackView.addGestureRecognizer(tapGestureRecognizer)
-        
         return stackView
     }()
     
@@ -119,8 +116,7 @@ class WeekChoiceViewController : UIViewController, UIScrollViewDelegate {
     
     private lazy var WedIMG : UIImageView = {
         let view = UIImageView()
-        view.image = UIImage(systemName: "checkmark.square.fill")
-        view.tintColor = DesignSystemColor.Gray200.value
+        view.image = UIImage(named: "checkboxgray")
         return view
     }()
     //MARK: - 목요일
@@ -147,8 +143,7 @@ class WeekChoiceViewController : UIViewController, UIScrollViewDelegate {
     
     private lazy var ThrIMG : UIImageView = {
         let view = UIImageView()
-        view.image = UIImage(systemName: "checkmark.square.fill")
-        view.tintColor = DesignSystemColor.Gray200.value
+        view.image = UIImage(named: "checkboxgray")
         return view
     }()
     //MARK: - 금요일
@@ -175,7 +170,7 @@ class WeekChoiceViewController : UIViewController, UIScrollViewDelegate {
     
     private lazy var FriIMG : UIImageView = {
         let view = UIImageView()
-        view.image = UIImage(systemName: "checkmark.square.fill")
+        view.image = UIImage(named: "checkboxgray")
         view.tintColor = DesignSystemColor.Gray200.value
         return view
     }()
@@ -203,8 +198,7 @@ class WeekChoiceViewController : UIViewController, UIScrollViewDelegate {
     
     private lazy var SatIMG : UIImageView = {
         let view = UIImageView()
-        view.image = UIImage(systemName: "checkmark.square.fill")
-        view.tintColor = DesignSystemColor.Gray200.value
+        view.image = UIImage(named: "checkboxgray")
         return view
     }()
     //MARK: - 일요일
@@ -230,9 +224,7 @@ class WeekChoiceViewController : UIViewController, UIScrollViewDelegate {
     
     private lazy var SunIMG : UIImageView = {
         let view = UIImageView()
-        view.image = UIImage(systemName: "checkmark.square.fill")
-        view.tintColor = DesignSystemColor.Gray200.value
-        
+        view.image = UIImage(named: "checkboxgray")
         return view
     }()
     
@@ -321,8 +313,7 @@ class WeekChoiceViewController : UIViewController, UIScrollViewDelegate {
         }
         MonIMG.snp.makeConstraints{
             $0.trailing.equalToSuperview()
-            $0.height.equalTo(24)
-            $0.width.equalTo(24)
+            $0.height.width.equalTo(20)
         }
         //화요일
         TuestackView.snp.makeConstraints{
@@ -335,8 +326,7 @@ class WeekChoiceViewController : UIViewController, UIScrollViewDelegate {
         }
         TueIMG.snp.makeConstraints{
             $0.trailing.equalToSuperview()
-            $0.height.equalTo(24)
-            $0.width.equalTo(24)
+            $0.height.width.equalTo(20)
         }
         //수요일
         WedstackView.snp.makeConstraints{
@@ -349,8 +339,7 @@ class WeekChoiceViewController : UIViewController, UIScrollViewDelegate {
         }
         WedIMG.snp.makeConstraints{
             $0.trailing.equalToSuperview()
-            $0.height.equalTo(24)
-            $0.width.equalTo(24)
+            $0.height.width.equalTo(20)
         }
         //목요일
         ThrstackView.snp.makeConstraints{
@@ -363,8 +352,7 @@ class WeekChoiceViewController : UIViewController, UIScrollViewDelegate {
         }
         ThrIMG.snp.makeConstraints{
             $0.trailing.equalToSuperview()
-            $0.height.equalTo(24)
-            $0.width.equalTo(24)
+            $0.height.width.equalTo(20)
         }
         //금요일
         FristackView.snp.makeConstraints{
@@ -377,8 +365,7 @@ class WeekChoiceViewController : UIViewController, UIScrollViewDelegate {
         }
         FriIMG.snp.makeConstraints{
             $0.trailing.equalToSuperview()
-            $0.height.equalTo(24)
-            $0.width.equalTo(24)
+            $0.height.width.equalTo(20)
         }
         //토요일
         SatstackView.snp.makeConstraints{
@@ -391,8 +378,7 @@ class WeekChoiceViewController : UIViewController, UIScrollViewDelegate {
         }
         SatIMG.snp.makeConstraints{
             $0.trailing.equalToSuperview()
-            $0.height.equalTo(24)
-            $0.width.equalTo(24)
+            $0.height.width.equalTo(20)
         }
         //일요일
         SunstackView.snp.makeConstraints{
@@ -405,8 +391,7 @@ class WeekChoiceViewController : UIViewController, UIScrollViewDelegate {
         }
         SunIMG.snp.makeConstraints{
             $0.trailing.equalToSuperview()
-            $0.height.equalTo(24)
-            $0.width.equalTo(24)
+            $0.height.width.equalTo(20)
         }
         //주중
         weekdayButton.snp.makeConstraints{
@@ -432,28 +417,31 @@ class WeekChoiceViewController : UIViewController, UIScrollViewDelegate {
         }
     }
     //MARK: - 주중, 주말 색 변화
-    func updateweeklycolor(){
-        if [MonIMG, TueIMG, WedIMG, ThrIMG, FriIMG].allSatisfy({ $0.tintColor == DesignSystemColor.Orange500.value }) {
+    func updateweeklycolor() {
+        let weekdayImages = [MonIMG, TueIMG, WedIMG, ThrIMG, FriIMG]
+        let weekendImages = [SatIMG, SunIMG]
+        
+        // 주중 버튼 업데이트
+        if weekdayImages.allSatisfy({ $0.image == UIImage(named: "checkboxorange") }) {
             weekdayButton.setBackgroundColor(DesignSystemColor.Orange500.value, for: .normal)
             weekdayButton.setBackgroundColor(DesignSystemColor.Orange500.value.adjustBrightness(by: 0.8), for: .highlighted)
             weekdayButton.setTitleColor(.white, for: .normal)
-        }else{
+        } else {
             weekdayButton.setTitleColor(DesignSystemColor.Gray500.value, for: .normal)
             weekdayButton.setBackgroundColor(DesignSystemColor.Gray200.value, for: .normal)
             weekdayButton.setBackgroundColor(DesignSystemColor.Gray200.value.adjustBrightness(by: 0.8), for: .highlighted)
         }
         
-        if [SatIMG,SunIMG].allSatisfy({$0.tintColor == DesignSystemColor.Orange500.value}) {
+        // 주말 버튼 업데이트
+        if weekendImages.allSatisfy({ $0.image == UIImage(named: "checkboxorange") }) {
             weekendButton.setBackgroundColor(DesignSystemColor.Orange500.value, for: .normal)
             weekendButton.setBackgroundColor(DesignSystemColor.Orange500.value.adjustBrightness(by: 0.8), for: .highlighted)
             weekendButton.setTitleColor(.white, for: .normal)
-        }else{
+        } else {
             weekendButton.setTitleColor(DesignSystemColor.Gray500.value, for: .normal)
             weekendButton.setBackgroundColor(DesignSystemColor.Gray200.value, for: .normal)
             weekendButton.setBackgroundColor(DesignSystemColor.Gray200.value.adjustBrightness(by: 0.8), for: .highlighted)
         }
-        
-        
     }
     
     //MARK: - 요일 이동 클로저
@@ -466,15 +454,15 @@ class WeekChoiceViewController : UIViewController, UIScrollViewDelegate {
     //취침 시간 설정 부분
     
     func updateDayUI(_ day: String, isSelected: Bool) {
-        let color = isSelected ? DesignSystemColor.Orange500.value : DesignSystemColor.Gray200.value
+        let imageName = isSelected ? "checkboxorange" : "checkboxgray"
         switch day {
-        case "mon": MonIMG.tintColor = color
-        case "tue": TueIMG.tintColor = color
-        case "wed": WedIMG.tintColor = color
-        case "thu": ThrIMG.tintColor = color
-        case "fri": FriIMG.tintColor = color
-        case "sat": SatIMG.tintColor = color
-        case "sun": SunIMG.tintColor = color
+        case "mon": MonIMG.image = UIImage(named: imageName)
+        case "tue": TueIMG.image = UIImage(named: imageName)
+        case "wed": WedIMG.image = UIImage(named: imageName)
+        case "thu": ThrIMG.image = UIImage(named: imageName)
+        case "fri": FriIMG.image = UIImage(named: imageName)
+        case "sat": SatIMG.image = UIImage(named: imageName)
+        case "sun": SunIMG.image = UIImage(named: imageName)
         default: break
         }
     }
@@ -491,11 +479,11 @@ class WeekChoiceViewController : UIViewController, UIScrollViewDelegate {
     func toggleDay(_ day: String, image: UIImageView) {
         if let index = AlarmSelectedDays.firstIndex(of: day) {
             AlarmSelectedDays.remove(at: index)
-            image.tintColor = DesignSystemColor.Gray200.value
+            image.image = UIImage(named: "checkboxgray")
         } else {
             AlarmSelectedDays.append(day)
             AlarmSelectedDays.sort { daysOrder.firstIndex(of: $0)! < daysOrder.firstIndex(of: $1)! }
-            image.tintColor = DesignSystemColor.Orange500.value
+            image.image = UIImage(named: "checkboxorange")
         }
         updateweeklycolor()
     }

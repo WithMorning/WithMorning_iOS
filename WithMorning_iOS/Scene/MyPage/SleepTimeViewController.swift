@@ -26,7 +26,7 @@ class SleepTimeViewController : UIViewController, UISheetPresentationControllerD
     
     private lazy var popButton : UIButton = {
         let button = UIButton()
-        button.setImage(UIImage(systemName: "chevron.backward"), for: .normal)
+        button.setImage(UIImage(named: "backward"), for: .normal)
         button.tintColor = .black
         button.addTarget(self, action: #selector(popclicked), for: .touchUpInside)
         return button
@@ -77,15 +77,14 @@ class SleepTimeViewController : UIViewController, UISheetPresentationControllerD
         label.font = DesignSystemFont.Pretendard_Bold14.value
         label.textColor = .black
         label.textAlignment = .left
-        
         return label
     }()
-    
+
     private lazy var repeatDayLabel : UILabel = {
         let attributedString1 = NSMutableAttributedString(string: "")
         let imageAttachment1 = NSTextAttachment()
-        imageAttachment1.image = UIImage(systemName: "greaterthan")
-        imageAttachment1.bounds = CGRect(x: 0, y: -3, width: 10, height: 16)
+        imageAttachment1.image = UIImage(named: "forward")
+        imageAttachment1.bounds = CGRect(x: 0, y: -3, width: 24, height: 24)
         attributedString1.append(NSAttributedString(attachment: imageAttachment1))
         
         let label = UILabel()
@@ -125,9 +124,8 @@ class SleepTimeViewController : UIViewController, UISheetPresentationControllerD
     
     private lazy var notiImage : UIButton = {
         let button = UIButton()
-        let imageConfig = UIImage.SymbolConfiguration(pointSize: 20, weight: .light)
-        let image = UIImage(systemName: "checkmark.square.fill", withConfiguration: imageConfig)
-        button.setImage(image, for: .normal)
+        button.setImage(UIImage(named: "checkboxgray"), for: .normal)
+        button.setImage(UIImage(named: "checkboxgray"), for: .highlighted)
         button.addTarget(self, action: #selector(notisetting), for: .touchUpInside)
         return button
     }()
@@ -216,7 +214,7 @@ class SleepTimeViewController : UIViewController, UISheetPresentationControllerD
         }
         repeatDayLabel1.snp.makeConstraints{
             $0.centerY.equalTo(repeatDayLabel)
-            $0.trailing.equalTo(repeatDayLabel.snp.leading).offset(-12)
+            $0.trailing.equalTo(repeatDayLabel.snp.leading).offset(-4)
         }
         
         
@@ -232,7 +230,7 @@ class SleepTimeViewController : UIViewController, UISheetPresentationControllerD
         notiImage.snp.makeConstraints{
             $0.trailing.equalToSuperview().inset(16)
             $0.centerY.equalToSuperview()
-            $0.width.height.equalTo(24)
+            $0.width.height.equalTo(20)
         }
         
         saveButton.snp.makeConstraints{
@@ -390,11 +388,13 @@ class SleepTimeViewController : UIViewController, UISheetPresentationControllerD
     //MARK: - 알람받기
     @objc func notisetting(){
         if allowAlarm == false{
-            notiImage.tintColor = DesignSystemColor.Gray200.value
+            notiImage.setImage(UIImage(named: "checkboxgray"), for: .normal)
+            notiImage.setImage(UIImage(named: "checkboxgray"), for: .highlighted)
             allowAlarm = true
             allowAlarmTintColor()
         }else{
-            notiImage.tintColor = DesignSystemColor.Orange500.value
+            notiImage.setImage(UIImage(named: "checkboxorange"), for: .normal)
+            notiImage.setImage(UIImage(named: "checkboxorange"), for: .highlighted)
             allowAlarm = false
             allowAlarmTintColor()
         }
@@ -402,9 +402,11 @@ class SleepTimeViewController : UIViewController, UISheetPresentationControllerD
     
     func allowAlarmTintColor(){
         if allowAlarm == true{
-            notiImage.tintColor = DesignSystemColor.Orange500.value
+            notiImage.setImage(UIImage(named: "checkboxorange"), for: .normal)
+            notiImage.setImage(UIImage(named: "checkboxorange"), for: .highlighted)
         }else{
-            notiImage.tintColor = DesignSystemColor.Gray200.value
+            notiImage.setImage(UIImage(named: "checkboxgray"), for: .normal)
+            notiImage.setImage(UIImage(named: "checkboxgray"), for: .highlighted)
         }
     }
     

@@ -37,7 +37,7 @@ class MyPageViewController : UIViewController, UIScrollViewDelegate {
     
     private lazy var popButton : UIButton = {
         let button = UIButton()
-        button.setImage(UIImage(systemName: "chevron.backward"), for: .normal)
+        button.setImage(UIImage(named: "backward"), for: .normal)
         button.tintColor = .black
         button.addTarget(self, action: #selector(popclicked), for: .touchUpInside)
         return button
@@ -64,7 +64,6 @@ class MyPageViewController : UIViewController, UIScrollViewDelegate {
         let image = UIImageView()
         image.contentMode = .scaleAspectFill
         image.clipsToBounds = true
-        //        image.image = UIImage(named: "profile")
         image.tintColor = .black
         return image
     }()
@@ -146,12 +145,12 @@ class MyPageViewController : UIViewController, UIScrollViewDelegate {
         label.font = DesignSystemFont.Pretendard_Medium14.value
         return label
     }()
-    
+
     private lazy var sleeptimeLabel2 : UILabel = {
         let attributedString1 = NSMutableAttributedString(string: "")
         let imageAttachment1 = NSTextAttachment()
-        imageAttachment1.image = UIImage(systemName: "greaterthan")
-        imageAttachment1.bounds = CGRect(x: 0, y: -3, width: 10, height: 16)
+        imageAttachment1.image = UIImage(named: "forward")
+        imageAttachment1.bounds = CGRect(x: 0, y: -4, width: 24, height: 24)
         attributedString1.append(NSAttributedString(attachment: imageAttachment1))
         
         let label = UILabel()
@@ -186,8 +185,8 @@ class MyPageViewController : UIViewController, UIScrollViewDelegate {
     private lazy var pushnotiLabel2 : UILabel = {
         let attributedString1 = NSMutableAttributedString(string: "")
         let imageAttachment1 = NSTextAttachment()
-        imageAttachment1.image = UIImage(systemName: "greaterthan")
-        imageAttachment1.bounds = CGRect(x: 0, y: -3, width: 10, height: 16)
+        imageAttachment1.image = UIImage(named: "forward")
+        imageAttachment1.bounds = CGRect(x: 0, y: -4, width: 24, height: 24)
         attributedString1.append(NSAttributedString(attachment: imageAttachment1))
         
         let label = UILabel()
@@ -233,8 +232,8 @@ class MyPageViewController : UIViewController, UIScrollViewDelegate {
     private lazy var noticeLabel2 : UILabel = {
         let attributedString1 = NSMutableAttributedString(string: "")
         let imageAttachment1 = NSTextAttachment()
-        imageAttachment1.image = UIImage(systemName: "greaterthan")
-        imageAttachment1.bounds = CGRect(x: 0, y: -3, width: 10, height: 16)
+        imageAttachment1.image = UIImage(named: "forward")
+        imageAttachment1.bounds = CGRect(x: 0, y: -4, width: 24, height: 24)
         attributedString1.append(NSAttributedString(attachment: imageAttachment1))
         
         let label = UILabel()
@@ -269,8 +268,8 @@ class MyPageViewController : UIViewController, UIScrollViewDelegate {
     private lazy var serviceLabel2 : UILabel = {
         let attributedString1 = NSMutableAttributedString(string: "")
         let imageAttachment1 = NSTextAttachment()
-        imageAttachment1.image = UIImage(systemName: "greaterthan")
-        imageAttachment1.bounds = CGRect(x: 0, y: -3, width: 10, height: 16)
+        imageAttachment1.image = UIImage(named: "forward")
+        imageAttachment1.bounds = CGRect(x: 0, y: -4, width: 24, height: 24)
         attributedString1.append(NSAttributedString(attachment: imageAttachment1))
         
         let label = UILabel()
@@ -305,8 +304,8 @@ class MyPageViewController : UIViewController, UIScrollViewDelegate {
     private lazy var privacyLabel2 : UILabel = {
         let attributedString1 = NSMutableAttributedString(string: "")
         let imageAttachment1 = NSTextAttachment()
-        imageAttachment1.image = UIImage(systemName: "greaterthan")
-        imageAttachment1.bounds = CGRect(x: 0, y: -3, width: 10, height: 16)
+        imageAttachment1.image = UIImage(named: "forward")
+        imageAttachment1.bounds = CGRect(x: 0, y: -4, width: 24, height: 24)
         attributedString1.append(NSAttributedString(attachment: imageAttachment1))
         
         let label = UILabel()
@@ -350,8 +349,8 @@ class MyPageViewController : UIViewController, UIScrollViewDelegate {
     private lazy var inquiryLabel2 : UILabel = {
         let attributedString1 = NSMutableAttributedString(string: "")
         let imageAttachment1 = NSTextAttachment()
-        imageAttachment1.image = UIImage(systemName: "greaterthan")
-        imageAttachment1.bounds = CGRect(x: 0, y: -3, width: 10, height: 16)
+        imageAttachment1.image = UIImage(named: "forward")
+        imageAttachment1.bounds = CGRect(x: 0, y: -4, width: 24, height: 24)
         attributedString1.append(NSAttributedString(attachment: imageAttachment1))
         
         let label = UILabel()
@@ -502,14 +501,16 @@ class MyPageViewController : UIViewController, UIScrollViewDelegate {
             $0.height.equalTo(24)
         }
         sleeptimeLabel.snp.makeConstraints{
+            $0.centerY.equalToSuperview()
             $0.leading.equalToSuperview()
         }
         sleeptimeLabel2.snp.makeConstraints{
+            $0.centerY.equalToSuperview()
             $0.trailing.equalToSuperview()
         }
         sleeptimeLabel3.snp.makeConstraints{
             $0.centerY.equalTo(sleeptimeLabel)
-            $0.trailing.equalTo(sleeptimeLabel2.snp.leading).offset(-12)
+            $0.trailing.equalTo(sleeptimeLabel2.snp.leading).offset(-8)
         }
         
         pushnotiStackView.snp.makeConstraints{

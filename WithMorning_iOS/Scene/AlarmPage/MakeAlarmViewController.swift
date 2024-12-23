@@ -32,7 +32,7 @@ class MakeAlarmViewController : UIViewController, UIScrollViewDelegate, UISheetP
     
     private lazy var popButton : UIButton = {
         let button = UIButton()
-        button.setImage(UIImage(systemName: "chevron.backward"), for: .normal)
+        button.setImage(UIImage(named: "backward"), for: .normal)
         button.tintColor = .black
         button.addTarget(self, action: #selector(popclicked), for: .touchUpInside)
         return button
@@ -212,7 +212,7 @@ class MakeAlarmViewController : UIViewController, UIScrollViewDelegate, UISheetP
     
     private lazy var notiLabel : UILabel = {
         let label = UILabel()
-        label.text = "📢 알람음 설정은 메인홈 상단에서 할 수 있어요"
+        label.text = "📢 다양한 알람음을 준비하고 있으니 조금만 기다려 주세요!"
         label.textAlignment = .center
         label.textColor = DesignSystemColor.Gray500.value
         label.font = DesignSystemFont.Pretendard_Medium12.value

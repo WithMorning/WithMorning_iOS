@@ -23,7 +23,7 @@ class LoginViewController: UIViewController{
     //MARK: - properties
     private lazy var popButton : UIButton = {
         let button = UIButton()
-        button.setImage(UIImage(systemName: "chevron.backward"), for: .normal)
+        button.setImage(UIImage(named: "backward"), for: .normal)
         button.tintColor = .black
         button.addTarget(self, action: #selector(popclicked), for: .touchUpInside)
         return button

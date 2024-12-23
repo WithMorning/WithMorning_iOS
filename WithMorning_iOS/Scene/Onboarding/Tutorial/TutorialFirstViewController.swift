@@ -252,7 +252,7 @@ class TutorialFirstViewController : UIViewController {
             $0.trailing.equalTo(vibrateImage.snp.leading).offset(-4)
         }
         vibrateImage.snp.makeConstraints{
-            $0.width.height.equalTo(24)
+            $0.width.height.equalTo(20)
             $0.trailing.bottom.equalToSuperview().inset(16)
         }
         
@@ -278,7 +278,7 @@ class TutorialFirstViewController : UIViewController {
             $0.leading.equalToSuperview().offset(16)
         }
         alarm1Image.snp.makeConstraints{
-            $0.width.height.equalTo(24)
+            $0.width.height.equalTo(20)
             $0.centerY.equalTo(alarm1Label)
             $0.trailing.equalToSuperview().inset(16)
         }
@@ -287,7 +287,7 @@ class TutorialFirstViewController : UIViewController {
             $0.leading.equalToSuperview().offset(16)
         }
         alarm2Image.snp.makeConstraints{
-            $0.width.height.equalTo(24)
+            $0.width.height.equalTo(20)
             $0.centerY.equalTo(alarm2Label)
             $0.trailing.equalToSuperview().inset(16)
         }
@@ -297,7 +297,7 @@ class TutorialFirstViewController : UIViewController {
             $0.leading.equalToSuperview().offset(16)
         }
         alarm3Image.snp.makeConstraints{
-            $0.width.height.equalTo(24)
+            $0.width.height.equalTo(20)
             $0.centerY.equalTo(alarm3Label)
             $0.trailing.equalToSuperview().inset(16)
         }
@@ -307,7 +307,7 @@ class TutorialFirstViewController : UIViewController {
             $0.leading.equalToSuperview().offset(16)
         }
         alarm4Image.snp.makeConstraints{
-            $0.width.height.equalTo(24)
+            $0.width.height.equalTo(20)
             $0.centerY.equalTo(alarm4Label)
             $0.trailing.equalToSuperview().inset(16)
         }
@@ -317,7 +317,7 @@ class TutorialFirstViewController : UIViewController {
             $0.leading.equalToSuperview().offset(16)
         }
         alarm5Image.snp.makeConstraints{
-            $0.width.height.equalTo(24)
+            $0.width.height.equalTo(20)
             $0.centerY.equalTo(alarm5Label)
             $0.trailing.equalToSuperview().inset(16)
         }
@@ -327,7 +327,7 @@ class TutorialFirstViewController : UIViewController {
             $0.leading.equalToSuperview().offset(16)
         }
         alarm6Image.snp.makeConstraints{
-            $0.width.height.equalTo(24)
+            $0.width.height.equalTo(20)
             $0.centerY.equalTo(alarm6Label)
             $0.trailing.equalToSuperview().inset(16)
         }
@@ -337,7 +337,7 @@ class TutorialFirstViewController : UIViewController {
             $0.leading.equalToSuperview().offset(16)
         }
         alarm7Image.snp.makeConstraints{
-            $0.width.height.equalTo(24)
+            $0.width.height.equalTo(20)
             $0.centerY.equalTo(alarm7Label)
             $0.trailing.equalToSuperview().inset(16)
         }

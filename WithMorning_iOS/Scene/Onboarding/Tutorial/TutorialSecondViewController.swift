@@ -42,8 +42,6 @@ class TutorialSecondViewController : UIViewController {
         stackView.alignment = .fill
         stackView.addSubviews(repeatLabel,repeatDayLabel,repeatDayLabel1)
         stackView.isUserInteractionEnabled = true
-//        let tapGestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(repeatDay))
-//        stackView.addGestureRecognizer(tapGestureRecognizer)
         return stackView
     }()
     
@@ -104,9 +102,8 @@ class TutorialSecondViewController : UIViewController {
     
     private lazy var notiImage : UIButton = {
         let button = UIButton()
-        let imageConfig = UIImage.SymbolConfiguration(pointSize: 20, weight: .light)
-        let image = UIImage(systemName: "checkmark.square.fill", withConfiguration: imageConfig)
-        button.setImage(image, for: .normal)
+        button.setImage(UIImage(named: "checkboxgray"), for: .normal)
+        button.setImage(UIImage(named: "checkboxgray"), for: .highlighted)
         button.addTarget(self, action: #selector(notisetting), for: .touchUpInside)
         return button
     }()
@@ -184,7 +181,7 @@ class TutorialSecondViewController : UIViewController {
         notiImage.snp.makeConstraints{
             $0.trailing.equalToSuperview().inset(16)
             $0.centerY.equalToSuperview()
-            $0.width.height.equalTo(24)
+            $0.width.height.equalTo(20)
         }
         
         setLabel.snp.makeConstraints{
@@ -239,26 +236,27 @@ class TutorialSecondViewController : UIViewController {
     //MARK: - 알람받기 색상
     var allowAlarm : Bool = false
     
-    func allowAlarmTintColor(){
-        if allowAlarm == true{
-            notiImage.tintColor = DesignSystemColor.Orange500.value
-        }else{
-            notiImage.tintColor = DesignSystemColor.Gray200.value
-        }
-    }
-    
-    
-    //MARK: - objc func
-
     @objc func notisetting(){
         if allowAlarm == false{
-            notiImage.tintColor = DesignSystemColor.Gray200.value
+            notiImage.setImage(UIImage(named: "checkboxgray"), for: .normal)
+            notiImage.setImage(UIImage(named: "checkboxgray"), for: .highlighted)
             allowAlarm = true
             allowAlarmTintColor()
         }else{
-            notiImage.tintColor = DesignSystemColor.Orange500.value
+            notiImage.setImage(UIImage(named: "checkboxorange"), for: .normal)
+            notiImage.setImage(UIImage(named: "checkboxorange"), for: .highlighted)
             allowAlarm = false
             allowAlarmTintColor()
+        }
+    }
+    
+    func allowAlarmTintColor(){
+        if allowAlarm == true{
+            notiImage.setImage(UIImage(named: "checkboxorange"), for: .normal)
+            notiImage.setImage(UIImage(named: "checkboxorange"), for: .highlighted)
+        }else{
+            notiImage.setImage(UIImage(named: "checkboxgray"), for: .normal)
+            notiImage.setImage(UIImage(named: "checkboxgray"), for: .highlighted)
         }
     }
 }
