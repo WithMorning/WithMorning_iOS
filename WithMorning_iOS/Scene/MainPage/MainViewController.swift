@@ -149,6 +149,7 @@ class MainViewController: UIViewController, UISheetPresentationControllerDelegat
         tableSetting()
         SetUI()
         emptycellcheck()
+        
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -230,8 +231,6 @@ class MainViewController: UIViewController, UISheetPresentationControllerDelegat
         AlarmTableView.backgroundColor = DesignSystemColor.Gray150.value
         AlarmTableView.separatorStyle = .none
         AlarmTableView.refreshControl = tableViewRefresh
-        
-        AlarmTableView.rowHeight = UITableView.automaticDimension
         
         headerView.layoutIfNeeded()
         
@@ -522,7 +521,7 @@ extension MainViewController : UITableViewDelegate, UITableViewDataSource{
         let alarm = alarmData[indexPath.row]
         let cell = tableView.cellForRow(at: indexPath) as? AlarmTableViewCell
         
-        let baseHeight: CGFloat = 130  // 기본 높이
+        let baseHeight: CGFloat = 140  // 기본 높이
         let extraHeight: CGFloat = 250 // 멤버 컬렉션 뷰 등의 추가 높이
         
         // 메모가 없거나 방해 금지 모드인 경우 기본 처리
@@ -542,12 +541,12 @@ extension MainViewController : UITableViewDelegate, UITableViewDataSource{
             }
         }
         
-        // 접힌 상태에서는 추가 높이만
+        // 메모가 접힌 상태에서는 추가 높이만
         if !(cell?.isExpanded ?? false) {
             return baseHeight + extraHeight
         }
         
-        // 펼쳐진 상태에서 메모 높이 계산
+        // 메모가 펼쳐진 상태에서 메모 높이 계산
         let memoHeight: CGFloat
         if actualNumberOfLines == 1 && (memo.count <= characterLimit) {
             memoHeight = 0  // 16글자 이하의 한 줄일 때는 추가 높이 없음

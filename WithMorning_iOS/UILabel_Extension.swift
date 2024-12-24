@@ -15,6 +15,7 @@ extension UILabel {
         moreText: String,
         moreTextFont: UIFont,
         moreTextColor: UIColor
+        
     ) {
         let readMoreText: String = trailingText + moreText
         

@@ -41,6 +41,7 @@ class AlarmTableViewCell : UITableViewCell, UISheetPresentationControllerDelegat
     //MARK: - 윗부분
     lazy var topView : UIView = {
         let view = UIView()
+        view.backgroundColor = .yellow
         view.addSubviews(topViewLabel,toggleButton,settingButton,timeLabel,noonLabel,WeekStackView)
         return view
     }()
@@ -52,18 +53,21 @@ class AlarmTableViewCell : UITableViewCell, UISheetPresentationControllerDelegat
         return label
     }()
     
-    let toggleButton : UISwitch = {
+    let toggleButton: UISwitch = {
         let toggle = UISwitch()
         toggle.onTintColor = DesignSystemColor.Orange500.value
         toggle.tintColor = DesignSystemColor.Gray300.value
-        toggle.addTarget(self, action: #selector(clicktoggle), for: .touchUpInside)
+        toggle.backgroundColor = DesignSystemColor.Gray300.value
+        toggle.addTarget(self, action: #selector(clicktoggle), for: .valueChanged)
+        toggle.layer.cornerRadius = toggle.frame.height / 2
+        toggle.layer.masksToBounds = true
+
         return toggle
     }()
     
     lazy var settingButton : UIButton = {
         let button = UIButton()
-        button.setImage(UIImage(systemName: "ellipsis"), for: .normal)
-        button.tintColor = UIColor(.black)
+        button.setImage(UIImage(named: "menu"), for: .normal)
         button.addTarget(self, action: #selector(clickSetting), for: .touchUpInside)
         return button
     }()
@@ -73,7 +77,7 @@ class AlarmTableViewCell : UITableViewCell, UISheetPresentationControllerDelegat
         label.font = DesignSystemFont.Pretendard_Bold30.value
         return label
     }()
-    
+        
     lazy var noonLabel : UILabel = {
         let label = UILabel()
         label.font = DesignSystemFont.Pretendard_Bold18.value
@@ -185,6 +189,7 @@ class AlarmTableViewCell : UITableViewCell, UISheetPresentationControllerDelegat
     //MARK: - 아랫 부분
     lazy var bottomView : UIView = {
         let view = UIView()
+//        view.backgroundColor = .
         view.addSubviews(borderLine,bottomViewLabel,memberCollectionView,memoView)
         return view
     }()
@@ -266,23 +271,25 @@ class AlarmTableViewCell : UITableViewCell, UISheetPresentationControllerDelegat
         //윗부분 시작
         topView.snp.makeConstraints{
             $0.top.leading.trailing.equalToSuperview()
-            $0.height.equalTo(129).priority(.low)
+            $0.height.equalTo(130).priority(.low)
         }
         topViewLabel.snp.makeConstraints{
-            $0.leading.equalToSuperview().inset(16)
+            $0.leading.equalToSuperview().inset(20)
+            $0.height.equalTo(20)
             $0.centerY.equalTo(settingButton)
         }
         toggleButton.snp.makeConstraints{
-            $0.top.equalToSuperview().inset(57.5)
-            $0.trailing.equalToSuperview().inset(16)
+            $0.top.equalTo(settingButton.snp.bottom).offset(23.5)
+            $0.trailing.equalToSuperview().inset(20)
         }
         settingButton.snp.makeConstraints{
             $0.height.width.equalTo(24)
-            $0.top.trailing.equalToSuperview().inset(16)
+            $0.top.trailing.equalToSuperview().inset(20)
         }
         timeLabel.snp.makeConstraints{
-            $0.leading.equalToSuperview().offset(16)
-            $0.top.equalTo(topViewLabel.snp.bottom).offset(8)
+            $0.leading.equalToSuperview().offset(20)
+            $0.top.equalTo(topViewLabel.snp.bottom).offset(14)
+            $0.height.equalTo(22)
         }
         noonLabel.snp.makeConstraints{
             $0.centerY.equalTo(timeLabel)
@@ -292,7 +299,8 @@ class AlarmTableViewCell : UITableViewCell, UISheetPresentationControllerDelegat
         //날짜스택뷰
         WeekStackView.snp.makeConstraints{
             $0.top.equalTo(timeLabel.snp.bottom).offset(12)
-            $0.leading.equalToSuperview().offset(20)
+            $0.leading.equalToSuperview().offset(22)
+            $0.height.equalTo(20)
             $0.width.equalTo(164)
         }
         
@@ -333,7 +341,7 @@ class AlarmTableViewCell : UITableViewCell, UISheetPresentationControllerDelegat
         borderLine.snp.makeConstraints{
             $0.leading.trailing.equalToSuperview().inset(16)
             $0.top.equalToSuperview()
-            $0.height.equalTo(1)
+            $0.height.equalTo(0.5)
         }
         
         bottomViewLabel.snp.makeConstraints{
@@ -382,7 +390,6 @@ class AlarmTableViewCell : UITableViewCell, UISheetPresentationControllerDelegat
         }
     }
     //MARK: - 24시간을 12시간으로 포멧
-    
     func convertTimeTo12HourFormat(_ time24: String) -> (String, String) {
         let dateFormatter = DateFormatter()
         dateFormatter.dateFormat = "HH:mm"
@@ -391,7 +398,7 @@ class AlarmTableViewCell : UITableViewCell, UISheetPresentationControllerDelegat
         // "HH:mm" 형태의 24시간제를 Date 객체로 변환
         if let time = dateFormatter.date(from: time24) {
             // 시간 형식: "h:mm" (12시간제)
-            dateFormatter.dateFormat = "h:mm"
+            dateFormatter.dateFormat = "hh:mm"
             let time12Hour = dateFormatter.string(from: time)
             
             // AM/PM 형식
@@ -407,7 +414,6 @@ class AlarmTableViewCell : UITableViewCell, UISheetPresentationControllerDelegat
     
     
     func configureCell(with alarm: GroupList, currentUserNickname: String) {
-        
         if let currentUser = alarm.userList?.first(where: { $0.nickname == currentUserNickname }) {
             UIView.performWithoutAnimation {
                 
@@ -549,7 +555,7 @@ class AlarmTableViewCell : UITableViewCell, UISheetPresentationControllerDelegat
                 }
             }
             
-//            print("메모 텍스트 줄 수: \(actualNumberOfLines)줄, \(String(describing: self.memoLabel.text))")
+            //            print("메모 텍스트 줄 수: \(actualNumberOfLines)줄, \(String(describing: self.memoLabel.text))")
             
             var displayedText = self.fullText
             
@@ -641,7 +647,7 @@ class AlarmTableViewCell : UITableViewCell, UISheetPresentationControllerDelegat
         
         // 레이아웃 갱신
         self.memoView.superview?.layoutIfNeeded()
-       // print("메모 높이 : ",size.height)
+        // print("메모 높이 : ",size.height)
     }
     
     
@@ -684,6 +690,7 @@ class AlarmTableViewCell : UITableViewCell, UISheetPresentationControllerDelegat
     @objc func clicktoggle() {
         patchDisturb(newDisturbMode: !disturb)
     }
+    
     var editweek: [String] = []
     var selectedTime24 : String = ""
     var isLeader : Bool = false
