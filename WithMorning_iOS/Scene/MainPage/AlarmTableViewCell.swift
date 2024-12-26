@@ -41,7 +41,6 @@ class AlarmTableViewCell : UITableViewCell, UISheetPresentationControllerDelegat
     //MARK: - 윗부분
     lazy var topView : UIView = {
         let view = UIView()
-        view.backgroundColor = .yellow
         view.addSubviews(topViewLabel,toggleButton,settingButton,timeLabel,noonLabel,WeekStackView)
         return view
     }()
@@ -189,7 +188,6 @@ class AlarmTableViewCell : UITableViewCell, UISheetPresentationControllerDelegat
     //MARK: - 아랫 부분
     lazy var bottomView : UIView = {
         let view = UIView()
-//        view.backgroundColor = .
         view.addSubviews(borderLine,bottomViewLabel,memberCollectionView,memoView)
         return view
     }()
@@ -204,12 +202,12 @@ class AlarmTableViewCell : UITableViewCell, UISheetPresentationControllerDelegat
     lazy var memberCollectionView : UICollectionView = {
         let layout = UICollectionViewFlowLayout()
         layout.scrollDirection = .horizontal
-        
         let view = UICollectionView(frame: .zero, collectionViewLayout: layout)
         view.dataSource = self
         view.delegate = self
         view.register(memberCollectioViewCell.self, forCellWithReuseIdentifier: "memberCollectioViewCell")
         view.isScrollEnabled = false
+        view.collectionViewLayout.invalidateLayout()
         
         return view
     }()
@@ -225,12 +223,14 @@ class AlarmTableViewCell : UITableViewCell, UISheetPresentationControllerDelegat
     lazy var memoLabel: UILabel = {
         let label = UILabel()
         label.textAlignment = .center
+        label.baselineAdjustment = .alignCenters
         label.numberOfLines = 0
         label.isUserInteractionEnabled = true
+        label.backgroundColor = .yellow
+        label.sizeToFit()
         
         let tapGesture = UITapGestureRecognizer(target: self, action: #selector(memoLabelTapped))
         label.addGestureRecognizer(tapGesture)
-        
         return label
     }()
     
@@ -491,9 +491,10 @@ class AlarmTableViewCell : UITableViewCell, UISheetPresentationControllerDelegat
             let font = DesignSystemFont.Pretendard_SemiBold12.value
             let maxWidth: CGFloat = 62
             
+            // boundingRect로 텍스트 크기 계산
             let textSize = (text as NSString).boundingRect(
                 with: CGSize(width: maxWidth, height: .greatestFiniteMagnitude),
-                options: [.usesLineFragmentOrigin, .usesFontLeading],
+                options: [.usesLineFragmentOrigin], // .usesFontLeading 제거
                 attributes: [NSAttributedString.Key.font: font],
                 context: nil
             ).size
@@ -502,8 +503,9 @@ class AlarmTableViewCell : UITableViewCell, UISheetPresentationControllerDelegat
             let imageHeight: CGFloat = 64
             let spacing: CGFloat = 8
             
+            // 셀 높이 계산
             let cellHeight: CGFloat
-            if labelHeight > font.lineHeight {
+            if labelHeight > font.lineHeight * 1.5 { // 1.5를 임계값으로 사용
                 // 2줄 이상일 경우
                 cellHeight = imageHeight + spacing + (font.lineHeight * 2)
             } else {
@@ -516,10 +518,11 @@ class AlarmTableViewCell : UITableViewCell, UISheetPresentationControllerDelegat
         
         return maxHeight
     }
+
     
     //MARK: - 메모LabelUI 높이계산
     // 메모라벨의 텍스트와 상태를 저장할 변수
-    
+
     private var memoViewHeightConstraint: Constraint?
     var fullText: String = ""
     var isExpanded = false
@@ -554,8 +557,6 @@ class AlarmTableViewCell : UITableViewCell, UISheetPresentationControllerDelegat
                     actualNumberOfLines += additionalLines
                 }
             }
-            
-            //            print("메모 텍스트 줄 수: \(actualNumberOfLines)줄, \(String(describing: self.memoLabel.text))")
             
             var displayedText = self.fullText
             
@@ -812,6 +813,7 @@ class AlarmTableViewCell : UITableViewCell, UISheetPresentationControllerDelegat
         
         let userlistData = userData[indexPath.item]
         
+        
         cell.configureMember(with: userlistData.nickname,imageURL: userlistData.imageURL ?? "",isDisturbBanMode: userlistData.isDisturbBanMode, isWakeup: userlistData.isWakeup)
         
         if indexPath.item == 0 {
@@ -832,6 +834,7 @@ class AlarmTableViewCell : UITableViewCell, UISheetPresentationControllerDelegat
     
     //그룹내의 셀 크기 = 이미지 + 라벨
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
+        
         
         return CGSize(width: 62, height: collectionViewHeight)
     }
@@ -971,6 +974,7 @@ class memberCollectioViewCell: UICollectionViewCell {
         label.font = DesignSystemFont.Pretendard_SemiBold12.value
         label.numberOfLines = 0
         label.textAlignment = .center
+        label.sizeToFit()
         return label
     }()
     
