@@ -86,7 +86,6 @@ extension DesignSystemColor {
             UIColor(hex: "#393939")
         case .Gray900:
             UIColor(hex: "#1D1D1D")
-            
         case .Black:
             UIColor(hex: "#202020")
         case .White:
@@ -115,6 +114,7 @@ enum DesignSystemFont {
     case Pretendard_Medium18
     case Pretendard_Bold30
     case Pretendard_Bold18
+    
 }
 
 extension DesignSystemFont {
@@ -156,41 +156,40 @@ extension DesignSystemFont {
     }
     
     var lineHeightMultiple: CGFloat {
-        return 1.4
-        //                switch self {
-        //                case .Pretendard_Bold8:
-        //                    return 1.17
-        //                case .Pretendard_Bold12:
-        //                    return 1.19
-        //                case .Pretendard_Bold20:
-        //                    return 1.19
-        //                case .Pretendard_Bold14:
-        //                    return 1.19
-        //                case .Pretendard_Bold70:
-        //                    return 1.17
-        //                case .Pretendard_SemiBold10:
-        //                    return 1.17
-        //                case .Pretendard_SemiBold12:
-        //                    return 2.32
-        //                case .Pretendard_Medium12:
-        //                    return 1.17
-        //                case .Pretendard_Medium14:
-        //                    return 1.17
-        //                case .Pretendard_Medium16:
-        //                    return 1.17
-        //                case .Pretendard_Bold30:
-        //                    return 1.19
-        //                case .Pretendard_Bold18:
-        //                    return 1.19
-        //                case .Pretendard_Bold16:
-        //                    return 1.17
-        //                case .Pretendard_SemiBold14:
-        //                    return 1.17
-        //                case .Pretendard_SemiBold16:
-        //                    return 1.17
-        //                case .Pretendard_Medium18:
-        //                    return 1.17
-        //                }
+        switch self {
+        case .Pretendard_Bold8:
+            return 1.17
+        case .Pretendard_Bold12:
+            return 1.19
+        case .Pretendard_Bold20:
+            return 1.19
+        case .Pretendard_Bold14:
+            return 1.19
+        case .Pretendard_Bold70:
+            return 1.17
+        case .Pretendard_SemiBold10:
+            return 1.17
+        case .Pretendard_SemiBold12:
+            return 2.32
+        case .Pretendard_Medium12:
+            return 1.17
+        case .Pretendard_Medium14:
+            return 1.17
+        case .Pretendard_Medium16:
+            return 1.17
+        case .Pretendard_Bold30:
+            return 1.19
+        case .Pretendard_Bold18:
+            return 1.19
+        case .Pretendard_Bold16:
+            return 1.17
+        case .Pretendard_SemiBold14:
+            return 1.17
+        case .Pretendard_SemiBold16:
+            return 1.17
+        case .Pretendard_Medium18:
+            return 1.17
+        }
     }
     
     func attributedString(for text: String, color: UIColor = .black) -> NSAttributedString {

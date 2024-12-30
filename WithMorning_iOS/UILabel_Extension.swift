@@ -106,11 +106,11 @@ extension UILabel {
         }
         return self.text!.count
     }
-}
-
-//MARK: - 글자 행간 조절
-extension UILabel{
+    
+    
+    //MARK: - 글자 행간 조절
     func applyDesignFont(_ font: DesignSystemFont, text: String, color: UIColor = .black) {
         self.attributedText = font.attributedString(for: text, color: color)
     }
+    
 }

@@ -368,6 +368,7 @@ class MainViewController: UIViewController, UISheetPresentationControllerDelegat
                     self.MainpageUpdate(with: mainpage)
                     print(mainpage)
                     self.nameLabel.text = "Hi, \(mainpage.connectorNickname)"
+                    
                     if ((mainpage.connectorProfileURL?.isEmpty) != nil) {
                         // 이미지 URL이 유효한 경우: 이미지 다운로드 처리
                         let url = URL(string: mainpage.connectorProfileURL ?? "")
@@ -376,8 +377,11 @@ class MainViewController: UIViewController, UISheetPresentationControllerDelegat
                         
                         self.profileButton.kf.setImage(with: url, placeholder: placeholderImage, options: [.processor(processor)])
                         
+                        RegisterUserInfo.shared.profileImage = self.profileButton.image
+                        
                     } else {
                         self.profileButton.image = UIImage(named: "profile") // 기본 이미지로 설정
+                        RegisterUserInfo.shared.profileImage = self.profileButton.image
                     }
                     AlarmManager.shared.updateAlarm(from: self.alarmData)
                     self.AlarmTableView.reloadData()
@@ -401,8 +405,13 @@ class MainViewController: UIViewController, UISheetPresentationControllerDelegat
     
     //MARK: - Data Array
     var alarmData  : [GroupList] = []
+    //확정 여부 확인
     var isExpanded: Bool = false
-    var isExpandedStates: [Int: Bool] = [:]  // indexPath.row를 키로 사용
+    var isExpandedStates: [Int: Bool] = [:]
+    
+    //collectionviewheight 확인
+    var collHeight : CGFloat = 0
+    var collHeightStates: [Int: CGFloat] = [:]
     
     func MainpageUpdate(with mainpage: MainpageResponse){
         guard let groupList = mainpage.groupList else {
@@ -415,16 +424,12 @@ class MainViewController: UIViewController, UISheetPresentationControllerDelegat
     }
     
     func checkIfCurrentUserIsLeader(userList: [UserList], currentUserNickname: String) -> Bool {
-        // UserList에서 첫 번째 유저의 닉네임과 현재 유저의 닉네임을 비교
         guard let leader = userList.first else { return false }
         return leader.nickname == currentUserNickname
     }
-    
-    
 }
 
 extension MainViewController : UITableViewDelegate, UITableViewDataSource{
-    
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         let count = alarmData.count
         self.emptycellcheck()
@@ -506,12 +511,24 @@ extension MainViewController : UITableViewDelegate, UITableViewDataSource{
         
         //더보기
         cell.Expandclosure = { [weak tableView] isExpanded in
+            
             UIView.performWithoutAnimation {
                 tableView?.beginUpdates()
                 tableView?.endUpdates()
             }
         }
         
+        //collectionview의 높이
+        cell.collectionviewHeightclosure = { [weak tableView] height in
+            
+            self.collHeightStates[indexPath.row] = height
+            
+            UIView.performWithoutAnimation {
+                tableView?.beginUpdates()
+                tableView?.endUpdates()
+                
+            }
+        }
         return cell
     }
     
@@ -521,17 +538,19 @@ extension MainViewController : UITableViewDelegate, UITableViewDataSource{
         let alarm = alarmData[indexPath.row]
         let cell = tableView.cellForRow(at: indexPath) as? AlarmTableViewCell
         
-        let baseHeight: CGFloat = 140  // 기본 높이
-        let extraHeight: CGFloat = 250 // 멤버 컬렉션 뷰 등의 추가 높이
+        let alarmoff: CGFloat = 140  // 기본 높이
+        let alarmon: CGFloat = 128
         
         // 메모가 없거나 방해 금지 모드인 경우 기본 처리
         guard let memo = alarm.memo as String?, !memo.isEmpty, !alarm.isDisturbBanGroup else {
-            return baseHeight
+            return alarmoff
         }
         
         let characterLimit = 19 //1줄 최대 글자 수
         let lines = memo.components(separatedBy: "\n")
         var actualNumberOfLines = lines.count
+        let collectionViewHeight: CGFloat = collHeightStates[indexPath.row] ?? 0
+        
         
         // 각 줄이 characterLimit을 초과하는 경우 추가 줄 수 계산
         for line in lines {
@@ -543,34 +562,35 @@ extension MainViewController : UITableViewDelegate, UITableViewDataSource{
         
         // 메모가 접힌 상태에서는 추가 높이만
         if !(cell?.isExpanded ?? false) {
-            return baseHeight + extraHeight
+            return alarmoff + alarmon + collectionViewHeight
         }
         
         // 메모가 펼쳐진 상태에서 메모 높이 계산
         let memoHeight: CGFloat
+        
         if actualNumberOfLines == 1 && (memo.count <= characterLimit) {
             memoHeight = 0  // 16글자 이하의 한 줄일 때는 추가 높이 없음
         } else {
             switch actualNumberOfLines {
             case 1:
-                memoHeight = 20  // 16글자 초과하는 한 줄
+                memoHeight = 0  // 16글자 초과하는 한 줄
             case 2:
-                memoHeight = 23  // 두 줄
+                memoHeight = 17  // 두 줄
             case 3:
-                memoHeight = 40  // 세 줄 이상
+                memoHeight = 34  // 세 줄 이상
             default :
-                memoHeight = CGFloat(15*actualNumberOfLines)
+                memoHeight = CGFloat(17*actualNumberOfLines)
             }
         }
-        return baseHeight + extraHeight + memoHeight
+        
+        return alarmoff + alarmon + memoHeight + collectionViewHeight
     }
     
     // 셀 확장/축소 처리
     func toggleExpansion(for indexPath: IndexPath) {
-        // 해당 셀의 확장 상태를 토글
         isExpandedStates[indexPath.row] = !(isExpandedStates[indexPath.row] ?? false)
-        
     }
+    
     
     func tableView(_ tableView: UITableView, didEndDisplaying cell: UITableViewCell, forRowAt indexPath: IndexPath) {
         

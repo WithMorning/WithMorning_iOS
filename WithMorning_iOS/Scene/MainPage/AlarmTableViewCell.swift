@@ -25,10 +25,9 @@ class AlarmTableViewCell : UITableViewCell, UISheetPresentationControllerDelegat
     //알람나가기 누른 후 실행되는 클로저
     var onAlarmLeave: (()->Void)?
     var Expandclosure : ((Bool) -> Void)? = nil
+    var collectionviewHeightclosure : ((CGFloat) -> (Void))?
     
     var APInetwork = Network.shared
-    
-    
     var time24: String = ""
     
     lazy var AlarmStackView : UIStackView = {
@@ -60,7 +59,7 @@ class AlarmTableViewCell : UITableViewCell, UISheetPresentationControllerDelegat
         toggle.addTarget(self, action: #selector(clicktoggle), for: .valueChanged)
         toggle.layer.cornerRadius = toggle.frame.height / 2
         toggle.layer.masksToBounds = true
-
+        
         return toggle
     }()
     
@@ -76,7 +75,7 @@ class AlarmTableViewCell : UITableViewCell, UISheetPresentationControllerDelegat
         label.font = DesignSystemFont.Pretendard_Bold30.value
         return label
     }()
-        
+    
     lazy var noonLabel : UILabel = {
         let label = UILabel()
         label.font = DesignSystemFont.Pretendard_Bold18.value
@@ -220,15 +219,12 @@ class AlarmTableViewCell : UITableViewCell, UISheetPresentationControllerDelegat
         return view
     }()
     
-    lazy var memoLabel: UILabel = {
-        let label = UILabel()
+    lazy var memoLabel: TopAlignedLabel = {
+        let label = TopAlignedLabel()
         label.textAlignment = .center
-        label.baselineAdjustment = .alignCenters
         label.numberOfLines = 0
         label.isUserInteractionEnabled = true
-        label.backgroundColor = .yellow
-        label.sizeToFit()
-        
+        label.translatesAutoresizingMaskIntoConstraints = false
         let tapGesture = UITapGestureRecognizer(target: self, action: #selector(memoLabelTapped))
         label.addGestureRecognizer(tapGesture)
         return label
@@ -350,10 +346,17 @@ class AlarmTableViewCell : UITableViewCell, UISheetPresentationControllerDelegat
             $0.centerX.equalToSuperview()
         }
         
-        memberCollectionView.snp.makeConstraints {
-            $0.top.equalTo(bottomViewLabel.snp.bottom).offset(12)
-            $0.leading.trailing.equalToSuperview().inset(20)
-            self.collectionViewHeightConstraint = $0.height.equalTo(collectionViewHeight).constraint
+        memberCollectionView.snp.makeConstraints { make in
+            make.top.equalTo(bottomViewLabel.snp.bottom).offset(12)
+            make.leading.trailing.equalToSuperview().inset(20)
+            
+            // 기존 제약 조건을 업데이트
+            if let collectionViewHeightConstraint = self.collectionViewHeightConstraint {
+                collectionViewHeightConstraint.update(offset: collectionViewHeight)
+            } else {
+                // 제약이 없을 경우에만 새로 추가
+                self.collectionViewHeightConstraint = make.height.equalTo(collectionViewHeight).constraint
+            }
         }
         
         memoView.snp.makeConstraints {
@@ -363,6 +366,7 @@ class AlarmTableViewCell : UITableViewCell, UISheetPresentationControllerDelegat
         
         memoLabel.snp.makeConstraints{
             $0.edges.equalToSuperview().inset(UIEdgeInsets(top: 16, left: 48, bottom: 16, right: 48))
+
         }
         
     }
@@ -446,16 +450,15 @@ class AlarmTableViewCell : UITableViewCell, UISheetPresentationControllerDelegat
     
     //MARK: - 멤버
     var groupId : Int = 0 //그룹 아이디 (방해금지모드에도 사용)
-    
-    var participantcode : String = ""
+    var participantcode : String = "" // 참여코드
     
     private var userData : [UserList] = [] //유저 데이터
     private var memberCount : Int = 0
-    private var collectionViewHeight: CGFloat = 90
+    var collectionViewHeight: CGFloat = 87
     private var updateTask: DispatchWorkItem?
     
     //제약조건 업데이트를 위해 var로 설정
-    private var collectionViewHeightConstraint: Constraint?
+   private var collectionViewHeightConstraint: Constraint?
     
     func ConfigureMember(_ userList: [UserList]) {
         self.memberCount = userList.count
@@ -465,8 +468,8 @@ class AlarmTableViewCell : UITableViewCell, UISheetPresentationControllerDelegat
         self.collectionViewHeight = maxHeight
         
         DispatchQueue.main.async {
-            self.memberCollectionView.reloadData()
             self.updateCollectionViewHeight()
+            self.memberCollectionView.reloadData()
             self.layoutIfNeeded()
             
             if let tableView = self.superview as? UITableView {
@@ -479,6 +482,8 @@ class AlarmTableViewCell : UITableViewCell, UISheetPresentationControllerDelegat
     //MARK: - collectionview 높이계산
     func updateCollectionViewHeight() {
         collectionViewHeightConstraint?.update(offset: collectionViewHeight)
+        self.memberCollectionView.reloadData()
+        collectionviewHeightclosure?(collectionViewHeight)
         setNeedsLayout()
     }
     
@@ -494,7 +499,7 @@ class AlarmTableViewCell : UITableViewCell, UISheetPresentationControllerDelegat
             // boundingRect로 텍스트 크기 계산
             let textSize = (text as NSString).boundingRect(
                 with: CGSize(width: maxWidth, height: .greatestFiniteMagnitude),
-                options: [.usesLineFragmentOrigin], // .usesFontLeading 제거
+                options: [.usesLineFragmentOrigin],
                 attributes: [NSAttributedString.Key.font: font],
                 context: nil
             ).size
@@ -505,7 +510,7 @@ class AlarmTableViewCell : UITableViewCell, UISheetPresentationControllerDelegat
             
             // 셀 높이 계산
             let cellHeight: CGFloat
-            if labelHeight > font.lineHeight * 1.5 { // 1.5를 임계값으로 사용
+            if labelHeight > font.lineHeight * 1.5 {
                 // 2줄 이상일 경우
                 cellHeight = imageHeight + spacing + (font.lineHeight * 2)
             } else {
@@ -518,11 +523,11 @@ class AlarmTableViewCell : UITableViewCell, UISheetPresentationControllerDelegat
         
         return maxHeight
     }
-
+    
     
     //MARK: - 메모LabelUI 높이계산
     // 메모라벨의 텍스트와 상태를 저장할 변수
-
+    
     private var memoViewHeightConstraint: Constraint?
     var fullText: String = ""
     var isExpanded = false
@@ -596,25 +601,21 @@ class AlarmTableViewCell : UITableViewCell, UISheetPresentationControllerDelegat
             if !self.isExpanded && displayedText.contains("... 더보기") {
                 if let dotRange = displayedText.range(of: "... ") {
                     let mainText = String(displayedText[..<dotRange.lowerBound])
-                    
-                    self.memoLabel.applyDesignFont(.Pretendard_Medium12, text: mainText + "... ", color: DesignSystemColor.Gray400.value)
-                    let mainAttributedText = self.memoLabel.attributedText
-                    
-                    self.memoLabel.applyDesignFont(.Pretendard_SemiBold12, text: "더보기", color: DesignSystemColor.Gray600.value)
-                    let moreAttributedText = self.memoLabel.attributedText
-                    
-                    let finalAttributedString = NSMutableAttributedString()
-                    if let mainText = mainAttributedText {
-                        finalAttributedString.append(mainText)
-                    }
-                    if let moreText = moreAttributedText {
-                        finalAttributedString.append(moreText)
-                    }
-                    
-                    self.memoLabel.attributedText = finalAttributedString
+                    self.memoLabel.applyMoreTextStyle(
+                        mainText: mainText + "... ",
+                        mainFont: DesignSystemFont.Pretendard_Medium12.value,
+                        mainColor: DesignSystemColor.Gray400.value,
+                        moreText: "더보기",
+                        moreFont: DesignSystemFont.Pretendard_SemiBold12.value,
+                        moreColor: DesignSystemColor.Gray600.value
+                    )
                 }
             } else {
-                self.memoLabel.applyDesignFont(.Pretendard_Medium12, text: displayedText, color: DesignSystemColor.Gray400.value)
+                self.memoLabel.applyDesignFont(
+                    .Pretendard_Medium12,
+                    text: displayedText,
+                    color: DesignSystemColor.Gray400.value
+                )
             }
             
             self.memoLabel.textAlignment = .center
@@ -834,7 +835,6 @@ class AlarmTableViewCell : UITableViewCell, UISheetPresentationControllerDelegat
     
     //그룹내의 셀 크기 = 이미지 + 라벨
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
-        
         
         return CGSize(width: 62, height: collectionViewHeight)
     }
@@ -1087,7 +1087,6 @@ class memberCollectioViewCell: UICollectionViewCell {
         } else {
             meView.isHidden = true
         }
-        
         
         if isDisturbBanMode {
             memberView.backgroundColor = DesignSystemColor.Gray150.value

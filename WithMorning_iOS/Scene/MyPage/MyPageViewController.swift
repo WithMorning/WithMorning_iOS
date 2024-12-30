@@ -72,7 +72,7 @@ class MyPageViewController : UIViewController, UIScrollViewDelegate {
         let label = UILabel()
         label.font = DesignSystemFont.Pretendard_Bold18.value
         label.tintColor = .black
-        label.text = "일이삼사오육칠팔구십"
+        label.text = ""
         label.textAlignment = .center
         return label
     }()
@@ -287,6 +287,7 @@ class MyPageViewController : UIViewController, UIScrollViewDelegate {
         stackView.alignment = .fill
         stackView.addSubviews(privacyLabel,privacyLabel2)
         stackView.isUserInteractionEnabled = true
+        
         let tapGestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(privacyTappedAction))
         stackView.addGestureRecognizer(tapGestureRecognizer)
         return stackView
@@ -458,12 +459,9 @@ class MyPageViewController : UIViewController, UIScrollViewDelegate {
         }
         
         profileImage.snp.makeConstraints{
-            
             $0.height.equalTo(profileImage.snp.width)
             $0.centerY.equalTo(editProfileButton.snp.top) //여기
-            
             $0.trailing.equalTo(editProfileButton.snp.leading).offset(-16)
-            
             $0.leading.equalToSuperview().offset(16)
         }
         
@@ -473,8 +471,7 @@ class MyPageViewController : UIViewController, UIScrollViewDelegate {
             $0.trailing.equalTo(ContectButton.snp.trailing)
         }
         
-        //MARK: - 버튼 두개 수정 필요
-        
+        //MARK: - 버튼 두개
         editProfileButton.snp.makeConstraints{
             $0.trailing.equalTo(ContectButton.snp.leading).offset(-6)
             $0.top.equalTo(nickNameLabel.snp.bottom).offset(16)
@@ -519,6 +516,7 @@ class MyPageViewController : UIViewController, UIScrollViewDelegate {
             $0.height.equalTo(24)
         }
         pushnotiLabel.snp.makeConstraints{
+            $0.centerY.equalToSuperview()
             $0.leading.equalToSuperview()
         }
         pushnotiLabel2.snp.makeConstraints{
@@ -537,6 +535,7 @@ class MyPageViewController : UIViewController, UIScrollViewDelegate {
             $0.height.equalTo(24)
         }
         noticeLabel.snp.makeConstraints{
+            $0.centerY.equalToSuperview()
             $0.leading.equalToSuperview()
         }
         noticeLabel2.snp.makeConstraints{
@@ -548,6 +547,7 @@ class MyPageViewController : UIViewController, UIScrollViewDelegate {
             $0.height.equalTo(24)
         }
         serviceLabel.snp.makeConstraints{
+            $0.centerY.equalToSuperview()
             $0.leading.equalToSuperview()
         }
         serviceLabel2.snp.makeConstraints{
@@ -559,6 +559,7 @@ class MyPageViewController : UIViewController, UIScrollViewDelegate {
             $0.height.equalTo(24)
         }
         privacyLabel.snp.makeConstraints{
+            $0.centerY.equalToSuperview()
             $0.leading.equalToSuperview()
         }
         privacyLabel2.snp.makeConstraints{
@@ -576,6 +577,7 @@ class MyPageViewController : UIViewController, UIScrollViewDelegate {
             $0.height.equalTo(24)
         }
         inquiryLabel.snp.makeConstraints{
+            $0.centerY.equalToSuperview()
             $0.leading.equalToSuperview()
         }
         inquiryLabel2.snp.makeConstraints{
@@ -587,9 +589,11 @@ class MyPageViewController : UIViewController, UIScrollViewDelegate {
             $0.height.equalTo(24)
         }
         versionLabel.snp.makeConstraints{
+            $0.centerY.equalToSuperview()
             $0.leading.equalToSuperview()
         }
         versionLabel2.snp.makeConstraints{
+            $0.centerY.equalToSuperview()
             $0.trailing.equalToSuperview()
         }
         
