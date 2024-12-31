@@ -81,9 +81,9 @@ class AppDelegate:UIResponder, UIApplicationDelegate, MessagingDelegate {
         if let groupID = userInfo["groupID"] as? Int {
 //            self.playAlarmSound()
             UserDefaults.standard.set(groupID, forKey: "wakeupGroupId")
-            print("🔥 groupID 저장: \(UserDefaults.standard.integer(forKey: "wakeupGroupId"))")
-            NotificationCenter.default.post(name: NSNotification.Name("UserStateChanged"), object: nil)
-            UserDefaults.setUserState("alarm")
+//            print("🔥 groupID 저장: \(UserDefaults.standard.integer(forKey: "wakeupGroupId"))")
+//            NotificationCenter.default.post(name: NSNotification.Name("UserStateChanged"), object: nil)
+//            UserDefaults.setUserState("alarm")
         }
     }
     

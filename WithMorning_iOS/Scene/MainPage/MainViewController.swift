@@ -352,7 +352,6 @@ class MainViewController: UIViewController, UISheetPresentationControllerDelegat
         }
     }
     
-    
     //MARK: - API
     func getMainpage() {
         LoadingIndicator.showLoading()

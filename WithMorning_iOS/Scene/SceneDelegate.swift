@@ -58,8 +58,8 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         case "deleteaccount":
             UserDefaults.standard.removeObject(forKey: "isExistingUser")
             setRootViewController(windowScene, type: .termAgree)
-        case "alarm":
-            setRootViewController(windowScene, type: .alarm)
+//        case "alarm":
+//            setRootViewController(windowScene, type: .alarm)
         default:
             setRootViewController(windowScene, type: .termAgree)
         }
@@ -72,7 +72,7 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         let viewController = type.vc
         let navigationController: UINavigationController
         switch type {
-        case .termAgree, .register, .main, .login, .alarm:
+        case .termAgree, .register, .main, .login:
             navigationController = UINavigationController(rootViewController: viewController)
             if type == .main {
                 navigationController.navigationBar.isHidden = true
@@ -85,9 +85,10 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         }
     }
     
-    //MARK: - 앱이 꺼져있을시 local push notification
+//MARK: - sceneDidDisconnect 앱이 terminated일때 push알람
     func sceneDidDisconnect(_ scene: UIScene) {
     }
+    
     func sceneDidBecomeActive(_ scene: UIScene) {
     }
     func sceneWillResignActive(_ scene: UIScene) {
@@ -103,7 +104,6 @@ enum StartViewControllerType {
     case termAgree
     case main
     case register
-    case alarm
     
     var vc: UIViewController {
         switch self {
@@ -111,7 +111,7 @@ enum StartViewControllerType {
         case .termAgree: return TermsViewController()
         case .main: return MainViewController()
         case .register: return RegisterViewController()
-        case .alarm: return AlarmViewController()
+//        case .alarm: return AlarmViewController()
         }
     }
 }

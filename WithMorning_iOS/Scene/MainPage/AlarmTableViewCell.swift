@@ -59,7 +59,6 @@ class AlarmTableViewCell : UITableViewCell, UISheetPresentationControllerDelegat
         toggle.addTarget(self, action: #selector(clicktoggle), for: .valueChanged)
         toggle.layer.cornerRadius = toggle.frame.height / 2
         toggle.layer.masksToBounds = true
-        
         return toggle
     }()
     
