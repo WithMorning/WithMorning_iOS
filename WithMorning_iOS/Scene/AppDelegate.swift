@@ -76,41 +76,12 @@ class AppDelegate:UIResponder, UIApplicationDelegate, MessagingDelegate {
         
     }
     
-    //MARK: -  알림을 처리하고 AlarmViewController로 이동하는 함수
+    //MARK: -  알림을 userdefualt로 처리
     func handleNotificationResponse(_ userInfo: [AnyHashable: Any]) {
         if let groupID = userInfo["groupID"] as? Int {
-//            self.playAlarmSound()
             UserDefaults.standard.set(groupID, forKey: "wakeupGroupId")
-//            print("🔥 groupID 저장: \(UserDefaults.standard.integer(forKey: "wakeupGroupId"))")
-//            NotificationCenter.default.post(name: NSNotification.Name("UserStateChanged"), object: nil)
-//            UserDefaults.setUserState("alarm")
         }
     }
-    
-//    private func playAlarmSound() {
-//        do {
-//            // 알람 소리 파일 경로
-//            guard let soundURL = Bundle.main.url(forResource: "wakeupalarm", withExtension: "wav") else {
-//                print("🔴 알람 소리 파일을 찾을 수 없습니다.")
-//                return
-//            }
-//            
-//            // 오디오 세션 설정
-//            let audioSession = AVAudioSession.sharedInstance()
-//            try audioSession.setCategory(.playback, mode: .default, options: .mixWithOthers)
-//            try audioSession.setActive(true)
-//            
-//            // 오디오 플레이어 초기화
-//            audioPlayer = try AVAudioPlayer(contentsOf: soundURL)
-//            audioPlayer?.volume = UserDefaults.standard.float(forKey: "volume") // 설정된 볼륨 값
-//            audioPlayer?.numberOfLoops = -1 // 무한 반복
-//            audioPlayer?.play()
-//            
-//        } catch {
-//            print("🔴 알람 소리 재생 실패: \(error)")
-//        }
-//    }
-    
 }
 
 extension AppDelegate: UNUserNotificationCenterDelegate {

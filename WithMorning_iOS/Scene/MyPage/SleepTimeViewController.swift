@@ -79,7 +79,7 @@ class SleepTimeViewController : UIViewController, UISheetPresentationControllerD
         label.textAlignment = .left
         return label
     }()
-
+    
     private lazy var repeatDayLabel : UILabel = {
         let attributedString1 = NSMutableAttributedString(string: "")
         let imageAttachment1 = NSTextAttachment()
@@ -109,7 +109,7 @@ class SleepTimeViewController : UIViewController, UISheetPresentationControllerD
         let view = UIView()
         view.backgroundColor = .white
         view.layer.cornerRadius = 8
-        view.addSubviews(notiLabel,notiImage)
+        view.addSubviews(notiLabel,bedtimeToggle)
         return view
     }()
     
@@ -122,12 +122,23 @@ class SleepTimeViewController : UIViewController, UISheetPresentationControllerD
         return label
     }()
     
-    private lazy var notiImage : UIButton = {
-        let button = UIButton()
-        button.setImage(UIImage(named: "checkboxgray"), for: .normal)
-        button.setImage(UIImage(named: "checkboxgray"), for: .highlighted)
-        button.addTarget(self, action: #selector(notisetting), for: .touchUpInside)
-        return button
+    //    private lazy var notiImage : UIButton = {
+    //        let button = UIButton()
+    //        button.setImage(UIImage(named: "checkboxgray"), for: .normal)
+    //        button.setImage(UIImage(named: "checkboxgray"), for: .highlighted)
+    //        button.addTarget(self, action: #selector(notisetting), for: .touchUpInside)
+    //        return button
+    //    }()
+    
+    private lazy var bedtimeToggle: UISwitch = {
+        let toggle = UISwitch()
+        toggle.onTintColor = DesignSystemColor.Orange500.value
+        toggle.tintColor = DesignSystemColor.Gray300.value
+        toggle.backgroundColor = DesignSystemColor.Gray300.value
+        toggle.addTarget(self, action: #selector(bedtimeToggleClick), for: .valueChanged)
+        toggle.layer.cornerRadius = toggle.frame.height / 2
+        toggle.layer.masksToBounds = true
+        return toggle
     }()
     
     //MARK: - 저장 버튼
@@ -159,7 +170,7 @@ class SleepTimeViewController : UIViewController, UISheetPresentationControllerD
         SetUI()
         setSelectedTimeOnPicker()
         updateRepeatDayLabel()
-        allowAlarmTintColor()
+        bedtimeToggleTintColor()
     }
     
     override func viewDidLayoutSubviews() {
@@ -227,10 +238,9 @@ class SleepTimeViewController : UIViewController, UISheetPresentationControllerD
             $0.leading.equalToSuperview().inset(16)
             $0.centerY.equalToSuperview()
         }
-        notiImage.snp.makeConstraints{
+        bedtimeToggle.snp.makeConstraints{
             $0.trailing.equalToSuperview().inset(16)
             $0.centerY.equalToSuperview()
-            $0.width.height.equalTo(20)
         }
         
         saveButton.snp.makeConstraints{
@@ -386,34 +396,29 @@ class SleepTimeViewController : UIViewController, UISheetPresentationControllerD
         }
     }
     //MARK: - 알람받기
-    @objc func notisetting(){
+    @objc func bedtimeToggleClick(){
         if allowAlarm == false{
-            notiImage.setImage(UIImage(named: "checkboxgray"), for: .normal)
-            notiImage.setImage(UIImage(named: "checkboxgray"), for: .highlighted)
+            bedtimeToggle.isOn = true
             allowAlarm = true
-            allowAlarmTintColor()
+            bedtimeToggleTintColor()
         }else{
-            notiImage.setImage(UIImage(named: "checkboxorange"), for: .normal)
-            notiImage.setImage(UIImage(named: "checkboxorange"), for: .highlighted)
+            bedtimeToggle.isOn = false
             allowAlarm = false
-            allowAlarmTintColor()
+            bedtimeToggleTintColor()
         }
     }
     
-    func allowAlarmTintColor(){
+    func bedtimeToggleTintColor(){
         if allowAlarm == true{
-            notiImage.setImage(UIImage(named: "checkboxorange"), for: .normal)
-            notiImage.setImage(UIImage(named: "checkboxorange"), for: .highlighted)
+            bedtimeToggle.isOn = true
         }else{
-            notiImage.setImage(UIImage(named: "checkboxgray"), for: .normal)
-            notiImage.setImage(UIImage(named: "checkboxgray"), for: .highlighted)
+            bedtimeToggle.isOn = false
         }
     }
     
     //MARK: - 저장 버튼
     @objc func saveclicked() {
         editBedtime()
-        
     }
 }
 

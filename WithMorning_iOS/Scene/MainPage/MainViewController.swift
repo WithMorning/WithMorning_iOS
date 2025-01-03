@@ -146,6 +146,7 @@ class MainViewController: UIViewController, UISheetPresentationControllerDelegat
     override func viewDidLoad() {
         super.viewDidLoad()
         self.view.backgroundColor = DesignSystemColor.Gray150.value
+        alarmobserve()
         tableSetting()
         SetUI()
         emptycellcheck()
@@ -154,6 +155,7 @@ class MainViewController: UIViewController, UISheetPresentationControllerDelegat
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
+        alarmobserve()
         getMainpage()
         updateSoundButtonImage()
         checkNotificationPermission()
@@ -179,11 +181,11 @@ class MainViewController: UIViewController, UISheetPresentationControllerDelegat
             $0.height.equalTo(36)
         }
         
-        soundButton.snp.makeConstraints{
-            $0.centerY.equalTo(profileButton)
-            $0.height.width.equalTo(36)
-            $0.trailing.equalTo(profileButton.snp.leading).offset(-16)
-        }
+//        soundButton.snp.makeConstraints{
+//            $0.centerY.equalTo(profileButton)
+//            $0.height.width.equalTo(36)
+//            $0.trailing.equalTo(profileButton.snp.leading).offset(-16)
+//        }
         
         headerStackView.snp.makeConstraints{
             $0.top.equalToSuperview()
@@ -231,7 +233,6 @@ class MainViewController: UIViewController, UISheetPresentationControllerDelegat
         AlarmTableView.backgroundColor = DesignSystemColor.Gray150.value
         AlarmTableView.separatorStyle = .none
         AlarmTableView.refreshControl = tableViewRefresh
-        
         headerView.layoutIfNeeded()
         
         let alarmButtonHeight: CGFloat = 56
@@ -282,6 +283,32 @@ class MainViewController: UIViewController, UISheetPresentationControllerDelegat
         // 애니메이션과 함께 표시
         UIView.animate(withDuration: 0.3) {
             self.present(vc, animated: true)
+        }
+    }
+    //MARK: - 알람이 왔을 경우 alarmviewcontroller로 이동
+    func alarmobserve(){
+        if UserDefaults.standard.integer(forKey: "wakeupGroupId") != 0{
+            NavigateToAlarm()
+            
+        }else{
+            print("알람이 오지 않은 상태입니다.")
+        }
+    }
+    
+    //MARK: - 알람 페이지로 이동
+    func NavigateToAlarm() {
+        let alarmVC = AlarmViewController()
+        let navController = UINavigationController(rootViewController: alarmVC)
+        navController.modalPresentationStyle = .fullScreen
+        navController.navigationBar.isHidden = true
+        
+        if let keyWindow = UIApplication.shared.connectedScenes
+            .compactMap({ $0 as? UIWindowScene })
+            .flatMap({ $0.windows })
+            .first(where: { $0.isKeyWindow }) {
+            
+            keyWindow.rootViewController = navController
+            keyWindow.makeKeyAndVisible()
         }
     }
     
@@ -421,11 +448,6 @@ class MainViewController: UIViewController, UISheetPresentationControllerDelegat
             self.AlarmTableView.reloadData()
         }
     }
-    
-    func checkIfCurrentUserIsLeader(userList: [UserList], currentUserNickname: String) -> Bool {
-        guard let leader = userList.first else { return false }
-        return leader.nickname == currentUserNickname
-    }
 }
 
 extension MainViewController : UITableViewDelegate, UITableViewDataSource{
@@ -445,8 +467,11 @@ extension MainViewController : UITableViewDelegate, UITableViewDataSource{
         cell.backgroundColor = .clear
         
         cell.topViewLabel.text = alarm.name
-        
+            
         cell.ConfigureMember(alarm.userList ?? [])
+        
+//        cell.isLeader = alarm.userList?[indexPath.row].isLeader
+        
         cell.time24 = alarm.wakeupTime
         
         cell.groupId = alarm.groupID
@@ -491,19 +516,8 @@ extension MainViewController : UITableViewDelegate, UITableViewDataSource{
             }
         }
         
-        
-        //내가 리더인지 아닌지 체크
+        //셀 상태
         cell.configureCell(with: alarm, currentUserNickname: UserDefaults.standard.string(forKey: "nickname") ?? "")
-        
-        let currentUserNickname = UserDefaults.standard.string(forKey: "nickname") ?? ""
-        
-        let isLeader = checkIfCurrentUserIsLeader(userList: alarm.userList ?? [], currentUserNickname: currentUserNickname)
-        
-        if isLeader {
-            cell.isLeader = true
-        } else {
-            cell.isLeader = false
-        }
         
         //메모 텍스트
         cell.setMemoText(alarm.memo)

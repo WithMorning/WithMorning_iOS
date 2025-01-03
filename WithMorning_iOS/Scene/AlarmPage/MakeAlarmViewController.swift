@@ -372,9 +372,7 @@ class MakeAlarmViewController : UIViewController, UIScrollViewDelegate, UISheetP
         if mode == .editMode {
             print("수정모드", groupId)
             print("editTime: \(editTime)")
-            
             setTimeOnPicker(for: editTime)
-            
             updateRepeatDayLabel()
         } else {
             print("생성모드", groupId)
@@ -558,22 +556,38 @@ class MakeAlarmViewController : UIViewController, UIScrollViewDelegate, UISheetP
     }
     
     func updateRepeatDayLabel() {
-        if selectedDayOfWeek.isEmpty {
+        // 요일 집합 정의
+        let weekdaysSet: Set = ["mon", "tue", "wed", "thu", "fri"]
+        let weekendSet: Set = ["sat", "sun"]
+        let allDaysSet: Set = ["mon", "tue", "wed", "thu", "fri", "sat", "sun"]
+        let selectedDaySet = Set(selectedDayOfWeek)
+        
+        // 한글 요일 변환 딕셔너리
+        let dayOfWeekDict: [String: String] = [
+            "mon": "월", "tue": "화", "wed": "수", "thu": "목",
+            "fri": "금", "sat": "토", "sun": "일"
+        ]
+        
+        // 조건에 따른 텍스트 설정
+        if selectedDaySet.isEmpty {
             repeatDayLabel1.text = "없음"
-        } else {
-            let dayNames = selectedDayOfWeek.map { day -> String in
-                switch day {
-                case "mon": return "월"
-                case "tue": return "화"
-                case "wed": return "수"
-                case "thu": return "목"
-                case "fri": return "금"
-                case "sat": return "토"
-                case "sun": return "일"
-                default: return ""
-                }
-            }
-            repeatDayLabel1.text = dayNames.joined(separator: ", ")
+        }
+        // 모든 요일이 선택된 경우
+        else if selectedDaySet == allDaysSet {
+            repeatDayLabel1.text = "매일"
+        }
+        // 평일만 선택된 경우
+        else if weekdaysSet.isSubset(of: selectedDaySet) && selectedDaySet.intersection(weekendSet).isEmpty {
+            repeatDayLabel1.text = "평일"
+        }
+        // 주말만 선택된 경우
+        else if selectedDaySet.isSubset(of: weekendSet) {
+            repeatDayLabel1.text = "주말"
+        }
+        // 그 외의 경우 선택된 요일들을 나열
+        else {
+            let koreanDays = selectedDayOfWeek.compactMap { dayOfWeekDict[$0] }.joined(separator: ", ")
+            repeatDayLabel1.text = koreanDays
         }
     }
     

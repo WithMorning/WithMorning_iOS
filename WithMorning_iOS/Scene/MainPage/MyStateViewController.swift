@@ -35,46 +35,37 @@ class MyStateViewController : UIViewController{
         return label
     }()
     
+    private lazy var NumStackView: UIStackView = {
+        let stackView = UIStackView()
+        stackView.axis = .horizontal
+        stackView.alignment = .fill
+        stackView.distribution = .equalSpacing
+        stackView.spacing = 10
+        stackView.addSubviews(NumLabel,NumButton)
+        return stackView
+    }()
+    
+    private lazy var NumLabel : UILabel = {
+        let label = UILabel()
+        label.text = "전화번호 비공개"
+        label.font = DesignSystemFont.Pretendard_Medium14.value
+        label.textColor = .black
+        return label
+    }()
+    
+    private lazy var NumButton : UIButton = {
+        let button = UIButton()
+        button.setImage(UIImage(named: "checkboxgray"), for: .normal)
+        button.setImage(UIImage(named: "checkboxgray"), for: .highlighted)
+        button.addTarget(self, action: #selector(numButtonclick), for: .touchUpInside)
+        return button
+    }()
+    
     lazy var subLabel : UILabel = {
         let label = UILabel()
         label.font = DesignSystemFont.Pretendard_Medium12.value
         label.textColor = DesignSystemColor.Gray500.value
         return label
-    }()
-    
-    lazy var opencallButton : UIButton = {
-        let button = UIButton()
-        button.setTitle("전화번호 공개", for: .normal)
-        button.titleLabel?.font = DesignSystemFont.Pretendard_SemiBold14.value
-        button.titleLabel?.textAlignment = .center
-        
-        button.setTitleColor(.white, for: .normal)
-        button.setTitleColor(.white, for: .highlighted)
-        
-        button.layer.cornerRadius = 8
-        button.layer.masksToBounds = true
-        button.clipsToBounds = true
-        
-        button.addTarget(self, action: #selector(callclick), for: .touchUpInside)
-        return button
-    }()
-    
-    lazy var closecallButton : UIButton = {
-        let button = UIButton()
-        button.setTitle("전화번호 비공개", for: .normal)
-        button.titleLabel?.font = DesignSystemFont.Pretendard_SemiBold14.value
-        button.titleLabel?.textAlignment = .center
-        
-        button.setTitleColor(.white, for: .normal)
-        button.setTitleColor(.white, for: .highlighted)
-        
-        button.layer.cornerRadius = 8
-        
-        button.layer.masksToBounds = true
-        button.clipsToBounds = true
-        
-        button.addTarget(self, action: #selector(nocallclick), for: .touchUpInside)
-        return button
     }()
     
     //MARK: - 완료버튼
@@ -98,7 +89,6 @@ class MyStateViewController : UIViewController{
     }()
     
     //MARK: - Life Cycle
-    
     override func viewDidLoad() {
         super.viewDidLoad()
         super.view.backgroundColor = .white
@@ -106,11 +96,10 @@ class MyStateViewController : UIViewController{
         configureUserState()
     }
     
-    
     //MARK: - UI
     
     func SetUI(){
-        view.addSubviews(userImage,nicknameLabel,subLabel,opencallButton,closecallButton,DoneButton)
+        view.addSubviews(userImage,nicknameLabel,NumStackView,subLabel,DoneButton)
         
         userImage.snp.makeConstraints{
             $0.width.height.equalTo(100)
@@ -121,25 +110,29 @@ class MyStateViewController : UIViewController{
             $0.centerX.equalToSuperview()
             $0.top.equalTo(userImage.snp.bottom).offset(16)
         }
+        NumStackView.snp.makeConstraints{
+            $0.centerX.equalToSuperview()
+            $0.width.equalTo(122)
+            $0.height.equalTo(24)
+            $0.top.equalTo(nicknameLabel.snp.bottom).offset(16)
+        }
+        NumLabel.snp.makeConstraints{
+            $0.centerY.equalToSuperview()
+            $0.leading.equalToSuperview()
+        }
+        NumButton.snp.makeConstraints{
+            $0.centerY.equalToSuperview()
+            $0.width.height.equalTo(20)
+            $0.trailing.equalToSuperview()
+        }
+        
         subLabel.snp.makeConstraints{
             $0.centerX.equalToSuperview()
-            $0.top.equalTo(nicknameLabel.snp.bottom).offset(8)
-        }
-        opencallButton.snp.makeConstraints{
-            $0.height.equalTo(56)
-            $0.top.equalTo(subLabel.snp.bottom).offset(16)
-            $0.leading.equalToSuperview().inset(16)
-            $0.trailing.equalTo(view.snp.centerX).offset(-4)
-        }
-        closecallButton.snp.makeConstraints{
-            $0.height.equalTo(56)
-            $0.top.equalTo(subLabel.snp.bottom).offset(16)
-            $0.trailing.equalToSuperview().inset(16)
-            $0.leading.equalTo(view.snp.centerX).offset(4)
+            $0.top.equalTo(NumStackView.snp.bottom).offset(10)
         }
         
         DoneButton.snp.makeConstraints{
-            $0.top.equalTo(closecallButton.snp.bottom).offset(16)
+            $0.top.equalTo(subLabel.snp.bottom).offset(24)
             $0.leading.trailing.equalTo(view.safeAreaLayoutGuide)
             $0.height.equalTo(300)
         }
@@ -183,22 +176,17 @@ class MyStateViewController : UIViewController{
         let color = DesignSystemColor.Orange500.value // 강조할 텍스트의 색상
         
         if isagree ?? true{
-            fullText = "전화번호를 공개한 그룹입니다."
-            targetText = "공개"
-            closecallButton.setBackgroundColor(DesignSystemColor.Gray300.value, for: .normal)
-            closecallButton.setBackgroundColor(DesignSystemColor.Gray300.value.adjustBrightness(by: 0.8), for: .highlighted)
-            opencallButton.setBackgroundColor(DesignSystemColor.Orange500.value, for: .normal)
-            opencallButton.setBackgroundColor(DesignSystemColor.Orange500.value.adjustBrightness(by: 0.8), for: .highlighted)
+            fullText = "이 그룹에서는 친구에게 전화를 받아요."
+            targetText = "전화"
+            NumButton.setImage(UIImage(named: "checkboxgray"), for: .normal)
+            NumButton.setImage(UIImage(named: "checkboxgray"), for: .highlighted)
         } else {
-            fullText = "전화번호를 비공개한 그룹입니다."
-            targetText = "비공개"
-            closecallButton.setBackgroundColor(DesignSystemColor.Orange500.value, for: .normal)
-            closecallButton.setBackgroundColor(DesignSystemColor.Orange500.value.adjustBrightness(by: 0.8), for: .highlighted)
-            opencallButton.setBackgroundColor(DesignSystemColor.Gray300.value, for: .normal)
-            opencallButton.setBackgroundColor(DesignSystemColor.Gray300.value.adjustBrightness(by: 0.8), for: .highlighted)
+            fullText = "이 그룹에서는 친구에게 푸시 알림을 받아요."
+            targetText = "푸시 알림"
+            NumButton.setImage(UIImage(named: "checkboxorange"), for: .normal)
+            NumButton.setImage(UIImage(named: "checkboxorange"), for: .highlighted)
         }
-        
-        // NSMutableAttributedString을 사용하여 특정 텍스트의 속성 변경
+        //텍스트 부분 강조
         let attributedString = NSMutableAttributedString(string: fullText)
         if let range = fullText.range(of: targetText) {
             let nsRange = NSRange(range, in: fullText)
@@ -206,24 +194,6 @@ class MyStateViewController : UIViewController{
         }
         
         subLabel.attributedText = attributedString
-    }
-    
-    func openCall(button: UIButton) {
-        if button == opencallButton {
-            // 공개 버튼을 눌렀을 경우
-            if isagree ?? false {
-                showToast(message: "이미 전화번호를 공개한 그룹입니다.")
-            } else {
-                showToast(message: "전화번호를 공개합니다.")
-            }
-        } else if button == closecallButton {
-            // 비공개 버튼을 눌렀을 경우
-            if isagree ?? false {
-                showToast(message: "전화번호를 비공개합니다.")
-            } else {
-                showToast(message: "이미 전화번호를 비공개한 그룹입니다.")
-            }
-        }
     }
     
     //MARK: - API
@@ -254,34 +224,27 @@ class MyStateViewController : UIViewController{
     
     
     //MARK: - @objc func
-    @objc func callclick() {
-        if self.isagree ?? false {
-            self.showToast(message: "이미 전화번호를 공개한 그룹입니다.")
+    @objc func numButtonclick() {
+        isagree = !(isagree ?? false)
+        
+        if isagree ?? false {
+            NumButton.setImage(UIImage(named: "checkboxgray"), for: .normal)
+            NumButton.setImage(UIImage(named: "checkboxgray"), for: .highlighted)
+            self.showToast(message: "전화번호를 공개합니다.")
         } else {
-            editphoneagree {
-                self.showToast(message: "전화번호를 공개합니다.")
-            }
-        }
-    }
-
-    @objc func nocallclick() {
-        if !(self.isagree ?? true) {
-            self.showToast(message: "이미 전화번호를 비공개한 그룹입니다.")
-        } else {
-            editphoneagree {
-                self.showToast(message: "전화번호를 비공개합니다.")
-            }
+            NumButton.setImage(UIImage(named: "checkboxorange"), for: .normal)
+            NumButton.setImage(UIImage(named: "checkboxorange"), for: .highlighted)
+            self.showToast(message: "전화번호를 비공개합니다.")
         }
     }
     
     
     @objc func doneclick(){
-        self.dismiss(animated: true)
+        editphoneagree {
+            self.showToast(message: "변경사항이 저장되었습니다.")
+            self.dismiss(animated: true)
+        }
     }
-    
-    
-    
-    
 }
 
 

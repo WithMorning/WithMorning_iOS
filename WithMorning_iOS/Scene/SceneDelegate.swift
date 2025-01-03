@@ -14,7 +14,7 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
     
     var cancellables = Set<AnyCancellable>()
     var window: UIWindow?
-   
+    
     func scene(_ scene: UIScene, willConnectTo session: UISceneSession, options connectionOptions: UIScene.ConnectionOptions) {
         
         guard let windowScene = scene as? UIWindowScene else { return }
@@ -58,8 +58,6 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         case "deleteaccount":
             UserDefaults.standard.removeObject(forKey: "isExistingUser")
             setRootViewController(windowScene, type: .termAgree)
-//        case "alarm":
-//            setRootViewController(windowScene, type: .alarm)
         default:
             setRootViewController(windowScene, type: .termAgree)
         }
@@ -85,10 +83,11 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         }
     }
     
-//MARK: - sceneDidDisconnect 앱이 terminated일때 push알람
+    //MARK: - sceneDidDisconnect 앱이 terminated일때 push알람
     func sceneDidDisconnect(_ scene: UIScene) {
+        
+        //앱 terminated
     }
-    
     func sceneDidBecomeActive(_ scene: UIScene) {
     }
     func sceneWillResignActive(_ scene: UIScene) {
@@ -111,7 +110,6 @@ enum StartViewControllerType {
         case .termAgree: return TermsViewController()
         case .main: return MainViewController()
         case .register: return RegisterViewController()
-//        case .alarm: return AlarmViewController()
         }
     }
 }

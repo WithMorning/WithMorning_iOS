@@ -54,7 +54,6 @@ class AlarmViewController: UIViewController {
     }()
     
     //MARK: - 메세지
-    
     private lazy var messageLabel: UILabel = {
         let label = UILabel()
         label.text = "오늘의 메시지 💬"
@@ -197,8 +196,6 @@ class AlarmViewController: UIViewController {
                 LoadingIndicator.hideLoading()
                 print(data)
                 UserDefaults.standard.removeObject(forKey: "wakeupGroupId")
-                NotificationCenter.default.post(name: NSNotification.Name("UserStateChanged"), object: nil)
-                UserDefaults.setUserState("login")
                 self.stopAlarmSound()
                 self.mainViewController()
             case .failure(let error):
@@ -228,7 +225,7 @@ class AlarmViewController: UIViewController {
         print("저장된 groupId",groupId)
         Wakeup(groupId: groupId)
     }
-    
+    //MARK: - 메인페이지로 이동
     func mainViewController() {
         let mainVC = MainViewController()
         let navController = UINavigationController(rootViewController: mainVC)

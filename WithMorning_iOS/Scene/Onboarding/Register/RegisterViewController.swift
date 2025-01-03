@@ -26,6 +26,7 @@ class RegisterViewController : UIViewController{
         let button = UIButton()
         button.setImage(UIImage(named: "backward"), for: .normal)
         button.tintColor = .black
+        button.addTarget(self, action: #selector(popclicked), for: .touchUpInside)
         return button
     }()
     
@@ -102,6 +103,12 @@ class RegisterViewController : UIViewController{
             $0.top.equalTo(view.safeAreaLayoutGuide).offset(20)
         }
         
+        popButton.snp.makeConstraints{
+            $0.centerY.equalTo(mainLabel)
+            $0.leading.equalToSuperview().offset(16)
+            $0.height.width.equalTo(24)
+        }
+        
         subLabel.snp.makeConstraints{
             $0.top.equalTo(mainLabel.snp.bottom).offset(29)
             $0.centerX.equalToSuperview()
@@ -117,13 +124,16 @@ class RegisterViewController : UIViewController{
             $0.height.equalTo(62)
         }
     }
+    
     //MARK: - 회원가입, 연락처 변경
     func mainLabelType(){
         switch viewType.self{
         case .changeNumber:
             mainLabel.text = "연락처 변경"
+            popButton.isHidden = false
         case .register:
             mainLabel.text = "회원가입"
+            popButton.isHidden = true
         }
         
     }
@@ -181,6 +191,10 @@ class RegisterViewController : UIViewController{
     
     
     //MARK: - @objc func
+    @objc func popclicked(){
+        self.navigationController?.popViewController(animated: true)
+    }
+    
     @objc func editchange(_ sender: Any){
         guard let txtfield = sender as? UITextField, let text = txtfield.text else {return}
         

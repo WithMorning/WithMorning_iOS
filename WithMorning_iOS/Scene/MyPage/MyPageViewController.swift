@@ -132,7 +132,7 @@ class MyPageViewController : UIViewController, UIScrollViewDelegate {
     
     private lazy var sleeptimeLabel : UILabel = {
         let label = UILabel()
-        label.text = "취침 시간"
+        label.text = "취침 시간 알림"
         label.font = DesignSystemFont.Pretendard_Bold14.value
         label.textColor = .black
         label.textAlignment = .left
@@ -382,7 +382,7 @@ class MyPageViewController : UIViewController, UIScrollViewDelegate {
     
     private lazy var versionLabel2 : UILabel = {
         let label = UILabel()
-        label.text = "1.00"
+        label.text = "1.0.0"
         label.textAlignment = .right
         label.textColor = DesignSystemColor.Gray400.value
         label.font = DesignSystemFont.Pretendard_Medium14.value
@@ -619,7 +619,6 @@ class MyPageViewController : UIViewController, UIScrollViewDelegate {
     //MARK: - objc func
     @objc func popclicked(){
         self.navigationController?.popViewController(animated: true)
-        print("pop")
     }
     
     @objc func editprofile(){
@@ -750,8 +749,9 @@ class MyPageViewController : UIViewController, UIScrollViewDelegate {
         APInetwork.getMypage(){ result in
             switch result{
             case.success(let mypage):
+                
                 self.nickNameLabel.text = mypage.nickname
-                self.updateSleepTimeLabel(with: mypage.bedtime ?? "", dayOfWeekList: mypage.dayOfWeekList ?? [])
+                self.updateSleepTimeLabel(with: mypage.bedtime ?? "", dayOfWeekList: mypage.dayOfWeekList ?? [], bedtimeAlarm: mypage.isAllowBedTimeAlarm ?? false)
                 self.bedtime = mypage.bedtime ?? ""
                 self.dayOfWeekList = mypage.dayOfWeekList ?? []
                 self.noti = mypage.isAllowBedTimeAlarm ?? false
@@ -823,7 +823,7 @@ class MyPageViewController : UIViewController, UIScrollViewDelegate {
     }
     
     //MARK: - 시간 형식 수정
-    func updateSleepTimeLabel(with bedtime: String, dayOfWeekList: [String]) {
+    func updateSleepTimeLabel(with bedtime: String, dayOfWeekList: [String], bedtimeAlarm : Bool) {
         print(dayOfWeekList)
         
         let dateFormatter = DateFormatter()
@@ -843,26 +843,32 @@ class MyPageViewController : UIViewController, UIScrollViewDelegate {
                 "mon": "월", "tue": "화", "wed": "수", "thu": "목", "fri": "금",
                 "sat": "토", "sun": "일"
             ]
-            
-            // 빈 리스트 체크를 가장 먼저 수행
-            if dayOfWeekSet.isEmpty {
-                sleeptimeLabel3.text = "\(formattedTime) 없음"
-            }
-            // 모든 요일이 포함된 경우 "매일" 출력
-            else if dayOfWeekSet == allDaysSet {
-                sleeptimeLabel3.text = "\(formattedTime) 매일"
-            }
-            // 평일: 월화수목금이 모두 포함된 경우
-            else if weekdaysSet.isSubset(of: dayOfWeekSet) && dayOfWeekSet.intersection(weekendSet).isEmpty {
-                sleeptimeLabel3.text = "\(formattedTime) 평일"
-            }
-            // 주말: 토, 일만 포함된 경우
-            else if dayOfWeekSet.isSubset(of: weekendSet) {
-                sleeptimeLabel3.text = "\(formattedTime) 주말"
-            }
-            else {
-                let koreanDays = dayOfWeekList.compactMap { dayOfWeekDict[$0] }.joined(separator: ", ")
-                sleeptimeLabel3.text = "\(formattedTime) \(koreanDays)"
+            if bedtimeAlarm {
+                if dayOfWeekSet.isEmpty {
+                    sleeptimeLabel3.text = "\(formattedTime) 없음"
+                } else if dayOfWeekSet == allDaysSet {
+                    sleeptimeLabel3.text = "\(formattedTime) 매일"
+                } else if weekdaysSet.isSubset(of: dayOfWeekSet) && dayOfWeekSet.intersection(weekendSet).isEmpty {
+                    sleeptimeLabel3.text = "\(formattedTime) 평일"
+                } else if dayOfWeekSet.isSubset(of: weekendSet) {
+                    sleeptimeLabel3.text = "\(formattedTime) 주말"
+                } else {
+                    let koreanDays = dayOfWeekList.compactMap { dayOfWeekDict[$0] }.joined(separator: ", ")
+                    sleeptimeLabel3.text = "\(formattedTime) \(koreanDays)"
+                }
+            } else {
+                if dayOfWeekSet.isEmpty {
+                    sleeptimeLabel3.text = "OFF"
+                } else if dayOfWeekSet == allDaysSet {
+                    sleeptimeLabel3.text = "OFF"
+                } else if weekdaysSet.isSubset(of: dayOfWeekSet) && dayOfWeekSet.intersection(weekendSet).isEmpty {
+                    sleeptimeLabel3.text = "OFF"
+                } else if dayOfWeekSet.isSubset(of: weekendSet) {
+                    sleeptimeLabel3.text = "OFF"
+                } else {
+                    let koreanDays = dayOfWeekList.compactMap { dayOfWeekDict[$0] }.joined(separator: ", ")
+                    sleeptimeLabel3.text = "OFF"
+                }
             }
         }
     }

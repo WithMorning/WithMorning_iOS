@@ -64,7 +64,8 @@ class AlarmTableViewCell : UITableViewCell, UISheetPresentationControllerDelegat
     
     lazy var settingButton : UIButton = {
         let button = UIButton()
-        button.setImage(UIImage(named: "menu"), for: .normal)
+        button.setImage(UIImage(systemName: "ellipsis"), for: .normal)
+        button.tintColor = .black
         button.addTarget(self, action: #selector(clickSetting), for: .touchUpInside)
         return button
     }()
@@ -695,7 +696,8 @@ class AlarmTableViewCell : UITableViewCell, UISheetPresentationControllerDelegat
     var editweek: [String] = []
     var selectedTime24 : String = ""
     var isLeader : Bool = false
-    var wakeupGroupDict: [Int: [Bool]] = [:] //int는 키 bool은 값들
+    
+    var wakeupGroupDict: [Int: [Bool]] = [:] //멤버 전원이 기상인지 아닌지 확인
     
     @objc func clickSetting() {
         guard let parentViewController = self.parentVC else {
@@ -814,7 +816,7 @@ class AlarmTableViewCell : UITableViewCell, UISheetPresentationControllerDelegat
         let userlistData = userData[indexPath.item]
         
         
-        cell.configureMember(with: userlistData.nickname,imageURL: userlistData.imageURL ?? "",isDisturbBanMode: userlistData.isDisturbBanMode, isWakeup: userlistData.isWakeup)
+        cell.configureMember(with: userlistData.nickname,imageURL: userlistData.imageURL ?? "",isDisturbBanMode: userlistData.isDisturbBanMode, isWakeup: userlistData.isWakeup/*, isleader: userlistData.isLeader*/)
         
         if indexPath.item == 0 {
             // 첫 번째 셀이 렌더링되기 전에 해당 그룹을 초기화
@@ -828,6 +830,8 @@ class AlarmTableViewCell : UITableViewCell, UISheetPresentationControllerDelegat
         } else {
             bottomViewLabelUpdate(isAllAwake: false)
         }
+        
+        print(userlistData)
         
         return cell
     }
@@ -977,18 +981,18 @@ class memberCollectioViewCell: UICollectionViewCell {
         return label
     }()
     
-    private lazy var meView : UIView = {
+    private lazy var leaderView : UIView = {
         let view = UIView()
         view.backgroundColor = DesignSystemColor.Orange500.value
         view.clipsToBounds = true
         view.layer.cornerRadius = 4
-        view.addSubview(meLabel)
+        view.addSubview(leaderLabel)
         return view
     }()
     
-    private lazy var meLabel : UILabel = {
+    private lazy var leaderLabel : UILabel = {
         let label = UILabel()
-        label.text = "ME"
+        label.text = "Host"
         label.font = DesignSystemFont.Pretendard_Bold8.value
         label.textColor = .white
         return label
@@ -1025,7 +1029,7 @@ class memberCollectioViewCell: UICollectionViewCell {
     }
     
     func setUI() {
-        contentView.addSubviews(memberView, memberLabel, sleepView, meView)
+        contentView.addSubviews(memberView, memberLabel, sleepView, leaderView)
         
         memberView.snp.makeConstraints {
             $0.top.equalToSuperview().inset(1)
@@ -1049,14 +1053,14 @@ class memberCollectioViewCell: UICollectionViewCell {
             $0.center.equalTo(memberView)
         }
         
-        meView.snp.makeConstraints{
+        leaderView.snp.makeConstraints{
             $0.height.equalTo(14)
             $0.width.equalTo(20)
             $0.centerX.equalToSuperview()
             $0.bottom.equalTo(memberView.snp.bottom).offset(4)
         }
         
-        meLabel.snp.makeConstraints{
+        leaderLabel.snp.makeConstraints{
             $0.center.equalToSuperview()
         }
         
@@ -1068,7 +1072,8 @@ class memberCollectioViewCell: UICollectionViewCell {
     }
     
     //MARK: - 닉네임, 유저 스테이트 설정
-    func configureMember(with nickname: String, imageURL: String, isDisturbBanMode: Bool, isWakeup: Bool) {
+    func configureMember(with nickname: String, imageURL: String, isDisturbBanMode: Bool, isWakeup: Bool/*, isleader: Bool*/) {
+        
         memberLabel.text = nickname
         
         // Image URL download
@@ -1081,23 +1086,25 @@ class memberCollectioViewCell: UICollectionViewCell {
             memberIMG.image = UIImage(named: "profile")
         }
         
-        if nickname == UserDefaults.standard.string(forKey: "nickname") {
-            meView.isHidden = false
-        } else {
-            meView.isHidden = true
-        }
         
         if isDisturbBanMode {
             memberView.backgroundColor = DesignSystemColor.Gray150.value
             memberLabel.textColor = DesignSystemColor.Gray500.value
-            meView.backgroundColor = DesignSystemColor.Gray150.value
+            leaderView.backgroundColor = DesignSystemColor.Gray150.value
             sleepView.isHidden = true
         } else {
             memberView.backgroundColor = isWakeup ? DesignSystemColor.Orange500.value : .clear // true, false
             memberLabel.textColor = .black
-            meView.backgroundColor = DesignSystemColor.Orange500.value
+            leaderView.backgroundColor = DesignSystemColor.Orange500.value
             sleepView.isHidden = isWakeup
         }
+        
+//        if isleader{
+//            leaderView.isHidden = false
+//        }else{
+//            leaderView.isHidden = true
+//        }
+        
         
         setNeedsLayout()
         layoutIfNeeded()
