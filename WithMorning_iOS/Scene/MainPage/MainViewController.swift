@@ -289,7 +289,6 @@ class MainViewController: UIViewController, UISheetPresentationControllerDelegat
     func alarmobserve(){
         if UserDefaults.standard.integer(forKey: "wakeupGroupId") != 0{
             NavigateToAlarm()
-            
         }else{
             print("알람이 오지 않은 상태입니다.")
         }
