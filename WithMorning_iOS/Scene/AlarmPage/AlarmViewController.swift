@@ -198,6 +198,7 @@ class AlarmViewController: UIViewController {
                 UserDefaults.standard.removeObject(forKey: "wakeupGroupId")
                 self.stopAlarmSound()
                 self.mainViewController()
+                AlarmManager.shared.removeAllNotifications()
             case .failure(let error):
                 print(error.localizedDescription)
                 UserDefaults.standard.removeObject(forKey: "wakeupGroupId")

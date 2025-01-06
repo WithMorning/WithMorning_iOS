@@ -382,9 +382,9 @@ class MainViewController: UIViewController, UISheetPresentationControllerDelegat
     func getMainpage() {
         LoadingIndicator.showLoading()
         
-        print("🔥키체인에 들어있는 refreshToken",KeyChain.read(key: "refreshToken") ?? "")
-        print("🔥키체인에 들어있는 accessToken",KeyChain.read(key: "accessToken") ?? "")
-        print("🔥키체인에 들어있는 fcmToken",KeyChain.read(key: "fcmToken") ?? "")
+//        print("🔥키체인에 들어있는 refreshToken",KeyChain.read(key: "refreshToken") ?? "")
+//        print("🔥키체인에 들어있는 accessToken",KeyChain.read(key: "accessToken") ?? "")
+//        print("🔥키체인에 들어있는 fcmToken",KeyChain.read(key: "fcmToken") ?? "")
         
         UIView.performWithoutAnimation{
             APInetwork.getMainpage() { result in
@@ -393,6 +393,8 @@ class MainViewController: UIViewController, UISheetPresentationControllerDelegat
                     self.MainpageUpdate(with: mainpage)
                     print(mainpage)
                     self.nameLabel.text = "Hi, \(mainpage.connectorNickname)"
+                    
+                    UserDefaults.standard.set(mainpage.connectorNickname, forKey: "nickname")
                     
                     if ((mainpage.connectorProfileURL?.isEmpty) != nil) {
                         // 이미지 URL이 유효한 경우: 이미지 다운로드 처리
@@ -408,6 +410,7 @@ class MainViewController: UIViewController, UISheetPresentationControllerDelegat
                         self.profileButton.image = UIImage(named: "profile") // 기본 이미지로 설정
                         RegisterUserInfo.shared.profileImage = self.profileButton.image
                     }
+                    
                     AlarmManager.shared.updateAlarm(from: self.alarmData)
                     self.AlarmTableView.reloadData()
                     self.emptycellcheck()

@@ -184,12 +184,12 @@ class EditprofileViewController : UIViewController,UIImagePickerControllerDelega
         
         // 6. API 호출
         APInetwork.postProfile(profileData: registerData) { result in
-            
             switch result {
             case .success(let data):
                 print("프로필 업로드 성공: \(data)")
                 
                 UserDefaults.standard.set(self.nickname, forKey: "nickname")
+                
                 if let selectedImage = self.selectedIMG {
                     RegisterUserInfo.shared.profileImage = selectedImage
                 }
