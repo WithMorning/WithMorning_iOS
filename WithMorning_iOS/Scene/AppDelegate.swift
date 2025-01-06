@@ -78,6 +78,7 @@ class AppDelegate:UIResponder, UIApplicationDelegate, MessagingDelegate {
     
     //MARK: -  알림을 userdefualt로 처리
     func handleNotificationResponse(_ userInfo: [AnyHashable: Any]) {
+        print(userInfo)
         if let groupID = userInfo["groupID"] as? Int {
             UserDefaults.standard.set(groupID, forKey: "wakeupGroupId")
         }

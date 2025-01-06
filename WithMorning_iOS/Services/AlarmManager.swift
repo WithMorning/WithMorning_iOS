@@ -52,7 +52,8 @@ class AlarmManager {
                         "groupID": group.groupID,
                     ]
                     
-                    let identifier = "Group_\(group.groupID)_\(day)"
+                    //알람확인
+                    let identifier = "\(group.groupID)"
                     let trigger = UNCalendarNotificationTrigger(dateMatching: dateComponents, repeats: true)
                     
                     let request = UNNotificationRequest(

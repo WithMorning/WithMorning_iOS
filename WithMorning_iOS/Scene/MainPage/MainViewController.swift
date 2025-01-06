@@ -146,7 +146,7 @@ class MainViewController: UIViewController, UISheetPresentationControllerDelegat
     override func viewDidLoad() {
         super.viewDidLoad()
         self.view.backgroundColor = DesignSystemColor.Gray150.value
-        alarmobserve()
+//        alarmobserve()
         tableSetting()
         SetUI()
         emptycellcheck()
@@ -155,11 +155,12 @@ class MainViewController: UIViewController, UISheetPresentationControllerDelegat
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        alarmobserve()
+//        alarmobserve()
         getMainpage()
         updateSoundButtonImage()
         checkNotificationPermission()
     }
+    
     
     //MARK: - UI
     func SetUI(){
@@ -181,11 +182,11 @@ class MainViewController: UIViewController, UISheetPresentationControllerDelegat
             $0.height.equalTo(36)
         }
         
-//        soundButton.snp.makeConstraints{
-//            $0.centerY.equalTo(profileButton)
-//            $0.height.width.equalTo(36)
-//            $0.trailing.equalTo(profileButton.snp.leading).offset(-16)
-//        }
+        //        soundButton.snp.makeConstraints{
+        //            $0.centerY.equalTo(profileButton)
+        //            $0.height.width.equalTo(36)
+        //            $0.trailing.equalTo(profileButton.snp.leading).offset(-16)
+        //        }
         
         headerStackView.snp.makeConstraints{
             $0.top.equalToSuperview()
@@ -382,16 +383,15 @@ class MainViewController: UIViewController, UISheetPresentationControllerDelegat
     func getMainpage() {
         LoadingIndicator.showLoading()
         
-//        print("🔥키체인에 들어있는 refreshToken",KeyChain.read(key: "refreshToken") ?? "")
-//        print("🔥키체인에 들어있는 accessToken",KeyChain.read(key: "accessToken") ?? "")
-//        print("🔥키체인에 들어있는 fcmToken",KeyChain.read(key: "fcmToken") ?? "")
+        //        print("🔥키체인에 들어있는 refreshToken",KeyChain.read(key: "refreshToken") ?? "")
+        //        print("🔥키체인에 들어있는 accessToken",KeyChain.read(key: "accessToken") ?? "")
+        //        print("🔥키체인에 들어있는 fcmToken",KeyChain.read(key: "fcmToken") ?? "")
         
         UIView.performWithoutAnimation{
             APInetwork.getMainpage() { result in
                 switch result {
                 case .success(let mainpage):
                     self.MainpageUpdate(with: mainpage)
-                    print(mainpage)
                     self.nameLabel.text = "Hi, \(mainpage.connectorNickname)"
                     
                     UserDefaults.standard.set(mainpage.connectorNickname, forKey: "nickname")
@@ -469,10 +469,10 @@ extension MainViewController : UITableViewDelegate, UITableViewDataSource{
         cell.backgroundColor = .clear
         
         cell.topViewLabel.text = alarm.name
-            
+        
         cell.ConfigureMember(alarm.userList ?? [])
         
-//        cell.isLeader = alarm.userList?[indexPath.row].isLeader
+        //        cell.isLeader = alarm.userList?[indexPath.row].isLeader
         
         cell.time24 = alarm.wakeupTime
         

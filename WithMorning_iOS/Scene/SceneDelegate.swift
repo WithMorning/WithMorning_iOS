@@ -19,7 +19,7 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         
         guard let windowScene = scene as? UIWindowScene else { return }
         
-        //MARK: - 컴바인 최고
+        //MARK: - 화면
         RegisterUserInfo.shared.$loginState.sink { loginState in
             DispatchQueue.main.async {
                 NotificationCenter.default.addObserver(self, selector: #selector(self.handleUserStateChange), name: NSNotification.Name("UserStateChanged"), object: nil)
@@ -28,6 +28,7 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
             }
         }
         .store(in: &cancellables)
+        
     }
     
     @objc private func handleUserStateChange() {
@@ -85,17 +86,42 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
     
     //MARK: - sceneDidDisconnect 앱이 terminated일때 push알람
     func sceneDidDisconnect(_ scene: UIScene) {
-        
-        //앱 terminated
+//        print("sceneDidDisconnect")
+//        
+//        let content = UNMutableNotificationContent()
+//        content.title = "진동을 위해 앱을 실행해주세요!"
+//        content.body = "무음모드를 해지하지 않으면 소리가 나지 않아요 !"
+//        content.sound = .default
+//        
+//        // 트리거 설정 (5초 후 알림)
+//        let trigger = UNTimeIntervalNotificationTrigger(timeInterval: 5, repeats: false)
+//        
+//        // 요청 생성
+//        let request = UNNotificationRequest(identifier: "appTerminationNotification", content: content, trigger: trigger)
+//        
+//        // 알림 등록
+//        UNUserNotificationCenter.current().add(request) { error in
+//            if let error = error {
+//                print("Local Notification Error: \(error.localizedDescription)")
+//            } else {
+//                print("Local Notification Scheduled")
+//            }
+//        }
     }
     func sceneDidBecomeActive(_ scene: UIScene) {
+        print("sceneDidBecomeActive")
     }
     func sceneWillResignActive(_ scene: UIScene) {
+        print("sceneWillResignActive")
     }
     func sceneWillEnterForeground(_ scene: UIScene) {
+        print("sceneWillEnterForeground")
     }
     func sceneDidEnterBackground(_ scene: UIScene) {
+        print("sceneDidEnterBackground")
     }
+    
+    
 }
 
 enum StartViewControllerType {
