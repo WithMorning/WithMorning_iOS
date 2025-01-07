@@ -383,14 +383,11 @@ class MainViewController: UIViewController, UISheetPresentationControllerDelegat
     func getMainpage() {
         LoadingIndicator.showLoading()
         
-        //        print("🔥키체인에 들어있는 refreshToken",KeyChain.read(key: "refreshToken") ?? "")
-        //        print("🔥키체인에 들어있는 accessToken",KeyChain.read(key: "accessToken") ?? "")
-        //        print("🔥키체인에 들어있는 fcmToken",KeyChain.read(key: "fcmToken") ?? "")
-        
         UIView.performWithoutAnimation{
             APInetwork.getMainpage() { result in
                 switch result {
                 case .success(let mainpage):
+                    print(mainpage)
                     self.MainpageUpdate(with: mainpage)
                     self.nameLabel.text = "Hi, \(mainpage.connectorNickname)"
                     
@@ -480,7 +477,6 @@ extension MainViewController : UITableViewDelegate, UITableViewDataSource{
         
         cell.participantcode = alarm.participationCode
         
-        //알림이 설정되어있는 요일의 색
         let dayLabels = [cell.MonLabel, cell.TueLabel, cell.WedLabel, cell.ThuLabel, cell.FriLabel, cell.SatLabel, cell.SunLabel]
         
         let days = ["mon", "tue", "wed", "thu", "fri", "sat", "sun"]

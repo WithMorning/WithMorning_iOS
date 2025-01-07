@@ -13,7 +13,6 @@ import Kingfisher
 class MyStateViewController : UIViewController{
     
     var userphoneNum: String = ""
-    var isagree : Bool?
     var imageURL : String?
     
     var APInetwork = Network.shared
@@ -142,7 +141,7 @@ class MyStateViewController : UIViewController{
             $0.top.equalToSuperview().offset(20)
         }
     }
-    
+    //MARK: - 유저 상태
     func configureUserState(){
         print("isagree",isagree as Any)
         print("닉네임",nicknameLabel.text as Any)
@@ -175,7 +174,7 @@ class MyStateViewController : UIViewController{
         let targetText: String
         let color = DesignSystemColor.Orange500.value // 강조할 텍스트의 색상
         
-        if isagree ?? true{
+        if isagree{
             fullText = "이 그룹에서는 친구에게 전화를 받아요."
             targetText = "전화"
             NumButton.setImage(UIImage(named: "checkboxgray"), for: .normal)
@@ -186,6 +185,7 @@ class MyStateViewController : UIViewController{
             NumButton.setImage(UIImage(named: "checkboxorange"), for: .normal)
             NumButton.setImage(UIImage(named: "checkboxorange"), for: .highlighted)
         }
+        
         //텍스트 부분 강조
         let attributedString = NSMutableAttributedString(string: fullText)
         if let range = fullText.range(of: targetText) {
@@ -199,14 +199,12 @@ class MyStateViewController : UIViewController{
     //MARK: - API
     var userId : Int = 0
     var groupId : Int = 0
+    var isagree : Bool = false
     
     func editphoneagree(completion: @escaping () -> Void) {
         LoadingIndicator.showLoading()
         
-        let updatedAgreeStatus = !(isagree ?? false)
-        isagree = updatedAgreeStatus // 상태를 전환하여 반영
-        
-        let editphoneData = EditphoneMaindata(isAgree: updatedAgreeStatus)
+        let editphoneData = EditphoneMaindata(isAgree: isagree)
         
         APInetwork.patchphoneagree(groupId: self.groupId, editphoneagree: editphoneData) { result in
             LoadingIndicator.hideLoading()
@@ -225,19 +223,19 @@ class MyStateViewController : UIViewController{
     
     //MARK: - @objc func
     @objc func numButtonclick() {
-        isagree = !(isagree ?? false)
-        
-        if isagree ?? false {
-            NumButton.setImage(UIImage(named: "checkboxgray"), for: .normal)
-            NumButton.setImage(UIImage(named: "checkboxgray"), for: .highlighted)
-            self.showToast(message: "전화번호를 공개합니다.")
-        } else {
+        if NumButton.image(for: .normal) == UIImage(named: "checkboxgray"){
             NumButton.setImage(UIImage(named: "checkboxorange"), for: .normal)
             NumButton.setImage(UIImage(named: "checkboxorange"), for: .highlighted)
             self.showToast(message: "전화번호를 비공개합니다.")
+            
+        } else {
+            NumButton.setImage(UIImage(named: "checkboxgray"), for: .normal)
+            NumButton.setImage(UIImage(named: "checkboxgray"), for: .highlighted)
+            self.showToast(message: "전화번호를 공개합니다.")
         }
+        isagree.toggle()
     }
-    
+
     
     @objc func doneclick(){
         editphoneagree {

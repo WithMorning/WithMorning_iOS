@@ -74,6 +74,7 @@ class AlterUIView: UIViewController {
         button.setBackgroundColor(DesignSystemColor.Gray200.value, for: .normal)
         button.setBackgroundColor(DesignSystemColor.Gray200.value.adjustBrightness(by: 0.8), for: .highlighted)
         button.setTitleColor(DesignSystemColor.Gray500.value, for: .normal)
+        button.titleLabel?.font = DesignSystemFont.Pretendard_Bold14.value
         button.addTarget(self, action: #selector(cancelclicked), for: .touchUpInside)
         button.layer.cornerRadius = 8
         button.layer.masksToBounds = true
@@ -87,6 +88,7 @@ class AlterUIView: UIViewController {
         button.setBackgroundColor(DesignSystemColor.Orange500.value, for: .normal)
         button.setBackgroundColor(DesignSystemColor.Orange500.value.adjustBrightness(by: 0.8), for: .highlighted)
         button.setTitleColor(.white, for: .normal)
+        button.titleLabel?.font = DesignSystemFont.Pretendard_Bold14.value
         button.addTarget(self, action: #selector(confirmclicked), for: .touchUpInside)
         button.layer.cornerRadius = 8
         button.layer.masksToBounds = true

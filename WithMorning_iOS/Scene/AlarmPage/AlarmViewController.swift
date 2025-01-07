@@ -199,6 +199,7 @@ class AlarmViewController: UIViewController {
                 self.stopAlarmSound()
                 self.mainViewController()
                 AlarmManager.shared.removeAllNotifications()
+            
             case .failure(let error):
                 print(error.localizedDescription)
                 UserDefaults.standard.removeObject(forKey: "wakeupGroupId")
@@ -226,6 +227,7 @@ class AlarmViewController: UIViewController {
         print("저장된 groupId",groupId)
         Wakeup(groupId: groupId)
     }
+    
     //MARK: - 메인페이지로 이동
     func mainViewController() {
         let mainVC = MainViewController()

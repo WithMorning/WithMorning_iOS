@@ -828,8 +828,6 @@ class AlarmTableViewCell : UITableViewCell, UISheetPresentationControllerDelegat
             bottomViewLabelUpdate(isAllAwake: false)
         }
         
-        print(userlistData)
-        
         return cell
     }
     
@@ -1052,7 +1050,7 @@ class memberCollectioViewCell: UICollectionViewCell {
         
         leaderView.snp.makeConstraints{
             $0.height.equalTo(14)
-            $0.width.equalTo(20)
+            $0.width.equalTo(26)
             $0.centerX.equalToSuperview()
             $0.bottom.equalTo(memberView.snp.bottom).offset(4)
         }

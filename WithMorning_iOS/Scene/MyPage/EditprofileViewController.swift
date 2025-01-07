@@ -182,7 +182,6 @@ class EditprofileViewController : UIViewController,UIImagePickerControllerDelega
         
         let registerData = profileRequest(request: requestProfile, image: imageData)
         
-        // 6. API 호출
         APInetwork.postProfile(profileData: registerData) { result in
             switch result {
             case .success(let data):

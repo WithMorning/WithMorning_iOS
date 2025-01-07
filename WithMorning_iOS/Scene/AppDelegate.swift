@@ -8,13 +8,11 @@
 import UIKit
 import Firebase
 import AVFoundation
-import AudioToolbox
 import UserNotifications
 
 @main
 class AppDelegate:UIResponder, UIApplicationDelegate, MessagingDelegate {
     
-    var audioPlayer : AVAudioPlayer?
     var window: UIWindow?
     
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
@@ -78,11 +76,38 @@ class AppDelegate:UIResponder, UIApplicationDelegate, MessagingDelegate {
     
     //MARK: -  알림을 userdefualt로 처리
     func handleNotificationResponse(_ userInfo: [AnyHashable: Any]) {
-        print(userInfo)
-        if let groupID = userInfo["groupID"] as? Int {
+        print("푸시 알림 데이터: \(userInfo)")
+        
+        // groupID 확인 후 UserDefaults에 저장
+        if let groupID = userInfo["groupID"] as? String, let groupIDInt = Int(groupID) {
+            UserDefaults.standard.set(groupIDInt, forKey: "wakeupGroupId")
+            NavigateToAlarm()
+        } else if let groupID = userInfo["groupID"] as? Int {
             UserDefaults.standard.set(groupID, forKey: "wakeupGroupId")
+            NavigateToAlarm()
+        } else {
+            print("groupID가 포함되어 있지 않거나 형식이 다릅니다.")
+        }
+        
+        UserDefaults.standard.synchronize()
+    }
+    
+    func NavigateToAlarm() {
+        let alarmVC = AlarmViewController()
+        let navController = UINavigationController(rootViewController: alarmVC)
+        navController.modalPresentationStyle = .fullScreen
+        navController.navigationBar.isHidden = true
+        
+        if let keyWindow = UIApplication.shared.connectedScenes
+            .compactMap({ $0 as? UIWindowScene })
+            .flatMap({ $0.windows })
+            .first(where: { $0.isKeyWindow }) {
+            
+            keyWindow.rootViewController = navController
+            keyWindow.makeKeyAndVisible()
         }
     }
+    
 }
 
 extension AppDelegate: UNUserNotificationCenterDelegate {

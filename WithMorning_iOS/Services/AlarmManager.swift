@@ -1,4 +1,5 @@
 //
+//
 //  AlarmManager.swift
 //  WithMorning_iOS
 //
@@ -52,8 +53,7 @@ class AlarmManager {
                         "groupID": group.groupID,
                     ]
                     
-                    //알람확인
-                    let identifier = "\(group.groupID)"
+                    let identifier = "Group_\(group.groupID)_\(day)"
                     let trigger = UNCalendarNotificationTrigger(dateMatching: dateComponents, repeats: true)
                     
                     let request = UNNotificationRequest(
@@ -71,6 +71,9 @@ class AlarmManager {
             }
         }
     }
+    
+    
+    
     
     //MARK: - API로부터 받은 데이터를 기반으로 알람을 갱신하는 함수
     func updateAlarm(from data: [GroupList]) {

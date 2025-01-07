@@ -86,41 +86,69 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
     
     //MARK: - sceneDidDisconnect 앱이 terminated일때 push알람
     func sceneDidDisconnect(_ scene: UIScene) {
-//        print("sceneDidDisconnect")
-//        
-//        let content = UNMutableNotificationContent()
-//        content.title = "진동을 위해 앱을 실행해주세요!"
-//        content.body = "무음모드를 해지하지 않으면 소리가 나지 않아요 !"
-//        content.sound = .default
-//        
-//        // 트리거 설정 (5초 후 알림)
-//        let trigger = UNTimeIntervalNotificationTrigger(timeInterval: 5, repeats: false)
-//        
-//        // 요청 생성
-//        let request = UNNotificationRequest(identifier: "appTerminationNotification", content: content, trigger: trigger)
-//        
-//        // 알림 등록
-//        UNUserNotificationCenter.current().add(request) { error in
-//            if let error = error {
-//                print("Local Notification Error: \(error.localizedDescription)")
-//            } else {
-//                print("Local Notification Scheduled")
-//            }
-//        }
+        //        print("sceneDidDisconnect")
+        //
+        //        let content = UNMutableNotificationContent()
+        //        content.title = "진동을 위해 앱을 실행해주세요!"
+        //        content.body = "무음모드를 해지하지 않으면 소리가 나지 않아요 !"
+        //        content.sound = .default
+        //
+        //        // 트리거 설정 (10초 후 알림)
+        //        let trigger = UNTimeIntervalNotificationTrigger(timeInterval: 10, repeats: false)
+        //
+        //        // 요청 생성
+        //        let request = UNNotificationRequest(identifier: "appTerminationNotification", content: content, trigger: trigger)
+        //
+        //        // 알림 등록
+        //        UNUserNotificationCenter.current().add(request) { error in
+        //            if let error = error {
+        //                print("Local Notification Error: \(error.localizedDescription)")
+        //            } else {
+        //                print("Local Notification Scheduled")
+        //            }
+        //        }
     }
     func sceneDidBecomeActive(_ scene: UIScene) {
         print("sceneDidBecomeActive")
+        print(UserDefaults.standard.value(forKey: "wakeupGroupId") as Any)
+        alarmobserve()
     }
+    
     func sceneWillResignActive(_ scene: UIScene) {
         print("sceneWillResignActive")
     }
     func sceneWillEnterForeground(_ scene: UIScene) {
         print("sceneWillEnterForeground")
+        alarmobserve()
     }
     func sceneDidEnterBackground(_ scene: UIScene) {
         print("sceneDidEnterBackground")
     }
     
+    func alarmobserve(){
+        if UserDefaults.standard.value(forKey: "wakeupGroupId") != nil{
+            NavigateToAlarm()
+        }else{
+            print("알람이 오지 않은 상태입니다.")
+        }
+    }
+    
+    //MARK: - 알람 페이지로 이동
+    func NavigateToAlarm() {
+        let alarmVC = AlarmViewController()
+        let navController = UINavigationController(rootViewController: alarmVC)
+        navController.modalPresentationStyle = .fullScreen
+        navController.navigationBar.isHidden = true
+        
+        if let keyWindow = UIApplication.shared.connectedScenes
+            .compactMap({ $0 as? UIWindowScene })
+            .flatMap({ $0.windows })
+            .first(where: { $0.isKeyWindow }) {
+            
+            keyWindow.rootViewController = navController
+            keyWindow.makeKeyAndVisible()
+        }
+    }
     
 }
 
