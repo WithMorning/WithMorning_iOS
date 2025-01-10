@@ -58,7 +58,7 @@ class AppDelegate:UIResponder, UIApplicationDelegate, MessagingDelegate {
     }
     
     
-    //MARK: - 앱이 실행 중인 경우 (Foreground) & 포어그라운드에서 사용자가 푸시를 탭한 경우
+    //MARK: - 앱이 실행 중인 경우 (Foreground)
     func userNotificationCenter(_ center: UNUserNotificationCenter, willPresent notification: UNNotification, withCompletionHandler completionHandler: @escaping (UNNotificationPresentationOptions) -> Void) {
         let userInfo = notification.request.content.userInfo
         handleNotificationResponse(userInfo)
@@ -68,17 +68,14 @@ class AppDelegate:UIResponder, UIApplicationDelegate, MessagingDelegate {
     
     //MARK: - 앱이 백그라운드인 경우 (Background) & 백그라운드에서 사용자가 푸시를 탭한 경우
     func userNotificationCenter(_ center: UNUserNotificationCenter, didReceive response: UNNotificationResponse, withCompletionHandler completionHandler: @escaping () -> Void) {
-        let userInfo = response.notification.request.content.userInfo
-        handleNotificationResponse(userInfo)
+//        let userInfo = response.notification.request.content.userInfo
+//        handleNotificationResponse(userInfo)
         completionHandler()
         
     }
     
     //MARK: -  알림을 userdefualt로 처리
     func handleNotificationResponse(_ userInfo: [AnyHashable: Any]) {
-        print("푸시 알림 데이터: \(userInfo)")
-        
-        // groupID 확인 후 UserDefaults에 저장
         if let groupID = userInfo["groupID"] as? String, let groupIDInt = Int(groupID) {
             UserDefaults.standard.set(groupIDInt, forKey: "wakeupGroupId")
             NavigateToAlarm()
@@ -93,19 +90,23 @@ class AppDelegate:UIResponder, UIApplicationDelegate, MessagingDelegate {
     }
     
     func NavigateToAlarm() {
-        let alarmVC = AlarmViewController()
-        let navController = UINavigationController(rootViewController: alarmVC)
-        navController.modalPresentationStyle = .fullScreen
-        navController.navigationBar.isHidden = true
-        
-        if let keyWindow = UIApplication.shared.connectedScenes
-            .compactMap({ $0 as? UIWindowScene })
-            .flatMap({ $0.windows })
-            .first(where: { $0.isKeyWindow }) {
+        LoadingIndicator.showLoading()
+        DispatchQueue.main.async {
+            let alarmVC = AlarmViewController()
+            let navController = UINavigationController(rootViewController: alarmVC)
+            navController.modalPresentationStyle = .fullScreen
+            navController.navigationBar.isHidden = true
             
-            keyWindow.rootViewController = navController
-            keyWindow.makeKeyAndVisible()
+            if let keyWindow = UIApplication.shared.connectedScenes
+                .compactMap({ $0 as? UIWindowScene })
+                .flatMap({ $0.windows })
+                .first(where: { $0.isKeyWindow }) {
+                
+                keyWindow.rootViewController = navController
+                keyWindow.makeKeyAndVisible()
+            }
         }
+        LoadingIndicator.hideLoading()
     }
     
 }

@@ -17,6 +17,8 @@ class MyStateViewController : UIViewController{
     
     var APInetwork = Network.shared
     
+    let mainVC = MainViewController()
+    
     //MARK: - 유저 정보
     lazy var userImage : UIImageView = {
         let view = UIImageView()
@@ -207,15 +209,16 @@ class MyStateViewController : UIViewController{
         let editphoneData = EditphoneMaindata(isAgree: isagree)
         
         APInetwork.patchphoneagree(groupId: self.groupId, editphoneagree: editphoneData) { result in
-            LoadingIndicator.hideLoading()
             switch result {
             case .success(let data):
                 print("전화번호 공개 상태 변경 성공: \(data)")
-                self.configureUserState() // 상태에 따른 UI 갱신
+                LoadingIndicator.hideLoading()
                 completion() // 상태 변경 후 메시지 호출
             case .failure(let error):
                 print("오류 발생: \(error.localizedDescription)")
                 completion() // 오류 발생 시에도 메시지 호출
+                LoadingIndicator.hideLoading()
+                self.showToast(message: "오류가 발생했습니다.")
             }
         }
     }
@@ -223,26 +226,33 @@ class MyStateViewController : UIViewController{
     
     //MARK: - @objc func
     @objc func numButtonclick() {
-        if NumButton.image(for: .normal) == UIImage(named: "checkboxgray"){
-            NumButton.setImage(UIImage(named: "checkboxorange"), for: .normal)
-            NumButton.setImage(UIImage(named: "checkboxorange"), for: .highlighted)
-            self.showToast(message: "전화번호를 비공개합니다.")
-            
-        } else {
-            NumButton.setImage(UIImage(named: "checkboxgray"), for: .normal)
-            NumButton.setImage(UIImage(named: "checkboxgray"), for: .highlighted)
-            self.showToast(message: "전화번호를 공개합니다.")
-        }
         isagree.toggle()
+        
+        editphoneagree {
+            // API 호출이 성공한 경우에만 UI 업데이트
+            if self.NumButton.image(for: .normal) == UIImage(named: "checkboxgray") {
+                self.NumButton.setImage(UIImage(named: "checkboxorange"), for: .normal)
+                self.NumButton.setImage(UIImage(named: "checkboxorange"), for: .highlighted)
+                self.showToast(message: "전화번호를 비공개합니다.")
+            } else {
+                self.NumButton.setImage(UIImage(named: "checkboxgray"), for: .normal)
+                self.NumButton.setImage(UIImage(named: "checkboxgray"), for: .highlighted)
+                self.showToast(message: "전화번호를 공개합니다.")
+            }
+            self.configureUserState()
+        }
     }
 
-    
     @objc func doneclick(){
-        editphoneagree {
-            self.showToast(message: "변경사항이 저장되었습니다.")
-            self.dismiss(animated: true)
-        }
+        self.dismiss(animated: true)
     }
+
+//    @objc func doneclick(){
+//        editphoneagree {
+//            self.dismiss(animated: true)
+//            self.mainVC.getMainpage()
+//        }
+//    }
 }
 
 

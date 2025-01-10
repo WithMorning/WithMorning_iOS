@@ -656,7 +656,7 @@ class AlarmTableViewCell : UITableViewCell, UISheetPresentationControllerDelegat
         let attachImage = NSTextAttachment()
         if isAllAwake {
             // 모든 멤버가 깨어났을 때의 텍스트
-            let newText = " 친구들이 모두 기상한 상태에요."
+            let newText = " 기상 메이트가 모두 기상했어요."
             attachImage.image = UIImage(named: "thumb")
             attributeLabel.append(NSAttributedString(string: newText))
             attachImage.bounds = CGRect(x: -0, y: -3, width: 15, height: 15)
@@ -884,7 +884,7 @@ class AlarmTableViewCell : UITableViewCell, UISheetPresentationControllerDelegat
         //
         //        }
         
-        if selectedUser.isDisturbBanMode == true{
+        if selectedUser.isDisturbBanMode{
             
             parentVC?.showToast(message: "\(selectedUser.nickname)님은 현재 방해금지 모드에요!")
             

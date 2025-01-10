@@ -382,7 +382,6 @@ class MainViewController: UIViewController, UISheetPresentationControllerDelegat
     //MARK: - API
     func getMainpage() {
         LoadingIndicator.showLoading()
-        
         UIView.performWithoutAnimation{
             APInetwork.getMainpage() { result in
                 switch result {
@@ -432,8 +431,7 @@ class MainViewController: UIViewController, UISheetPresentationControllerDelegat
     var alarmData  : [GroupList] = []
     //확정 여부 확인
     var isExpanded: Bool = false
-    var isExpandedStates: [Int: Bool] = [:]
-    
+    var isExpandedStates: [Int: Bool] = [:]    
     //collectionviewheight 확인
     var collHeight : CGFloat = 0
     var collHeightStates: [Int: CGFloat] = [:]

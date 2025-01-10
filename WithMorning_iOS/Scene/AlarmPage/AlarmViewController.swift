@@ -95,10 +95,15 @@ class AlarmViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         view.backgroundColor = .clear
-        setRandomBackgroundImage()
         setupUI()
         updateTimeAndDate()
+    }
+    
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        setRandomBackgroundImage()
         alarmMessage()
+        
     }
     
     func setupUI() {
@@ -196,29 +201,27 @@ class AlarmViewController: UIViewController {
                 LoadingIndicator.hideLoading()
                 print(data)
                 UserDefaults.standard.removeObject(forKey: "wakeupGroupId")
-                self.stopAlarmSound()
                 self.mainViewController()
-                AlarmManager.shared.removeAllNotifications()
+                AlarmManager.shared.stopAllAlarms()
             
             case .failure(let error):
                 print(error.localizedDescription)
                 UserDefaults.standard.removeObject(forKey: "wakeupGroupId")
-                self.stopAlarmSound()
                 self.mainViewController()
                 LoadingIndicator.hideLoading()
             }
         }
     }
     //MARK: - 알람 멈추기
-    private func stopAlarmSound() {
-        if let player = audioPlayer, player.isPlaying {
-            player.stop()
-            audioPlayer = nil
-            print("🔇 알람 소리 중단")
-        } else {
-            print("🔇 재생 중인 알람 소리가 없습니다.")
-        }
-    }
+//    private func stopAlarmSound() {
+//        if let player = audioPlayer, player.isPlaying {
+//            player.stop()
+//            audioPlayer = nil
+//            print("🔇 알람 소리 중단")
+//        } else {
+//            print("🔇 재생 중인 알람 소리가 없습니다.")
+//        }
+//    }
     
     
     //MARK: - @objc func
