@@ -121,6 +121,7 @@ class MainViewController: UIViewController, UISheetPresentationControllerDelegat
     private lazy var tableViewRefresh : UIRefreshControl = {
         let refresh = UIRefreshControl()
         refresh.endRefreshing()
+        refresh.tintColor = DesignSystemColor.Orange500.value
         refresh.addTarget(self, action: #selector(refreshControl), for: .valueChanged)
         return refresh
     }()
@@ -146,16 +147,13 @@ class MainViewController: UIViewController, UISheetPresentationControllerDelegat
     override func viewDidLoad() {
         super.viewDidLoad()
         self.view.backgroundColor = DesignSystemColor.Gray150.value
-//        alarmobserve()
         tableSetting()
         SetUI()
         emptycellcheck()
-        
     }
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-//        alarmobserve()
         getMainpage()
         updateSoundButtonImage()
         checkNotificationPermission()
@@ -287,13 +285,13 @@ class MainViewController: UIViewController, UISheetPresentationControllerDelegat
         }
     }
     //MARK: - 알람이 왔을 경우 alarmviewcontroller로 이동
-    func alarmobserve(){
-        if UserDefaults.standard.integer(forKey: "wakeupGroupId") != 0{
-            NavigateToAlarm()
-        }else{
-            print("알람이 오지 않은 상태입니다.")
-        }
-    }
+//    func alarmobserve(){
+//        if UserDefaults.standard.integer(forKey: "wakeupGroupId") != 0{
+//            NavigateToAlarm()
+//        }else{
+//            print("알람이 오지 않은 상태입니다.")
+//        }
+//    }
     
     //MARK: - 알람 페이지로 이동
     func NavigateToAlarm() {

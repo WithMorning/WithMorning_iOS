@@ -366,7 +366,7 @@ class AlarmTableViewCell : UITableViewCell, UISheetPresentationControllerDelegat
         
         memoLabel.snp.makeConstraints{
             $0.edges.equalToSuperview().inset(UIEdgeInsets(top: 16, left: 48, bottom: 16, right: 48))
-
+            
         }
         
     }
@@ -455,7 +455,7 @@ class AlarmTableViewCell : UITableViewCell, UISheetPresentationControllerDelegat
     private var updateTask: DispatchWorkItem?
     
     //제약조건 업데이트를 위해 var로 설정
-   private var collectionViewHeightConstraint: Constraint?
+    private var collectionViewHeightConstraint: Constraint?
     
     func ConfigureMember(_ userList: [UserList]) {
         self.memberCount = userList.count
@@ -812,11 +812,9 @@ class AlarmTableViewCell : UITableViewCell, UISheetPresentationControllerDelegat
         
         let userlistData = userData[indexPath.item]
         
-        
         cell.configureMember(with: userlistData.nickname,imageURL: userlistData.imageURL ?? "",isDisturbBanMode: userlistData.isDisturbBanMode, isWakeup: userlistData.isWakeup/*, isleader: userlistData.isLeader*/)
         
         if indexPath.item == 0 {
-            // 첫 번째 셀이 렌더링되기 전에 해당 그룹을 초기화
             wakeupGroupDict[groupId] = []
         }
         
@@ -857,8 +855,14 @@ class AlarmTableViewCell : UITableViewCell, UISheetPresentationControllerDelegat
         
         let Uservc = UserStateViewController()
         let Myvc = MyStateViewController()
+        let mainvc = MainViewController()
         
         let selectedUser = userData[indexPath.item]
+        
+        Myvc.reloadisagree = {
+            print("reloadisagree closure")
+            mainvc.refreshControl()
+        }
         
         //        Uservc.nicknameLabel.text = selectedUser.nickname
         //        Uservc.userphoneNum = selectedUser.phone
@@ -884,19 +888,21 @@ class AlarmTableViewCell : UITableViewCell, UISheetPresentationControllerDelegat
         //
         //        }
         
+        //방해금지모드 확인.
         if selectedUser.isDisturbBanMode{
-            
             parentVC?.showToast(message: "\(selectedUser.nickname)님은 현재 방해금지 모드에요!")
-            
         }else{
             
+            //본인과 메이트 확인
             if selectedUser.nickname == UserDefaults.standard.string(forKey: "nickname"){
+                
                 Myvc.nicknameLabel.text = selectedUser.nickname
                 Myvc.userphoneNum = selectedUser.phone
                 Myvc.userId = selectedUser.userID
                 Myvc.isagree = selectedUser.isAgree
                 Myvc.imageURL = selectedUser.imageURL
                 Myvc.groupId = self.groupId
+                
                 Myvc.modalPresentationStyle = .formSheet
                 parentViewController.present(Myvc, animated: true)
                 
@@ -1094,11 +1100,11 @@ class memberCollectioViewCell: UICollectionViewCell {
             sleepView.isHidden = isWakeup
         }
         
-//        if isleader{
-//            leaderView.isHidden = false
-//        }else{
-//            leaderView.isHidden = true
-//        }
+        //        if isleader{
+        //            leaderView.isHidden = false
+        //        }else{
+        //            leaderView.isHidden = true
+        //        }
         
         
         setNeedsLayout()
