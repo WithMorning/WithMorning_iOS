@@ -225,7 +225,10 @@ class AlarmViewController: UIViewController {
     @objc func turnoffalarm() {
         let groupId = UserDefaults.standard.integer(forKey: "wakeupGroupId")
         print("저장된 groupId", groupId)
-        AlarmManager.shared.stopAllAlarms()
+        
+        // stopAllAlarms() 대신 특정 그룹의 알람만 중지
+        AlarmManager.shared.stopAlarm(for: groupId)
+        
         Initialized = false
         Wakeup(groupId: groupId)
         UserDefaults.standard.removeObject(forKey: "wakeupGroupId")

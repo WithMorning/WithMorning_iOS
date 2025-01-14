@@ -702,8 +702,8 @@ class AlarmTableViewCell : UITableViewCell, UISheetPresentationControllerDelegat
         }
         
         var vc: UIViewController
-        
-        if isLeader {
+    #warning("리더 수정")
+        if !isLeader {
             let leaderVC = LeaderMenuViewController()
             leaderVC.groupId = self.groupId
             leaderVC.participantCode = self.participantcode

@@ -68,9 +68,9 @@ class AppDelegate:UIResponder, UIApplicationDelegate, MessagingDelegate {
     
     //MARK: - 앱이 백그라운드인 경우 (Background) & 백그라운드에서 사용자가 푸시를 탭한 경우
     func userNotificationCenter(_ center: UNUserNotificationCenter, didReceive response: UNNotificationResponse, withCompletionHandler completionHandler: @escaping () -> Void) {
-        //        let userInfo = response.notification.request.content.userInfo
-        //        handleNotificationResponse(userInfo)
-        //        completionHandler()
+//        let userInfo = response.notification.request.content.userInfo
+//        handleNotificationResponse(userInfo)
+        completionHandler()
         
     }
     
@@ -88,26 +88,6 @@ class AppDelegate:UIResponder, UIApplicationDelegate, MessagingDelegate {
         
         UserDefaults.standard.synchronize()
     }
-    
-    //    func NavigateToAlarm() {
-    //        LoadingIndicator.showLoading()
-    //        DispatchQueue.main.async {
-    //            let alarmVC = AlarmViewController()
-    //            let navController = UINavigationController(rootViewController: alarmVC)
-    //            navController.modalPresentationStyle = .fullScreen
-    //            navController.navigationBar.isHidden = true
-    //
-    //            if let keyWindow = UIApplication.shared.connectedScenes
-    //                .compactMap({ $0 as? UIWindowScene })
-    //                .flatMap({ $0.windows })
-    //                .first(where: { $0.isKeyWindow }) {
-    //
-    //                keyWindow.rootViewController = navController
-    //                keyWindow.makeKeyAndVisible()
-    //            }
-    //        }
-    //        LoadingIndicator.hideLoading()
-    //    }
     
     func NavigateToAlarm() {
         LoadingIndicator.showLoading()

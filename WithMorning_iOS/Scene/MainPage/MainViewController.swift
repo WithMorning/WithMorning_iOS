@@ -283,14 +283,6 @@ class MainViewController: UIViewController, UISheetPresentationControllerDelegat
             self.present(vc, animated: true)
         }
     }
-    //MARK: - 알람이 왔을 경우 alarmviewcontroller로 이동
-//    func alarmobserve(){
-//        if UserDefaults.standard.integer(forKey: "wakeupGroupId") != 0{
-//            NavigateToAlarm()
-//        }else{
-//            print("알람이 오지 않은 상태입니다.")
-//        }
-//    }
     
     //MARK: - 알람 페이지로 이동
     func NavigateToAlarm() {
@@ -402,7 +394,8 @@ class MainViewController: UIViewController, UISheetPresentationControllerDelegat
                         RegisterUserInfo.shared.profileImage = self.profileButton.image
                     }
                     
-                    AlarmManager.shared.updateAlarm(from: self.alarmData)
+                    AlarmManager.shared.startAllAlarms(for: self.alarmData)
+                    
                     self.AlarmTableView.reloadData()
                     self.emptycellcheck()
                     LoadingIndicator.hideLoading()
@@ -426,7 +419,7 @@ class MainViewController: UIViewController, UISheetPresentationControllerDelegat
     var alarmData  : [GroupList] = []
     //확정 여부 확인
     var isExpanded: Bool = false
-    var isExpandedStates: [Int: Bool] = [:]    
+    var isExpandedStates: [Int: Bool] = [:]
     //collectionviewheight 확인
     var collHeight : CGFloat = 0
     var collHeightStates: [Int: CGFloat] = [:]
