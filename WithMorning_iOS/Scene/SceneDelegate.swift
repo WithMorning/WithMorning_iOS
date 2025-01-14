@@ -93,13 +93,10 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         content.body = "무음모드를 해지하지 않으면 소리가 나지 않아요 !"
         content.sound = .default
         
-        // 트리거 설정 (10초 후 알림)
-        let trigger = UNTimeIntervalNotificationTrigger(timeInterval: 20, repeats: false)
+        let trigger = UNTimeIntervalNotificationTrigger(timeInterval: 10, repeats: false)
         
-        // 요청 생성
         let request = UNNotificationRequest(identifier: "appTerminationNotification", content: content, trigger: trigger)
         
-        // 알림 등록
         UNUserNotificationCenter.current().add(request) { error in
             if let error = error {
                 print("Local Notification Error: \(error.localizedDescription)")
@@ -110,8 +107,6 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
     }
     func sceneDidBecomeActive(_ scene: UIScene) {
         print("sceneDidBecomeActive")
-        print(UserDefaults.standard.value(forKey: "wakeupGroupId") as Any)
-        alarmobserve()
     }
     
     func sceneWillResignActive(_ scene: UIScene) {
@@ -119,34 +114,33 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
     }
     func sceneWillEnterForeground(_ scene: UIScene) {
         print("sceneWillEnterForeground")
-        //        alarmobserve()
     }
     func sceneDidEnterBackground(_ scene: UIScene) {
         print("sceneDidEnterBackground")
     }
     
-    func alarmobserve(){
-        if UserDefaults.standard.value(forKey: "wakeupGroupId") != nil{
-            NavigateToAlarm()
-        }
-    }
+//    func alarmobserve(){
+//        if UserDefaults.standard.value(forKey: "wakeupGroupId") != nil{
+//            NavigateToAlarm()
+//        }
+//    }
     
     //MARK: - 알람 페이지로 이동
-    func NavigateToAlarm() {
-        let alarmVC = AlarmViewController()
-        let navController = UINavigationController(rootViewController: alarmVC)
-        navController.modalPresentationStyle = .fullScreen
-        navController.navigationBar.isHidden = true
-        
-        if let keyWindow = UIApplication.shared.connectedScenes
-            .compactMap({ $0 as? UIWindowScene })
-            .flatMap({ $0.windows })
-            .first(where: { $0.isKeyWindow }) {
-            
-            keyWindow.rootViewController = navController
-            keyWindow.makeKeyAndVisible()
-        }
-    }
+//    func NavigateToAlarm() {
+//        let alarmVC = AlarmViewController()
+//        let navController = UINavigationController(rootViewController: alarmVC)
+//        navController.modalPresentationStyle = .fullScreen
+//        navController.navigationBar.isHidden = true
+//        
+//        if let keyWindow = UIApplication.shared.connectedScenes
+//            .compactMap({ $0 as? UIWindowScene })
+//            .flatMap({ $0.windows })
+//            .first(where: { $0.isKeyWindow }) {
+//            
+//            keyWindow.rootViewController = navController
+//            keyWindow.makeKeyAndVisible()
+//        }
+//    }
     
 }
 

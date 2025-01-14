@@ -656,17 +656,15 @@ class AlarmTableViewCell : UITableViewCell, UISheetPresentationControllerDelegat
     func bottomViewLabelUpdate(isAllAwake: Bool) {
         let attributeLabel = NSMutableAttributedString()
         let attachImage = NSTextAttachment()
-        if isAllAwake {
-            // 모든 멤버가 깨어났을 때의 텍스트
-            let newText = " 기상 메이트가 모두 기상했어요."
+        if isAllAwake { // 모든 멤버가 깨어났을 때의 텍스트
+            let newText = " 모두 깨어있어요."
             attachImage.image = UIImage(named: "thumb")
             attributeLabel.append(NSAttributedString(string: newText))
             attachImage.bounds = CGRect(x: -0, y: -3, width: 15, height: 15)
             let imageString = NSAttributedString(attachment: attachImage)
             attributeLabel.insert(imageString, at: 0)
-        } else {
-            // 하나라도 깨어나지 않았을 때의 텍스트
-            let newText = "프로필을 누르면 친구를 깨울 수 있어요!"
+        } else { // 하나라도 깨어나지 않았을 때의 텍스트
+            let newText = "프로필을 눌러 깨울 수 있어요!"
             attachImage.image = UIImage(named: "Check")
             attributeLabel.append(NSAttributedString(string: newText))
             attachImage.bounds = CGRect(x: 0, y: -3, width: 15, height: 15)

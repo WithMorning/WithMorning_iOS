@@ -12,355 +12,337 @@ import AVFoundation
 
 //class AlarmManager {
 //    static let shared = AlarmManager()
-//    private var timers: [Int: Timer] = [:]  // groupID를 키로 사용하는 타이머 딕셔너리
 //    private var currentGroups: [GroupList] = []
 //    
-//    var isTimerRunning = false
-//    
-//    private init() {}
-//    
-//    // 특정 시간이 현재 알람을 울려야 할 시간인지 확인하는 함수
-//    private func shouldTriggerAlarm(wakeupTime: String, dayOfWeekList: [String], currentDate: Date = Date()) -> Bool {
-//        let calendar = Calendar.current
-//        let weekdaySymbols = ["sun", "mon", "tue", "wed", "thu", "fri", "sat"]
-//        
-//        let currentWeekday = calendar.component(.weekday, from: currentDate)
-//        let currentWeekdayString = weekdaySymbols[currentWeekday - 1]
-//        
-//        let hour = calendar.component(.hour, from: currentDate)
-//        let minute = calendar.component(.minute, from: currentDate)
-//        let currentTimeString = String(format: "%02d:%02d", hour, minute)
-//        
-//        return dayOfWeekList.contains(currentWeekdayString) && wakeupTime == currentTimeString
+//    private init() {
+//        setupNotifications()
 //    }
 //    
-//    // 각 그룹에 대한 타이머 시작
-//    private func startTimer(for group: GroupList) {
-//        guard isTimerRunning else { return }
+//    private func setupNotifications() {
+//        let center = UNUserNotificationCenter.current()
+//        center.requestAuthorization(options: [.alert, .sound, .badge]) { granted, error in
+//            if granted {
+//                print("알림 권한 승인됨")
+//            } else {
+//                print("알림 권한 거부됨: \(error?.localizedDescription ?? "")")
+//            }
+//        }
+//    }
 //
-//        // 기존 타이머 중지
-//        timers[group.groupID]?.invalidate()
-//
-//        // 타이머 참조를 저장할 변수
-//        var newTimer: Timer?
-//
-//        newTimer = Timer.scheduledTimer(withTimeInterval: 1.0, repeats: true) { [weak self] _ in
-//            guard let self = self, self.isTimerRunning else {
-//                // 타이머가 실행 중이 아니면 타이머 무효화
-//                newTimer?.invalidate()
+//    private func findNextAlarmDate(for group: GroupList) -> Date? {
+//            let calendar = Calendar.current
+//            let now = Date()
+//            
+//            // 알람 시간 파싱
+//            let components = group.wakeupTime.split(separator: ":")
+//            guard components.count == 2,
+//                  let hour = Int(components[0]),
+//                  let minute = Int(components[1]) else { return nil }
+//            
+//            // 요일 문자열을 숫자로 변환 (1 = 일요일, 2 = 월요일, ...)
+//            let weekdays = (group.dayOfWeekList ?? []).map { convertWeekdayToNumber($0) }.sorted()
+//            guard !weekdays.isEmpty else { return nil }
+//            
+//            // 현재 요일과 시간
+//            let currentWeekday = calendar.component(.weekday, from: now)
+//            let currentHour = calendar.component(.hour, from: now)
+//            let currentMinute = calendar.component(.minute, from: now)
+//            
+//            var nextAlarmDate: Date?
+//            var shortestDiff = Double.infinity
+//            
+//            // 앞으로 7일 동안의 모든 가능한 알람 시간을 확인
+//            for dayOffset in 0...7 {
+//                let date = calendar.date(byAdding: .day, value: dayOffset, to: now)!
+//                let weekday = calendar.component(.weekday, from: date)
+//                
+//                // 알람이 설정된 요일인지 확인
+//                guard weekdays.contains(weekday) else { continue }
+//                
+//                // 알람 시간 설정
+//                var dateComponents = calendar.dateComponents([.year, .month, .day], from: date)
+//                dateComponents.hour = hour
+//                dateComponents.minute = minute
+//                dateComponents.second = 0
+//                
+//                guard let alarmDate = calendar.date(from: dateComponents) else { continue }
+//                
+//                // 과거의 시간은 건너뛰기
+//                if alarmDate <= now { continue }
+//                
+//                // 현재 시간과의 차이 계산
+//                let diff = alarmDate.timeIntervalSince(now)
+//                
+//                // 가장 가까운 시간 저장
+//                if diff < shortestDiff {
+//                    shortestDiff = diff
+//                    nextAlarmDate = alarmDate
+//                }
+//            }
+//            
+//            return nextAlarmDate
+//        }
+//    
+//    private func scheduleNextAlarm(for group: GroupList) {
+//            guard let nextAlarmDate = findNextAlarmDate(for: group) else {
+//                print("다음 알람 시간을 찾을 수 없습니다.")
 //                return
 //            }
-//
-//            if self.shouldTriggerAlarm(wakeupTime: group.wakeupTime, dayOfWeekList: group.dayOfWeekList ?? []) {
-//                self.triggerAlarm(for: group)
+//            
+//            // 60개의 알람 등록 (1초 간격)
+//            let center = UNUserNotificationCenter.current()
+//            let calendar = Calendar.current
+//            
+//            // 기존 알람 제거
+//            stopAlarm(for: group.groupID)
+//            
+//            // 60초 동안의 알람 등록
+//            for second in 0..<60 {
+//                guard let alarmTime = calendar.date(byAdding: .second, value: second, to: nextAlarmDate) else {
+//                    continue
+//                }
+//                
+//                let content = UNMutableNotificationContent()
+//                content.title = "기상 알람"
+//                content.body = "얼른 일어나서 다른 메이트들을 깨워주세요!"
+//                content.sound = UNNotificationSound(named: UNNotificationSoundName(rawValue: "wakeupalarm.wav"))
+//                content.userInfo = [
+//                    "groupID": group.groupID,
+//                    "isLastNotification": second == 59
+//                ]
+//                
+//                let triggerComponents = calendar.dateComponents(
+//                    [.year, .month, .day, .hour, .minute, .second],
+//                    from: alarmTime
+//                )
+//                let trigger = UNCalendarNotificationTrigger(
+//                    dateMatching: triggerComponents,
+//                    repeats: false
+//                )
+//                
+//                let identifier = "Alarm_\(group.groupID)_\(second)"
+//                let request = UNNotificationRequest(
+//                    identifier: identifier,
+//                    content: content,
+//                    trigger: trigger
+//                )
+//                
+//                center.add(request) { error in
+//                    if let error = error {
+//                        print("알람 등록 실패 (\(second)초): \(error.localizedDescription)")
+//                    }
+//                }
 //            }
+//            
+//            print("다음 알람 예약됨 - 그룹: \(group.groupID), 시간: \(nextAlarmDate)")
 //        }
-//
-//        if let timer = newTimer {
-//            timers[group.groupID] = timer
-//        }
-//    }
-//
 //    
-//    // 알람 트리거 함수
-//    private func triggerAlarm(for group: GroupList) {
-//        guard isTimerRunning else { return } // 추가된 안전 검사
-//
-//        let center = UNUserNotificationCenter.current()
-//
-//        let content = UNMutableNotificationContent()
-//        content.title = "기상 알람"
-//        content.body = "얼른 일어나서 다른 메이트들을 깨워주세요!"
-//        content.sound = UNNotificationSound(named: UNNotificationSoundName(rawValue: "wakeupalarm.wav"))
-//        content.userInfo = ["groupID": group.groupID]
-//
-//        // 즉시 알람 발생
-//        let trigger = UNTimeIntervalNotificationTrigger(timeInterval: 1, repeats: false)
-//        let identifier = "Alarm_\(group.groupID)_\(Date().timeIntervalSince1970)"
-//
-//        let request = UNNotificationRequest(identifier: identifier, content: content, trigger: trigger)
-//
-//        center.add(request) { error in
-//            if let error = error {
-//                print("알람 트리거 실패: \(error)")
-//            } else {
-//                let formatter = DateFormatter()
-//                formatter.dateFormat = "yyyy-MM-dd HH:mm:ss"
-//                print("====== 알람 발생 ======")
-//                print("그룹 ID: \(group.groupID)")
-//                print("발생 시간: \(formatter.string(from: Date()))")
-//                print("=======================")
-//            }
-//        }
+//    private func convertWeekdayToNumber(_ weekday: String) -> Int {
+//        let weekdays = ["sun": 1, "mon": 2, "tue": 3, "wed": 4, "thu": 5, "fri": 6, "sat": 7]
+//        return weekdays[weekday.lowercased()] ?? 1
 //    }
-//
 //    
-//    // 모든 그룹의 알람 시작
 //    func startAllAlarms(for groups: [GroupList]) {
-//        // 먼저 모든 알람 중지
 //        stopAllAlarms()
-//        
-//        // 타이머 실행 상태 활성화
-//        isTimerRunning = true
 //        currentGroups = groups
 //        
-//        // 각 그룹에 대해 타이머 시작
 //        for group in groups {
 //            if !group.isDisturbBanGroup {
-//                startTimer(for: group)
+//                scheduleNextAlarm(for: group)
 //            }
 //        }
-//        
-//        print("====== 알람 시작 확인 ======")
-//        print("시작된 타이머 개수: \(timers.count)")
-//        print("등록된 그룹 개수: \(currentGroups.count)")
-//        print("타이머 실행 상태: \(isTimerRunning)")
-//        print("==========================")
 //    }
 //    
-//    
-//    // 모든 알람 중지
 //    func stopAllAlarms() {
-//        // 타이머 실행 상태 변경
-//        isTimerRunning = false
-//        
-//        // 모든 타이머 무효화
-//        for (_, timer) in timers {
-//            timer.invalidate()
-//        }
-//        timers.removeAll()
-//        
-//        // 현재 그룹 목록 초기화
+//        let center = UNUserNotificationCenter.current()
+//        center.removeAllPendingNotificationRequests()
+//        center.removeAllDeliveredNotifications()
 //        currentGroups.removeAll()
-//        
-//        // 모든 알림 제거
-//        let notificationCenter = UNUserNotificationCenter.current()
-//        notificationCenter.removeAllPendingNotificationRequests()
-//        notificationCenter.removeAllDeliveredNotifications()
-//        
-//        print("====== 모든 알람 중지 확인 ======")
-//        print("타이머 개수: \(timers.count)")
-//        print("그룹 개수: \(currentGroups.count)")
-//        print("타이머 실행 상태: \(isTimerRunning)")
-//        print("=============================")
+//        print("====== 모든 알람 중지됨 ======")
 //    }
 //    
 //    func stopAlarm(for groupId: Int) {
-//        timers[groupId]?.invalidate()
-//        timers.removeValue(forKey: groupId)
-//
-//        // 알림 제거
-//        UNUserNotificationCenter.current().removePendingNotificationRequests(withIdentifiers: [])
-//        UNUserNotificationCenter.current().removeAllDeliveredNotifications()
-//
-//        // 현재 그룹 목록에서 제거
-//        currentGroups.removeAll(where: { $0.groupID == groupId })
-//
-//        // 실행 상태 업데이트
-//        isTimerRunning = !timers.isEmpty
-//
+//        let center = UNUserNotificationCenter.current()
+//        let identifierPrefix = "Alarm_\(groupId)_"
+//        
+//        center.getPendingNotificationRequests { requests in
+//            let identifiersToRemove = requests
+//                .filter { $0.identifier.hasPrefix(identifierPrefix) }
+//                .map { $0.identifier }
+//            
+//            center.removePendingNotificationRequests(withIdentifiers: identifiersToRemove)
+//        }
+//        
+//        currentGroups.removeAll { $0.groupID == groupId }
+//        
 //        print("====== 알람 중지 ======")
 //        print("그룹 ID: \(groupId)")
-//        print("타이머 제거됨")
-//        print("알림 제거됨")
+//        print("알람 제거됨")
 //        print("=====================")
 //    }
 //    
-//    // 알람 업데이트
 //    func updateAlarm(from data: [GroupList]) {
 //        startAllAlarms(for: data)
-//    }
-//    
-//    // 모든 예약된 알림 제거
-//    func removeAllNotifications() {
-//        UNUserNotificationCenter.current().removeAllPendingNotificationRequests()
 //    }
 //}
 class AlarmManager {
     static let shared = AlarmManager()
-    private var timers: [Int: Timer] = [:]  // groupID를 키로 사용하는 타이머 딕셔너리
-    private var currentGroups: [GroupList] = []  // 현재 그룹 목록
-    private var timerStates: [Int: Bool] = [:]  // 각 그룹별 타이머 상태 관리
+    private var currentGroups: [GroupList] = []
     
-    private init() {}
-    
-    // 특정 시간이 현재 알람을 울려야 할 시간인지 확인하는 함수
-    private func shouldTriggerAlarm(wakeupTime: String, dayOfWeekList: [String], currentDate: Date = Date()) -> Bool {
-        let calendar = Calendar.current
-        let weekdaySymbols = ["sun", "mon", "tue", "wed", "thu", "fri", "sat"]
-        
-        let currentWeekday = calendar.component(.weekday, from: currentDate)
-        let currentWeekdayString = weekdaySymbols[currentWeekday - 1]
-        
-        let hour = calendar.component(.hour, from: currentDate)
-        let minute = calendar.component(.minute, from: currentDate)
-        let currentTimeString = String(format: "%02d:%02d", hour, minute)
-        
-        return dayOfWeekList.contains(currentWeekdayString) && wakeupTime == currentTimeString
+    private init() {
+        setupNotifications()
     }
     
-    // 각 그룹에 대한 타이머 시작
-//    private func startTimer(for group: GroupList) {
-//        guard !timerStates[group.groupID, default: false] else { return }  // 타이머가 이미 실행 중이면 종료
-//
-//        // 기존 타이머 중지
-//        timers[group.groupID]?.invalidate()
-//
-//        // 타이머 참조를 저장할 변수
-//        var newTimer: Timer?
-//
-//        newTimer = Timer.scheduledTimer(withTimeInterval: 1.0, repeats: true) { [weak self] _ in
-//            guard let self = self else { return }
-//
-//            if self.shouldTriggerAlarm(wakeupTime: group.wakeupTime, dayOfWeekList: group.dayOfWeekList ?? []) {
-//                self.triggerAlarm(for: group)
-//            }
-//        }
-//
-//        if let timer = newTimer {
-//            timers[group.groupID] = timer
-//            timerStates[group.groupID] = true  // 타이머 상태를 실행 중으로 설정
-//        }
-//    }
-    
-    private func startTimer(for group: GroupList) {
-        guard !timerStates[group.groupID, default: false] else { return }  // 타이머가 이미 실행 중이면 종료
-
-        // 기존 타이머 중지
-        timers[group.groupID]?.invalidate()
-
-        // 현재 시간을 가져오기
-        let currentDate = Date()
-
-        // 알람이 울려야 할 시간이 현재 시간과 동일한지 확인
-        if shouldTriggerAlarm(wakeupTime: group.wakeupTime, dayOfWeekList: group.dayOfWeekList ?? [], currentDate: currentDate) {
-            print("현재 시간과 알람 시간이 동일하므로 알람을 시작하지 않습니다.")
-            return  // 알람을 시작하지 않음
-        }
-
-        // 타이머 시작
-        var newTimer: Timer?
-
-        newTimer = Timer.scheduledTimer(withTimeInterval: 1.0, repeats: true) { [weak self] _ in
-            guard let self = self else { return }
-
-            if self.shouldTriggerAlarm(wakeupTime: group.wakeupTime, dayOfWeekList: group.dayOfWeekList ?? []) {
-                self.triggerAlarm(for: group)
-            }
-        }
-
-        if let timer = newTimer {
-            timers[group.groupID] = timer
-            timerStates[group.groupID] = true  // 타이머 상태를 실행 중으로 설정
-        }
-    }
-
-    // 알람 트리거 함수
-    private func triggerAlarm(for group: GroupList) {
+    private func setupNotifications() {
         let center = UNUserNotificationCenter.current()
-
-        let content = UNMutableNotificationContent()
-        content.title = "기상 알람"
-        content.body = "얼른 일어나서 다른 메이트들을 깨워주세요!"
-        content.sound = UNNotificationSound(named: UNNotificationSoundName(rawValue: "wakeupalarm.wav"))
-        content.userInfo = ["groupID": group.groupID]
-
-        // 즉시 알람 발생
-        let trigger = UNTimeIntervalNotificationTrigger(timeInterval: 1, repeats: false)
-        let identifier = "Alarm_\(group.groupID)_\(Date().timeIntervalSince1970)"
-
-        let request = UNNotificationRequest(identifier: identifier, content: content, trigger: trigger)
-
-        center.add(request) { error in
-            if let error = error {
-                print("알람 트리거 실패: \(error)")
+        center.requestAuthorization(options: [.alert, .sound, .badge]) { granted, error in
+            if granted {
+                print("알림 권한 승인됨")
             } else {
-                let formatter = DateFormatter()
-                formatter.dateFormat = "yyyy-MM-dd HH:mm:ss"
-                print("====== 알람 발생 ======")
-                print("그룹 ID: \(group.groupID)")
-                print("발생 시간: \(formatter.string(from: Date()))")
-                print("=======================")
+                print("알림 권한 거부됨: \(error?.localizedDescription ?? "")")
             }
         }
     }
-
-    // 모든 그룹의 알람 시작
-    func startAllAlarms(for groups: [GroupList]) {
-        // 먼저 모든 알람 중지
-        stopAllAlarms()
-
-        currentGroups = groups
+    
+    // 특정 그룹의 다음 알람 시간을 찾는 함수
+    private func findNextAlarmDate(for group: GroupList) -> (date: Date, groupId: Int)? {
+        let calendar = Calendar.current
+        let now = Date()
         
-        // 각 그룹에 대해 타이머 시작
+        // 알람 시간 파싱
+        let components = group.wakeupTime.split(separator: ":")
+        guard components.count == 2,
+              let hour = Int(components[0]),
+              let minute = Int(components[1]) else { return nil }
+        
+        // 요일 문자열을 숫자로 변환
+        let weekdays = (group.dayOfWeekList ?? []).map { convertWeekdayToNumber($0) }.sorted()
+        guard !weekdays.isEmpty else { return nil }
+        
+        var nextAlarmDate: Date?
+        var shortestDiff = Double.infinity
+        
+        // 앞으로 7일 동안의 모든 가능한 알람 시간을 확인
+        for dayOffset in 0...7 {
+            let date = calendar.date(byAdding: .day, value: dayOffset, to: now)!
+            let weekday = calendar.component(.weekday, from: date)
+            
+            guard weekdays.contains(weekday) else { continue }
+            
+            var dateComponents = calendar.dateComponents([.year, .month, .day], from: date)
+            dateComponents.hour = hour
+            dateComponents.minute = minute
+            dateComponents.second = 0
+            
+            guard let alarmDate = calendar.date(from: dateComponents) else { continue }
+            
+            if alarmDate <= now { continue }
+            
+            let diff = alarmDate.timeIntervalSince(now)
+            if diff < shortestDiff {
+                shortestDiff = diff
+                nextAlarmDate = alarmDate
+            }
+        }
+        
+        if let date = nextAlarmDate {
+            return (date, group.groupID)
+        }
+        return nil
+    }
+    
+    // 모든 그룹 중 가장 가까운 알람을 찾는 함수
+    private func findClosestAlarm(from groups: [GroupList]) -> (date: Date, groupId: Int)? {
+        var closestAlarm: (date: Date, groupId: Int)?
+        var shortestDiff = Double.infinity
+        
         for group in groups {
-            if !group.isDisturbBanGroup {
-                startTimer(for: group)
+            guard !group.isDisturbBanGroup else { continue }
+            
+            if let nextAlarm = findNextAlarmDate(for: group) {
+                let diff = nextAlarm.date.timeIntervalSince(Date())
+                if diff < shortestDiff {
+                    shortestDiff = diff
+                    closestAlarm = nextAlarm
+                }
             }
         }
         
-        print("====== 알람 시작 확인 ======")
-        print("시작된 타이머 개수: \(timers.count)")
-        print("등록된 그룹 개수: \(currentGroups.count)")
-        print("==========================")
+        return closestAlarm
     }
     
+    private func scheduleClosestAlarm(from groups: [GroupList]) {
+        guard let closestAlarm = findClosestAlarm(from: groups) else {
+            print("예약할 수 있는 알람이 없습니다.")
+            return
+        }
+        
+        // 기존 알람들 모두 제거
+        stopAllAlarms()
+        
+        // 60개의 알람 등록 (1초 간격)
+        let center = UNUserNotificationCenter.current()
+        let calendar = Calendar.current
+        
+        for second in 0..<60 {
+            guard let alarmTime = calendar.date(byAdding: .second, value: second, to: closestAlarm.date) else {
+                continue
+            }
+            
+            let content = UNMutableNotificationContent()
+            content.title = "기상 알람"
+            content.body = "얼른 일어나서 다른 메이트들을 깨워주세요!"
+            content.sound = UNNotificationSound(named: UNNotificationSoundName(rawValue: "wakeupalarm.wav"))
+            content.userInfo = [
+                "groupID": closestAlarm.groupId,
+                "isLastNotification": second == 59
+            ]
+            
+            let triggerComponents = calendar.dateComponents(
+                [.year, .month, .day, .hour, .minute, .second],
+                from: alarmTime
+            )
+            let trigger = UNCalendarNotificationTrigger(
+                dateMatching: triggerComponents,
+                repeats: false
+            )
+            
+            let identifier = "Alarm_\(closestAlarm.groupId)_\(second)"
+            let request = UNNotificationRequest(
+                identifier: identifier,
+                content: content,
+                trigger: trigger
+            )
+            
+            center.add(request) { error in
+                if let error = error {
+                    print("알람 등록 실패 (\(second)초): \(error.localizedDescription)")
+                }
+            }
+        }
+        
+        print("다음 알람 예약됨 - 그룹: \(closestAlarm.groupId), 시간: \(closestAlarm.date)")
+    }
     
-
-    // 모든 알람 중지
+    private func convertWeekdayToNumber(_ weekday: String) -> Int {
+        let weekdays = ["sun": 1, "mon": 2, "tue": 3, "wed": 4, "thu": 5, "fri": 6, "sat": 7]
+        return weekdays[weekday.lowercased()] ?? 1
+    }
+    
+    func startAllAlarms(for groups: [GroupList]) {
+        currentGroups = groups
+        scheduleClosestAlarm(from: groups)
+    }
+    
     func stopAllAlarms() {
-        // 모든 타이머 무효화
-        for (_, timer) in timers {
-            timer.invalidate()
-        }
-        timers.removeAll()
-        
-        // 모든 타이머 상태를 false로 설정
-        for groupID in timerStates.keys {
-            timerStates[groupID] = false
-        }
-        
-        // 현재 그룹 목록 초기화
+        let center = UNUserNotificationCenter.current()
+        center.removeAllPendingNotificationRequests()
+        center.removeAllDeliveredNotifications()
         currentGroups.removeAll()
-        
-        // 모든 알림 제거
-        let notificationCenter = UNUserNotificationCenter.current()
-        notificationCenter.removeAllPendingNotificationRequests()
-        notificationCenter.removeAllDeliveredNotifications()
-        
-        print("====== 모든 알람 중지 확인 ======")
-        print("타이머 개수: \(timers.count)")
-        print("그룹 개수: \(currentGroups.count)")
-        print("=============================")
+        print("====== 모든 알람 중지됨 ======")
     }
     
-    // 특정 그룹의 알람 중지
-    func stopAlarm(for groupId: Int) {
-        timers[groupId]?.invalidate()
-        timers.removeValue(forKey: groupId)
-        timerStates[groupId] = false  // 해당 그룹의 타이머 상태를 false로 설정
-
-        // 알림 제거
-        UNUserNotificationCenter.current().removeAllPendingNotificationRequests()
-
-        // 현재 그룹 목록에서 제거
-        currentGroups.removeAll { $0.groupID == groupId }
-
-        print("====== 알람 중지 ======")
-        print("그룹 ID: \(groupId)")
-        print("타이머 제거됨")
-        print("알림 제거됨")
-        print("=====================")
-    }
-    
-    // 알람 업데이트
     func updateAlarm(from data: [GroupList]) {
         startAllAlarms(for: data)
     }
-    
-    // 모든 예약된 알림 제거
-    func removeAllNotifications() {
-        UNUserNotificationCenter.current().removeAllPendingNotificationRequests()
-    }
 }
-

@@ -316,7 +316,7 @@ class MainViewController: UIViewController, UISheetPresentationControllerDelegat
         self.navigationController?.pushViewController(vc, animated: true)
     }
     
-    @objc func clickedmakeAlarm(){ //새로운 알람 설정
+    @objc func clickedmakeAlarm(){
         let vc = MakeAlarmViewController()
         vc.mode = .createMode
         vc.username = UserDefaults.standard.string(forKey: "nickname") ?? ""

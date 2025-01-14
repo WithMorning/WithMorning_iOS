@@ -227,7 +227,7 @@ class AlarmViewController: UIViewController {
         print("저장된 groupId", groupId)
         
         // stopAllAlarms() 대신 특정 그룹의 알람만 중지
-        AlarmManager.shared.stopAlarm(for: groupId)
+//        AlarmManager.shared.stopAlarm(for: groupId)
         
         Initialized = false
         Wakeup(groupId: groupId)

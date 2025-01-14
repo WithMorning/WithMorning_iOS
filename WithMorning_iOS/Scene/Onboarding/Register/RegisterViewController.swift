@@ -40,7 +40,6 @@ class RegisterViewController : UIViewController{
     
     private lazy var subLabel : UILabel = {
         let label = UILabel()
-        label.text = "가입할 휴대폰 번호를 입력해 주세요."
         label.textAlignment = .center
         label.font = DesignSystemFont.Pretendard_Medium14.value
         label.textColor = DesignSystemColor.Gray500.value
@@ -130,9 +129,11 @@ class RegisterViewController : UIViewController{
         switch viewType.self{
         case .changeNumber:
             mainLabel.text = "연락처 변경"
+            subLabel.text = "변경할 휴대폰 번호를 입력해 주세요."
             popButton.isHidden = false
         case .register:
             mainLabel.text = "회원가입"
+            subLabel.text = "가입할 휴대폰 번호를 입력해 주세요."
             popButton.isHidden = true
         }
         

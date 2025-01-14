@@ -40,7 +40,7 @@ class CodeBtnViewController: UIViewController {
         textfield.autocorrectionType = .no
         textfield.spellCheckingType = .no
         textfield.autocapitalizationType = .none
-        textfield.addleftPadding()
+//        textfield.addleftPadding()
         
         return textfield
     }()
@@ -131,7 +131,7 @@ class CodeBtnViewController: UIViewController {
         openButton.snp.makeConstraints{
             $0.width.height.equalTo(20)
             $0.centerY.equalTo(numberLabel)
-            $0.leading.equalTo(numberLabel.snp.trailing).offset(10)
+            $0.leading.equalTo(numberLabel.snp.trailing).offset(4)
         }
         
         notiLabel.snp.makeConstraints{

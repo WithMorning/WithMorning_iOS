@@ -36,7 +36,7 @@ class MyStateViewController : UIViewController{
         stackView.axis = .horizontal
         stackView.alignment = .fill
         stackView.distribution = .equalSpacing
-        stackView.spacing = 10
+        stackView.spacing = 4
         stackView.addSubviews(NumLabel,NumButton)
         return stackView
     }()
@@ -112,7 +112,7 @@ class MyStateViewController : UIViewController{
         }
         NumStackView.snp.makeConstraints{
             $0.centerX.equalToSuperview()
-            $0.width.equalTo(122)
+            $0.width.equalTo(116)
             $0.height.equalTo(24)
             $0.top.equalTo(nicknameLabel.snp.bottom).offset(16)
         }
@@ -165,7 +165,6 @@ class MyStateViewController : UIViewController{
             let placeholderImage = UIImage(named: "profile")
             let processor = RoundCornerImageProcessor(cornerRadius: 50) // 둥근 모서리
             
-            // Kingfisher 이미지 설정
             userImage.kf.setImage(with: url, placeholder: placeholderImage, options: [.processor(processor)]) {
                 result in
                 switch result {

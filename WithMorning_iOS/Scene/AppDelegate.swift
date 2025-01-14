@@ -63,13 +63,12 @@ class AppDelegate:UIResponder, UIApplicationDelegate, MessagingDelegate {
         let userInfo = notification.request.content.userInfo
         handleNotificationResponse(userInfo)
         completionHandler([.banner, .list, .sound])
-        
     }
     
     //MARK: - 앱이 백그라운드인 경우 (Background) & 백그라운드에서 사용자가 푸시를 탭한 경우
     func userNotificationCenter(_ center: UNUserNotificationCenter, didReceive response: UNNotificationResponse, withCompletionHandler completionHandler: @escaping () -> Void) {
-//        let userInfo = response.notification.request.content.userInfo
-//        handleNotificationResponse(userInfo)
+        let userInfo = response.notification.request.content.userInfo
+        handleNotificationResponse(userInfo)
         completionHandler()
         
     }

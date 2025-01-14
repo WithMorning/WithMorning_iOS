@@ -594,8 +594,7 @@ class MakeAlarmViewController : UIViewController, UIScrollViewDelegate, UISheetP
     
     @objc func saveclicked() {
         if mode == .editMode {
-            editGroup()
-            
+            editGroup() 
         }else{
             makeGroup()
         }
