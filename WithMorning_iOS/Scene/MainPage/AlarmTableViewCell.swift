@@ -17,7 +17,7 @@ class AlarmTableViewCell : UITableViewCell, UISheetPresentationControllerDelegat
     
     
     //MARK: - closure
-    var toggleclicked : ( () -> Void ) = {}
+    var toggleclicked : (() -> Void) = {}
     var onEditAlarm: ((Int) -> Void)?
     
     //알람삭제후 실행되는 클로저
@@ -29,6 +29,8 @@ class AlarmTableViewCell : UITableViewCell, UISheetPresentationControllerDelegat
     
     var APInetwork = Network.shared
     var time24: String = ""
+    
+    var isagreeClosure : (() -> Void)?
     
     lazy var AlarmStackView : UIStackView = {
         let view = UIStackView()
@@ -682,8 +684,6 @@ class AlarmTableViewCell : UITableViewCell, UISheetPresentationControllerDelegat
         updateMemoLabel()
     }
     
-    
-    
     //MARK: - objc func
     // 방해금지모드
     @objc func clicktoggle() {
@@ -829,14 +829,14 @@ class AlarmTableViewCell : UITableViewCell, UISheetPresentationControllerDelegat
         return cell
     }
     
-    //그룹내의 셀 크기 = 이미지 + 라벨
+    //MARK: - 그룹내의 셀 크기 = 이미지 + 라벨
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
         
         return CGSize(width: 62, height: collectionViewHeight)
     }
     
     
-    //그룹내의 셀 중앙정렬
+    //MARK: - 그룹내의 셀 중앙정렬
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, insetForSectionAt section: Int) -> UIEdgeInsets {
         let totalCellWidth = 62 * memberCount
         let totalSpacingWidth = 8 * (memberCount - 1)
@@ -846,7 +846,7 @@ class AlarmTableViewCell : UITableViewCell, UISheetPresentationControllerDelegat
         return UIEdgeInsets(top: 0, left: leftInset, bottom: 0, right: rightInset)
     }
     
-    //그룹내의 셀 클릭시 이벤트
+    //MARK: - 그룹내의 셀 클릭시 이벤트
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         
         guard let parentViewController = self.parentVC else {
@@ -855,13 +855,11 @@ class AlarmTableViewCell : UITableViewCell, UISheetPresentationControllerDelegat
         
         let Uservc = UserStateViewController()
         let Myvc = MyStateViewController()
-        let mainvc = MainViewController()
         
         let selectedUser = userData[indexPath.item]
         
         Myvc.reloadisagree = {
-            print("reloadisagree closure")
-            mainvc.refreshControl()
+            self.isagreeClosure!()
         }
         
         //        Uservc.nicknameLabel.text = selectedUser.nickname
@@ -892,7 +890,6 @@ class AlarmTableViewCell : UITableViewCell, UISheetPresentationControllerDelegat
         if selectedUser.isDisturbBanMode{
             parentVC?.showToast(message: "\(selectedUser.nickname)님은 현재 방해금지 모드에요!")
         }else{
-            
             //본인과 메이트 확인
             if selectedUser.nickname == UserDefaults.standard.string(forKey: "nickname"){
                 
@@ -905,6 +902,7 @@ class AlarmTableViewCell : UITableViewCell, UISheetPresentationControllerDelegat
                 
                 Myvc.modalPresentationStyle = .formSheet
                 parentViewController.present(Myvc, animated: true)
+                
                 
                 if let vc = Myvc.sheetPresentationController{
                     if #available(iOS 16.0, *) {

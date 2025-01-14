@@ -60,7 +60,7 @@ class TutorialViewController : UIViewController, UISheetPresentationControllerDe
         view.delegate = self
         view.dataSource = self
         
-        let vc = [TutorialFirstViewController()]
+        let vc = [TutorialSecondViewController()]
         
         view.setViewControllers(vc, direction: .reverse, animated: true)
         return view
@@ -126,7 +126,7 @@ class TutorialViewController : UIViewController, UISheetPresentationControllerDe
     
     //MARK: - 건너뛰기 버튼 히든
     func skiphidden(){
-        if pageControl.currentPage == 0{
+        if pageControl.currentPage == 1{
             skipButton.isHidden = true
         }else{
             skipButton.isHidden = false
@@ -136,7 +136,7 @@ class TutorialViewController : UIViewController, UISheetPresentationControllerDe
     
     //MARK: - objc func
     @objc func nextbtn(){
-        if pageControl.currentPage == 1{
+        if pageControl.currentPage == 0{
             navigateToMainViewController()
             skipButton.isHidden = true
         }
@@ -147,9 +147,9 @@ class TutorialViewController : UIViewController, UISheetPresentationControllerDe
             let nextViewController: UIViewController?
             switch pageControl.currentPage {
             case 0:
-                nextViewController = TutorialFirstViewController()
-            case 1:
                 nextViewController = TutorialSecondViewController()
+//            case 1:
+//                nextViewController = TutorialSecondViewController()
             default:
                 nextViewController = nil
             }
@@ -189,21 +189,23 @@ class TutorialViewController : UIViewController, UISheetPresentationControllerDe
 //MARK: - UIpageVC 메서드
 extension TutorialViewController : UIPageViewControllerDelegate, UIPageViewControllerDataSource{
     func pageViewController(_ pageViewController: UIPageViewController, viewControllerBefore viewController: UIViewController) -> UIViewController? {
-        switch viewController {
-        case is TutorialSecondViewController:
-            return TutorialFirstViewController()
-        default:
-            return nil
-        }
+//        switch viewController {
+//        case is TutorialSecondViewController:
+//            return TutorialFirstViewController()
+//        default:
+//            return nil
+//        }
+        return nil
     }
     
     func pageViewController(_ pageViewController: UIPageViewController, viewControllerAfter viewController: UIViewController) -> UIViewController? {
-        switch viewController {
-        case is TutorialFirstViewController:
-            return TutorialSecondViewController()
-        default:
-            return nil
-        }
+//        switch viewController {
+//        case is TutorialFirstViewController:
+//            return TutorialSecondViewController()
+//        default:
+//            return nil
+//        }
+        return nil
     }
     
     func pageViewController(_ pageViewController: UIPageViewController, didFinishAnimating finished: Bool, previousViewControllers: [UIViewController], transitionCompleted completed: Bool) {

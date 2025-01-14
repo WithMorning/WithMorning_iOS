@@ -14,7 +14,10 @@ import AVFoundation
 class AlarmViewController: UIViewController {
     
     let APInetwork = Network.shared
-    var audioPlayer : AVAudioPlayer?
+    
+    static let shared = AlarmViewController()
+    
+    private var Initialized = false
     
     //MARK: - 스택뷰
     private lazy var backgroundView : UIImageView = {
@@ -95,15 +98,22 @@ class AlarmViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         view.backgroundColor = .clear
-        setupUI()
-        updateTimeAndDate()
+        if !Initialized {
+            view.backgroundColor = .clear
+            setupUI()
+            updateTimeAndDate()
+            setRandomBackgroundImage()
+            alarmMessage()
+            Initialized = true
+        }
     }
     
-    override func viewWillAppear(_ animated: Bool) {
-        super.viewWillAppear(animated)
-        setRandomBackgroundImage()
-        alarmMessage()
-        
+    private override init(nibName nibNameOrNil: String? = nil, bundle nibBundleOrNil: Bundle? = nil) {
+        super.init(nibName: nibNameOrNil, bundle: nibBundleOrNil)
+    }
+    
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
     }
     
     func setupUI() {
@@ -202,8 +212,6 @@ class AlarmViewController: UIViewController {
                 print(data)
                 UserDefaults.standard.removeObject(forKey: "wakeupGroupId")
                 self.mainViewController()
-                AlarmManager.shared.stopAllAlarms()
-            
             case .failure(let error):
                 print(error.localizedDescription)
                 UserDefaults.standard.removeObject(forKey: "wakeupGroupId")
@@ -212,23 +220,15 @@ class AlarmViewController: UIViewController {
             }
         }
     }
-    //MARK: - 알람 멈추기
-//    private func stopAlarmSound() {
-//        if let player = audioPlayer, player.isPlaying {
-//            player.stop()
-//            audioPlayer = nil
-//            print("🔇 알람 소리 중단")
-//        } else {
-//            print("🔇 재생 중인 알람 소리가 없습니다.")
-//        }
-//    }
-    
     
     //MARK: - @objc func
     @objc func turnoffalarm() {
         let groupId = UserDefaults.standard.integer(forKey: "wakeupGroupId")
-        print("저장된 groupId",groupId)
+        print("저장된 groupId", groupId)
+        AlarmManager.shared.stopAllAlarms()
+        Initialized = false
         Wakeup(groupId: groupId)
+        UserDefaults.standard.removeObject(forKey: "wakeupGroupId")
     }
     
     //MARK: - 메인페이지로 이동

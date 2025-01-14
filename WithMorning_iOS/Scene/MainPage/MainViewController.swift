@@ -155,7 +155,6 @@ class MainViewController: UIViewController, UISheetPresentationControllerDelegat
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         getMainpage()
-        updateSoundButtonImage()
         checkNotificationPermission()
     }
     
@@ -346,9 +345,7 @@ class MainViewController: UIViewController, UISheetPresentationControllerDelegat
             if #available(iOS 16.0, *) {
                 sheet.detents = [.custom { context in
                     return 245 //고정
-                    
                 }]
-                
                 sheet.delegate = self
                 sheet.prefersGrabberVisible = false
                 sheet.preferredCornerRadius = 16
@@ -465,8 +462,6 @@ extension MainViewController : UITableViewDelegate, UITableViewDataSource{
         
         cell.ConfigureMember(alarm.userList ?? [])
         
-        //        cell.isLeader = alarm.userList?[indexPath.row].isLeader
-        
         cell.time24 = alarm.wakeupTime
         
         cell.groupId = alarm.groupID
@@ -496,6 +491,11 @@ extension MainViewController : UITableViewDelegate, UITableViewDataSource{
         }
         //알람을 나간 후 실행되는 클로저
         cell.onAlarmLeave = { [weak self] in
+            self?.getMainpage()
+        }
+        
+        //isagree를 바로 반영하기 위한 closure
+        cell.isagreeClosure = { [weak self] in
             self?.getMainpage()
         }
         
@@ -536,6 +536,8 @@ extension MainViewController : UITableViewDelegate, UITableViewDataSource{
                 
             }
         }
+        
+        
         return cell
     }
     

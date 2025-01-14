@@ -68,9 +68,9 @@ class AppDelegate:UIResponder, UIApplicationDelegate, MessagingDelegate {
     
     //MARK: - 앱이 백그라운드인 경우 (Background) & 백그라운드에서 사용자가 푸시를 탭한 경우
     func userNotificationCenter(_ center: UNUserNotificationCenter, didReceive response: UNNotificationResponse, withCompletionHandler completionHandler: @escaping () -> Void) {
-//        let userInfo = response.notification.request.content.userInfo
-//        handleNotificationResponse(userInfo)
-        completionHandler()
+        //        let userInfo = response.notification.request.content.userInfo
+        //        handleNotificationResponse(userInfo)
+        //        completionHandler()
         
     }
     
@@ -89,21 +89,54 @@ class AppDelegate:UIResponder, UIApplicationDelegate, MessagingDelegate {
         UserDefaults.standard.synchronize()
     }
     
+    //    func NavigateToAlarm() {
+    //        LoadingIndicator.showLoading()
+    //        DispatchQueue.main.async {
+    //            let alarmVC = AlarmViewController()
+    //            let navController = UINavigationController(rootViewController: alarmVC)
+    //            navController.modalPresentationStyle = .fullScreen
+    //            navController.navigationBar.isHidden = true
+    //
+    //            if let keyWindow = UIApplication.shared.connectedScenes
+    //                .compactMap({ $0 as? UIWindowScene })
+    //                .flatMap({ $0.windows })
+    //                .first(where: { $0.isKeyWindow }) {
+    //
+    //                keyWindow.rootViewController = navController
+    //                keyWindow.makeKeyAndVisible()
+    //            }
+    //        }
+    //        LoadingIndicator.hideLoading()
+    //    }
+    
     func NavigateToAlarm() {
         LoadingIndicator.showLoading()
         DispatchQueue.main.async {
-            let alarmVC = AlarmViewController()
-            let navController = UINavigationController(rootViewController: alarmVC)
-            navController.modalPresentationStyle = .fullScreen
-            navController.navigationBar.isHidden = true
+            let alarmVC = AlarmViewController.shared
             
-            if let keyWindow = UIApplication.shared.connectedScenes
-                .compactMap({ $0 as? UIWindowScene })
-                .flatMap({ $0.windows })
-                .first(where: { $0.isKeyWindow }) {
+            // 현재 활성화된 scene과 window를 가져옴
+            guard let windowScene = UIApplication.shared.connectedScenes
+                .first(where: { $0.activationState == .foregroundActive }) as? UIWindowScene,
+                  let window = windowScene.windows.first(where: { $0.isKeyWindow }) else {
+                LoadingIndicator.hideLoading()
+                return
+            }
+            
+            // 현재 루트 뷰 컨트롤러가 AlarmViewController가 아닐 때만 전환
+            if !(window.rootViewController is AlarmViewController) {
+                let navController = UINavigationController(rootViewController: alarmVC)
+                navController.modalPresentationStyle = .fullScreen
+                navController.navigationBar.isHidden = true
                 
-                keyWindow.rootViewController = navController
-                keyWindow.makeKeyAndVisible()
+                // 화면 전환 애니메이션 추가
+                UIView.transition(with: window,
+                                  duration: 0.3,
+                                  options: .transitionCrossDissolve,
+                                  animations: {
+                    window.rootViewController = navController
+                }, completion: nil)
+                
+                window.makeKeyAndVisible()
             }
         }
         LoadingIndicator.hideLoading()

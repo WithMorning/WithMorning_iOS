@@ -119,7 +119,7 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
     }
     func sceneWillEnterForeground(_ scene: UIScene) {
         print("sceneWillEnterForeground")
-        alarmobserve()
+//        alarmobserve()
     }
     func sceneDidEnterBackground(_ scene: UIScene) {
         print("sceneDidEnterBackground")

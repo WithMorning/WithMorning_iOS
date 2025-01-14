@@ -42,6 +42,7 @@ class TutorialSecondViewController : UIViewController {
         stackView.alignment = .fill
         stackView.addSubviews(repeatLabel,repeatDayLabel,repeatDayLabel1)
         stackView.isUserInteractionEnabled = true
+
         return stackView
     }()
     

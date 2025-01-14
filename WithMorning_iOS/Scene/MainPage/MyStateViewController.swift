@@ -92,6 +92,10 @@ class MyStateViewController : UIViewController{
         configureUserState()
     }
     
+    override func viewWillDisappear(_ animated: Bool) {
+        super.viewWillDisappear(animated)
+    }
+    
     //MARK: - UI
     
     func SetUI(){
@@ -138,12 +142,14 @@ class MyStateViewController : UIViewController{
             $0.top.equalToSuperview().offset(20)
         }
     }
+    
     //MARK: - 유저 상태
     var userphoneNum: String = ""
     var imageURL : String?
     var userId : Int = 0
     var groupId : Int = 0
     var isagree : Bool = false
+    let mainVC = MainViewController()
     
     func configureUserState(){
         
@@ -206,7 +212,7 @@ class MyStateViewController : UIViewController{
     func editphoneagree(completion: @escaping () -> Void) {
         LoadingIndicator.showLoading()
         
-        let editphoneData = EditphoneMaindata(isAgree: isagree ?? false)
+        let editphoneData = EditphoneMaindata(isAgree: isagree)
         
         APInetwork.patchphoneagree(groupId: self.groupId, editphoneagree: editphoneData) { result in
             switch result {
@@ -225,46 +231,18 @@ class MyStateViewController : UIViewController{
     
     
     //MARK: - @objc func
-    //    @objc func numButtonclick() {
-    //        if self.NumButton.image(for: .normal) == UIImage(named: "checkboxgray") {
-    //            self.NumButton.setImage(UIImage(named: "checkboxorange"), for: .normal)
-    //            self.NumButton.setImage(UIImage(named: "checkboxorange"), for: .highlighted)
-    //            self.showToast(message: "전화번호를 비공개합니다.")
-    //            self.isagree = false
-    //            print("isagree : ",self.isagree ?? false)
-    //        } else {
-    //            self.NumButton.setImage(UIImage(named: "checkboxgray"), for: .normal)
-    //            self.NumButton.setImage(UIImage(named: "checkboxgray"), for: .highlighted)
-    //            self.showToast(message: "전화번호를 공개합니다.")
-    //            self.isagree = true
-    //            print("isagree : ",self.isagree ?? true)
-    //        }
-    //        self.configureUserState()
-    //
-    //    }
-    
     @objc func numButtonclick() {
-        // 현재 상태를 반대로 설정
-        isagree = !(isagree ?? false)
-        
-        // 버튼 이미지 및 메시지 업데이트
-        if isagree == true {
-            self.NumButton.setImage(UIImage(named: "checkboxgray"), for: .normal)
-            self.NumButton.setImage(UIImage(named: "checkboxgray"), for: .highlighted)
-            self.showToast(message: "전화번호를 공개합니다.")
-        } else {
-            self.NumButton.setImage(UIImage(named: "checkboxorange"), for: .normal)
-            self.NumButton.setImage(UIImage(named: "checkboxorange"), for: .highlighted)
-            self.showToast(message: "전화번호를 비공개합니다.")
-        }
-        
-        // 변경된 상태를 UI에 반영
-        self.configureUserState()
-        
-        // API 호출
-        editphoneagree {
-            print("isagree : ", self.isagree as Any)
-        }
+        isagree.toggle() // isagree 값을 반전
+
+        // 상태에 따라 버튼 이미지 및 메시지 설정
+        let imageName = isagree ? "checkboxgray" : "checkboxorange"
+        let message = isagree ? "전화번호를 공개합니다." : "전화번호를 비공개합니다."
+        self.NumButton.setImage(UIImage(named: imageName), for: .normal)
+        self.NumButton.setImage(UIImage(named: imageName), for: .highlighted)
+        self.showToast(message: message)
+
+        self.configureUserState() // UI 업데이트
+        editphoneagree {} // API 호출
     }
     
     
