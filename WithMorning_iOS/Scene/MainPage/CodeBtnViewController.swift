@@ -40,9 +40,21 @@ class CodeBtnViewController: UIViewController {
         textfield.autocorrectionType = .no
         textfield.spellCheckingType = .no
         textfield.autocapitalizationType = .none
-//        textfield.addleftPadding()
         
         return textfield
+    }()
+    private lazy var numStackView: UIStackView = {
+        let stackView = UIStackView()
+        stackView.axis = .horizontal
+        stackView.alignment = .fill
+        stackView.distribution = .equalSpacing
+        stackView.spacing = 4
+        stackView.addSubviews(numberLabel,openButton)
+        
+        let tapGestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(numberclicked))
+        stackView.addGestureRecognizer(tapGestureRecognizer)
+        
+        return stackView
     }()
     
     private lazy var numberLabel : UILabel = {
@@ -52,9 +64,6 @@ class CodeBtnViewController: UIViewController {
         label.font = DesignSystemFont.Pretendard_Medium14.value
         label.textColor = .black
         label.isUserInteractionEnabled = true
-        
-        let tapGestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(numberclicked))
-        label.addGestureRecognizer(tapGestureRecognizer)
         
         return label
     }()
@@ -110,7 +119,7 @@ class CodeBtnViewController: UIViewController {
     func SetUI(){
         codeTextfield.delegate = self
         
-        view.addSubviews(codeLabel,codeTextfield,numberLabel,openButton,notiLabel,DoneButton)
+        view.addSubviews(codeLabel,codeTextfield,numStackView,notiLabel,DoneButton)
         
         codeLabel.snp.makeConstraints{
             $0.top.equalToSuperview().offset(24)
@@ -123,15 +132,22 @@ class CodeBtnViewController: UIViewController {
             $0.height.equalTo(52)
         }
         
+        numStackView.snp.makeConstraints{
+            $0.centerX.equalToSuperview()
+            $0.width.equalTo(116)
+            $0.height.equalTo(24)
+            $0.top.equalTo(codeTextfield.snp.bottom).offset(26)
+        }
+        
         numberLabel.snp.makeConstraints{
-            $0.top.equalTo(codeTextfield.snp.bottom).offset(24)
-            $0.centerX.equalToSuperview().offset(-13)
+            $0.centerY.equalToSuperview()
+            $0.leading.equalToSuperview()
         }
         
         openButton.snp.makeConstraints{
+            $0.centerY.equalToSuperview()
             $0.width.height.equalTo(20)
-            $0.centerY.equalTo(numberLabel)
-            $0.leading.equalTo(numberLabel.snp.trailing).offset(4)
+            $0.trailing.equalToSuperview()
         }
         
         notiLabel.snp.makeConstraints{
@@ -151,7 +167,13 @@ class CodeBtnViewController: UIViewController {
     
     func openbuttonColor() {
         let isPrivate = UserDefaults.getPrivateNumber()
-        isPrivate ? openButton.setImage(UIImage(named: "checkboxorange"), for: .normal) : openButton.setImage(UIImage(named: "checkboxgray"), for: .normal)
+        if isPrivate{
+            openButton.setImage(UIImage(named: "checkboxorange"), for: .normal)
+            openButton.setImage(UIImage(named: "checkboxorange"), for: .highlighted)
+        }else{
+            openButton.setImage(UIImage(named: "checkboxgray"), for: .normal)
+            openButton.setImage(UIImage(named: "checkboxgray"), for: .highlighted)
+        }
     }
     
     //MARK: - @objc func

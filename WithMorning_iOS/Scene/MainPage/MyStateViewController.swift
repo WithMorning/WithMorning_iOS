@@ -38,6 +38,9 @@ class MyStateViewController : UIViewController{
         stackView.distribution = .equalSpacing
         stackView.spacing = 4
         stackView.addSubviews(NumLabel,NumButton)
+        
+        let tapGestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(numButtonclick))
+        stackView.addGestureRecognizer(tapGestureRecognizer)
         return stackView
     }()
     
@@ -204,6 +207,7 @@ class MyStateViewController : UIViewController{
         
         subLabel.attributedText = attributedString
     }
+
     
     //MARK: - API
     var reloadisagree : (()->Void)? = nil
@@ -231,17 +235,16 @@ class MyStateViewController : UIViewController{
     
     //MARK: - @objc func
     @objc func numButtonclick() {
-        isagree.toggle() // isagree 값을 반전
+        isagree.toggle()
 
-        // 상태에 따라 버튼 이미지 및 메시지 설정
         let imageName = isagree ? "checkboxgray" : "checkboxorange"
         let message = isagree ? "전화번호를 공개합니다." : "전화번호를 비공개합니다."
         self.NumButton.setImage(UIImage(named: imageName), for: .normal)
         self.NumButton.setImage(UIImage(named: imageName), for: .highlighted)
         self.showToast(message: message)
 
-        self.configureUserState() // UI 업데이트
-        editphoneagree {} // API 호출
+        self.configureUserState()
+        editphoneagree {}
     }
     
     

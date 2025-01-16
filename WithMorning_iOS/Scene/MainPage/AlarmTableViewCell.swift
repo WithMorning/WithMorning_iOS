@@ -13,7 +13,7 @@ import Kingfisher
 
 //MARK: - AlarmTableViewCell
 
-class AlarmTableViewCell : UITableViewCell, UISheetPresentationControllerDelegate, UICollectionViewDataSource, UICollectionViewDelegate,UICollectionViewDelegateFlowLayout{
+class AlarmTableViewCell : UITableViewCell, UISheetPresentationControllerDelegate, UICollectionViewDataSource, UICollectionViewDelegate, UICollectionViewDelegateFlowLayout{
     
     
     //MARK: - closure
@@ -664,7 +664,7 @@ class AlarmTableViewCell : UITableViewCell, UISheetPresentationControllerDelegat
             let imageString = NSAttributedString(attachment: attachImage)
             attributeLabel.insert(imageString, at: 0)
         } else { // 하나라도 깨어나지 않았을 때의 텍스트
-            let newText = "프로필을 눌러 깨울 수 있어요!"
+            let newText = "프로필을 눌러 깨울 수 있어요."
             attachImage.image = UIImage(named: "Check")
             attributeLabel.append(NSAttributedString(string: newText))
             attachImage.bounds = CGRect(x: 0, y: -3, width: 15, height: 15)
@@ -700,7 +700,7 @@ class AlarmTableViewCell : UITableViewCell, UISheetPresentationControllerDelegat
         }
         
         var vc: UIViewController
-    #warning("리더 수정")
+#warning("리더 수정")
         if !isLeader {
             let leaderVC = LeaderMenuViewController()
             leaderVC.groupId = self.groupId
@@ -942,7 +942,6 @@ class AlarmTableViewCell : UITableViewCell, UISheetPresentationControllerDelegat
             }
         }
     }
-    
 }
 
 //MARK: - memberCollectionViewCell
