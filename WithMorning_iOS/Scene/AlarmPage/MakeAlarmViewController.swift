@@ -754,13 +754,13 @@ extension MakeAlarmViewController : UITextFieldDelegate {
     
     @objc func keyboardWillShow(notification: NSNotification) {
         if let keyboardSize = (notification.userInfo?[UIResponder.keyboardFrameEndUserInfoKey] as? NSValue)?.cgRectValue {
+            
             let keyboardFrame = view.convert(keyboardSize, from: nil)
             let notiLabelFrame = view.convert(notiLabel.frame, from: notiLabel.superview)
             if notiLabelFrame.maxY > keyboardFrame.minY {
                 let offset = notiLabelFrame.maxY - keyboardFrame.minY + 10
                 self.alarmScrollVeiw.contentOffset.y += offset
                 self.saveButton.isHidden = true
-                
                 
             }
         }

@@ -421,6 +421,7 @@ class MainViewController: UIViewController, UISheetPresentationControllerDelegat
     var isExpanded: Bool = false
     var isExpandedStates: [Int: Bool] = [:]
     //collectionviewheight 확인
+    
     var collHeight : CGFloat = 0
     var collHeightStates: [Int: CGFloat] = [:]
     
@@ -470,7 +471,6 @@ extension MainViewController : UITableViewDelegate, UITableViewDataSource{
                 dayLabel.backgroundColor = DesignSystemColor.Orange500.value
                 dayLabel.textColor = .white
                 cell.editweek = alarm.dayOfWeekList ?? []
-                
             } else {
                 dayLabel.backgroundColor = DesignSystemColor.Gray100.value
                 dayLabel.textColor = DesignSystemColor.Gray300.value
@@ -480,18 +480,15 @@ extension MainViewController : UITableViewDelegate, UITableViewDataSource{
         //알람 삭제 후 실행되는 클로저
         cell.onAlarmDelete = { [weak self] in
             self?.getMainpage()
-            
         }
         //알람을 나간 후 실행되는 클로저
         cell.onAlarmLeave = { [weak self] in
             self?.getMainpage()
         }
-        
         //isagree를 바로 반영하기 위한 closure
         cell.isagreeClosure = { [weak self] in
             self?.getMainpage()
         }
-        
         //토클 클릭시 실행되는 클로저
         cell.toggleclicked = { [weak self] in
             if alarm.isDisturbBanGroup{
@@ -503,6 +500,15 @@ extension MainViewController : UITableViewDelegate, UITableViewDataSource{
             }
         }
         
+        //ishost찾기
+        if let userList = alarm.userList {
+            let matchedUser = userList.first(where: { $0.nickname == UserDefaults.standard.string(forKey: "nickname") ?? "" })
+            cell.isHost = matchedUser?.isHost ?? false
+        } else {
+            cell.isHost = nil
+        }
+        
+        
         //셀 상태
         cell.configureCell(with: alarm, currentUserNickname: UserDefaults.standard.string(forKey: "nickname") ?? "")
         
@@ -511,7 +517,6 @@ extension MainViewController : UITableViewDelegate, UITableViewDataSource{
         
         //더보기
         cell.Expandclosure = { [weak tableView] isExpanded in
-            
             UIView.performWithoutAnimation {
                 tableView?.beginUpdates()
                 tableView?.endUpdates()
@@ -520,9 +525,7 @@ extension MainViewController : UITableViewDelegate, UITableViewDataSource{
         
         //collectionview의 높이
         cell.collectionviewHeightclosure = { [weak tableView] height in
-            
             self.collHeightStates[indexPath.row] = height
-            
             UIView.performWithoutAnimation {
                 tableView?.beginUpdates()
                 tableView?.endUpdates()
@@ -535,7 +538,7 @@ extension MainViewController : UITableViewDelegate, UITableViewDataSource{
     }
     
     //MARK: - cell높이 지정
-    // heightForRowAt에서 isExpanded 상태를 기반으로 셀 높이 계산
+    //heightForRowAt에서 isExpanded 상태를 기반으로 셀 높이 계산
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
         let alarm = alarmData[indexPath.row]
         let cell = tableView.cellForRow(at: indexPath) as? AlarmTableViewCell
@@ -552,7 +555,6 @@ extension MainViewController : UITableViewDelegate, UITableViewDataSource{
         let lines = memo.components(separatedBy: "\n")
         var actualNumberOfLines = lines.count
         let collectionViewHeight: CGFloat = collHeightStates[indexPath.row] ?? 0
-        
         
         // 각 줄이 characterLimit을 초과하는 경우 추가 줄 수 계산
         for line in lines {
@@ -592,7 +594,6 @@ extension MainViewController : UITableViewDelegate, UITableViewDataSource{
     func toggleExpansion(for indexPath: IndexPath) {
         isExpandedStates[indexPath.row] = !(isExpandedStates[indexPath.row] ?? false)
     }
-    
     
     func tableView(_ tableView: UITableView, didEndDisplaying cell: UITableViewCell, forRowAt indexPath: IndexPath) {
         

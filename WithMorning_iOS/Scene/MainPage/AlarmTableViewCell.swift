@@ -378,9 +378,7 @@ class AlarmTableViewCell : UITableViewCell, UISheetPresentationControllerDelegat
     
     func patchDisturb(newDisturbMode: Bool) {
         LoadingIndicator.showLoading()
-        
         let data = DisturbMaindata(isDisturbBanMode: newDisturbMode)
-        
         APInetwork.patchDisturb(groupId: self.groupId, DisturbData: data) { result in
             
             switch result {
@@ -526,7 +524,6 @@ class AlarmTableViewCell : UITableViewCell, UISheetPresentationControllerDelegat
     
     //MARK: - 메모LabelUI 높이계산
     // 메모라벨의 텍스트와 상태를 저장할 변수
-    
     private var memoViewHeightConstraint: Constraint?
     var fullText: String = ""
     var isExpanded = false
@@ -633,22 +630,16 @@ class AlarmTableViewCell : UITableViewCell, UISheetPresentationControllerDelegat
     
     //MARK: - 메모View 높이 계산
     func updateMemoViewHeight() {
-        // 메모 라벨의 크기 계산
         let maxWidth = contentView.frame.width - 96
         let size = memoLabel.sizeThatFits(CGSize(width: maxWidth, height: .greatestFiniteMagnitude))
         
-        
-        // 실제 높이를 계산하여 업데이트
         let calculatedHeight = max(size.height, 49) // 최소 높이 설정
         
         // 제약 조건 업데이트
         memoView.snp.updateConstraints { make in
             self.memoViewHeightConstraint?.update(offset: calculatedHeight)
         }
-        
-        // 레이아웃 갱신
         self.memoView.superview?.layoutIfNeeded()
-        // print("메모 높이 : ",size.height)
     }
     
     
@@ -690,9 +681,8 @@ class AlarmTableViewCell : UITableViewCell, UISheetPresentationControllerDelegat
     
     var editweek: [String] = []
     var selectedTime24 : String = ""
-    var isLeader : Bool = false
-    
-    var wakeupGroupDict: [Int: [Bool]] = [:] //멤버 전원이 기상인지 아닌지 확인
+    var isHost : Bool?
+    var wakeupGroupDict: [Int: [Bool]] = [:]
     
     @objc func clickSetting() {
         guard let parentViewController = self.parentVC else {
@@ -700,13 +690,12 @@ class AlarmTableViewCell : UITableViewCell, UISheetPresentationControllerDelegat
         }
         
         var vc: UIViewController
-#warning("리더 수정")
-        if !isLeader {
+        
+        if isHost ?? true{
             let leaderVC = LeaderMenuViewController()
             leaderVC.groupId = self.groupId
             leaderVC.participantCode = self.participantcode
             vc = leaderVC
-            print("리더 메뉴")
             
             leaderVC.menuClicked = { [weak self] in
                 guard let self = self else { return }
@@ -716,7 +705,6 @@ class AlarmTableViewCell : UITableViewCell, UISheetPresentationControllerDelegat
                     alterVC.groupId = self.groupId
                     alterVC.modalPresentationStyle = .overFullScreen
                     alterVC.modalTransitionStyle = .crossDissolve
-                    
                     alterVC.confirmAction = { [weak self] in
                         self?.onAlarmDelete?()
                     }
@@ -734,15 +722,12 @@ class AlarmTableViewCell : UITableViewCell, UISheetPresentationControllerDelegat
                     makeVC.groupTextfield.text = self.topViewLabel.text
                     makeVC.memoTextView.text = self.fullText
                     makeVC.memoPlaceholder.isHidden = true
-                    
                     makeVC.selectedDayOfWeek = self.editweek
                     makeVC.editTime = self.time24
-                    
                     
                     parentViewController.navigationController?.pushViewController(makeVC, animated: true)
                 }
             }
-            
             
             leaderVC.modalPresentationStyle = .formSheet
             parentViewController.present(vc, animated: true)
@@ -757,12 +742,10 @@ class AlarmTableViewCell : UITableViewCell, UISheetPresentationControllerDelegat
             }
             
         } else {
-            // 방장이 아닐 때 FollowerMenuViewController 생성
             let followerVC = FollowerMenuViewController()
             followerVC.groupId = self.groupId
             followerVC.participantCode = self.participantcode
             vc = followerVC
-            print("팔로워 메뉴")
             
             followerVC.menuClicked = { [weak self] in
                 guard let self = self else { return }
@@ -791,9 +774,7 @@ class AlarmTableViewCell : UITableViewCell, UISheetPresentationControllerDelegat
                     sheetVC.preferredCornerRadius = 16
                 }
             }
-            
         }
-        
     }
     
     //MARK: - collectionView delegate func
@@ -810,7 +791,7 @@ class AlarmTableViewCell : UITableViewCell, UISheetPresentationControllerDelegat
         
         let userlistData = userData[indexPath.item]
         
-        cell.configureMember(with: userlistData.nickname,imageURL: userlistData.imageURL ?? "",isDisturbBanMode: userlistData.isDisturbBanMode, isWakeup: userlistData.isWakeup/*, isleader: userlistData.isLeader*/)
+        cell.configureMember(with: userlistData.nickname,imageURL: userlistData.imageURL ?? "",isDisturbBanMode: userlistData.isDisturbBanMode, isWakeup: userlistData.isWakeup, isHost: userlistData.isHost ?? false)
         
         if indexPath.item == 0 {
             wakeupGroupDict[groupId] = []
@@ -846,7 +827,6 @@ class AlarmTableViewCell : UITableViewCell, UISheetPresentationControllerDelegat
     
     //MARK: - 그룹내의 셀 클릭시 이벤트
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-        
         guard let parentViewController = self.parentVC else {
             return
         }
@@ -901,7 +881,6 @@ class AlarmTableViewCell : UITableViewCell, UISheetPresentationControllerDelegat
                 Myvc.modalPresentationStyle = .formSheet
                 parentViewController.present(Myvc, animated: true)
                 
-                
                 if let vc = Myvc.sheetPresentationController{
                     if #available(iOS 16.0, *) {
                         vc.detents = [.custom { context in
@@ -936,9 +915,7 @@ class AlarmTableViewCell : UITableViewCell, UISheetPresentationControllerDelegat
                         vc.prefersGrabberVisible = false
                         vc.preferredCornerRadius = 16
                     }
-                    
                 }
-                
             }
         }
     }
@@ -977,16 +954,16 @@ class memberCollectioViewCell: UICollectionViewCell {
         return label
     }()
     
-    private lazy var leaderView : UIView = {
+    private lazy var hostView : UIView = {
         let view = UIView()
         view.backgroundColor = DesignSystemColor.Orange500.value
         view.clipsToBounds = true
         view.layer.cornerRadius = 4
-        view.addSubview(leaderLabel)
+        view.addSubview(hostLabel)
         return view
     }()
     
-    private lazy var leaderLabel : UILabel = {
+    private lazy var hostLabel : UILabel = {
         let label = UILabel()
         label.text = "Host"
         label.font = DesignSystemFont.Pretendard_Bold8.value
@@ -1025,7 +1002,7 @@ class memberCollectioViewCell: UICollectionViewCell {
     }
     
     func setUI() {
-        contentView.addSubviews(memberView, memberLabel, sleepView, leaderView)
+        contentView.addSubviews(memberView, memberLabel, sleepView, hostView)
         
         memberView.snp.makeConstraints {
             $0.top.equalToSuperview().inset(1)
@@ -1049,14 +1026,14 @@ class memberCollectioViewCell: UICollectionViewCell {
             $0.center.equalTo(memberView)
         }
         
-        leaderView.snp.makeConstraints{
+        hostView.snp.makeConstraints{
             $0.height.equalTo(14)
             $0.width.equalTo(26)
             $0.centerX.equalToSuperview()
             $0.bottom.equalTo(memberView.snp.bottom).offset(4)
         }
         
-        leaderLabel.snp.makeConstraints{
+        hostLabel.snp.makeConstraints{
             $0.center.equalToSuperview()
         }
         
@@ -1068,7 +1045,7 @@ class memberCollectioViewCell: UICollectionViewCell {
     }
     
     //MARK: - 닉네임, 유저 스테이트 설정
-    func configureMember(with nickname: String, imageURL: String, isDisturbBanMode: Bool, isWakeup: Bool/*, isleader: Bool*/) {
+    func configureMember(with nickname: String, imageURL: String, isDisturbBanMode: Bool, isWakeup: Bool, isHost: Bool) {
         
         memberLabel.text = nickname
         
@@ -1082,24 +1059,23 @@ class memberCollectioViewCell: UICollectionViewCell {
             memberIMG.image = UIImage(named: "profile")
         }
         
-        
         if isDisturbBanMode {
             memberView.backgroundColor = DesignSystemColor.Gray150.value
             memberLabel.textColor = DesignSystemColor.Gray500.value
-            leaderView.backgroundColor = DesignSystemColor.Gray150.value
+            hostView.backgroundColor = DesignSystemColor.Gray150.value
             sleepView.isHidden = true
         } else {
-            memberView.backgroundColor = isWakeup ? DesignSystemColor.Orange500.value : .clear // true, false
+            memberView.backgroundColor = isWakeup ? DesignSystemColor.Orange500.value : .clear
             memberLabel.textColor = .black
-            leaderView.backgroundColor = DesignSystemColor.Orange500.value
+            hostView.backgroundColor = DesignSystemColor.Orange500.value
             sleepView.isHidden = isWakeup
         }
         
-        //        if isleader{
-        //            leaderView.isHidden = false
-        //        }else{
-        //            leaderView.isHidden = true
-        //        }
+        if isHost{
+            hostView.isHidden = false
+        }else{
+            hostView.isHidden = true
+        }
         
         
         setNeedsLayout()
