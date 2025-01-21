@@ -167,7 +167,7 @@ class NetworkErrorHandler {
                             completion(.failure(NetworkError.serverError(code: errorCode, message: message)))
                             
                         default:
-                            completion(.failure(NetworkError.apiError(error)))  // error를 직접 사용
+                            completion(.failure(NetworkError.apiError(error)))  
                         }
                     } else {
                         completion(.failure(NetworkError.unknownError(error)))
