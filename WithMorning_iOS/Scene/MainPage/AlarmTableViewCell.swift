@@ -674,7 +674,6 @@ class AlarmTableViewCell : UITableViewCell, UISheetPresentationControllerDelegat
     }
     
     //MARK: - objc func
-    // 방해금지모드
     
     var editweek: [String] = []
     var selectedTime24 : String = ""

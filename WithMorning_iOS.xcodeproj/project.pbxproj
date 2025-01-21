@@ -381,10 +381,10 @@
 			isa = PBXGroup;
 			children = (
 				D14F61022CB90C6A0094777B /* NetworkErrorHandler.swift */,
+				D18288CA2C7EF45800BDAB3A /* Error.swift */,
 				D16F5FD02BC65671006640F9 /* Network.swift */,
 				D16F5FD22BC65679006640F9 /* Model.swift */,
 				D16F5FD42BC65680006640F9 /* Router.swift */,
-				D18288CA2C7EF45800BDAB3A /* Error.swift */,
 			);
 			path = API;
 			sourceTree = "<group>";
