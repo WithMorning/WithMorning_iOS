@@ -675,14 +675,15 @@ class AlarmTableViewCell : UITableViewCell, UISheetPresentationControllerDelegat
     
     //MARK: - objc func
     // 방해금지모드
-    @objc func clicktoggle() {
-        patchDisturb(newDisturbMode: !disturb)
-    }
     
     var editweek: [String] = []
     var selectedTime24 : String = ""
     var isHost : Bool?
     var wakeupGroupDict: [Int: [Bool]] = [:]
+    
+    @objc func clicktoggle() {
+        patchDisturb(newDisturbMode: !disturb)
+    }
     
     @objc func clickSetting() {
         guard let parentViewController = self.parentVC else {

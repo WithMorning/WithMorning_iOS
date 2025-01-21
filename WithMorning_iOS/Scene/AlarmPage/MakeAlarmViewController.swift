@@ -224,9 +224,8 @@ class MakeAlarmViewController : UIViewController, UIScrollViewDelegate, UISheetP
     private lazy var saveButton : UIButton = {
         let button = UIButton()
         button.addSubview(buttonLabel)
-        button.setBackgroundColor(DesignSystemColor.Orange500.value, for: .normal)
-        button.setBackgroundColor(DesignSystemColor.Orange500.value.adjustBrightness(by: 0.8), for: .highlighted)
-        
+        //        button.setBackgroundColor(DesignSystemColor.Gray300.value, for: .normal)
+        //        button.setBackgroundColor(DesignSystemColor.Gray300.value.adjustBrightness(by: 0.8), for: .highlighted)
         button.addTarget(self, action: #selector(saveclicked), for: .touchUpInside)
         return button
     }()
@@ -249,11 +248,37 @@ class MakeAlarmViewController : UIViewController, UIScrollViewDelegate, UISheetP
         setUpKeyboard()
         popGesture()
         configureMode()
+        savebuttonColor()
     }
     
     override func viewDidLayoutSubviews() {
         super.viewDidLayoutSubviews()
         pickerviewUI()
+    }
+    
+    //MARK: - 알람 생성 / 알람 수정
+    func configureMode() {
+        if mode == .editMode {
+            print("수정모드", groupId)
+            print("editTime: \(editTime)")
+            setTimeOnPicker(for: editTime)
+            updateRepeatDayLabel()
+        } else {
+            print("생성모드", groupId)
+            setCurrentTimeOnPicker()
+        }
+    }
+    
+    //MARK: - 생성 버튼 on / off
+    func savebuttonColor(){
+        if selectedDayOfWeek.isEmpty{
+            saveButton.setBackgroundColor(DesignSystemColor.Gray300.value, for: .normal)
+            saveButton.setBackgroundColor(DesignSystemColor.Gray300.value.adjustBrightness(by: 0.8), for: .highlighted)
+        }else{
+            saveButton.setBackgroundColor(DesignSystemColor.Orange500.value, for: .normal)
+            saveButton.setBackgroundColor(DesignSystemColor.Orange500.value.adjustBrightness(by: 0.8), for: .highlighted)
+        }
+        
     }
     
     //MARK: - Autolayout
@@ -367,21 +392,6 @@ class MakeAlarmViewController : UIViewController, UIScrollViewDelegate, UISheetP
         }
         
     }
-    
-    func configureMode() {
-        if mode == .editMode {
-            print("수정모드", groupId)
-            print("editTime: \(editTime)")
-            setTimeOnPicker(for: editTime)
-            updateRepeatDayLabel()
-        } else {
-            print("생성모드", groupId)
-            setCurrentTimeOnPicker()
-        }
-    }
-    
-    
-    
     
     //MARK: - API
     var selectedTime24: String = ""
@@ -538,6 +548,7 @@ class MakeAlarmViewController : UIViewController, UIScrollViewDelegate, UISheetP
         vc.weekClosure = { [weak self] selectedDays in
             self?.selectedDayOfWeek = selectedDays
             self?.updateRepeatDayLabel()
+            self?.savebuttonColor()
         }
         
         self.present(vc, animated: true)
@@ -556,51 +567,50 @@ class MakeAlarmViewController : UIViewController, UIScrollViewDelegate, UISheetP
     }
     
     func updateRepeatDayLabel() {
-        // 요일 집합 정의
+        // 정의
         let weekdaysSet: Set = ["mon", "tue", "wed", "thu", "fri"]
         let weekendSet: Set = ["sat", "sun"]
         let allDaysSet: Set = ["mon", "tue", "wed", "thu", "fri", "sat", "sun"]
         let selectedDaySet = Set(selectedDayOfWeek)
         
-        // 한글 요일 변환 딕셔너리
+        // 요일 딕셔너리
         let dayOfWeekDict: [String: String] = [
             "mon": "월", "tue": "화", "wed": "수", "thu": "목",
             "fri": "금", "sat": "토", "sun": "일"
         ]
         
-        // 조건에 따른 텍스트 설정
-        if selectedDaySet.isEmpty {
+        if selectedDaySet.isEmpty { //비어있을 경우
             repeatDayLabel1.text = "없음"
         }
-        // 모든 요일이 선택된 경우
-        else if selectedDaySet == allDaysSet {
+        else if selectedDaySet == allDaysSet { //모든 요일이 선택되었을 경우
             repeatDayLabel1.text = "매일"
         }
-        // 평일만 선택된 경우
         else if weekdaysSet.isSubset(of: selectedDaySet) && selectedDaySet.intersection(weekendSet).isEmpty {
-            repeatDayLabel1.text = "평일"
+            repeatDayLabel1.text = "평일" //weekend제외 모두 선택일 경우
         }
-        // 주말만 선택된 경우
-        else if selectedDaySet.isSubset(of: weekendSet) {
+        else if selectedDaySet == weekendSet { //토,일 모두 선택되었을 경우
             repeatDayLabel1.text = "주말"
         }
-        // 그 외의 경우 선택된 요일들을 나열
-        else {
+        else { //그 외의 경우
             let koreanDays = selectedDayOfWeek.compactMap { dayOfWeekDict[$0] }.joined(separator: ", ")
             repeatDayLabel1.text = koreanDays
         }
     }
     
-    
     @objc func saveclicked() {
-        if mode == .editMode {
-            editGroup() 
+        if selectedDayOfWeek.isEmpty{
+            showToast(message: "알람을 반복시킬 요일을 선택해주세요.")
         }else{
-            makeGroup()
+            if mode == .editMode {
+                editGroup()
+            }else{
+                makeGroup()
+            }
         }
-        
     }
 }
+
+
 //MARK: - pickerView custom
 
 extension MakeAlarmViewController : UIPickerViewDelegate, UIPickerViewDataSource {
@@ -775,7 +785,6 @@ extension MakeAlarmViewController : UITextFieldDelegate {
 }
 
 //MARK: - textViewDelegate
-
 extension MakeAlarmViewController: UITextViewDelegate, UIGestureRecognizerDelegate {
     
     func textViewDidBeginEditing(_ textView: UITextView) {
