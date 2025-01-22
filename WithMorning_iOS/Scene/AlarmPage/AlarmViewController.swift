@@ -97,7 +97,6 @@ class AlarmViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        view.backgroundColor = .clear
         if !Initialized {
             view.backgroundColor = .clear
             setupUI()
@@ -211,10 +210,12 @@ class AlarmViewController: UIViewController {
                 LoadingIndicator.hideLoading()
                 print(data)
                 UserDefaults.standard.removeObject(forKey: "wakeupGroupId")
+                AlarmManager.shared.stopAllAlarms()
                 self.mainViewController()
             case .failure(let error):
                 print(error.localizedDescription)
                 UserDefaults.standard.removeObject(forKey: "wakeupGroupId")
+                AlarmManager.shared.stopAllAlarms()
                 self.mainViewController()
                 LoadingIndicator.hideLoading()
             }
@@ -225,11 +226,8 @@ class AlarmViewController: UIViewController {
     @objc func turnoffalarm() {
         let groupId = UserDefaults.standard.integer(forKey: "wakeupGroupId")
         print("저장된 groupId", groupId)
-        AlarmManager.shared.stopAllAlarms()
-        
         Initialized = false
         Wakeup(groupId: groupId)
-        UserDefaults.standard.removeObject(forKey: "wakeupGroupId")
     }
     
     //MARK: - 메인페이지로 이동

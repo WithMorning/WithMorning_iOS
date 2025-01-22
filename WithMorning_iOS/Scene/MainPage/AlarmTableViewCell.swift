@@ -967,7 +967,6 @@ class memberCollectioViewCell: UICollectionViewCell {
         let label = UILabel()
         label.text = "Host"
         label.font = DesignSystemFont.Pretendard_Bold8.value
-        label.textColor = .white
         return label
     }()
     
@@ -1061,13 +1060,15 @@ class memberCollectioViewCell: UICollectionViewCell {
         
         if isDisturbBanMode {
             memberView.backgroundColor = DesignSystemColor.Gray150.value
-            memberLabel.textColor = DesignSystemColor.Gray500.value
+            memberLabel.textColor = DesignSystemColor.Gray300.value
             hostView.backgroundColor = DesignSystemColor.Gray150.value
+            hostLabel.textColor = DesignSystemColor.Gray300.value
             sleepView.isHidden = true
         } else {
             memberView.backgroundColor = isWakeup ? DesignSystemColor.Orange500.value : .clear
             memberLabel.textColor = .black
             hostView.backgroundColor = DesignSystemColor.Orange500.value
+            hostLabel.textColor = .white
             sleepView.isHidden = isWakeup
         }
         

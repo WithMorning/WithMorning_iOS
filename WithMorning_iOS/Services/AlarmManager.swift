@@ -185,6 +185,7 @@ import AVFoundation
 //        startAllAlarms(for: data)
 //    }
 //}
+
 class AlarmManager {
     static let shared = AlarmManager()
     private var currentGroups: [GroupList] = []
@@ -283,8 +284,9 @@ class AlarmManager {
         // 60개의 알람 등록 (1초 간격)
         let center = UNUserNotificationCenter.current()
         let calendar = Calendar.current
-        
-        for second in 0..<60 {
+//        for second in 0..<120 where second % 2 == 0 2초에 1개
+        /*for second in 0..<60*/ //1초에 1개
+        for second in 0..<120 where second % 2 == 0 {
             guard let alarmTime = calendar.date(byAdding: .second, value: second, to: closestAlarm.date) else {
                 continue
             }
@@ -295,7 +297,8 @@ class AlarmManager {
             content.sound = UNNotificationSound(named: UNNotificationSoundName(rawValue: "wakeupalarm.wav"))
             content.userInfo = [
                 "groupID": closestAlarm.groupId,
-                "isLastNotification": second == 59
+//                "isLastNotification": second == 59
+                "isLastNotification": second == 118
             ]
             
             let triggerComponents = calendar.dateComponents(
