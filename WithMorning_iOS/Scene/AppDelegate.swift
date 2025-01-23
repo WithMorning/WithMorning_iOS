@@ -120,6 +120,20 @@ class AppDelegate:UIResponder, UIApplicationDelegate, MessagingDelegate {
         }
         LoadingIndicator.hideLoading()
     }
+//    func NavigateToAlarm() {
+//        let loginVC = AlarmViewController()
+//        let navController = UINavigationController(rootViewController: loginVC)
+//        navController.modalPresentationStyle = .fullScreen
+//        navController.navigationBar.isHidden = true
+//        if let keyWindow = UIApplication.shared.connectedScenes
+//            .compactMap({ $0 as? UIWindowScene })
+//            .flatMap({ $0.windows })
+//            .first(where: { $0.isKeyWindow }) {
+//            
+//            keyWindow.rootViewController = navController
+//            keyWindow.makeKeyAndVisible()
+//        }
+//    }
     
 }
 

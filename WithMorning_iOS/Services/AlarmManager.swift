@@ -284,8 +284,9 @@ class AlarmManager {
         // 60개의 알람 등록 (1초 간격)
         let center = UNUserNotificationCenter.current()
         let calendar = Calendar.current
+        
 //        for second in 0..<120 where second % 2 == 0 2초에 1개
-        /*for second in 0..<60*/ //1초에 1개
+//        for second in 0..<60  1초에 1개
         for second in 0..<120 where second % 2 == 0 {
             guard let alarmTime = calendar.date(byAdding: .second, value: second, to: closestAlarm.date) else {
                 continue
@@ -295,6 +296,11 @@ class AlarmManager {
             content.title = "기상 알람"
             content.body = "얼른 일어나서 다른 메이트들을 깨워주세요!"
             content.sound = UNNotificationSound(named: UNNotificationSoundName(rawValue: "wakeupalarm.wav"))
+            
+            #warning("무음모드에서도 소리가 나도록 설정하긴 함. 근데 애플이 막을 가능성 있음")
+//            content.interruptionLevel = .critical
+            
+            content.interruptionLevel = .timeSensitive
             content.userInfo = [
                 "groupID": closestAlarm.groupId,
 //                "isLastNotification": second == 59

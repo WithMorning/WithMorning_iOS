@@ -48,7 +48,7 @@ struct UserList: Codable {
     let isWakeup, isDisturbBanMode: Bool
     let isAgree: Bool
     let phone: String
-    let isHost : Bool?
+    let isHost : Bool
 
     enum CodingKeys: String, CodingKey {
         case userID = "userId"
