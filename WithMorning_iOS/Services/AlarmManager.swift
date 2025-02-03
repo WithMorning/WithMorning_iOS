@@ -296,10 +296,6 @@ class AlarmManager {
             content.title = "기상 알람"
             content.body = "얼른 일어나서 다른 메이트들을 깨워주세요!"
             content.sound = UNNotificationSound(named: UNNotificationSoundName(rawValue: "wakeupalarm.wav"))
-            
-            #warning("무음모드에서도 소리가 나도록 설정하긴 함. 근데 애플이 막을 가능성 있음")
-//            content.interruptionLevel = .critical
-            
             content.interruptionLevel = .timeSensitive
             content.userInfo = [
                 "groupID": closestAlarm.groupId,
