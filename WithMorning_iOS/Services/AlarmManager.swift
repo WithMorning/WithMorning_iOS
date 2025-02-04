@@ -103,9 +103,6 @@ class AlarmManager {
             return
         }
         
-        // 기존 알람들 모두 제거
-        stopAllAlarms()
-        
         // 60개의 알람 등록 (1초 간격)
         let center = UNUserNotificationCenter.current()
         let calendar = Calendar.current
@@ -137,7 +134,7 @@ class AlarmManager {
                 repeats: false
             )
             
-            let identifier = "Alarm_\(closestAlarm.groupId)_\(second)"
+            let identifier = "Alarm_\(closestAlarm.groupId)_\(second)_\(Int(closestAlarm.date.timeIntervalSince1970))"
             let request = UNNotificationRequest(
                 identifier: identifier,
                 content: content,
@@ -160,16 +157,17 @@ class AlarmManager {
     }
     
     func startAllAlarms(for groups: [GroupList]) {
+        stopAllAlarms()
         currentGroups = groups
         scheduleClosestAlarm(from: groups)
     }
+    
     
     func stopAllAlarms() {
         let center = UNUserNotificationCenter.current()
         center.removeAllPendingNotificationRequests()
         center.removeAllDeliveredNotifications()
         currentGroups.removeAll()
-        print("====== 모든 알람 중지됨 ======")
     }
     
     func updateAlarm(from data: [GroupList]) {
