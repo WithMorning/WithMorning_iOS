@@ -648,8 +648,10 @@ class AlarmTableViewCell : UITableViewCell, UISheetPresentationControllerDelegat
         let attributeLabel = NSMutableAttributedString()
         let attachImage = NSTextAttachment()
         if isAllAwake { // 모든 멤버가 깨어났을 때의 텍스트
-            let newText = " 모두 깨어있어요."
-            attachImage.image = UIImage(named: "thumb")
+            //            let newText = " 모두 깨어있어요."
+            //            attachImage.image = UIImage(named: "thumb")
+            let newText = "프로필을 눌러 깨울 수 있어요."
+            attachImage.image = UIImage(named: "Check")
             attributeLabel.append(NSAttributedString(string: newText))
             attachImage.bounds = CGRect(x: -0, y: -3, width: 15, height: 15)
             let imageString = NSAttributedString(attachment: attachImage)
@@ -674,7 +676,6 @@ class AlarmTableViewCell : UITableViewCell, UISheetPresentationControllerDelegat
     }
     
     //MARK: - objc func
-    
     var editweek: [String] = []
     var selectedTime24 : String = ""
     var isHost : Bool?

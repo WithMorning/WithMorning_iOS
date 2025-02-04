@@ -115,8 +115,8 @@ class AlarmManager {
             }
             
             let content = UNMutableNotificationContent()
-            content.title = "기상 알람"
-            content.body = "얼른 일어나서 다른 메이트들을 깨워주세요!"
+            content.title = "일어나서 메이트를 깨워 주세요!"
+            content.body = "현재 알람을 해제해야 다음 알람이 울려요."
             content.sound = UNNotificationSound(named: UNNotificationSoundName(rawValue: "wakeupalarm.wav"))
             content.interruptionLevel = .timeSensitive
             content.userInfo = [

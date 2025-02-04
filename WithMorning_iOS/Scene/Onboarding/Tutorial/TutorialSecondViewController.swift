@@ -10,7 +10,7 @@ import SnapKit
 import Then
 import Alamofire
 
-class TutorialSecondViewController : UIViewController {
+class TutorialSecondViewController : UIViewController, UISheetPresentationControllerDelegate {
     
     //MARK: - properties
     private lazy var timerView : UIView = {
@@ -42,7 +42,8 @@ class TutorialSecondViewController : UIViewController {
         stackView.alignment = .fill
         stackView.addSubviews(repeatLabel,repeatDayLabel,repeatDayLabel1)
         stackView.isUserInteractionEnabled = true
-
+        let tapGestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(repeatDay))
+        stackView.addGestureRecognizer(tapGestureRecognizer)
         return stackView
     }()
     
@@ -195,16 +196,18 @@ class TutorialSecondViewController : UIViewController {
     //MARK: - picker SET
     func pickerviewUI(){
         timePicker.subviews[1].isHidden = true
-        
         let colonLabel = UILabel()
         colonLabel.text = ":"
         colonLabel.font = DesignSystemFont.Pretendard_Bold30.value
-        timePicker.addSubview(colonLabel)
-        
-        colonLabel.snp.makeConstraints{
-            $0.centerY.equalToSuperview().offset(-3)
-            $0.centerX.equalToSuperview().offset(-16.5)
+        UIView.performWithoutAnimation {
+            timePicker.addSubview(colonLabel)
+            colonLabel.snp.makeConstraints{
+                $0.centerY.equalToSuperview().offset(-3)
+                $0.centerX.equalToSuperview().offset(-16.5)
+            }
+            timePicker.layoutIfNeeded()
         }
+        
     }
     
     func setCurrentTimeOnPicker() {
@@ -260,6 +263,31 @@ class TutorialSecondViewController : UIViewController {
             notiImage.setImage(UIImage(named: "checkboxgray"), for: .highlighted)
         }
     }
+    
+    @objc func repeatDay() {
+        let vc = WeekChoiceViewController()
+//        vc.AlarmSelectedDays = selectedDayOfWeek
+        vc.callerType = .sleepTime
+//        vc.weekClosure = { [weak self] selectedDays in
+//            self?.selectedDayOfWeek = selectedDays
+//            self?.updateRepeatDayLabel()
+//        }
+        
+        self.present(vc, animated: true)
+        
+        if let sheet = vc.sheetPresentationController {
+            if #available(iOS 16.0, *) {
+                sheet.detents = [.custom { context in
+                    return 440
+                }]
+                
+                sheet.delegate = self
+                sheet.prefersGrabberVisible = false
+                sheet.preferredCornerRadius = 16
+            }
+        }
+    }
+    
 }
 
 

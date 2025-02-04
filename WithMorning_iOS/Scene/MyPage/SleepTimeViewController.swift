@@ -268,7 +268,6 @@ class SleepTimeViewController : UIViewController, UISheetPresentationControllerD
             }
             timePicker.layoutIfNeeded()
         }
-        
     }
     
     func setSelectedTimeOnPicker() {

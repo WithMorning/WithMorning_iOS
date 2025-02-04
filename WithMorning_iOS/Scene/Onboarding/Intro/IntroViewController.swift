@@ -118,21 +118,23 @@ class IntroViewController : UIViewController{
     
     //MARK: - objc func
     @objc func skip() {
-        guard pageControl.currentPage != 2 else{
-            let vc = TutorialViewController()
-            self.navigationController?.pushViewController(vc, animated: true)
-            return
-        }
-        let vc = IntroThridViewContoller()
-        pageViewController.setViewControllers([vc], direction: .forward, animated: true) { [weak self] _ in
-            self?.pageControl.currentPage = 2
-        }
+        moveTutorial()
+//        guard pageControl.currentPage != 2 else{
+//            let vc = TutorialViewController()
+//            self.navigationController?.pushViewController(vc, animated: true)
+//            return
+//        }
+//        let vc = IntroThridViewContoller()
+//        pageViewController.setViewControllers([vc], direction: .forward, animated: true) { [weak self] _ in
+//            self?.pageControl.currentPage = 2
+//        }
         
     }
     
+    
+    
     @objc func nextbtn() {
         let currentPage = pageControl.currentPage
-        
         if currentPage == pageControl.numberOfPages - 1 {
             // 현재 페이지가 IntroThridViewContoller일 때 새로운 뷰 컨트롤러로 푸시
             let tutorialViewController = TutorialViewController()
@@ -156,6 +158,24 @@ class IntroViewController : UIViewController{
             if let nextViewController = nextViewController {
                 pageViewController.setViewControllers([nextViewController], direction: .forward, animated: true, completion: nil)
             }
+        }
+    }
+    
+    //MARK: - Tutorial로 이동
+
+    func moveTutorial() {
+        let tutorialVC = TutorialViewController()
+        let navController = UINavigationController(rootViewController: tutorialVC)
+        navController.modalPresentationStyle = .fullScreen
+        navController.navigationBar.isHidden = true
+        
+        if let keyWindow = UIApplication.shared.connectedScenes
+            .compactMap({ $0 as? UIWindowScene })
+            .flatMap({ $0.windows })
+            .first(where: { $0.isKeyWindow }) {
+            
+            keyWindow.rootViewController = navController
+            keyWindow.makeKeyAndVisible()
         }
     }
 }
