@@ -119,28 +119,6 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         print("sceneDidEnterBackground")
     }
     
-//    func alarmobserve(){
-//        if UserDefaults.standard.value(forKey: "wakeupGroupId") != nil{
-//            NavigateToAlarm()
-//        }
-//    }
-    
-    //MARK: - 알람 페이지로 이동
-//    func NavigateToAlarm() {
-//        let alarmVC = AlarmViewController()
-//        let navController = UINavigationController(rootViewController: alarmVC)
-//        navController.modalPresentationStyle = .fullScreen
-//        navController.navigationBar.isHidden = true
-//        
-//        if let keyWindow = UIApplication.shared.connectedScenes
-//            .compactMap({ $0 as? UIWindowScene })
-//            .flatMap({ $0.windows })
-//            .first(where: { $0.isKeyWindow }) {
-//            
-//            keyWindow.rootViewController = navController
-//            keyWindow.makeKeyAndVisible()
-//        }
-//    }
     
 }
 
