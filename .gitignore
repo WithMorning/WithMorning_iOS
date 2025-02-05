@@ -82,22 +82,16 @@ fastlane/Preview.html
 fastlane/screenshots/**/*.png
 fastlane/test_output
 
+
+Info.plist
+Kotlin/kotlin.log
+.DS_STORE
+Services/AlarmManager.swift
+
 # Code Injection
 #
 # After new code Injection tools there's a generated folder /iOSInjectionProject
 # https://github.com/johnno1962/injectionforxcode
-
-# 특정 파일 무시
-example.txt 
-
-# 특정 확장자를 가진 파일 전체 무시
-*.plist
-*.pdf
-*.zip
-*.wav
-
-# 폴더 무시
-example/
 
 
 iOSInjectionProject/
