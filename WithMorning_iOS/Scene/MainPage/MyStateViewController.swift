@@ -210,7 +210,7 @@ class MyStateViewController : UIViewController{
 
     
     //MARK: - API
-    var reloadisagree : (()->Void)? = nil
+    var reloadisagree : (() -> Void)? = nil
     
     func editphoneagree(completion: @escaping () -> Void) {
         LoadingIndicator.showLoading()
