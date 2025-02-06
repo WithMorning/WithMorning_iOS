@@ -190,6 +190,7 @@ class ProfileViewController : UIViewController, UIImagePickerControllerDelegate 
         
         guard let nickname = nicknameTextfield.text, !nickname.isEmpty else {
             self.showToast(message: "닉네임을 입력해주세요.")
+            LoadingIndicator.hideLoading()
             return
         }
         

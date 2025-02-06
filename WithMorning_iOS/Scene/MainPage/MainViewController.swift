@@ -31,6 +31,7 @@ class MainViewController: UIViewController, UISheetPresentationControllerDelegat
         view.layer.cornerRadius = 18
         view.isUserInteractionEnabled = true
         view.clipsToBounds  = true
+        view.image = UIImage(named: "profile")
         
         let tapGestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(clickedprofile))
         view.addGestureRecognizer(tapGestureRecognizer)
