@@ -11,6 +11,8 @@ import CryptoKit
 import Security
 import Alamofire
 import SwiftJWT
+import FirebaseMessaging
+import Firebase
 
 final class AppleLoginManager : NSObject {
     
@@ -82,7 +84,7 @@ extension AppleLoginManager : ASAuthorizationControllerDelegate {
         
         if let appleIDCredential = authorization.credential as? ASAuthorizationAppleIDCredential {
             print(#fileID, #function, #line, "- 애플 로그인 성공🍎")
-            
+            self.requestFCM()
             guard currentNonce != nil else {
                 fatalError(" - Invalid state: A login callback was received, but no login request was sent.")
             }
@@ -146,6 +148,22 @@ extension AppleLoginManager : ASAuthorizationControllerDelegate {
     func authorizationController(controller: ASAuthorizationController, didCompleteWithError error: Error) {
         // 로그인 실패(유저의 취소도 포함)
         print("로그인 실패 - \(error.localizedDescription)")
+    }
+    
+    //FCMtoken을 여기서 발급 받습니다. (로그인 후)
+    private func requestFCM(){
+        Messaging.messaging().token { token, error in
+            if let error = error {
+                print("토큰발급 실패 ㅠㅠ: \(error.localizedDescription)")
+            } else if let token = token {
+                print("토큰발급성공 FCM token: \(token)")
+                
+                // 필요 시 토큰 저장 (예: KeyChain 또는 UserDefaults)
+                KeyChain.create(key: "fcmToken", token: token)
+                print("🔐 KeyChain에 저장된 fcmToken: \(KeyChain.read(key: "fcmToken") ?? "")")
+            }
+            
+        }
     }
     
 }

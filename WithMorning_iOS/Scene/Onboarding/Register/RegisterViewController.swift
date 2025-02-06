@@ -32,7 +32,6 @@ class RegisterViewController : UIViewController{
     
     private lazy var mainLabel : UILabel = {
         let label = UILabel()
-        //        label.text = "회원가입"
         label.tintColor = DesignSystemColor.Black.value
         label.font = DesignSystemFont.Pretendard_Bold16.value
         return label
@@ -152,7 +151,6 @@ class RegisterViewController : UIViewController{
             switch result{
             case .success(let data):
                 print(data)
-                self.requestFCM()
                 vc.phonenumber = self.phonenumber
                 LoadingIndicator.hideLoading()
                 self.showToast(message: "인증번호를 전송했습니다.")
@@ -170,21 +168,6 @@ class RegisterViewController : UIViewController{
                 self.showToast(message: "인증번호 전송에 실패했습니다.")
                 print(error.localizedDescription)
                 
-            }
-            
-        }
-    }
-    //FCMtoken을 여기서 발급 받습니다. (로그인 후)
-    private func requestFCM(){
-        Messaging.messaging().token { token, error in
-            if let error = error {
-                print("토큰발급 실패 ㅠㅠ: \(error.localizedDescription)")
-            } else if let token = token {
-                print("토큰발급성공 FCM token: \(token)")
-                
-                // 필요 시 토큰 저장 (예: KeyChain 또는 UserDefaults)
-                KeyChain.create(key: "fcmToken", token: token)
-                print("🔐 KeyChain에 저장된 fcmToken: \(KeyChain.read(key: "fcmToken") ?? "")")
             }
             
         }
