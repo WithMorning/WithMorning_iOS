@@ -17,7 +17,7 @@ struct Mainpage: Codable {
 
 struct MainpageResponse: Codable {
     let connectorProfileURL: String?
-    let connectorNickname: String
+    let connectorNickname: String?
     let groupList: [GroupList]?
     let listSize: Int
 }
@@ -44,10 +44,10 @@ struct GroupList: Codable {
 struct UserList: Codable {
     let userID: Int
     let imageURL: String?
-    let nickname: String
+    let nickname: String?
     let isWakeup, isDisturbBanMode: Bool
     let isAgree: Bool
-    let phone: String
+    let phone: String?
     let isHost : Bool
 
     enum CodingKeys: String, CodingKey {
@@ -69,7 +69,7 @@ struct Mypage: Codable {
 struct MypageResponse: Codable {
     let userID: Int
     let imageURL: String?
-    let nickname: String
+    let nickname: String?
     let bedtime: String?
     let isAllowBedTimeAlarm: Bool?
     let dayOfWeekList: [String]?
@@ -128,7 +128,7 @@ struct Joingroup: Codable {
 
 struct JoingroupResponse: Codable {
     let groupID: Int
-    let joinUserNickname, joinAt: String
+    let joinUserNickname, joinAt: String?
 
     enum CodingKeys: String, CodingKey {
         case groupID = "groupId"
@@ -187,6 +187,7 @@ struct leavegroupResponse: Codable {
     let code: Int
     let message: String
 }
+
 //MARK: - 그룹 수정
 struct EditGroupMaindata: Codable {
     let name, wakeupTime: String

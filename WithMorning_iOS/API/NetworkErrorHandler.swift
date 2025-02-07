@@ -45,7 +45,6 @@ class NetworkErrorHandler {
                     print(#fileID, #function, #line, "- 실패 JSON 데이터: \(json ?? [:])")
                     
                     switch errorCode {
-                        
                     case 9103: //리프레쉬 토큰 만료
                         print(#fileID, #function, #line, "-🚨  실패 리프레쉬 토큰 만료. 로그인으로 이동합니다.: \(json ?? [:])")
                         DispatchQueue.main.asyncAfter(deadline: .now() + 1) {

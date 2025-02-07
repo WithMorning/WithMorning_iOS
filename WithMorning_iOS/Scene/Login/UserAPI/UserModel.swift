@@ -39,7 +39,7 @@ struct profileRequest: Encodable {
 }
 
 struct Requestprofile: Codable {
-    let nickname: String
+    let nickname: String?
     let fcmToken: String
 }
 

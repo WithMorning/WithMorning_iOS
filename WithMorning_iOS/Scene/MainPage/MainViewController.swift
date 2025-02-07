@@ -376,7 +376,7 @@ class MainViewController: UIViewController, UISheetPresentationControllerDelegat
                 case .success(let mainpage):
                     print(mainpage)
                     self.MainpageUpdate(with: mainpage)
-                    self.nameLabel.text = "Hi, \(mainpage.connectorNickname)"
+                    self.nameLabel.text = "Hi, \(mainpage.connectorNickname ?? "nickname")"
                     
                     UserDefaults.standard.set(mainpage.connectorNickname, forKey: "nickname")
                     

@@ -72,7 +72,6 @@ class MyPageViewController : UIViewController, UIScrollViewDelegate {
         let label = UILabel()
         label.font = DesignSystemFont.Pretendard_Bold18.value
         label.tintColor = .black
-        label.text = ""
         label.textAlignment = .center
         return label
     }()
@@ -750,12 +749,12 @@ class MyPageViewController : UIViewController, UIScrollViewDelegate {
             switch result{
             case.success(let mypage):
                 
-                self.nickNameLabel.text = mypage.nickname
+                self.nickNameLabel.text = mypage.nickname ?? "nickname"
                 self.updateSleepTimeLabel(with: mypage.bedtime ?? "", dayOfWeekList: mypage.dayOfWeekList ?? [], bedtimeAlarm: mypage.isAllowBedTimeAlarm ?? false)
                 self.bedtime = mypage.bedtime ?? ""
                 self.dayOfWeekList = mypage.dayOfWeekList ?? []
                 self.noti = mypage.isAllowBedTimeAlarm ?? false
-                self.nickname = mypage.nickname
+                self.nickname = mypage.nickname ?? "nickname"
                 
                 if ((mypage.imageURL?.isEmpty) != nil) {
                     // 이미지 URL이 유효한 경우: 이미지 다운로드 처리

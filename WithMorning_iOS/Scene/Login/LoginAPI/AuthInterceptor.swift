@@ -43,11 +43,10 @@ class NewAccessToken {
                     if let data = response.data {
                         do {
                             let json = try JSONSerialization.jsonObject(with: data, options: []) as? [String: Any]
-                            if let errorCode = json?["code"] as? Int, errorCode == 9103 {
+                            if let errorCode = json?["code"] as? Int, errorCode == 9103{
                                 DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
                                     self.navigateToLoginViewController()
                                 }
-                                
                             }
                             print("❌ 새 엑세스 토큰 발급 실패 - 응답 JSON 데이터: \(String(describing: json))")
                         } catch {

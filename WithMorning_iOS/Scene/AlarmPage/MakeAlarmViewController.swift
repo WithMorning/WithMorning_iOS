@@ -396,7 +396,7 @@ class MakeAlarmViewController : UIViewController, UIScrollViewDelegate, UISheetP
     //MARK: - API
     var selectedTime24: String = ""
     var selectedDayOfWeek: [String] = []
-    var username : String = ""
+    var username : String? = ""
     
     //그룹 생성
     private func makeGroup() {
@@ -404,7 +404,7 @@ class MakeAlarmViewController : UIViewController, UIScrollViewDelegate, UISheetP
         
         // 비어있을 경우 기본값 설정
         let groupName = groupTextfield.text?.isEmpty == true ?
-        "\(username)님의 윗모닝" : groupTextfield.text!
+        "\(username ?? "nickname")님의 윗모닝" : groupTextfield.text!
         
         let memo = memoTextView.text?.isEmpty == true ?
         "아침에 하고 싶은 말 또는 패널티를 정해주세요." : memoTextView.text!

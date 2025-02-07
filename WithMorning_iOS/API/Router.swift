@@ -11,7 +11,6 @@ import Alamofire
 private let BaseURL = "https://withmorning.site/api"
 
 enum Router : URLRequestConvertible{
-    
     case getmypage //마이페이지
     case getmainpage //메인페이지
     case postgroup(data : MakeGroupMaindata) //그룹 생성

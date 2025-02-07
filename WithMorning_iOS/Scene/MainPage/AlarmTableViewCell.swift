@@ -28,7 +28,7 @@ class AlarmTableViewCell : UITableViewCell, UISheetPresentationControllerDelegat
     var collectionviewHeightclosure : ((CGFloat) -> (Void))?
     
     var APInetwork = Network.shared
-    var time24: String = ""
+    var time24: String? = ""
     
     var isagreeClosure : (() -> Void)?
     
@@ -72,13 +72,13 @@ class AlarmTableViewCell : UITableViewCell, UISheetPresentationControllerDelegat
         return button
     }()
     
-    lazy var timeLabel : UILabel = {
+    let timeLabel : UILabel = {
         let label = UILabel()
         label.font = DesignSystemFont.Pretendard_Bold30.value
         return label
     }()
     
-    lazy var noonLabel : UILabel = {
+    let noonLabel : UILabel = {
         let label = UILabel()
         label.font = DesignSystemFont.Pretendard_Bold18.value
         return label
@@ -413,35 +413,43 @@ class AlarmTableViewCell : UITableViewCell, UISheetPresentationControllerDelegat
         return (time24, "")
     }
     
-    
     func configureCell(with alarm: GroupList, currentUserNickname: String) {
-        if let currentUser = alarm.userList?.first(where: { $0.nickname == currentUserNickname }) {
-            UIView.performWithoutAnimation {
-                
-                disturb = currentUser.isDisturbBanMode
-                toggleButton.isOn = !disturb
+
+        let (time, amPm) = self.convertTimeTo12HourFormat(alarm.wakeupTime)
+        
+        DispatchQueue.main.async {
+            self.timeLabel.text = time
+            self.noonLabel.text = amPm
+            
+            // 2. 현재 유저 찾기 - nickname이 nil이거나 currentUserNickname과 일치하는 경우 모두 처리
+            let currentUser = alarm.userList?.first(where: { user in
+                if user.nickname == nil {
+                    // nickname이 nil인 유저도 처리
+                    return true
+                }
+                return user.nickname == currentUserNickname
+            })
+            
+            if let user = currentUser {
+                // 3. disturb 모드 설정
+                self.disturb = user.isDisturbBanMode
+                self.toggleButton.isOn = !self.disturb
                 self.bottomView.isHidden = self.disturb
                 
-                DispatchQueue.main.async {
-                    self.bottomView.isHidden = self.disturb
-                    let (time, amPm) = self.convertTimeTo12HourFormat(alarm.wakeupTime)
-                    
-                    // timeLabel 에는 시간만, noonLabel 에는 AM/PM을 넣음
-                    self.timeLabel.text = time
-                    self.noonLabel.text = amPm
-                    
-                    let dayLabels = [self.MonLabel, self.TueLabel, self.WedLabel, self.ThuLabel, self.FriLabel, self.SatLabel, self.SunLabel]
-                    
-                    for label in dayLabels {
-                        if self.disturb {
-                            label.backgroundColor = DesignSystemColor.Gray100.value
-                            label.textColor = DesignSystemColor.Gray300.value
-                        }
+                // 4. 요일 라벨 색상 업데이트
+                let dayLabels = [self.MonLabel, self.TueLabel, self.WedLabel,
+                               self.ThuLabel, self.FriLabel, self.SatLabel, self.SunLabel]
+                
+                for label in dayLabels {
+                    if self.disturb {
+                        label.backgroundColor = DesignSystemColor.Gray100.value
+                        label.textColor = DesignSystemColor.Gray300.value
+                    } else {
+                        label.backgroundColor = DesignSystemColor.Orange500.value
+                        label.textColor = .white
                     }
                 }
-                
             }
-            
         }
     }
     
@@ -489,7 +497,7 @@ class AlarmTableViewCell : UITableViewCell, UISheetPresentationControllerDelegat
         var maxHeight: CGFloat = 0
         
         for i in 0..<memberCount {
-            let text = userData[i].nickname
+            let text = userData[i].nickname ?? "nickname"
             let font = DesignSystemFont.Pretendard_SemiBold12.value
             let maxWidth: CGFloat = 62
             
@@ -724,7 +732,7 @@ class AlarmTableViewCell : UITableViewCell, UISheetPresentationControllerDelegat
                     makeVC.memoTextView.text = self.fullText
                     makeVC.memoPlaceholder.isHidden = true
                     makeVC.selectedDayOfWeek = self.editweek
-                    makeVC.editTime = self.time24
+                    makeVC.editTime = self.time24 ?? ""
                     
                     parentViewController.navigationController?.pushViewController(makeVC, animated: true)
                 }
@@ -792,7 +800,7 @@ class AlarmTableViewCell : UITableViewCell, UISheetPresentationControllerDelegat
         
         let userlistData = userData[indexPath.item]
         
-        cell.configureMember(with: userlistData.nickname,imageURL: userlistData.imageURL ?? "",isDisturbBanMode: userlistData.isDisturbBanMode, isWakeup: userlistData.isWakeup, isHost: userlistData.isHost ?? false)
+        cell.configureMember(with: userlistData.nickname ?? "nickname",imageURL: userlistData.imageURL ?? "",isDisturbBanMode: userlistData.isDisturbBanMode, isWakeup: userlistData.isWakeup, isHost: userlistData.isHost)
         
         if indexPath.item == 0 {
             wakeupGroupDict[groupId] = []
@@ -841,39 +849,14 @@ class AlarmTableViewCell : UITableViewCell, UISheetPresentationControllerDelegat
             self.isagreeClosure!()
         }
         
-        //        Uservc.nicknameLabel.text = selectedUser.nickname
-        //        Uservc.userphoneNum = selectedUser.phone
-        //        Uservc.userId = selectedUser.userID
-        //        Uservc.isagree = selectedUser.isAgree
-        //        Uservc.imageURL = selectedUser.imageURL
-        //
-        //        //데이터 present를 하기 전에 데이터를 먼저 옮긴 후 present를 해야함
-        //        // - 라영님 -
-        //
-        //        Uservc.modalPresentationStyle = .formSheet
-        //        parentViewController.present(Uservc, animated: true)
-        //
-        //        if let vc = Uservc.sheetPresentationController{
-        //            if #available(iOS 16.0, *) {
-        //                vc.detents = [.custom { context in
-        //                    return 330
-        //                }]
-        //                vc.delegate = self
-        //                vc.prefersGrabberVisible = false
-        //                vc.preferredCornerRadius = 16
-        //            }
-        //
-        //        }
-        
         //방해금지모드 확인.
         if selectedUser.isDisturbBanMode{
-            parentVC?.showToast(message: "\(selectedUser.nickname)님은 현재 방해금지 모드에요!")
+            parentVC?.showToast(message: "\(selectedUser.nickname ?? "nickname")님은 현재 방해금지 모드에요!")
         }else{
             //본인과 메이트 확인
             if selectedUser.nickname == UserDefaults.standard.string(forKey: "nickname"){
-                
-                Myvc.nicknameLabel.text = selectedUser.nickname
-                Myvc.userphoneNum = selectedUser.phone
+                Myvc.nicknameLabel.text = selectedUser.nickname ?? "nickname"
+                Myvc.userphoneNum = selectedUser.phone ?? "number"
                 Myvc.userId = selectedUser.userID
                 Myvc.isagree = selectedUser.isAgree
                 Myvc.imageURL = selectedUser.imageURL
@@ -897,7 +880,7 @@ class AlarmTableViewCell : UITableViewCell, UISheetPresentationControllerDelegat
             }else{
                 print("남이에용")
                 Uservc.nicknameLabel.text = selectedUser.nickname
-                Uservc.userphoneNum = selectedUser.phone
+                Uservc.userphoneNum = selectedUser.phone ?? ""
                 Uservc.userId = selectedUser.userID
                 Uservc.isagree = selectedUser.isAgree
                 Uservc.imageURL = selectedUser.imageURL
@@ -1045,7 +1028,7 @@ class memberCollectioViewCell: UICollectionViewCell {
     }
     
     //MARK: - 닉네임, 유저 스테이트 설정
-    func configureMember(with nickname: String, imageURL: String, isDisturbBanMode: Bool, isWakeup: Bool, isHost: Bool) {
+    func configureMember(with nickname: String?, imageURL: String, isDisturbBanMode: Bool, isWakeup: Bool, isHost: Bool) {
         
         memberLabel.text = nickname
         
