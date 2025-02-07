@@ -156,7 +156,7 @@ class MainViewController: UIViewController, UISheetPresentationControllerDelegat
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         getMainpage()
-        checkNotificationPermission()
+        requestNotificationPermission()
     }
     
     
@@ -247,6 +247,29 @@ class MainViewController: UIViewController, UISheetPresentationControllerDelegat
         headerStackView.frame = CGRect(x: 0, y: 0, width: UIScreen.main.bounds.width, height: headerStackViewHeight)
         
     }
+    //MARK: - 알림 권한 설정
+    func requestNotificationPermission() {
+        UNUserNotificationCenter.current().requestAuthorization(options: [.alert, .sound, .badge]) { granted, error in
+            if granted {
+                print("🔔 알림 권한 허용됨")
+                DispatchQueue.main.async {
+                    UIApplication.shared.registerForRemoteNotifications()
+                }
+                self.checkNotificationPermission()
+            } else {
+                print("🔕 알림 권한 거부됨")
+                self.checkNotificationPermission()
+            }
+            
+            if let error = error {
+                print("알림 권한 요청 중 오류 발생: \(error.localizedDescription)")
+                self.checkNotificationPermission()
+            }
+        }
+    }
+    
+    
+    
     
     //MARK: - 알람 권한 설정 유무
     func checkNotificationPermission() {

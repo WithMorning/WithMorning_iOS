@@ -25,15 +25,6 @@ class AppDelegate:UIResponder, UIApplicationDelegate, MessagingDelegate {
         // 앱 실행시 사용자에게 알림 허용 권한을 받음
         UNUserNotificationCenter.current().delegate = self
         
-        let authOptions: UNAuthorizationOptions = [.alert, .badge, .sound]
-        UNUserNotificationCenter.current().requestAuthorization(
-            options: authOptions,
-            completionHandler: { _, _ in }
-        )
-        
-        // UNUserNotificationCenterDelegate를 구현한 메서드를 실행시킴
-        application.registerForRemoteNotifications()
-        
         // 파이어베이스 Meesaging 설정
         Messaging.messaging().delegate = self
         

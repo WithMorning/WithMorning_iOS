@@ -86,24 +86,6 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
     
     //MARK: - sceneDidDisconnect 앱이 terminated일때 push알람
     func sceneDidDisconnect(_ scene: UIScene) {
-//        print("sceneDidDisconnect")
-//        
-//        let content = UNMutableNotificationContent()
-//        content.title = "진동을 위해 앱을 실행해주세요!"
-//        content.body = "무음모드를 해지하지 않으면 소리가 나지 않아요 !"
-//        content.sound = .default
-//        
-//        let trigger = UNTimeIntervalNotificationTrigger(timeInterval: 10, repeats: false)
-//        
-//        let request = UNNotificationRequest(identifier: "appTerminationNotification", content: content, trigger: trigger)
-//        
-//        UNUserNotificationCenter.current().add(request) { error in
-//            if let error = error {
-//                print("Local Notification Error: \(error.localizedDescription)")
-//            } else {
-//                print("Local Notification Scheduled")
-//            }
-//        }
     }
     func sceneDidBecomeActive(_ scene: UIScene) {
         print("sceneDidBecomeActive")
