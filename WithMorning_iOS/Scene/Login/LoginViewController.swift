@@ -107,11 +107,6 @@ class LoginViewController: UIViewController{
             $0.bottom.equalTo(view.safeAreaLayoutGuide).inset(80)
         }
         
-//        guestButton.snp.makeConstraints{
-//            $0.height.equalTo(0)
-//            $0.leading.trailing.equalToSuperview().inset(16)
-//            $0.bottom.equalTo(view.safeAreaLayoutGuide).inset(80)
-//        }
     }
     
     func loginviewcheck(){

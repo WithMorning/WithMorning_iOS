@@ -268,9 +268,6 @@ class MainViewController: UIViewController, UISheetPresentationControllerDelegat
         }
     }
     
-    
-    
-    
     //MARK: - 알람 권한 설정 유무
     func checkNotificationPermission() {
         UNUserNotificationCenter.current().getNotificationSettings { settings in

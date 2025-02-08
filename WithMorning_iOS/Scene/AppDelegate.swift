@@ -7,7 +7,6 @@
 
 import UIKit
 import Firebase
-import AVFoundation
 import UserNotifications
 
 @main
@@ -24,6 +23,13 @@ class AppDelegate:UIResponder, UIApplicationDelegate, MessagingDelegate {
         
         UNUserNotificationCenter.current().delegate = self
         
+        // 푸시 알림 권한 요청 추가
+        let authOptions: UNAuthorizationOptions = [.alert, .badge, .sound]
+        UNUserNotificationCenter.current().requestAuthorization(
+            options: authOptions,
+            completionHandler: { _, _ in }
+        )
+        
         application.registerForRemoteNotifications()
         
         // 파이어베이스 Meesaging 설정
@@ -34,6 +40,7 @@ class AppDelegate:UIResponder, UIApplicationDelegate, MessagingDelegate {
         
         return true
     }
+    
     
     
     //MARK: - : UISceneSession Lifecycle
@@ -110,21 +117,6 @@ class AppDelegate:UIResponder, UIApplicationDelegate, MessagingDelegate {
         }
         LoadingIndicator.hideLoading()
     }
-//    func NavigateToAlarm() {
-//        let loginVC = AlarmViewController()
-//        let navController = UINavigationController(rootViewController: loginVC)
-//        navController.modalPresentationStyle = .fullScreen
-//        navController.navigationBar.isHidden = true
-//        if let keyWindow = UIApplication.shared.connectedScenes
-//            .compactMap({ $0 as? UIWindowScene })
-//            .flatMap({ $0.windows })
-//            .first(where: { $0.isKeyWindow }) {
-//            
-//            keyWindow.rootViewController = navController
-//            keyWindow.makeKeyAndVisible()
-//        }
-//    }
-    
 }
 
 extension AppDelegate: UNUserNotificationCenterDelegate {
@@ -133,4 +125,6 @@ extension AppDelegate: UNUserNotificationCenterDelegate {
         print("APNS token: \(deviceToken)")
         Messaging.messaging().apnsToken = deviceToken
     }
+    
 }
+

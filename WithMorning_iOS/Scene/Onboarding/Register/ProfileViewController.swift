@@ -183,6 +183,7 @@ class ProfileViewController : UIViewController, UIImagePickerControllerDelegate 
     
     // MARK: - API
     private var selectedIMG : UIImage?
+    
     private func registerProfile() {
         LoadingIndicator.showLoading()
         

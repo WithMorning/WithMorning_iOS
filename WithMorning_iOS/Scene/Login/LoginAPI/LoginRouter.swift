@@ -15,7 +15,6 @@ enum LoginRouter : URLRequestConvertible{
     case AppleLogin(data : AppleloginRequest)
     case getNewAccessToken(refreshToken: String)
     
-    
     // url가르기
     var endPoint: String {
         switch self {

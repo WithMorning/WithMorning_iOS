@@ -84,7 +84,6 @@ extension AppleLoginManager : ASAuthorizationControllerDelegate {
         
         if let appleIDCredential = authorization.credential as? ASAuthorizationAppleIDCredential {
             print(#fileID, #function, #line, "- 애플 로그인 성공🍎")
-            self.requestFCM()
             guard currentNonce != nil else {
                 fatalError(" - Invalid state: A login callback was received, but no login request was sent.")
             }
@@ -99,8 +98,8 @@ extension AppleLoginManager : ASAuthorizationControllerDelegate {
             
             let loginRequestTokenData = AppleloginRequest(identityToken: idTokenString, code: codeString) //id토큰, auth토큰 전송할 데이터 셋
             
-            print(#fileID, #function, #line, "- codeString🔥: \(codeString)")
-            print(#fileID, #function, #line, "- idTokenString🔥: \(idTokenString)")
+//            print(#fileID, #function, #line, "- codeString🔥: \(codeString)")
+//            print(#fileID, #function, #line, "- idTokenString🔥: \(idTokenString)")
             
             //MARK: - 로그인 요청
             AF.request(LoginRouter.AppleLogin(data: loginRequestTokenData))
@@ -117,7 +116,6 @@ extension AppleLoginManager : ASAuthorizationControllerDelegate {
                         }
                         
                         self.handleLoginSuccess(with: dataResult)
-                        
                     }
                 }
             
@@ -130,16 +128,24 @@ extension AppleLoginManager : ASAuthorizationControllerDelegate {
         
         print("🔐 KeyChain에 저장된 accessToken: \(KeyChain.read(key: "accessToken") ?? "")")
         print("🔐 KeyChain에 저장된 refreshToken: \(KeyChain.read(key: "refreshToken") ?? "")")
+        print("🔐 KeyChain에 저장된 fcmToken: \(KeyChain.read(key: "fcmToken") ?? "토큰이 없습니다 !")")
         
-        // 회원탈퇴 상태가 아닐 경우에만 isExistingUser를 true로 설정
-        if UserDefaults.getUserState() != "deleteaccount" {
-            UserDefaults.standard.set(true, forKey: "isExistingUser")
-            UserDefaults.setUserState("login")  // 바로 로그인 상태로 변경
-        } else {
-            // 회원탈퇴 후 재로그인의 경우
-            UserDefaults.standard.removeObject(forKey: "isExistingUser")
-            UserDefaults.setUserState("register")  // 회원가입 절차로 이동
-        }
+        // fcmToken 확인
+            if KeyChain.read(key: "fcmToken") == nil {
+                // fcmToken이 없는 경우 회원가입 절차로 이동
+                UserDefaults.standard.removeObject(forKey: "isExistingUser")
+                UserDefaults.setUserState("register")
+            } else {
+                // fcmToken이 있고 회원탈퇴 상태가 아닐 경우에만 isExistingUser를 true로 설정
+                if UserDefaults.getUserState() != "deleteaccount" {
+                    UserDefaults.standard.set(true, forKey: "isExistingUser")
+                    UserDefaults.setUserState("login")  // 바로 로그인 상태로 변경
+                } else {
+                    // 회원탈퇴 후 재로그인의 경우
+                    UserDefaults.standard.removeObject(forKey: "isExistingUser")
+                    UserDefaults.setUserState("register")  // 회원가입 절차로 이동
+                }
+            }
         
         NotificationCenter.default.post(name: NSNotification.Name("UserStateChanged"), object: nil)
     }
@@ -148,22 +154,6 @@ extension AppleLoginManager : ASAuthorizationControllerDelegate {
     func authorizationController(controller: ASAuthorizationController, didCompleteWithError error: Error) {
         // 로그인 실패(유저의 취소도 포함)
         print("로그인 실패 - \(error.localizedDescription)")
-    }
-    
-    //FCMtoken을 여기서 발급 받습니다. (로그인 후)
-    private func requestFCM(){
-        Messaging.messaging().token { token, error in
-            if let error = error {
-                print("토큰발급 실패 ㅠㅠ: \(error.localizedDescription)")
-            } else if let token = token {
-                print("토큰발급성공 FCM token: \(token)")
-                
-                // 필요 시 토큰 저장 (예: KeyChain 또는 UserDefaults)
-                KeyChain.create(key: "fcmToken", token: token)
-                print("🔐 KeyChain에 저장된 fcmToken: \(KeyChain.read(key: "fcmToken") ?? "")")
-            }
-            
-        }
     }
     
 }
