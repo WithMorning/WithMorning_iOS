@@ -379,9 +379,11 @@ class MyPageViewController : UIViewController, UIScrollViewDelegate {
         return label
     }()
     
+#warning("버전관리")
+    
     private lazy var versionLabel2 : UILabel = {
         let label = UILabel()
-        label.text = "1.0.0"
+        label.text = "1.0.1"
         label.textAlignment = .right
         label.textColor = DesignSystemColor.Gray400.value
         label.font = DesignSystemFont.Pretendard_Medium14.value

@@ -12,7 +12,7 @@ import Alamofire
 import Kingfisher
 import UserNotifications
 
-class MainViewController: UIViewController, UISheetPresentationControllerDelegate {
+class MainViewController: UIViewController, UISheetPresentationControllerDelegate, UNUserNotificationCenterDelegate {
     
     let APInetwork = Network.shared
     

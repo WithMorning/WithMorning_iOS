@@ -22,8 +22,9 @@ class AppDelegate:UIResponder, UIApplicationDelegate, MessagingDelegate {
         //파이어베이스 설정
         FirebaseApp.configure()
         
-        // 앱 실행시 사용자에게 알림 허용 권한을 받음
         UNUserNotificationCenter.current().delegate = self
+        
+        application.registerForRemoteNotifications()
         
         // 파이어베이스 Meesaging 설정
         Messaging.messaging().delegate = self
@@ -72,8 +73,6 @@ class AppDelegate:UIResponder, UIApplicationDelegate, MessagingDelegate {
         } else if let groupID = userInfo["groupID"] as? Int {
             UserDefaults.standard.set(groupID, forKey: "wakeupGroupId")
             NavigateToAlarm()
-        } else {
-            print("groupID가 포함되어 있지 않거나 형식이 다릅니다.")
         }
         
         UserDefaults.standard.synchronize()
