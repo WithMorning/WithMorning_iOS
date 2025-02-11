@@ -217,7 +217,7 @@ class MainViewController: UIViewController, UISheetPresentationControllerDelegat
             $0.center.equalToSuperview()
         }
         
-        
+        print("🔐 KeyChain에 저장된 fcmToken: \(KeyChain.read(key: "fcmToken") ?? "")")
     }
     
     //MARK: - tableSetting

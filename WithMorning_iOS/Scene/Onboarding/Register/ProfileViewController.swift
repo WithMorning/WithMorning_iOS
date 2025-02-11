@@ -11,13 +11,14 @@ import Then
 import Alamofire
 import Kingfisher
 
+
 class ProfileViewController : UIViewController, UIImagePickerControllerDelegate & UINavigationControllerDelegate {
     
     let APInetwork = UserNetwork.shared
     
     //MARK: - properties
     
-    private lazy var mainLabel : UILabel = {
+    private let mainLabel : UILabel = {
         let label = UILabel()
         label.text = "회원가입"
         label.tintColor = DesignSystemColor.Black.value
@@ -33,7 +34,7 @@ class ProfileViewController : UIViewController, UIImagePickerControllerDelegate 
         return button
     }()
     
-    private lazy var profileLabel : UILabel = {
+    private let profileLabel : UILabel = {
         let label = UILabel()
         label.text = "사용하실 프로필을 설정해 주세요."
         label.font = DesignSystemFont.Pretendard_Medium14.value
@@ -50,7 +51,7 @@ class ProfileViewController : UIViewController, UIImagePickerControllerDelegate 
         return image
     }()
     
-    private lazy var imgPicker : UIImagePickerController = {
+    private let imgPicker : UIImagePickerController = {
         let picker = UIImagePickerController()
         picker.allowsEditing = true
         return picker

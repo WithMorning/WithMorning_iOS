@@ -30,14 +30,14 @@ class RegisterViewController : UIViewController{
         return button
     }()
     
-    private lazy var mainLabel : UILabel = {
+    private let mainLabel : UILabel = {
         let label = UILabel()
         label.tintColor = DesignSystemColor.Black.value
         label.font = DesignSystemFont.Pretendard_Bold16.value
         return label
     }()
     
-    private lazy var subLabel : UILabel = {
+    private let subLabel : UILabel = {
         let label = UILabel()
         label.textAlignment = .center
         label.font = DesignSystemFont.Pretendard_Medium14.value

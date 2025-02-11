@@ -74,7 +74,7 @@ class NewAccessToken {
             }
     }
     
-    //MARK: - refreshToken만료시 로그인 페이지로 이동맨
+    //MARK: - refreshToken 만료시 로그인 페이지로 이동맨
     private func navigateToLoginViewController() {
         let loginVC = LoginViewController()
         let navController = UINavigationController(rootViewController: loginVC)

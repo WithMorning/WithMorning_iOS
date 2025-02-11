@@ -11,7 +11,6 @@ import CryptoKit
 import Security
 import Alamofire
 import SwiftJWT
-import FirebaseMessaging
 import Firebase
 
 final class AppleLoginManager : NSObject {
@@ -98,9 +97,6 @@ extension AppleLoginManager : ASAuthorizationControllerDelegate {
             
             let loginRequestTokenData = AppleloginRequest(identityToken: idTokenString, code: codeString) //id토큰, auth토큰 전송할 데이터 셋
             
-//            print(#fileID, #function, #line, "- codeString🔥: \(codeString)")
-//            print(#fileID, #function, #line, "- idTokenString🔥: \(idTokenString)")
-            
             //MARK: - 로그인 요청
             AF.request(LoginRouter.AppleLogin(data: loginRequestTokenData))
                 .responseDecodable(of: AppleloginResponse.self) { (response: DataResponse<AppleloginResponse, AFError> ) in
@@ -122,30 +118,23 @@ extension AppleLoginManager : ASAuthorizationControllerDelegate {
         }
     }
     
+    
     private func handleLoginSuccess(with data: AppleLoginData) {
         KeyChain.create(key: "accessToken", token: data.accessToken)
         KeyChain.create(key: "refreshToken", token: data.refreshToken)
         
         print("🔐 KeyChain에 저장된 accessToken: \(KeyChain.read(key: "accessToken") ?? "")")
         print("🔐 KeyChain에 저장된 refreshToken: \(KeyChain.read(key: "refreshToken") ?? "")")
-        print("🔐 KeyChain에 저장된 fcmToken: \(KeyChain.read(key: "fcmToken") ?? "토큰이 없습니다 !")")
         
-        // fcmToken 확인
-            if KeyChain.read(key: "fcmToken") == nil {
-                // fcmToken이 없는 경우 회원가입 절차로 이동
-                UserDefaults.standard.removeObject(forKey: "isExistingUser")
-                UserDefaults.setUserState("register")
-            } else {
-                // fcmToken이 있고 회원탈퇴 상태가 아닐 경우에만 isExistingUser를 true로 설정
-                if UserDefaults.getUserState() != "deleteaccount" {
-                    UserDefaults.standard.set(true, forKey: "isExistingUser")
-                    UserDefaults.setUserState("login")  // 바로 로그인 상태로 변경
-                } else {
-                    // 회원탈퇴 후 재로그인의 경우
-                    UserDefaults.standard.removeObject(forKey: "isExistingUser")
-                    UserDefaults.setUserState("register")  // 회원가입 절차로 이동
-                }
-            }
+        // 회원탈퇴 상태가 아닐 경우에만 isExistingUser를 true로 설정
+        if UserDefaults.getUserState() != "deleteaccount" {
+            UserDefaults.standard.set(true, forKey: "isExistingUser")
+            UserDefaults.setUserState("login")  // 바로 로그인 상태로 변경
+        } else {
+            // 회원탈퇴 후 재로그인의 경우
+            UserDefaults.standard.removeObject(forKey: "isExistingUser")
+            UserDefaults.setUserState("register")  // 회원가입 절차로 이동
+        }
         
         NotificationCenter.default.post(name: NSNotification.Name("UserStateChanged"), object: nil)
     }

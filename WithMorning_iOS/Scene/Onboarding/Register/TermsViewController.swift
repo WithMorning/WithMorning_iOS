@@ -11,7 +11,7 @@ import SnapKit
 
 class TermsViewController: UIViewController{
     
-    private lazy var mainLabel : UILabel = {
+    private let mainLabel : UILabel = {
         let label = UILabel()
         label.text = "서비스 이용 동의"
         label.tintColor = DesignSystemColor.Black.value
@@ -28,7 +28,7 @@ class TermsViewController: UIViewController{
     }()
     
     //MARK: - (필수) 만 14세입니다. 텍스트 탭시 약관사이트로 이동
-    private lazy var ageLabel : UILabel = {
+    private let ageLabel : UILabel = {
         let label = UILabel()
         label.text = "(필수) 만 14세입니다."
         label.font = DesignSystemFont.Pretendard_Medium14.value
@@ -46,7 +46,7 @@ class TermsViewController: UIViewController{
     }()
     
     //MARK: - (필수) 서비스 이용 약관
-    private lazy var serviceLabel : UILabel = {
+    private let serviceLabel : UILabel = {
         let label = UILabel()
         label.text = "(필수) 서비스 이용 약관"
         label.font = DesignSystemFont.Pretendard_Medium14.value
@@ -64,7 +64,7 @@ class TermsViewController: UIViewController{
     }()
     
     //MARK: - (필수) 개인정보 처리방침
-    private lazy var infoLabel : UILabel = {
+    private let infoLabel : UILabel = {
         let label = UILabel()
         label.text = "(필수) 개인정보 처리방침"
         label.font = DesignSystemFont.Pretendard_Medium14.value
@@ -82,7 +82,7 @@ class TermsViewController: UIViewController{
     }()
     
     //MARK: - (선택) 마케팅 정보 수신 동의
-    private lazy var maketingLabel : UILabel = {
+    private let maketingLabel : UILabel = {
         let label = UILabel()
         label.text = "(선택) 마케팅 정보 수신 동의"
         label.font = DesignSystemFont.Pretendard_Medium14.value
@@ -108,7 +108,7 @@ class TermsViewController: UIViewController{
         return view
     }()
     
-    private lazy var allagreeLabel : UILabel = {
+    private let allagreeLabel : UILabel = {
         let label = UILabel()
         label.font = DesignSystemFont.Pretendard_Bold14.value
         label.textColor = .black
@@ -123,7 +123,7 @@ class TermsViewController: UIViewController{
         return label
     }()
     
-    private lazy var subLabel : UILabel = {
+    private let subLabel : UILabel = {
         let label = UILabel()
         label.text = "서비스 이용을 위해 약관에 모두 동의합니다."
         label.font = DesignSystemFont.Pretendard_Medium12.value
@@ -161,7 +161,6 @@ class TermsViewController: UIViewController{
     }()
     
     //MARK: - life cycle
-    
     override func viewDidLoad() {
         super.viewDidLoad()
         view.backgroundColor = DesignSystemColor.Gray150.value
@@ -243,13 +242,13 @@ class TermsViewController: UIViewController{
     func setallagree(){
         if [agecheckButton, serviceButton, infoButton].allSatisfy({ $0.currentImage == UIImage(named: "checkboxorange") }) {
             allagreeButton.setImage(UIImage(named: "checkboxorange"), for: .normal)
-                nextButton.setBackgroundColor(DesignSystemColor.Orange500.value, for: .normal)
-                nextButton.setBackgroundColor(DesignSystemColor.Orange500.value.adjustBrightness(by: 0.8), for: .highlighted)
-            } else {
-                allagreeButton.setImage(UIImage(named: "checkboxgray"), for: .normal)
-                nextButton.setBackgroundColor(DesignSystemColor.Gray300.value, for: .normal)
-                nextButton.setBackgroundColor(DesignSystemColor.Gray300.value, for: .highlighted)
-            }
+            nextButton.setBackgroundColor(DesignSystemColor.Orange500.value, for: .normal)
+            nextButton.setBackgroundColor(DesignSystemColor.Orange500.value.adjustBrightness(by: 0.8), for: .highlighted)
+        } else {
+            allagreeButton.setImage(UIImage(named: "checkboxgray"), for: .normal)
+            nextButton.setBackgroundColor(DesignSystemColor.Gray300.value, for: .normal)
+            nextButton.setBackgroundColor(DesignSystemColor.Gray300.value, for: .highlighted)
+        }
     }
     
     //MARK: - @objc func
@@ -322,9 +321,9 @@ class TermsViewController: UIViewController{
     
     @objc func nextbtn() {
         let requiredButtons = [agecheckButton, serviceButton, infoButton]
-
+        
         let allRequiredButtonsSelected = requiredButtons.allSatisfy { $0.currentImage == UIImage(named: "checkboxorange")}
-
+        
         if allRequiredButtonsSelected {
             let vc = LoginViewController()
             self.navigationController?.pushViewController(vc, animated: true)

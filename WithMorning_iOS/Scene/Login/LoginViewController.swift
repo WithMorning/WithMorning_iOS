@@ -30,12 +30,12 @@ class LoginViewController: UIViewController{
     }()
     
     //MARK: - 메인 라벨
-    private lazy var titleIMG : UIImageView = {
+    private let titleIMG : UIImageView = {
         let view = UIImageView()
         view.image = UIImage(named: "titleLabel")
         return view
     }()
-
+    
     
     //MARK: - 애플로 로그인
     private lazy var appleButton : UIButton = {
@@ -61,21 +61,6 @@ class LoginViewController: UIViewController{
         return button
     }()
     
-//    //MARK: - 게스트로 로그인
-//    private lazy var guestButton : UIButton = {
-//        let button = UIButton()
-//        button.backgroundColor = DesignSystemColor.Gray400.value
-//        button.setTitle("  게스트로 로그인", for: .normal)
-//        button.titleLabel?.font = DesignSystemFont.Pretendard_SemiBold16.value
-//        button.setTitleColor(.white, for: .normal)
-//        button.tintColor = .white
-//        button.layer.cornerRadius = 8
-//        button.setImage(UIImage(systemName: "person.circle.fill"), for: .normal)
-//        button.titleLabel?.textAlignment = .center
-//        button.addTarget(self, action: #selector(guest), for: .touchUpInside)
-//        return button
-//    }()
-    
     //MARK: - lifecycle
     
     override func viewDidLoad() {
@@ -100,6 +85,11 @@ class LoginViewController: UIViewController{
             $0.top.equalTo(view.safeAreaLayoutGuide).offset(26)
             $0.leading.equalToSuperview()
         }
+        //        guestButton.snp.makeConstraints{
+        //            $0.height.equalTo(64)
+        //            $0.leading.trailing.equalToSuperview().inset(16)
+        //            $0.bottom.equalTo(view.safeAreaLayoutGuide).inset(80)
+        //        }
         
         appleButton.snp.makeConstraints{
             $0.height.equalTo(64)
@@ -120,12 +110,10 @@ class LoginViewController: UIViewController{
         self.navigationController?.popViewController(animated: true)
     }
     
-    
     @objc private func apple(){
         AppleLoginManager.shared.startSignInWithAppleFlow()
         
     }
-    
     
 }
 

@@ -247,32 +247,10 @@
 		D12D512F2C60BB0000D3F1A9 /* Login */ = {
 			isa = PBXGroup;
 			children = (
+				D12D51392C60BC6300D3F1A9 /* AppleLoginManager.swift */,
 				D19E7FA92C4A47C10053ACA8 /* LoginViewController.swift */,
-				D12D51362C60BC3400D3F1A9 /* LoginAPI */,
-				D12D51372C60BC4700D3F1A9 /* UserAPI */,
 			);
 			path = Login;
-			sourceTree = "<group>";
-		};
-		D12D51362C60BC3400D3F1A9 /* LoginAPI */ = {
-			isa = PBXGroup;
-			children = (
-				D12D51392C60BC6300D3F1A9 /* AppleLoginManager.swift */,
-				D1C823632C77363F00787CB4 /* AuthInterceptor.swift */,
-				D1B86A042C6F2EAC0052F528 /* LoginModel.swift */,
-				D1B86A062C6F2EB40052F528 /* LoginRouter.swift */,
-			);
-			path = LoginAPI;
-			sourceTree = "<group>";
-		};
-		D12D51372C60BC4700D3F1A9 /* UserAPI */ = {
-			isa = PBXGroup;
-			children = (
-				D12D51342C60BC1500D3F1A9 /* UserNetwork.swift */,
-				D12D51302C60BBFF00D3F1A9 /* UserModel.swift */,
-				D12D51322C60BC0900D3F1A9 /* UserRouter.swift */,
-			);
-			path = UserAPI;
 			sourceTree = "<group>";
 		};
 		D13178992C635412002C368A /* CustomView */ = {
@@ -318,11 +296,11 @@
 		D14A9DB52C2AD3B000019B8B /* MyPage */ = {
 			isa = PBXGroup;
 			children = (
+				D1E1DF812C3AD04F001A132F /* WeekChoiceViewController.swift */,
 				D146706A2BEA8FF9007B7132 /* MyPageViewController.swift */,
 				D109BC8B2C43B23A005E075F /* SleepTimeViewController.swift */,
 				D1303A002C451B3F0071267A /* EditprofileViewController.swift */,
 				D1FC698C2C74EA69006B93C8 /* MyPageWebViewController.swift */,
-				D1A095DA2CB56D7A002EEF6E /* GoogleService-Info.plist */,
 			);
 			path = MyPage;
 			sourceTree = "<group>";
@@ -366,8 +344,7 @@
 		D1652D782BC653A700F80F6F /* Scene */ = {
 			isa = PBXGroup;
 			children = (
-				D1E672BC2BC4FD3300A32790 /* SceneDelegate.swift */,
-				D1E672BA2BC4FD3300A32790 /* AppDelegate.swift */,
+				D13178992C635412002C368A /* CustomView */,
 				D12D512F2C60BB0000D3F1A9 /* Login */,
 				D14A9DB42C2AD2BA00019B8B /* Onboarding */,
 				D1E1DF802C3ACFE7001A132F /* AlarmPage */,
@@ -380,11 +357,11 @@
 		D1652D792BC653AF00F80F6F /* API */ = {
 			isa = PBXGroup;
 			children = (
-				D14F61022CB90C6A0094777B /* NetworkErrorHandler.swift */,
-				D18288CA2C7EF45800BDAB3A /* Error.swift */,
-				D16F5FD02BC65671006640F9 /* Network.swift */,
-				D16F5FD22BC65679006640F9 /* Model.swift */,
-				D16F5FD42BC65680006640F9 /* Router.swift */,
+				D1C823632C77363F00787CB4 /* AuthInterceptor.swift */,
+				D1DB69D32D5BAFB10030D48A /* Error */,
+				D1DB69D22D5BAF300030D48A /* Network */,
+				D1DB69D12D5BAF1C0030D48A /* Router */,
+				D1DB69D02D5BAEF60030D48A /* Model */,
 			);
 			path = API;
 			sourceTree = "<group>";
@@ -393,6 +370,7 @@
 			isa = PBXGroup;
 			children = (
 				D1E672C32BC4FD3500A32790 /* Assets.xcassets */,
+				D10F846D2BC7E72000F3A172 /* Extension */,
 				D14C32672CE5E1580097957D /* Sounds */,
 				D15AE72C2BC98F8900024CE3 /* Fonts */,
 			);
@@ -420,12 +398,58 @@
 			path = Tutorial;
 			sourceTree = "<group>";
 		};
+		D1B869E22D5B1C430053E83B /* Application */ = {
+			isa = PBXGroup;
+			children = (
+				D1E672BC2BC4FD3300A32790 /* SceneDelegate.swift */,
+				D1E672BA2BC4FD3300A32790 /* AppDelegate.swift */,
+			);
+			path = Application;
+			sourceTree = "<group>";
+		};
+		D1DB69D02D5BAEF60030D48A /* Model */ = {
+			isa = PBXGroup;
+			children = (
+				D1B86A042C6F2EAC0052F528 /* LoginModel.swift */,
+				D12D51302C60BBFF00D3F1A9 /* UserModel.swift */,
+				D16F5FD22BC65679006640F9 /* Model.swift */,
+			);
+			path = Model;
+			sourceTree = "<group>";
+		};
+		D1DB69D12D5BAF1C0030D48A /* Router */ = {
+			isa = PBXGroup;
+			children = (
+				D12D51322C60BC0900D3F1A9 /* UserRouter.swift */,
+				D1B86A062C6F2EB40052F528 /* LoginRouter.swift */,
+				D16F5FD42BC65680006640F9 /* Router.swift */,
+			);
+			path = Router;
+			sourceTree = "<group>";
+		};
+		D1DB69D22D5BAF300030D48A /* Network */ = {
+			isa = PBXGroup;
+			children = (
+				D12D51342C60BC1500D3F1A9 /* UserNetwork.swift */,
+				D16F5FD02BC65671006640F9 /* Network.swift */,
+			);
+			path = Network;
+			sourceTree = "<group>";
+		};
+		D1DB69D32D5BAFB10030D48A /* Error */ = {
+			isa = PBXGroup;
+			children = (
+				D14F61022CB90C6A0094777B /* NetworkErrorHandler.swift */,
+				D18288CA2C7EF45800BDAB3A /* Error.swift */,
+			);
+			path = Error;
+			sourceTree = "<group>";
+		};
 		D1E1DF802C3ACFE7001A132F /* AlarmPage */ = {
 			isa = PBXGroup;
 			children = (
 				D175A2132CA3C8300001F99C /* AlarmViewController.swift */,
 				D19A9CB12C26901100748CE8 /* MakeAlarmViewController.swift */,
-				D1E1DF812C3AD04F001A132F /* WeekChoiceViewController.swift */,
 			);
 			path = AlarmPage;
 			sourceTree = "<group>";
@@ -452,14 +476,14 @@
 			isa = PBXGroup;
 			children = (
 				D10978402C48E31B00CBF9E3 /* WithMorning_iOS.entitlements */,
+				D1B869E22D5B1C430053E83B /* Application */,
 				D16F5FCF2BC6562A006640F9 /* Resource */,
-				D13178992C635412002C368A /* CustomView */,
 				D14A2D6A2BC8EB6D0087E0CB /* DesignSystem */,
 				D14967F72C7065D8000E8C1B /* Services */,
-				D10F846D2BC7E72000F3A172 /* Extension */,
 				D1652D792BC653AF00F80F6F /* API */,
 				D1652D782BC653A700F80F6F /* Scene */,
 				D1E672C82BC4FD3500A32790 /* Info.plist */,
+				D1A095DA2CB56D7A002EEF6E /* GoogleService-Info.plist */,
 				D1E672C52BC4FD3500A32790 /* LaunchScreen.storyboard */,
 			);
 			path = WithMorning_iOS;
