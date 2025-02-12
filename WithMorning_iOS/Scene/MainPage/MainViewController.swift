@@ -216,10 +216,8 @@ class MainViewController: UIViewController, UISheetPresentationControllerDelegat
         emptyimage.snp.makeConstraints{
             $0.center.equalToSuperview()
         }
-        
-        print("🔐 KeyChain에 저장된 fcmToken: \(KeyChain.read(key: "fcmToken") ?? "")")
     }
-    
+
     //MARK: - tableSetting
     func tableSetting(){
         AlarmTableView.dataSource = self
