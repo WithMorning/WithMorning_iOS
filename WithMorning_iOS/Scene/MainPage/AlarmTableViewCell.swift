@@ -100,8 +100,6 @@ class AlarmTableViewCell : UITableViewCell, UISheetPresentationControllerDelegat
         let label = UILabel()
         label.text = "월"
         label.font = DesignSystemFont.Pretendard_SemiBold10.value
-        label.backgroundColor = DesignSystemColor.Orange500.value
-        label.textColor = .white
         label.clipsToBounds = true
         label.layer.cornerRadius = 10
         label.textAlignment = .center
@@ -112,8 +110,6 @@ class AlarmTableViewCell : UITableViewCell, UISheetPresentationControllerDelegat
         let label = UILabel()
         label.text = "화"
         label.font = DesignSystemFont.Pretendard_SemiBold10.value
-        label.backgroundColor = DesignSystemColor.Orange500.value
-        label.textColor = .white
         label.clipsToBounds = true
         label.layer.cornerRadius = 10
         label.textAlignment = .center
@@ -124,8 +120,6 @@ class AlarmTableViewCell : UITableViewCell, UISheetPresentationControllerDelegat
         let label = UILabel()
         label.text = "수"
         label.font = DesignSystemFont.Pretendard_SemiBold10.value
-        label.backgroundColor = DesignSystemColor.Orange500.value
-        label.textColor = .white
         label.clipsToBounds = true
         label.layer.cornerRadius = 10
         label.textAlignment = .center
@@ -136,8 +130,6 @@ class AlarmTableViewCell : UITableViewCell, UISheetPresentationControllerDelegat
         let label = UILabel()
         label.text = "목"
         label.font = DesignSystemFont.Pretendard_SemiBold10.value
-        label.backgroundColor = DesignSystemColor.Orange500.value
-        label.textColor = .white
         label.clipsToBounds = true
         label.layer.cornerRadius = 10
         label.textAlignment = .center
@@ -148,8 +140,6 @@ class AlarmTableViewCell : UITableViewCell, UISheetPresentationControllerDelegat
         let label = UILabel()
         label.text = "금"
         label.font = DesignSystemFont.Pretendard_SemiBold10.value
-        label.backgroundColor = DesignSystemColor.Orange500.value
-        label.textColor = .white
         label.clipsToBounds = true
         label.layer.cornerRadius = 10
         label.textAlignment = .center
@@ -160,8 +150,6 @@ class AlarmTableViewCell : UITableViewCell, UISheetPresentationControllerDelegat
         let label = UILabel()
         label.text = "토"
         label.font = DesignSystemFont.Pretendard_SemiBold10.value
-        label.backgroundColor = DesignSystemColor.Orange500.value
-        label.textColor = .white
         label.clipsToBounds = true
         label.layer.cornerRadius = 10
         label.textAlignment = .center
@@ -172,8 +160,6 @@ class AlarmTableViewCell : UITableViewCell, UISheetPresentationControllerDelegat
         let label = UILabel()
         label.text = "일"
         label.font = DesignSystemFont.Pretendard_SemiBold10.value
-        label.backgroundColor = DesignSystemColor.Orange500.value
-        label.textColor = .white
         label.clipsToBounds = true
         label.layer.cornerRadius = 10
         label.textAlignment = .center
@@ -444,9 +430,6 @@ class AlarmTableViewCell : UITableViewCell, UISheetPresentationControllerDelegat
                     if self.disturb {
                         label.backgroundColor = DesignSystemColor.Gray100.value
                         label.textColor = DesignSystemColor.Gray300.value
-                    } else {
-                        label.backgroundColor = DesignSystemColor.Orange500.value
-                        label.textColor = .white
                     }
                 }
             }

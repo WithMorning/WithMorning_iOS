@@ -9,7 +9,7 @@ import Foundation
 import UIKit
 
 extension UserDefaults {
-    
+
     static func setPrivateNumber(_ value: Bool) {
         UserDefaults.standard.set(value, forKey: "privateNumber")
     }

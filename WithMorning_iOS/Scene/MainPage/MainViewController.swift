@@ -216,8 +216,10 @@ class MainViewController: UIViewController, UISheetPresentationControllerDelegat
         emptyimage.snp.makeConstraints{
             $0.center.equalToSuperview()
         }
+        
+        print("🔐 KeyChain에 저장된 accessToken: \(KeyChain.read(key: "accessToken") ?? "")")
     }
-
+    
     //MARK: - tableSetting
     func tableSetting(){
         AlarmTableView.dataSource = self
@@ -481,6 +483,7 @@ extension MainViewController : UITableViewDelegate, UITableViewDataSource{
         
         cell.participantcode = alarm.participationCode
         
+        //MARK: - 알람 표시 기능
         let dayLabels = [cell.MonLabel, cell.TueLabel, cell.WedLabel, cell.ThuLabel, cell.FriLabel, cell.SatLabel, cell.SunLabel]
         
         let days = ["mon", "tue", "wed", "thu", "fri", "sat", "sun"]
