@@ -59,7 +59,7 @@ final class AppleLoginManager : NSObject {
     //MARK: - 애플 로그인 시작
     @available(iOS 13, *)
     func startSignInWithAppleFlow() {
-        print(#fileID, #function, #line, "- 애플 로그인 시작🍎")
+        print(#fileID, #function, #line, "- 애플 로그인 시작🍎 ")
         let nonce = randomNonceString()
         currentNonce = nonce
         let appleIDProvider = ASAuthorizationAppleIDProvider()
