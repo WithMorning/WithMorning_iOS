@@ -83,6 +83,7 @@ extension AppleLoginManager : ASAuthorizationControllerDelegate {
         
         if let appleIDCredential = authorization.credential as? ASAuthorizationAppleIDCredential {
             print(#fileID, #function, #line, "- 애플 로그인 성공🍎")
+            
             guard currentNonce != nil else {
                 fatalError(" - Invalid state: A login callback was received, but no login request was sent.")
             }
@@ -92,10 +93,15 @@ extension AppleLoginManager : ASAuthorizationControllerDelegate {
                   let authorizationCode = appleIDCredential.authorizationCode,
                   let codeString = String(data: authorizationCode, encoding: .utf8) else {
                 print("Failed to get required tokens")
+                
                 return
             }
             
-            let loginRequestTokenData = AppleloginRequest(identityToken: idTokenString, code: codeString) //id토큰, auth토큰 전송할 데이터 셋
+            //id토큰, auth토큰 전송할 데이터 셋
+            let loginRequestTokenData = AppleloginRequest(identityToken: idTokenString, code: codeString)
+            
+            //idTokenString 저장
+//            KeyChain.create(key: "idTokenString", token: idTokenString)
             
             //MARK: - 로그인 요청
             AF.request(LoginRouter.AppleLogin(data: loginRequestTokenData))
@@ -118,6 +124,31 @@ extension AppleLoginManager : ASAuthorizationControllerDelegate {
         }
     }
     
+//    func handleLoginSuccess(with data: AppleLoginData) {
+//        KeyChain.create(key: "accessToken", token: data.accessToken)
+//        KeyChain.create(key: "refreshToken", token: data.refreshToken)
+//        
+//        print("🔐 KeyChain에 저장된 accessToken: \(KeyChain.read(key: "accessToken") ?? "")")
+//        print("🔐 KeyChain에 저장된 refreshToken: \(KeyChain.read(key: "refreshToken") ?? "")")
+//        
+//        // 실제로 새 사용자인지 확인
+//        let isFirstTime = UserDefaults.standard.bool(forKey: "isFirstTime")
+//        
+//        if isFirstTime {
+//            // 새 사용자의 경우
+//            UserDefaults.standard.set(false, forKey: "isFirstTime") // 이제 첫 번째가 아님
+//            UserDefaults.standard.set(false, forKey: "isExistingUser") // 기존 사용자가 아님
+//            UserDefaults.setUserState("register") // 회원가입으로 이동
+//            print("새로운 유저입니다 환영해용")
+//        } else {
+//            // 기존 사용자가 돌아온 경우
+//            UserDefaults.standard.set(true, forKey: "isExistingUser")
+//            UserDefaults.setUserState("login") // 로그인으로 직접 이동
+//            print("다시 로그인 한 유저입니다.")
+//        }
+//
+//        NotificationCenter.default.post(name: NSNotification.Name("UserStateChanged"), object: nil)
+//    }
     
     private func handleLoginSuccess(with data: AppleLoginData) {
         KeyChain.create(key: "accessToken", token: data.accessToken)
@@ -126,18 +157,24 @@ extension AppleLoginManager : ASAuthorizationControllerDelegate {
         print("🔐 KeyChain에 저장된 accessToken: \(KeyChain.read(key: "accessToken") ?? "")")
         print("🔐 KeyChain에 저장된 refreshToken: \(KeyChain.read(key: "refreshToken") ?? "")")
         
+        
         // 회원탈퇴 상태가 아닐 경우에만 isExistingUser를 true로 설정
-        if UserDefaults.getUserState() != "deleteaccount" {
+        if UserDefaults.standard.bool(forKey: "isFirstTime") == false {
             UserDefaults.standard.set(true, forKey: "isExistingUser")
             UserDefaults.setUserState("login")  // 바로 로그인 상태로 변경
+            print("다시 로그인 한 유저입니다.")
         } else {
             // 회원탈퇴 후 재로그인의 경우
             UserDefaults.standard.removeObject(forKey: "isExistingUser")
             UserDefaults.setUserState("register")  // 회원가입 절차로 이동
+            print("새로운 유저입니다 환영해용")
         }
         
+
         NotificationCenter.default.post(name: NSNotification.Name("UserStateChanged"), object: nil)
     }
+    
+    
     
     
     func authorizationController(controller: ASAuthorizationController, didCompleteWithError error: Error) {
@@ -146,4 +183,3 @@ extension AppleLoginManager : ASAuthorizationControllerDelegate {
     }
     
 }
-

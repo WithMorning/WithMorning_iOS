@@ -400,7 +400,7 @@ class AlarmTableViewCell : UITableViewCell, UISheetPresentationControllerDelegat
     }
     
     func configureCell(with alarm: GroupList, currentUserNickname: String) {
-
+        
         let (time, amPm) = self.convertTimeTo12HourFormat(alarm.wakeupTime)
         
         DispatchQueue.main.async {
@@ -424,7 +424,7 @@ class AlarmTableViewCell : UITableViewCell, UISheetPresentationControllerDelegat
                 
                 // 4. 요일 라벨 색상 업데이트
                 let dayLabels = [self.MonLabel, self.TueLabel, self.WedLabel,
-                               self.ThuLabel, self.FriLabel, self.SatLabel, self.SunLabel]
+                                 self.ThuLabel, self.FriLabel, self.SatLabel, self.SunLabel]
                 
                 for label in dayLabels {
                     if self.disturb {

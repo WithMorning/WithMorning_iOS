@@ -9,19 +9,23 @@ import Foundation
 import UIKit
 
 extension UserDefaults {
-
+    
+    //private Number 등록
     static func setPrivateNumber(_ value: Bool) {
         UserDefaults.standard.set(value, forKey: "privateNumber")
     }
     
+    //private Number 가져오기
     static func getPrivateNumber() -> Bool {
         return UserDefaults.standard.bool(forKey: "privateNumber")
     }
     
+    //userstate 설정
     static func setUserState(_ state: String) {
         return UserDefaults.standard.set(state, forKey: "userState")
     }
     
+    //userstate 가져오기
     static func getUserState() -> String? {
         return UserDefaults.standard.string(forKey: "userState")
     }

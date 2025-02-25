@@ -47,9 +47,11 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         case "register":
             if let token = refreshToken, !token.isEmpty,
                UserDefaults.standard.bool(forKey: "isExistingUser") {
+                print("Scendelegate - register 메인으로 가쟈잉")
                 setRootViewController(windowScene, type: .main)
             } else {
                 setRootViewController(windowScene, type: .register)
+                print("Scendelegate - register 회원가입하러 가쟈잉")
             }
         case "login":
             setRootViewController(windowScene, type: .main)
@@ -77,6 +79,7 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
             }
             newWindow.rootViewController = navigationController
         }
+        
         DispatchQueue.main.async { [weak self] in
             self?.window = newWindow
             newWindow.makeKeyAndVisible()

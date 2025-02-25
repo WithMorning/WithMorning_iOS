@@ -9,6 +9,7 @@ import UIKit
 import Foundation
 import WebKit
 import SnapKit
+import Then
 
 class MypageWebViewController: UIViewController, WKUIDelegate {
     
@@ -18,11 +19,15 @@ class MypageWebViewController: UIViewController, WKUIDelegate {
     override func loadView() {
         let webConfiguration = WKWebViewConfiguration()
         webView = WKWebView(frame: .zero, configuration: webConfiguration)
-        webView.frame = CGRect(x: 0, y: 30, width: UIScreen.main.bounds.width, height: UIScreen.main.bounds.height)
         webView.uiDelegate = self
+        
         view = UIView()
         view.addSubview(webView)
-
+        
+        webView.snp.makeConstraints{
+            $0.top.bottom.equalTo(view.safeAreaLayoutGuide)
+            $0.leading.trailing.equalToSuperview()
+        }
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -47,6 +52,6 @@ class MypageWebViewController: UIViewController, WKUIDelegate {
         
         webView.load(request)
     }
-
+    
     
 }

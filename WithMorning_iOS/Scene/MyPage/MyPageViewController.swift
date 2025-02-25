@@ -23,8 +23,7 @@ class MyPageViewController : UIViewController, UIScrollViewDelegate {
     
     let APInetwork = Network.shared
     let USERnetwork = UserNetwork.shared
-    //    let registerUserInfo = RegisterUserInfo.shared
-    
+
     //MARK: - 네비게이션
     
     private lazy var myPageLabel : UILabel = {
@@ -144,7 +143,7 @@ class MyPageViewController : UIViewController, UIScrollViewDelegate {
         label.font = DesignSystemFont.Pretendard_Medium14.value
         return label
     }()
-
+    
     private lazy var sleeptimeLabel2 : UILabel = {
         let attributedString1 = NSMutableAttributedString(string: "")
         let imageAttachment1 = NSTextAttachment()
@@ -383,7 +382,7 @@ class MyPageViewController : UIViewController, UIScrollViewDelegate {
     
     private lazy var versionLabel2 : UILabel = {
         let label = UILabel()
-        label.text = "1.0.1"
+        label.text = "1.0.3"
         label.textAlignment = .right
         label.textColor = DesignSystemColor.Gray400.value
         label.font = DesignSystemFont.Pretendard_Medium14.value

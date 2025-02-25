@@ -148,6 +148,7 @@ class MainViewController: UIViewController, UISheetPresentationControllerDelegat
     override func viewDidLoad() {
         super.viewDidLoad()
         self.view.backgroundColor = DesignSystemColor.Gray150.value
+//        usercheck()
         tableSetting()
         SetUI()
         emptycellcheck()
@@ -216,8 +217,6 @@ class MainViewController: UIViewController, UISheetPresentationControllerDelegat
         emptyimage.snp.makeConstraints{
             $0.center.equalToSuperview()
         }
-        
-        print("🔐 KeyChain에 저장된 accessToken: \(KeyChain.read(key: "accessToken") ?? "")")
     }
     
     //MARK: - tableSetting
@@ -265,6 +264,25 @@ class MainViewController: UIViewController, UISheetPresentationControllerDelegat
                 print("알림 권한 요청 중 오류 발생: \(error.localizedDescription)")
                 self.checkNotificationPermission()
             }
+        }
+    }
+    
+    //MARK: - 유저체크
+    func usercheck(){
+        if UserDefaults.standard.string(forKey: "nickname") == nil {
+            let registerVC = RegisterViewController()
+            let navController = UINavigationController(rootViewController: registerVC)
+            navController.modalPresentationStyle = .fullScreen
+            registerVC.viewType = .register
+            if let keyWindow = UIApplication.shared.connectedScenes
+                .compactMap({ $0 as? UIWindowScene })
+                .flatMap({ $0.windows })
+                .first(where: { $0.isKeyWindow }) {
+                
+                keyWindow.rootViewController = navController
+                keyWindow.makeKeyAndVisible()
+            }
+            
         }
     }
     
