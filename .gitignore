@@ -84,7 +84,7 @@ fastlane/test_output
 
 
 Info.plist
-Kotlin/kotlin.log
+GoogleService-Info.plist
 .DS_STORE
 Services/AlarmManager.swift
 
