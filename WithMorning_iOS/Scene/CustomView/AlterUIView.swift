@@ -315,7 +315,6 @@ class AlterUIView: UIViewController {
         UserDefaults.standard.removeObject(forKey: "volume")
         UserDefaults.standard.removeObject(forKey: "vibrate")
         UserDefaults.standard.removeObject(forKey: "isExistingUser")  // 추가
-/*        UserDefaults.standard.removeObject(forKey: "isFirstTime")    */ // 추가
         
         // 모든 UserDefaults 데이터 초기화를 위해 도메인 자체를 삭제
         if let bundleIdentifier = Bundle.main.bundleIdentifier {

@@ -23,6 +23,7 @@ struct AppleloginResponse: Codable {
 struct AppleLoginData: Codable {
     let accessToken: String
     let refreshToken: String
+    let isNewUser: Bool
 }
 
 struct AppleloginFailResponse: Codable {

@@ -4,7 +4,7 @@
 //
 //  Created by 안세훈 on 4/10/24.
 //
-
+//모야는 ㅅㅂ이 걸 해준다고 십
 import Foundation
 import Alamofire
 

@@ -300,7 +300,7 @@ class MyPageViewController : UIViewController, UIScrollViewDelegate {
         return label
     }()
     
-    private lazy var privacyLabel2 : UILabel = {
+    private let privacyLabel2 : UILabel = {
         let attributedString1 = NSMutableAttributedString(string: "")
         let imageAttachment1 = NSTextAttachment()
         imageAttachment1.image = UIImage(named: "forward")
@@ -789,7 +789,6 @@ class MyPageViewController : UIViewController, UIScrollViewDelegate {
                     self.navigateToLoginViewController()
                     KeyChain.delete(key: "accessToken")
                     KeyChain.delete(key: "refreshToken")
-                    UserDefaults.standard.set(true, forKey: "isExistingUser")
                     UserDefaults.setUserState("logout")
                     
                     NotificationCenter.default.post(name: NSNotification.Name("UserStateChanged"), object: nil)

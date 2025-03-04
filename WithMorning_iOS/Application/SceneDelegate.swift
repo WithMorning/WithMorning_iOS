@@ -12,7 +12,9 @@ import UserNotifications
 
 class SceneDelegate: UIResponder, UIWindowSceneDelegate {
     
+    //subscriber
     var cancellables = Set<AnyCancellable>()
+    
     var window: UIWindow?
     
     func scene(_ scene: UIScene, willConnectTo session: UISceneSession, options connectionOptions: UIScene.ConnectionOptions) {
@@ -20,14 +22,15 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         guard let windowScene = scene as? UIWindowScene else { return }
         
         //MARK: - 화면
-        RegisterUserInfo.shared.$loginState.sink { loginState in
-            DispatchQueue.main.async {
-                NotificationCenter.default.addObserver(self, selector: #selector(self.handleUserStateChange), name: NSNotification.Name("UserStateChanged"), object: nil)
-                let userState = UserDefaults.getUserState()
-                self.updateViewControllerForUserState(userState, windowScene: windowScene, refreshToken: nil)
+        RegisterUserInfo.shared.$loginState
+            .sink { loginState in
+                DispatchQueue.main.async {
+                    NotificationCenter.default.addObserver(self, selector: #selector(self.handleUserStateChange), name: NSNotification.Name("UserStateChanged"), object: nil)
+                    let userState = UserDefaults.getUserState()
+                    self.updateViewControllerForUserState(userState, windowScene: windowScene, refreshToken: nil)
+                }
             }
-        }
-        .store(in: &cancellables)
+            .store(in: &cancellables)
         
     }
     
@@ -45,14 +48,7 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         case "termsagree":
             setRootViewController(windowScene, type: .termAgree)
         case "register":
-            if let token = refreshToken, !token.isEmpty,
-               UserDefaults.standard.bool(forKey: "isExistingUser") {
-                print("Scendelegate - register 메인으로 가쟈잉")
-                setRootViewController(windowScene, type: .main)
-            } else {
-                setRootViewController(windowScene, type: .register)
-                print("Scendelegate - register 회원가입하러 가쟈잉")
-            }
+            setRootViewController(windowScene, type: .register)
         case "login":
             setRootViewController(windowScene, type: .main)
         case "logout":
