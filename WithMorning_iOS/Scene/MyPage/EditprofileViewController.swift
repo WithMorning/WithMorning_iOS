@@ -10,7 +10,7 @@ import SnapKit
 import Then
 import Alamofire
 
-class EditprofileViewController : UIViewController,UIImagePickerControllerDelegate & UINavigationControllerDelegate {
+class EditprofileViewController : UIViewController,UIImagePickerControllerDelegate, UINavigationControllerDelegate {
     
     let APInetwork = UserNetwork.shared
     

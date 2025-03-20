@@ -11,7 +11,6 @@ import Then
 import Alamofire
 import Kingfisher
 
-
 class ProfileViewController : UIViewController, UIImagePickerControllerDelegate & UINavigationControllerDelegate {
     
     let APInetwork = UserNetwork.shared
@@ -107,8 +106,6 @@ class ProfileViewController : UIViewController, UIImagePickerControllerDelegate 
         self.view.backgroundColor = DesignSystemColor.Gray150.value
         setUI()
         hideKeyboardWhenTappedAround()
-        
-        
     }
     
     func setUI(){
@@ -200,7 +197,8 @@ class ProfileViewController : UIViewController, UIImagePickerControllerDelegate 
         let requestProfile = Requestprofile(nickname: nickname, fcmToken: fcmToken)
         
         var imageData : Data?
-        if let selectedIMG = selectedIMG{
+        
+        if let selectedIMG = selectedIMG {
             imageData = selectedIMG.jpegData(compressionQuality: 0.5)
         }
         
@@ -235,7 +233,6 @@ class ProfileViewController : UIViewController, UIImagePickerControllerDelegate 
     
     
     //MARK: - Gallery Setting
-    
     func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [UIImagePickerController.InfoKey : Any]) {
         if let editedImage = info[UIImagePickerController.InfoKey.editedImage] as? UIImage {
             DispatchQueue.main.async {

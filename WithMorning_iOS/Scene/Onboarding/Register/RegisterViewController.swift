@@ -82,8 +82,6 @@ class RegisterViewController : UIViewController{
         return button
     }()
     
-    
-    
     override func viewDidLoad() {
         super.viewDidLoad()
         view.backgroundColor = DesignSystemColor.Gray150.value
@@ -130,14 +128,14 @@ class RegisterViewController : UIViewController{
             mainLabel.text = "연락처 변경"
             subLabel.text = "변경할 휴대폰 번호를 입력해 주세요."
             popButton.isHidden = false
+            print("번호변경")
         case .register:
             mainLabel.text = "회원가입"
             subLabel.text = "가입할 휴대폰 번호를 입력해 주세요."
             popButton.isHidden = true
+            print("회원가입")
         }
-        
     }
-    
     
     //MARK: - API
     var phonenumber = ""
@@ -287,3 +285,4 @@ struct OnBoardingRegisterViewControllerRepresentable_PreviewProvider: PreviewPro
         
     }
 } #endif
+

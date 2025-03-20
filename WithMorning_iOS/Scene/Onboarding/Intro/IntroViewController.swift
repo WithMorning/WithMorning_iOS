@@ -30,7 +30,7 @@ class IntroViewController : UIViewController{
         return button
     }()
     
-    lazy var pages = [UIViewController]()
+    public lazy var pages = [UIViewController]()
     
     private lazy var pageControl : UIPageControl = {
         let page = UIPageControl()

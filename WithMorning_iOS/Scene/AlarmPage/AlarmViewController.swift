@@ -65,7 +65,7 @@ class AlarmViewController: UIViewController {
         return label
     }()
     
-    lazy var messagetextLabel : UILabel = {
+    public lazy var messagetextLabel : UILabel = {
         let label = UILabel()
         return label
     }()

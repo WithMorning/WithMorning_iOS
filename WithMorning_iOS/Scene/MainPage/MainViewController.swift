@@ -17,7 +17,6 @@ class MainViewController: UIViewController, UISheetPresentationControllerDelegat
     let APInetwork = Network.shared
     
     //MARK: - properties
-    
     private lazy var nameLabel : UILabel = {
         let label = UILabel()
         label.font = DesignSystemFont.Pretendard_Bold20.value
@@ -114,7 +113,7 @@ class MainViewController: UIViewController, UISheetPresentationControllerDelegat
         return button
     }()
     
-    lazy var AlarmTableView : UITableView = {
+    public lazy var AlarmTableView : UITableView = {
         let tableView = UITableView()
         return tableView
     }()
@@ -142,13 +141,10 @@ class MainViewController: UIViewController, UISheetPresentationControllerDelegat
         return view
     }()
     
-    
-    
-    //MARK: - LifeCycle
+    //MARK: - Life Cycle
     override func viewDidLoad() {
         super.viewDidLoad()
         self.view.backgroundColor = DesignSystemColor.Gray150.value
-        //        usercheck()
         tableSetting()
         SetUI()
         emptycellcheck()
@@ -159,7 +155,6 @@ class MainViewController: UIViewController, UISheetPresentationControllerDelegat
         getMainpage()
         requestNotificationPermission()
     }
-    
     
     //MARK: - UI
     func SetUI(){
@@ -223,10 +218,9 @@ class MainViewController: UIViewController, UISheetPresentationControllerDelegat
     func tableSetting(){
         AlarmTableView.dataSource = self
         AlarmTableView.delegate = self
-        
         AlarmTableView.register(AlarmTableViewCell.self, forCellReuseIdentifier: "AlarmTableViewCell")
         
-        AlarmTableView.translatesAutoresizingMaskIntoConstraints = false
+//        AlarmTableView.translatesAutoresizingMaskIntoConstraints = false
         AlarmTableView.tableHeaderView = headerView
         AlarmTableView.backgroundColor = DesignSystemColor.Gray150.value
         AlarmTableView.separatorStyle = .none
@@ -266,26 +260,6 @@ class MainViewController: UIViewController, UISheetPresentationControllerDelegat
             }
         }
     }
-    
-    //MARK: - 유저체크
-    func usercheck(){
-        if UserDefaults.standard.string(forKey: "nickname") == nil {
-            let registerVC = RegisterViewController()
-            let navController = UINavigationController(rootViewController: registerVC)
-            navController.modalPresentationStyle = .fullScreen
-            registerVC.viewType = .register
-            if let keyWindow = UIApplication.shared.connectedScenes
-                .compactMap({ $0 as? UIWindowScene })
-                .flatMap({ $0.windows })
-                .first(where: { $0.isKeyWindow }) {
-                
-                keyWindow.rootViewController = navController
-                keyWindow.makeKeyAndVisible()
-            }
-            
-        }
-    }
-    
     //MARK: - 알람 권한 설정 유무
     func checkNotificationPermission() {
         UNUserNotificationCenter.current().getNotificationSettings { settings in
@@ -317,7 +291,6 @@ class MainViewController: UIViewController, UISheetPresentationControllerDelegat
         vc.modalPresentationStyle = .overFullScreen
         vc.modalTransitionStyle = .crossDissolve
         
-        // 애니메이션과 함께 표시
         UIView.animate(withDuration: 0.3) {
             self.present(vc, animated: true)
         }
@@ -339,8 +312,6 @@ class MainViewController: UIViewController, UISheetPresentationControllerDelegat
             keyWindow.makeKeyAndVisible()
         }
     }
-    
-    
     
     //MARK: - objc func
     @objc func refreshControl(){
@@ -365,7 +336,6 @@ class MainViewController: UIViewController, UISheetPresentationControllerDelegat
     @objc func clickedcode() { //참여코드입력
         let vc = CodeBtnViewController()
         vc.modalPresentationStyle = .formSheet
-        
         vc.participantClosure = { [weak self] in
             self?.getMainpage()
             self?.showToast(message: "그룹에 참여하였습니다.")
@@ -459,15 +429,12 @@ class MainViewController: UIViewController, UISheetPresentationControllerDelegat
     //확정 여부 확인
     var isExpanded: Bool = false
     var isExpandedStates: [Int: Bool] = [:]
-    //collectionviewheight 확인
     
     var collHeight : CGFloat = 0
     var collHeightStates: [Int: CGFloat] = [:]
     
     func MainpageUpdate(with mainpage: MainpageResponse){
-        guard let groupList = mainpage.groupList else {
-            return
-        }
+        guard let groupList = mainpage.groupList else { return }
         self.alarmData = groupList
         DispatchQueue.main.async {
             self.AlarmTableView.reloadData()
@@ -572,7 +539,6 @@ extension MainViewController : UITableViewDelegate, UITableViewDataSource{
                 
             }
         }
-        
         
         return cell
     }

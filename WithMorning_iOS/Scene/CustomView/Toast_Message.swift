@@ -40,22 +40,19 @@ extension UIViewController {
         toastLabel.numberOfLines = 0
         containerView.addSubview(toastLabel)
         
-        // Autolayout for blockingView to cover the entire screen
         blockingView.snp.makeConstraints {
             $0.edges.equalToSuperview() // 화면 전체를 덮음
         }
         
-        // Autolayout for containerView (Toast)
         containerView.snp.makeConstraints {
             $0.center.equalToSuperview()
         }
         
-        // Autolayout for toastLabel inside the containerView
         toastLabel.snp.makeConstraints {
             $0.edges.equalToSuperview().inset(16)
         }
         
-        // Animating the toast popup to fade out and remove both the toast and blocking view
+        //MARK: - 사라지는거 설정ㅇㅇ
         UIView.animate(withDuration: 1.3, delay: 0.8, options: .curveEaseOut, animations: {
             containerView.alpha = 0.0
         }, completion: { _ in

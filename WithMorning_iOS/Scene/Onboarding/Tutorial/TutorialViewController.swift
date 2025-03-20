@@ -41,7 +41,7 @@ class TutorialViewController : UIViewController, UISheetPresentationControllerDe
     
     //MARK: - 온보딩 페이지 컨트롤러
     
-    lazy var pages = [UIViewController]()
+    public lazy var pages = [UIViewController]()
     
     private lazy var pageControl : UIPageControl = {
         let page = UIPageControl()

@@ -8,7 +8,7 @@
 import Foundation
 import Security
 
-class KeyChain{
+class KeyChain {
     
     //MARK: - create
     class func create(key: String, token: String) {

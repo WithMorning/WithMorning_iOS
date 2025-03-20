@@ -331,9 +331,6 @@ class TermsViewController: UIViewController{
             self.showToast(message: "약관에 모두 동의해주세요.")
         }
     }
-    
-    
-    
 }
 
 

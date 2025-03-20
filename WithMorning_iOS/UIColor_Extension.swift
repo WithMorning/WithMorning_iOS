@@ -17,8 +17,6 @@ extension UIColor {
             hexFormatted = String(hexFormatted.dropFirst())
         }
         
-//        assert(hexFormatted.count == 6, "Invalid hex code used.")
-        
         var rgbValue: UInt64 = 0
         Scanner(string: hexFormatted).scanHexInt64(&rgbValue)
         
@@ -38,12 +36,11 @@ extension UIColor {
         var brightness: CGFloat = 0
         var alpha: CGFloat = 0
         
-        // 색상의 HSB 값 추출
         if self.getHue(&hue, saturation: &saturation, brightness: &brightness, alpha: &alpha) {
             let adjustedBrightness = min(max(brightness * factor, 0.0), 1.0)
             return UIColor(hue: hue, saturation: saturation, brightness: adjustedBrightness, alpha: alpha)
         }
         
-        return self // HSB 값 추출 실패 시 원본 색상 반환
+        return self
     }
 }

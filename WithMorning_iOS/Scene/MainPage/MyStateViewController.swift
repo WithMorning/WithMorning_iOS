@@ -15,7 +15,7 @@ class MyStateViewController : UIViewController{
     var APInetwork = Network.shared
     
     //MARK: - 유저 정보
-    lazy var userImage : UIImageView = {
+    public lazy var userImage : UIImageView = {
         let view = UIImageView()
         view.layer.cornerRadius = 50
         view.backgroundColor = .gray
@@ -23,7 +23,7 @@ class MyStateViewController : UIViewController{
         return view
     }()
     
-    lazy var nicknameLabel : UILabel = {
+    public lazy var nicknameLabel : UILabel = {
         let label = UILabel()
         label.text = "닉네임"
         label.font = DesignSystemFont.Pretendard_Bold18.value
@@ -60,7 +60,7 @@ class MyStateViewController : UIViewController{
         return button
     }()
     
-    lazy var subLabel : UILabel = {
+    public lazy var subLabel : UILabel = {
         let label = UILabel()
         label.font = DesignSystemFont.Pretendard_Medium12.value
         label.textColor = DesignSystemColor.Gray500.value

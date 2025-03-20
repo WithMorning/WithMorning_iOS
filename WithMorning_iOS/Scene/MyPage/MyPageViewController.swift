@@ -137,7 +137,7 @@ class MyPageViewController : UIViewController, UIScrollViewDelegate {
         return label
     }()
     
-    lazy var sleeptimeLabel3 : UILabel = {
+    public lazy var sleeptimeLabel3 : UILabel = {
         let label = UILabel()
         label.textColor = DesignSystemColor.Gray400.value
         label.font = DesignSystemFont.Pretendard_Medium14.value
@@ -359,6 +359,7 @@ class MyPageViewController : UIViewController, UIScrollViewDelegate {
         label.font = DesignSystemFont.Pretendard_Medium14.value
         return label
     }()
+    
     //MARK: - 버전 정보
     private lazy var versionStackView: UIStackView = {
         let stackView = UIStackView()

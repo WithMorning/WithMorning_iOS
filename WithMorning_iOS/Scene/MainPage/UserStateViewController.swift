@@ -18,7 +18,7 @@ class UserStateViewController : UIViewController{
     var imageURL : String?
     
     //MARK: - 유저 정보
-    lazy var userImage : UIImageView = {
+    public lazy var userImage : UIImageView = {
         let view = UIImageView()
         view.layer.cornerRadius = 50
         view.backgroundColor = .gray
@@ -26,7 +26,7 @@ class UserStateViewController : UIViewController{
         return view
     }()
     
-    lazy var nicknameLabel : UILabel = {
+    public lazy var nicknameLabel : UILabel = {
         let label = UILabel()
         label.text = "닉네임"
         label.font = DesignSystemFont.Pretendard_Bold18.value
@@ -34,14 +34,14 @@ class UserStateViewController : UIViewController{
         return label
     }()
     
-    lazy var subLabel : UILabel = {
+    public lazy var subLabel : UILabel = {
         let label = UILabel()
         label.font = DesignSystemFont.Pretendard_Medium12.value
         label.textColor = DesignSystemColor.Gray500.value
         return label
     }()
     
-    lazy var callButton : UIButton = {
+    public lazy var callButton : UIButton = {
         let button = UIButton()
         button.setTitle("전화로 깨우기", for: .normal)
         button.titleLabel?.font = DesignSystemFont.Pretendard_SemiBold14.value
@@ -56,7 +56,7 @@ class UserStateViewController : UIViewController{
         return button
     }()
     
-    lazy var pickButton : UIButton = {
+    public lazy var pickButton : UIButton = {
         let button = UIButton()
         button.setBackgroundColor(DesignSystemColor.Orange500.value, for: .normal)
         button.setBackgroundColor(DesignSystemColor.Orange500.value.adjustBrightness(by: 0.8), for: .highlighted)

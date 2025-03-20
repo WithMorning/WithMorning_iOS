@@ -32,7 +32,7 @@ class AlarmTableViewCell : UITableViewCell, UISheetPresentationControllerDelegat
     
     var isagreeClosure : (() -> Void)?
     
-    lazy var AlarmStackView : UIStackView = {
+    public lazy var AlarmStackView : UIStackView = {
         let view = UIStackView()
         view.addSubviews(topView,bottomView)
         view.axis = .vertical
@@ -40,20 +40,20 @@ class AlarmTableViewCell : UITableViewCell, UISheetPresentationControllerDelegat
     }()
     
     //MARK: - 윗부분
-    lazy var topView : UIView = {
+    public lazy var topView : UIView = {
         let view = UIView()
         view.addSubviews(topViewLabel,toggleButton,settingButton,timeLabel,noonLabel,WeekStackView)
         return view
     }()
     
-    lazy var topViewLabel : UILabel = {
+    public lazy var topViewLabel : UILabel = {
         let label = UILabel()
         label.font = DesignSystemFont.Pretendard_SemiBold14.value
         label.textColor = DesignSystemColor.Black.value
         return label
     }()
     
-    let toggleButton: UISwitch = {
+    public let toggleButton: UISwitch = {
         let toggle = UISwitch()
         toggle.onTintColor = DesignSystemColor.Orange500.value
         toggle.tintColor = DesignSystemColor.Gray300.value
@@ -64,7 +64,7 @@ class AlarmTableViewCell : UITableViewCell, UISheetPresentationControllerDelegat
         return toggle
     }()
     
-    lazy var settingButton : UIButton = {
+    public lazy var settingButton : UIButton = {
         let button = UIButton()
         button.setImage(UIImage(systemName: "ellipsis"), for: .normal)
         button.tintColor = .black
@@ -72,13 +72,13 @@ class AlarmTableViewCell : UITableViewCell, UISheetPresentationControllerDelegat
         return button
     }()
     
-    let timeLabel : UILabel = {
+    public let timeLabel : UILabel = {
         let label = UILabel()
         label.font = DesignSystemFont.Pretendard_Bold30.value
         return label
     }()
     
-    let noonLabel : UILabel = {
+    public let noonLabel : UILabel = {
         let label = UILabel()
         label.font = DesignSystemFont.Pretendard_Bold18.value
         return label
@@ -96,7 +96,7 @@ class AlarmTableViewCell : UITableViewCell, UISheetPresentationControllerDelegat
         return stackView
     }()
     
-    lazy var MonLabel : UILabel = {
+    public lazy var MonLabel : UILabel = {
         let label = UILabel()
         label.text = "월"
         label.font = DesignSystemFont.Pretendard_SemiBold10.value
@@ -106,7 +106,7 @@ class AlarmTableViewCell : UITableViewCell, UISheetPresentationControllerDelegat
         return label
     }()
     
-    lazy var TueLabel : UILabel = {
+    public lazy var TueLabel : UILabel = {
         let label = UILabel()
         label.text = "화"
         label.font = DesignSystemFont.Pretendard_SemiBold10.value
@@ -116,7 +116,7 @@ class AlarmTableViewCell : UITableViewCell, UISheetPresentationControllerDelegat
         return label
     }()
     
-    lazy var WedLabel : UILabel = {
+    public lazy var WedLabel : UILabel = {
         let label = UILabel()
         label.text = "수"
         label.font = DesignSystemFont.Pretendard_SemiBold10.value
@@ -126,7 +126,7 @@ class AlarmTableViewCell : UITableViewCell, UISheetPresentationControllerDelegat
         return label
     }()
     
-    lazy var ThuLabel : UILabel = {
+    public lazy var ThuLabel : UILabel = {
         let label = UILabel()
         label.text = "목"
         label.font = DesignSystemFont.Pretendard_SemiBold10.value
@@ -136,7 +136,7 @@ class AlarmTableViewCell : UITableViewCell, UISheetPresentationControllerDelegat
         return label
     }()
     
-    lazy var FriLabel : UILabel = {
+    public lazy var FriLabel : UILabel = {
         let label = UILabel()
         label.text = "금"
         label.font = DesignSystemFont.Pretendard_SemiBold10.value
@@ -146,7 +146,7 @@ class AlarmTableViewCell : UITableViewCell, UISheetPresentationControllerDelegat
         return label
     }()
     
-    lazy var SatLabel : UILabel = {
+    public lazy var SatLabel : UILabel = {
         let label = UILabel()
         label.text = "토"
         label.font = DesignSystemFont.Pretendard_SemiBold10.value
@@ -156,7 +156,7 @@ class AlarmTableViewCell : UITableViewCell, UISheetPresentationControllerDelegat
         return label
     }()
     
-    lazy var SunLabel : UILabel = {
+    public lazy var SunLabel : UILabel = {
         let label = UILabel()
         label.text = "일"
         label.font = DesignSystemFont.Pretendard_SemiBold10.value
@@ -173,20 +173,20 @@ class AlarmTableViewCell : UITableViewCell, UISheetPresentationControllerDelegat
     }()
     
     //MARK: - 아랫 부분
-    lazy var bottomView : UIView = {
+    public lazy var bottomView : UIView = {
         let view = UIView()
         view.addSubviews(borderLine,bottomViewLabel,memberCollectionView,memoView)
         return view
     }()
     
-    lazy var bottomViewLabel : UILabel = {
+    public lazy var bottomViewLabel : UILabel = {
         let label = UILabel()
         label.font = DesignSystemFont.Pretendard_Medium12.value
         label.textColor = DesignSystemColor.Gray500.value
         return label
     }()
     
-    lazy var memberCollectionView : UICollectionView = {
+    public lazy var memberCollectionView : UICollectionView = {
         let layout = UICollectionViewFlowLayout()
         layout.scrollDirection = .horizontal
         let view = UICollectionView(frame: .zero, collectionViewLayout: layout)
@@ -207,7 +207,7 @@ class AlarmTableViewCell : UITableViewCell, UISheetPresentationControllerDelegat
         return view
     }()
     
-    lazy var memoLabel: TopAlignedLabel = {
+    public lazy var memoLabel: TopAlignedLabel = {
         let label = TopAlignedLabel()
         label.textAlignment = .center
         label.numberOfLines = 0
@@ -892,7 +892,7 @@ class AlarmTableViewCell : UITableViewCell, UISheetPresentationControllerDelegat
 
 class memberCollectioViewCell: UICollectionViewCell {
     
-    lazy var memberView: UIView = {
+    public lazy var memberView: UIView = {
         let view = UIImageView()
         view.backgroundColor = DesignSystemColor.Orange500.value
         view.layer.cornerRadius = 31
@@ -902,7 +902,7 @@ class memberCollectioViewCell: UICollectionViewCell {
         return view
     }()
     
-    lazy var memberIMG : UIImageView = {
+    public lazy var memberIMG : UIImageView = {
         let view = UIImageView()
         view.backgroundColor = .clear
         view.image = UIImage(named: "profile")
@@ -912,7 +912,7 @@ class memberCollectioViewCell: UICollectionViewCell {
         return view
     }()
     
-    lazy var memberLabel: UILabel = {
+    public lazy var memberLabel: UILabel = {
         let label = UILabel()
         label.font = DesignSystemFont.Pretendard_SemiBold12.value
         label.numberOfLines = 0

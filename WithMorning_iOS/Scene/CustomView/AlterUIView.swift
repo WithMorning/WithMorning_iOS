@@ -44,7 +44,7 @@ class AlterUIView: UIViewController {
         fatalError("init(coder:) has not been implemented")
     }
     
-    lazy var AlterView: UIView = {
+   public lazy var AlterView: UIView = {
         let view = UIView()
         view.backgroundColor = .white
         view.layer.cornerRadius = 16

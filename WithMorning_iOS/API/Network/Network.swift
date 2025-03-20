@@ -55,6 +55,7 @@ class Network{
     
     //MARK: - 알람(그룹)생성
     func postGroup(groupdata: MakeGroupMaindata,completionHandler: @escaping (Result<MakegroupResponse, Error>) -> Void){
+         
         //        AF.request(Router.postgroup(data : groupdata))
         AF.request(Router.postgroup(data : groupdata), interceptor: AuthInterceptor())
             .validate(statusCode: 200..<300)

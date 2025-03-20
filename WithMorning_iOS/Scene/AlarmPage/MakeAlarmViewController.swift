@@ -145,7 +145,7 @@ class MakeAlarmViewController : UIViewController, UIScrollViewDelegate, UISheetP
         return label
     }()
     
-    lazy var groupTextfield : UITextField = {
+    public lazy var groupTextfield : UITextField = {
         let textfield = UITextField()
         textfield.translatesAutoresizingMaskIntoConstraints = false
         textfield.attributedPlaceholder = NSAttributedString(string: "윗모닝 모임명을 적어주세요.", attributes: [NSAttributedString.Key.foregroundColor : DesignSystemColor.Gray400.value])
@@ -181,7 +181,7 @@ class MakeAlarmViewController : UIViewController, UIScrollViewDelegate, UISheetP
         return label
     }()
     
-    lazy var memoPlaceholder : UILabel = {
+    public lazy var memoPlaceholder : UILabel = {
         let label = UILabel()
         label.text = "아침에 하고 싶은 말 또는 패널티를 정해주세요."
         label.font = DesignSystemFont.Pretendard_Medium14.value
@@ -190,7 +190,7 @@ class MakeAlarmViewController : UIViewController, UIScrollViewDelegate, UISheetP
     }()
     
     
-    lazy var memoTextView : UITextView = {
+    public lazy var memoTextView : UITextView = {
         let view = UITextView()
         view.backgroundColor = DesignSystemColor.Gray150.value
         view.font = DesignSystemFont.Pretendard_Medium14.value

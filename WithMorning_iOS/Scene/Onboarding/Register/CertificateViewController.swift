@@ -43,7 +43,6 @@ class CertificateViewController : UIViewController{
         return label
     }()
     
-    
     private lazy var numberTextfield : UITextField = {
         let textfield = UITextField()
         textfield.translatesAutoresizingMaskIntoConstraints = false
