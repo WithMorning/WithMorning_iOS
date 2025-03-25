@@ -39,10 +39,10 @@
 ## 서버 담당자 🧑‍💻
 <div align=center>
 
-| 김진형 | 
+| 안세훈 | 
 |:---:|
-| <a href="https://github.com/Muokok"> <img src="https://avatars.githubusercontent.com/u/131960164?v=4" width=200px alt="_"/> </a> |
-| **Server** |
+| <a href="https://github.com/HISEHOONAN"> <img src="https://avatars.githubusercontent.com/u/78650062?v=4" width=200px alt="_"/> </a> |
+| **IOS** |
 
 </div>
 
