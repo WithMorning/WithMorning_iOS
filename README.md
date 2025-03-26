@@ -39,7 +39,7 @@
 | 안세훈 | 
 |:---:|
 | <a href="https://github.com/HISEHOONAN"> <img src="https://avatars.githubusercontent.com/u/78650062?v=4" width=200px alt="_"/> </a> |
-| **IOS** |
+| **iOS** |
 
 </div>
 
