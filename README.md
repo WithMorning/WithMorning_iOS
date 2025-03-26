@@ -27,7 +27,8 @@
 
 #### 1. 애플 소셜로그인
 #### 2. CoolSMS를 활용한 휴대폰 문자 인증
-#### 3. FCM과 Scheduler를 활용한 기상 알람 전송
+#### 3. FCM을 이용한 취침 Remote Notification
+#### 4. Scheduler를 활용한 기상 알람
 
 </br>
 
