@@ -31,8 +31,10 @@
 
 </br>
 
+```
 ## 🛠️ 프로젝트 아키텍처
 ![image](https://github.com/user-attachments/assets/ad9407e6-b72e-4789-a797-e7148885def6)
+```
 
 ---
 ## iOS 담당자 🧑‍💻
