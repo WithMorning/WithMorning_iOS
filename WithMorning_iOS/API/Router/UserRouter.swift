@@ -52,6 +52,7 @@ enum UserRouter : URLRequestConvertible{
     }
     
     
+    //에러처리.
     func asURLRequest() throws -> URLRequest {
         guard var urlComponents = URLComponents(string: BaseURL) else {
             throw AFError.invalidURL(url: BaseURL)
@@ -73,7 +74,6 @@ enum UserRouter : URLRequestConvertible{
             request = try JSONParameterEncoder().encode(data, into: request)
         case .RegisterProfile(let data):
             request = try JSONParameterEncoder().encode(data, into: request)
-            
         case .deletelogout(let data):
             request = try JSONParameterEncoder().encode(data, into: request)
         case .deleteaccount:

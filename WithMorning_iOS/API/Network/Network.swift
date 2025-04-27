@@ -33,6 +33,7 @@ class Network{
     }
     
     // MARK: - 메인페이지
+    @available(*, renamed: "getMainpage()")
     func getMainpage(completionHandler: @escaping (Result<MainpageResponse, Error>) -> Void) {
         //        AF.request(Router.getmainpage)
         AF.request(Router.getmainpage, interceptor: AuthInterceptor()) // 소셜로그인
@@ -52,6 +53,15 @@ class Network{
                 }
             }
     }
+    
+    func getMainpage() async throws -> MainpageResponse {
+        return try await withCheckedThrowingContinuation { continuation in
+            getMainpage() { result in
+                continuation.resume(with: result)
+            }
+        }
+    }
+    
     
     //MARK: - 알람(그룹)생성
     func postGroup(groupdata: MakeGroupMaindata,completionHandler: @escaping (Result<MakegroupResponse, Error>) -> Void){

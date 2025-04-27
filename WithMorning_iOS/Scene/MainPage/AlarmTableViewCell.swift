@@ -53,7 +53,8 @@ class AlarmTableViewCell : UITableViewCell, UISheetPresentationControllerDelegat
         return label
     }()
     
-    public let toggleButton: UISwitch = {
+    
+    public lazy var toggleButton: UISwitch = {
         let toggle = UISwitch()
         toggle.onTintColor = DesignSystemColor.Orange500.value
         toggle.tintColor = DesignSystemColor.Gray300.value
