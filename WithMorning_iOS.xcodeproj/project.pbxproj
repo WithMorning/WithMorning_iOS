@@ -25,6 +25,12 @@
 		D1447A1E2CEE2A7400F98C9C /* wakeupalarm.wav in Resources */ = {isa = PBXBuildFile; fileRef = D1447A1D2CEE2A7400F98C9C /* wakeupalarm.wav */; };
 		D1447A202CEE2A7A00F98C9C /* pricksound.wav in Resources */ = {isa = PBXBuildFile; fileRef = D1447A1F2CEE2A7A00F98C9C /* pricksound.wav */; };
 		D146706B2BEA8FF9007B7132 /* MyPageViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D146706A2BEA8FF9007B7132 /* MyPageViewController.swift */; };
+		D147A4AE2DBE0877009A530A /* MakeAlarmViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = D147A4AD2DBE0874009A530A /* MakeAlarmViewModel.swift */; };
+		D147A4B02DBE095B009A530A /* Usecase.swift in Sources */ = {isa = PBXBuildFile; fileRef = D147A4AF2DBE0957009A530A /* Usecase.swift */; };
+		D147A4B72DBE0EFB009A530A /* LoginDTO.swift in Sources */ = {isa = PBXBuildFile; fileRef = D147A4B62DBE0EF9009A530A /* LoginDTO.swift */; };
+		D147A4B92DBE145D009A530A /* MainpageEnity.swift in Sources */ = {isa = PBXBuildFile; fileRef = D147A4B82DBE1451009A530A /* MainpageEnity.swift */; };
+		D147A4BB2DBE14AB009A530A /* MainpageDTO.swift in Sources */ = {isa = PBXBuildFile; fileRef = D147A4BA2DBE14A5009A530A /* MainpageDTO.swift */; };
+		D147A4BD2DBE14EB009A530A /* MainpageRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = D147A4BC2DBE14E6009A530A /* MainpageRepository.swift */; };
 		D14967F62C6FB3F5000E8C1B /* RegisterUserInfo.swift in Sources */ = {isa = PBXBuildFile; fileRef = D14967F52C6FB3F5000E8C1B /* RegisterUserInfo.swift */; };
 		D14967F92C70864D000E8C1B /* KeyChain.swift in Sources */ = {isa = PBXBuildFile; fileRef = D14967F82C70864D000E8C1B /* KeyChain.swift */; };
 		D14A2D6C2BC8EB810087E0CB /* DesignSystem.swift in Sources */ = {isa = PBXBuildFile; fileRef = D14A2D6B2BC8EB810087E0CB /* DesignSystem.swift */; };
@@ -114,6 +120,12 @@
 		D1447A1D2CEE2A7400F98C9C /* wakeupalarm.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; path = wakeupalarm.wav; sourceTree = "<group>"; };
 		D1447A1F2CEE2A7A00F98C9C /* pricksound.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; path = pricksound.wav; sourceTree = "<group>"; };
 		D146706A2BEA8FF9007B7132 /* MyPageViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyPageViewController.swift; sourceTree = "<group>"; };
+		D147A4AD2DBE0874009A530A /* MakeAlarmViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MakeAlarmViewModel.swift; sourceTree = "<group>"; };
+		D147A4AF2DBE0957009A530A /* Usecase.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Usecase.swift; sourceTree = "<group>"; };
+		D147A4B62DBE0EF9009A530A /* LoginDTO.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginDTO.swift; sourceTree = "<group>"; };
+		D147A4B82DBE1451009A530A /* MainpageEnity.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainpageEnity.swift; sourceTree = "<group>"; };
+		D147A4BA2DBE14A5009A530A /* MainpageDTO.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainpageDTO.swift; sourceTree = "<group>"; };
+		D147A4BC2DBE14E6009A530A /* MainpageRepository.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainpageRepository.swift; sourceTree = "<group>"; };
 		D14967F52C6FB3F5000E8C1B /* RegisterUserInfo.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RegisterUserInfo.swift; sourceTree = "<group>"; };
 		D14967F82C70864D000E8C1B /* KeyChain.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KeyChain.swift; sourceTree = "<group>"; };
 		D14A2D6B2BC8EB810087E0CB /* DesignSystem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DesignSystem.swift; sourceTree = "<group>"; };
@@ -160,7 +172,7 @@
 		D1DECB1F2BE54B37009AC667 /* Pretendard-ExtraLight.otf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Pretendard-ExtraLight.otf"; sourceTree = "<group>"; };
 		D1DECB202BE54B37009AC667 /* Pretendard-Light.otf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Pretendard-Light.otf"; sourceTree = "<group>"; };
 		D1E0F9902C9176A100733DEC /* UserDefault_Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserDefault_Extension.swift; sourceTree = "<group>"; };
-		D1E1DF812C3AD04F001A132F /* WeekChoiceViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WeekChoiceViewController.swift; sourceTree = "<group>"; };
+		D1E1DF812C3AD04F001A132F /* WeekChoiceViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WeekChoiceViewController.swift; sourceTree = "<group>"; wrapsLines = 1; };
 		D1E1FBDD2C65F23E001E5375 /* Toast_Message.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Toast_Message.swift; sourceTree = "<group>"; };
 		D1E672B72BC4FD3300A32790 /* WithMorning_iOS.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = WithMorning_iOS.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		D1E672BA2BC4FD3300A32790 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
@@ -265,6 +277,112 @@
 			path = CustomView;
 			sourceTree = "<group>";
 		};
+		D147A4A22DBDFB5B009A530A /* Presentaion */ = {
+			isa = PBXGroup;
+			children = (
+				D147A4AC2DBE0858009A530A /* MakeAlarm */,
+			);
+			path = Presentaion;
+			sourceTree = "<group>";
+		};
+		D147A4A32DBDFBA7009A530A /* Domain */ = {
+			isa = PBXGroup;
+			children = (
+				D147A4A72DBDFBF4009A530A /* Entity */,
+				D147A4A62DBDFBEE009A530A /* UseCase */,
+			);
+			path = Domain;
+			sourceTree = "<group>";
+		};
+		D147A4A42DBDFBC4009A530A /* View */ = {
+			isa = PBXGroup;
+			children = (
+				D19A9CB12C26901100748CE8 /* MakeAlarmViewController.swift */,
+			);
+			path = View;
+			sourceTree = "<group>";
+		};
+		D147A4A52DBDFBC9009A530A /* ViewModel */ = {
+			isa = PBXGroup;
+			children = (
+				D147A4AD2DBE0874009A530A /* MakeAlarmViewModel.swift */,
+			);
+			path = ViewModel;
+			sourceTree = "<group>";
+		};
+		D147A4A62DBDFBEE009A530A /* UseCase */ = {
+			isa = PBXGroup;
+			children = (
+				D147A4AF2DBE0957009A530A /* Usecase.swift */,
+			);
+			path = UseCase;
+			sourceTree = "<group>";
+		};
+		D147A4A72DBDFBF4009A530A /* Entity */ = {
+			isa = PBXGroup;
+			children = (
+				D147A4B82DBE1451009A530A /* MainpageEnity.swift */,
+			);
+			path = Entity;
+			sourceTree = "<group>";
+		};
+		D147A4A82DBE060F009A530A /* InfraStructure */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = InfraStructure;
+			sourceTree = "<group>";
+		};
+		D147A4A92DBE0672009A530A /* ================= */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = "=================";
+			sourceTree = "<group>";
+		};
+		D147A4AB2DBE0801009A530A /* Repository */ = {
+			isa = PBXGroup;
+			children = (
+				D147A4BC2DBE14E6009A530A /* MainpageRepository.swift */,
+			);
+			path = Repository;
+			sourceTree = "<group>";
+		};
+		D147A4AC2DBE0858009A530A /* MakeAlarm */ = {
+			isa = PBXGroup;
+			children = (
+				D147A4A42DBDFBC4009A530A /* View */,
+				D147A4A52DBDFBC9009A530A /* ViewModel */,
+			);
+			path = MakeAlarm;
+			sourceTree = "<group>";
+		};
+		D147A4B52DBE0D57009A530A /* DTO */ = {
+			isa = PBXGroup;
+			children = (
+				D147A4BA2DBE14A5009A530A /* MainpageDTO.swift */,
+				D147A4B62DBE0EF9009A530A /* LoginDTO.swift */,
+			);
+			path = DTO;
+			sourceTree = "<group>";
+		};
+		D147A4BF2DBE2034009A530A /* Data */ = {
+			isa = PBXGroup;
+			children = (
+				D147A4C02DBE2076009A530A /* Network */,
+				D147A4B52DBE0D57009A530A /* DTO */,
+				D147A4AB2DBE0801009A530A /* Repository */,
+			);
+			path = Data;
+			sourceTree = "<group>";
+		};
+		D147A4C02DBE2076009A530A /* Network */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = Network;
+			sourceTree = "<group>";
+		};
 		D14967F72C7065D8000E8C1B /* Services */ = {
 			isa = PBXGroup;
 			children = (
@@ -357,11 +475,11 @@
 		D1652D792BC653AF00F80F6F /* API */ = {
 			isa = PBXGroup;
 			children = (
+				D1DB69D02D5BAEF60030D48A /* Model */,
 				D1C823632C77363F00787CB4 /* AuthInterceptor.swift */,
 				D1DB69D32D5BAFB10030D48A /* Error */,
 				D1DB69D22D5BAF300030D48A /* Network */,
 				D1DB69D12D5BAF1C0030D48A /* Router */,
-				D1DB69D02D5BAEF60030D48A /* Model */,
 			);
 			path = API;
 			sourceTree = "<group>";
@@ -373,6 +491,7 @@
 				D10F846D2BC7E72000F3A172 /* Extension */,
 				D14C32672CE5E1580097957D /* Sounds */,
 				D15AE72C2BC98F8900024CE3 /* Fonts */,
+				D14A2D6A2BC8EB6D0087E0CB /* DesignSystem */,
 			);
 			name = Resource;
 			sourceTree = "<group>";
@@ -449,7 +568,6 @@
 			isa = PBXGroup;
 			children = (
 				D175A2132CA3C8300001F99C /* AlarmViewController.swift */,
-				D19A9CB12C26901100748CE8 /* MakeAlarmViewController.swift */,
 			);
 			path = AlarmPage;
 			sourceTree = "<group>";
@@ -475,11 +593,15 @@
 		D1E672B92BC4FD3300A32790 /* WithMorning_iOS */ = {
 			isa = PBXGroup;
 			children = (
-				D10978402C48E31B00CBF9E3 /* WithMorning_iOS.entitlements */,
 				D1B869E22D5B1C430053E83B /* Application */,
-				D16F5FCF2BC6562A006640F9 /* Resource */,
-				D14A2D6A2BC8EB6D0087E0CB /* DesignSystem */,
+				D147A4BF2DBE2034009A530A /* Data */,
 				D14967F72C7065D8000E8C1B /* Services */,
+				D147A4A82DBE060F009A530A /* InfraStructure */,
+				D16F5FCF2BC6562A006640F9 /* Resource */,
+				D147A4A22DBDFB5B009A530A /* Presentaion */,
+				D147A4A32DBDFBA7009A530A /* Domain */,
+				D147A4A92DBE0672009A530A /* ================= */,
+				D10978402C48E31B00CBF9E3 /* WithMorning_iOS.entitlements */,
 				D1652D792BC653AF00F80F6F /* API */,
 				D1652D782BC653A700F80F6F /* Scene */,
 				D1E672C82BC4FD3500A32790 /* Info.plist */,
@@ -643,16 +765,19 @@
 				D19589E02C6745C50000B77C /* CoreHaptics_Extension.swift in Sources */,
 				D1BCF7D22C99752800FC4FD5 /* IntroViewController.swift in Sources */,
 				D14967F62C6FB3F5000E8C1B /* RegisterUserInfo.swift in Sources */,
+				D147A4BB2DBE14AB009A530A /* MainpageDTO.swift in Sources */,
 				D1E672BF2BC4FD3300A32790 /* MainViewController.swift in Sources */,
 				D1E672BB2BC4FD3300A32790 /* AppDelegate.swift in Sources */,
 				D12D51352C60BC1500D3F1A9 /* UserNetwork.swift in Sources */,
 				D1EBD0EA2CFF331100B96820 /* UIButton_Extension.swift in Sources */,
 				D12FF2532C2FCB2F00B22DB4 /* CodeBtnViewController.swift in Sources */,
 				D16F5FD12BC65671006640F9 /* Network.swift in Sources */,
+				D147A4AE2DBE0877009A530A /* MakeAlarmViewModel.swift in Sources */,
 				D18288CB2C7EF45800BDAB3A /* Error.swift in Sources */,
 				D12C73B22CA538DC00E3B245 /* FollowerMenuViewController.swift in Sources */,
 				D1DB4F692D0BF83000E9B590 /* AlarmManager.swift in Sources */,
 				D1FC698D2C74EA69006B93C8 /* MyPageWebViewController.swift in Sources */,
+				D147A4B92DBE145D009A530A /* MainpageEnity.swift in Sources */,
 				D1DB46E32C4BA10C00BDC3D8 /* RegisterViewController.swift in Sources */,
 				D12D513A2C60BC6300D3F1A9 /* AppleLoginManager.swift in Sources */,
 				D1B86A072C6F2EB40052F528 /* LoginRouter.swift in Sources */,
@@ -661,6 +786,7 @@
 				D14A2D6C2BC8EB810087E0CB /* DesignSystem.swift in Sources */,
 				D12D51332C60BC0900D3F1A9 /* UserRouter.swift in Sources */,
 				D1ABF7962C5239E4008B5084 /* TutorialSecondViewController.swift in Sources */,
+				D147A4BD2DBE14EB009A530A /* MainpageRepository.swift in Sources */,
 				D1ABF7922C5239C7008B5084 /* TutorialViewController.swift in Sources */,
 				D1B12F2F2C50E7770041288C /* TutorialFirstViewController.swift in Sources */,
 				D16F5FD52BC65680006640F9 /* Router.swift in Sources */,
@@ -681,6 +807,7 @@
 				D146706B2BEA8FF9007B7132 /* MyPageViewController.swift in Sources */,
 				D1F71B1A2C50AE2C0070A8AA /* ProfileViewController.swift in Sources */,
 				D138F0B32C48090300233AFA /* TermsViewController.swift in Sources */,
+				D147A4B02DBE095B009A530A /* Usecase.swift in Sources */,
 				D1C823642C77363F00787CB4 /* AuthInterceptor.swift in Sources */,
 				D15AE73A2BC995B800024CE3 /* UIView_Extension.swift in Sources */,
 				D1E672BD2BC4FD3300A32790 /* SceneDelegate.swift in Sources */,
@@ -688,6 +815,7 @@
 				D17AC1A52C980BF6007ADB3D /* IntroThridViewContoller.swift in Sources */,
 				D1E0F9912C9176A100733DEC /* UserDefault_Extension.swift in Sources */,
 				D1AD15AC2C7AF19F003EE342 /* UILabel_Extension.swift in Sources */,
+				D147A4B72DBE0EFB009A530A /* LoginDTO.swift in Sources */,
 				D1303A012C451B3F0071267A /* EditprofileViewController.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

@@ -9,7 +9,6 @@ import Foundation
 import Alamofire
 
 //MARK: - 휴대폰인증
-
 struct SMSnumRequest: Codable {
     let phone: String
 }
@@ -21,7 +20,6 @@ struct SMSnumResponse: Codable {
 }
 
 //MARK: - 인증코드 입력
-
 struct SMScodeResquest: Codable {
     let phone, code: String
 }
