@@ -18,10 +18,35 @@
 </p>
 
 ## 서비스 화면 🖥
-<p align="middle" >
-  <img width="210px;" src="https://github.com/user-attachments/assets/aeabd03a-aee0-429e-9313-30484d9df25f"/>
-   <img width="210px;" src="https://github.com/user-attachments/assets/a4655b1a-8a02-4984-aed6-4965d6192600"/>
-</p>
+
+<table align="center">
+  <tr>
+    <td align="center">
+      <img width="200px" src="https://github.com/user-attachments/assets/23ed4c94-de7f-4983-8bd1-6c04c9e62ee4" /><br/>
+      애플소셜로그인
+    </td>
+    <td align="center">
+      <img width="200px" src="https://github.com/user-attachments/assets/63fcddfe-5528-4d43-825b-840955a06cee" /><br/>
+      메인 페이지
+    </td>
+    <td align="center">
+      <img width="200px" src="https://github.com/user-attachments/assets/e17bb35f-3a15-4869-bd30-7a3f48edcee8" /><br/>
+      알람 생성 화면
+    </td>
+      <td align="center">
+      <img width="200px" src="https://github.com/user-attachments/assets/bfe38e13-1d5e-4512-9176-975ec995e9cf" /><br/>
+      마이 페이지
+    </td>
+    <td align="center">
+      <img width="200px" src="https://github.com/user-attachments/assets/8aaa1046-d61a-47f6-993f-8db3a22132ca" /><br/>
+      취침 시간 설정
+    </td>
+    <td align="center">
+      <img width="200px"src="https://github.com/user-attachments/assets/9e167718-2305-4be4-9e5a-3b156e5d00b2" /><br/>
+      알람
+    </td>
+  </tr>
+</table>
 
 ## 주요 기능 ✨
 
