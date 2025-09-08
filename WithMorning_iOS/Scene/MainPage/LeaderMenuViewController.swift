@@ -10,7 +10,7 @@ import SnapKit
 import Then
 import Alamofire
 
-class LeaderMenuViewController: UIViewController, AlterDelegate {
+class LeaderMenuViewController: UIViewController, AlertDelegate {
     
 //MARK: - dismiss closure
     var menuClicked: (() -> Void)?

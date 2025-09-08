@@ -693,16 +693,16 @@ class AlarmTableViewCell : UITableViewCell, UISheetPresentationControllerDelegat
             leaderVC.menuClicked = { [weak self] in
                 guard let self = self else { return }
                 vc.dismiss(animated: true) {
-                    // AlterUIView 알람 삭제 설정
-                    let alterVC = AlterUIView(alterType: .deleteAlarm)
-                    alterVC.groupId = self.groupId
-                    alterVC.modalPresentationStyle = .overFullScreen
-                    alterVC.modalTransitionStyle = .crossDissolve
-                    alterVC.confirmAction = { [weak self] in
+                    // AlertUIView 알람 삭제 설정
+                    let alertVC = AlertView(AlertType: .deleteAlarm)
+                    alertVC.groupId = self.groupId
+                    alertVC.modalPresentationStyle = .overFullScreen
+                    alertVC.modalTransitionStyle = .crossDissolve
+                    alertVC.confirmAction = { [weak self] in
                         self?.onAlarmDelete?()
                     }
                     
-                    parentViewController.present(alterVC, animated: true, completion: nil)
+                    parentViewController.present(alertVC, animated: true, completion: nil)
                 }
             }
             
@@ -743,16 +743,16 @@ class AlarmTableViewCell : UITableViewCell, UISheetPresentationControllerDelegat
             followerVC.menuClicked = { [weak self] in
                 guard let self = self else { return }
                 vc.dismiss(animated: true) {
-                    let alterVC = AlterUIView(alterType: .outGroup)
-                    alterVC.groupId = self.groupId
-                    alterVC.modalPresentationStyle = .overFullScreen
-                    alterVC.modalTransitionStyle = .crossDissolve
+                    let alertVC = AlertView(AlertType: .outGroup)
+                    alertVC.groupId = self.groupId
+                    alertVC.modalPresentationStyle = .overFullScreen
+                    alertVC.modalTransitionStyle = .crossDissolve
                     
-                    alterVC.confirmAction = { [weak self] in
+                    alertVC.confirmAction = { [weak self] in
                         self?.onAlarmLeave?()
                     }
                     
-                    parentViewController.present(alterVC, animated: true, completion: nil)
+                    parentViewController.present(alertVC, animated: true, completion: nil)
                 }
             }
             

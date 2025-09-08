@@ -19,7 +19,7 @@
 		D12D513A2C60BC6300D3F1A9 /* AppleLoginManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = D12D51392C60BC6300D3F1A9 /* AppleLoginManager.swift */; };
 		D12FF2532C2FCB2F00B22DB4 /* CodeBtnViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D12FF2522C2FCB2F00B22DB4 /* CodeBtnViewController.swift */; };
 		D1303A012C451B3F0071267A /* EditprofileViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D1303A002C451B3F0071267A /* EditprofileViewController.swift */; };
-		D135377D2C3285AD004B49BB /* AlterUIView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D135377C2C3285AD004B49BB /* AlterUIView.swift */; };
+		D135377D2C3285AD004B49BB /* AlertView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D135377C2C3285AD004B49BB /* AlertView.swift */; };
 		D138F0B32C48090300233AFA /* TermsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D138F0B22C48090300233AFA /* TermsViewController.swift */; };
 		D13B6B802C4FAB2B00D963DC /* CertificateViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D13B6B7F2C4FAB2B00D963DC /* CertificateViewController.swift */; };
 		D1447A1E2CEE2A7400F98C9C /* wakeupalarm.wav in Resources */ = {isa = PBXBuildFile; fileRef = D1447A1D2CEE2A7400F98C9C /* wakeupalarm.wav */; };
@@ -114,7 +114,7 @@
 		D12D51392C60BC6300D3F1A9 /* AppleLoginManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppleLoginManager.swift; sourceTree = "<group>"; };
 		D12FF2522C2FCB2F00B22DB4 /* CodeBtnViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CodeBtnViewController.swift; sourceTree = "<group>"; };
 		D1303A002C451B3F0071267A /* EditprofileViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditprofileViewController.swift; sourceTree = "<group>"; };
-		D135377C2C3285AD004B49BB /* AlterUIView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AlterUIView.swift; sourceTree = "<group>"; };
+		D135377C2C3285AD004B49BB /* AlertView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AlertView.swift; sourceTree = "<group>"; };
 		D138F0B22C48090300233AFA /* TermsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TermsViewController.swift; sourceTree = "<group>"; };
 		D13B6B7F2C4FAB2B00D963DC /* CertificateViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CertificateViewController.swift; sourceTree = "<group>"; };
 		D1447A1D2CEE2A7400F98C9C /* wakeupalarm.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; path = wakeupalarm.wav; sourceTree = "<group>"; };
@@ -271,7 +271,7 @@
 				D160A1A02D2283C10099D0E1 /* TopAlignedLabel.swift */,
 				D188B2F82CE7705F00626021 /* NotificationPermission.swift */,
 				D179E6322CA104C500800FEC /* LoadingIndicator.swift */,
-				D135377C2C3285AD004B49BB /* AlterUIView.swift */,
+				D135377C2C3285AD004B49BB /* AlertView.swift */,
 				D1E1FBDD2C65F23E001E5375 /* Toast_Message.swift */,
 			);
 			path = CustomView;
@@ -713,9 +713,13 @@
 			inputFileListPaths = (
 				"${PODS_ROOT}/Target Support Files/Pods-WithMorning_iOS/Pods-WithMorning_iOS-frameworks-${CONFIGURATION}-input-files.xcfilelist",
 			);
+			inputPaths = (
+			);
 			name = "[CP] Embed Pods Frameworks";
 			outputFileListPaths = (
 				"${PODS_ROOT}/Target Support Files/Pods-WithMorning_iOS/Pods-WithMorning_iOS-frameworks-${CONFIGURATION}-output-files.xcfilelist",
+			);
+			outputPaths = (
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
@@ -797,7 +801,7 @@
 				D129AAF12C2D4C0800F995D2 /* LeaderMenuViewController.swift in Sources */,
 				D17AEA442CD9EE01009D7DD9 /* MyStateViewController.swift in Sources */,
 				D19A9CB22C26901100748CE8 /* MakeAlarmViewController.swift in Sources */,
-				D135377D2C3285AD004B49BB /* AlterUIView.swift in Sources */,
+				D135377D2C3285AD004B49BB /* AlertView.swift in Sources */,
 				D188B2F92CE7707400626021 /* NotificationPermission.swift in Sources */,
 				D17AC1A12C98019A007ADB3D /* IntroFirstViewController.swift in Sources */,
 				D17AC1A32C980BE1007ADB3D /* IntroSecondViewController.swift in Sources */,

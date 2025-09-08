@@ -733,10 +733,10 @@ class MyPageViewController : UIViewController, UIScrollViewDelegate {
     
     //MARK: - 회원 탈퇴
     @objc func quitclick(){
-        let alterVC = AlterUIView(alterType: .quit)
-        alterVC.modalPresentationStyle = .overFullScreen
-        alterVC.modalTransitionStyle = .crossDissolve
-        present(alterVC, animated: true, completion: nil)
+        let alertVC = AlertView(AlertType: .quit)
+        alertVC.modalPresentationStyle = .overFullScreen
+        alertVC.modalTransitionStyle = .crossDissolve
+        present(alertVC, animated: true, completion: nil)
     }
     
     //MARK: - API

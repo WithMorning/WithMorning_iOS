@@ -1,5 +1,5 @@
 //
-//  AlterUIView.swift
+//  AlertUIView.swift
 //  WithMorning_iOS
 //
 //  Created by 안세훈 on 7/1/24.
@@ -14,29 +14,29 @@ let APInetwork = Network.shared
 let USERnetwork = UserNetwork.shared
 
 //MARK: - 취소,확인을 위한 델리게이트
-protocol AlterDelegate {
+protocol AlertDelegate {
     func confirm()
     func cancel()
 }
 
 //MARK: - 알림창의 타입을 위한 enum
-enum Altertype {
+enum Alerttype {
     case deleteAlarm
     case outGroup
     case quit
 }
 
-class AlterUIView: UIViewController {
+class AlertView: UIViewController {
     
-    var alterType : Altertype
-    var delegate : AlterDelegate?
+    var AlertType : Alerttype
+    var delegate : AlertDelegate?
     
     
     var confirmAction: (() -> Void)?
     
     
-    init(alterType: Altertype) {
-        self.alterType = alterType
+    init(AlertType: Alerttype) {
+        self.AlertType = AlertType
         super.init(nibName: nil, bundle: nil)
     }
     
@@ -44,7 +44,7 @@ class AlterUIView: UIViewController {
         fatalError("init(coder:) has not been implemented")
     }
     
-   public lazy var AlterView: UIView = {
+   public lazy var AlertView: UIView = {
         let view = UIView()
         view.backgroundColor = .white
         view.layer.cornerRadius = 16
@@ -96,9 +96,7 @@ class AlterUIView: UIViewController {
         return button
     }()
     
-    
     //MARK: - Life Cycle
-    
     override func viewDidLoad() {
         super.viewDidLoad()
         view.backgroundColor = UIColor(red: 0, green: 0, blue: 0, alpha: 0.6)
@@ -109,9 +107,9 @@ class AlterUIView: UIViewController {
     //MARK: - UI
     
     func SetUI() {
-        view.addSubview(AlterView)
+        view.addSubview(AlertView)
         
-        AlterView.snp.makeConstraints{
+        AlertView.snp.makeConstraints{
             $0.center.equalToSuperview()
             $0.height.equalTo(190)
             $0.width.equalTo(343)
@@ -139,7 +137,7 @@ class AlterUIView: UIViewController {
     }
     
     func types() {
-        switch alterType {
+        switch AlertType {
         case .deleteAlarm:
             MainLabel.text = "해당 알람을 삭제하시겠습니까?"
             
@@ -160,7 +158,7 @@ class AlterUIView: UIViewController {
             MainLabel.text = "정말 윗모닝을 탈퇴하시겠습니까? 🥲"
             SubLabel.text = "탈퇴시 모든 개인정보는 바로 삭제 처리됩니다."
             
-            AlterView.snp.makeConstraints{
+            AlertView.snp.makeConstraints{
                 $0.center.equalToSuperview()
                 $0.height.equalTo(170)
                 $0.width.equalTo(343)
@@ -187,7 +185,7 @@ class AlterUIView: UIViewController {
     
     //확인클릭
     @objc func confirmclicked() {
-        switch alterType {
+        switch AlertType {
         case .deleteAlarm:
             handleDeleteAlarm()
         case .outGroup:
@@ -199,7 +197,7 @@ class AlterUIView: UIViewController {
         self.dismiss(animated: true) {
             self.delegate?.confirm()
             
-            switch self.alterType {
+            switch self.AlertType {
                 
             case .deleteAlarm:
                 self.deleteAlarm()
